@@ -1,0 +1,12 @@
+[
+  {
+    "ContainingType": "NanaFoodApi.Controllers.CategoryController",
+    "Method": "GetString",
+    "RelativePath": "api/Category",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  }
+]
