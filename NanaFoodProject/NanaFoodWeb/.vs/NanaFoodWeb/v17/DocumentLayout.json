@@ -3,8 +3,20 @@
   "WorkspaceRootPath": "C:\\Users\\Admin\\Desktop\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{1591B43D-AD89-488F-836E-CC8B56011289}|NanaFoodDAL\\NanaFoodDAL.csproj|c:\\users\\admin\\desktop\\datn\\nanawebfood\\nanafoodproject\\nanafoodweb\\nanafooddal\\irepository\\iproductrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1591B43D-AD89-488F-836E-CC8B56011289}|NanaFoodDAL\\NanaFoodDAL.csproj|solutionrelative:nanafooddal\\irepository\\iproductrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{1591B43D-AD89-488F-836E-CC8B56011289}|NanaFoodDAL\\NanaFoodDAL.csproj|c:\\users\\admin\\desktop\\datn\\nanawebfood\\nanafoodproject\\nanafoodweb\\nanafooddal\\irepository\\repository\\categoryrepo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1591B43D-AD89-488F-836E-CC8B56011289}|NanaFoodDAL\\NanaFoodDAL.csproj|solutionrelative:nanafooddal\\irepository\\repository\\categoryrepo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1D5EB756-ACD8-473D-82B1-BA06E0F27302}|NanaFoodApi\\NanaFoodApi.csproj|c:\\users\\admin\\desktop\\datn\\nanawebfood\\nanafoodproject\\nanafoodweb\\nanafoodapi\\controllers\\categorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1D5EB756-ACD8-473D-82B1-BA06E0F27302}|NanaFoodApi\\NanaFoodApi.csproj|solutionrelative:nanafoodapi\\controllers\\categorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1591B43D-AD89-488F-836E-CC8B56011289}|NanaFoodDAL\\NanaFoodDAL.csproj|c:\\users\\admin\\desktop\\datn\\nanawebfood\\nanafoodproject\\nanafoodweb\\nanafooddal\\dto\\categorydto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1591B43D-AD89-488F-836E-CC8B56011289}|NanaFoodDAL\\NanaFoodDAL.csproj|solutionrelative:nanafooddal\\dto\\categorydto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1591B43D-AD89-488F-836E-CC8B56011289}|NanaFoodDAL\\NanaFoodDAL.csproj|c:\\users\\admin\\desktop\\datn\\nanawebfood\\nanafoodproject\\nanafoodweb\\nanafooddal\\model\\category.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1591B43D-AD89-488F-836E-CC8B56011289}|NanaFoodDAL\\NanaFoodDAL.csproj|solutionrelative:nanafooddal\\model\\category.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -35,14 +47,53 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "IProductRepository.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\IRepository\\IProductRepository.cs",
-              "RelativeDocumentMoniker": "NanaFoodDAL\\IRepository\\IProductRepository.cs",
-              "ToolTip": "C:\\Users\\Admin\\Desktop\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\IRepository\\IProductRepository.cs",
-              "RelativeToolTip": "NanaFoodDAL\\IRepository\\IProductRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAABAAAAAAAAAA==",
+              "Title": "CategoryRepo.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\IRepository\\Repository\\CategoryRepo.cs",
+              "RelativeDocumentMoniker": "NanaFoodDAL\\IRepository\\Repository\\CategoryRepo.cs",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\IRepository\\Repository\\CategoryRepo.cs",
+              "RelativeToolTip": "NanaFoodDAL\\IRepository\\Repository\\CategoryRepo.cs",
+              "ViewState": "AgIAAE0AAAAAAAAAAAAgwH0AAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-19T00:48:27.565Z",
+              "WhenOpened": "2024-09-20T01:42:32.399Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Category.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\Model\\Category.cs",
+              "RelativeDocumentMoniker": "NanaFoodDAL\\Model\\Category.cs",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\Model\\Category.cs",
+              "RelativeToolTip": "NanaFoodDAL\\Model\\Category.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAxwA8AAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-20T01:41:02.068Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "CategoryDto.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\Dto\\CategoryDto.cs",
+              "RelativeDocumentMoniker": "NanaFoodDAL\\Dto\\CategoryDto.cs",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\Dto\\CategoryDto.cs",
+              "RelativeToolTip": "NanaFoodDAL\\Dto\\CategoryDto.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAAwAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-20T01:40:34.621Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "CategoryController.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodApi\\Controllers\\CategoryController.cs",
+              "RelativeDocumentMoniker": "NanaFoodApi\\Controllers\\CategoryController.cs",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodApi\\Controllers\\CategoryController.cs",
+              "RelativeToolTip": "NanaFoodApi\\Controllers\\CategoryController.cs",
+              "ViewState": "AgIAAFgAAAAAAAAAAAAkwGYAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-20T01:21:54.201Z",
               "EditorCaption": ""
             }
           ]

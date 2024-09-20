@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NanaFoodDAL.Context;
 using NanaFoodDAL.Helper;
+using NanaFoodDAL.IRepository;
+using NanaFoodDAL.IRepository.Repository;
 using NanaFoodDAL.Model;
 using static System.Environment;
 
@@ -23,8 +25,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 
 // Config các IService và Service ở chỗ này ↓
-
-
+builder.Services.AddScoped<ICategoryRepo, CategoryRepo>();
 
 // Config các IService và Service ở chỗ này ↑
 

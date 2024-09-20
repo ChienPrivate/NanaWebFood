@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace NanaFoodDAL.Dto
 {
-    internal class CategoryDto
+    public class CategoryDto
     {
         public int CategoryId { get; set; }
         public string CategoryName { get; set; } = string.Empty;
-        public string IsActive { get; set; } = string.Empty ;
+        public bool IsActive { get; set; } = true ;
     }
 }

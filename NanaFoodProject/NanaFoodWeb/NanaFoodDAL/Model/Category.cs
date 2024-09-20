@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 namespace NanaFoodDAL.Model
 {
     [Table("Category")]
-    internal class Category
+    public class Category
     {
         [Key]
         public int CategoryId { get; set; }
         public string CategoryName { get; set; }
-        public string IsActive { get; set; }
+        public bool IsActive { get; set; }
         List<Product> Products { get; set; }
     }
 }
