@@ -10,16 +10,16 @@ using System.Threading.Tasks;
 namespace NanaFoodDAL.Model
 {
     [Table("CartDetails")]
-    [PrimaryKey(nameof(UserId),nameof(ProductId))]
+    [PrimaryKey(nameof(CartId),nameof(ProductId))]
     public class CartDetails
     {
-        [ForeignKey(nameof(User))]
-        public string UserId { get; set; }
+        [ForeignKey(nameof(Cart))]
+        public int CartId { get; set; }
         [ForeignKey(nameof(Product))]
         public int ProductId { get; set; }
         public double Total { get; set;}
         public int Quantity { get; set; }
-        public User User { get; set; }
+        public Cart Cart { get; set; }
         public Product Product { get; set; }
     }
 }

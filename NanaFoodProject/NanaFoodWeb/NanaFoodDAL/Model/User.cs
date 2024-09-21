@@ -23,7 +23,7 @@ namespace NanaFoodDAL.Model
         public List<WishList> WishLists { get; set; }
         public List<Order> Orders { get; set; }
         public List<SearchHistory> SearchHistories { get; set; }
-        public List<CartDetails> CartDetails { get; set; }
+        public Cart Cart { get; set; }
     }
 
     public enum UserStatus
