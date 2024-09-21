@@ -12,7 +12,7 @@ using NanaFoodDAL.Context;
 namespace NanaFoodApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240918092707_init")]
+    [Migration("20240921145543_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -158,13 +158,39 @@ namespace NanaFoodApi.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("NanaFoodDAL.Model.Cart", b =>
+                {
+                    b.Property<int>("CartId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CartId"));
+
+                    b.Property<string>("CouponCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("CartId");
+
+                    b.HasIndex("CouponCode");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Cart");
+                });
+
             modelBuilder.Entity("NanaFoodDAL.Model.CartDetails", b =>
                 {
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("CartId")
+                        .HasColumnType("int");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
@@ -172,9 +198,9 @@ namespace NanaFoodApi.Migrations
                     b.Property<double>("Total")
                         .HasColumnType("float");
 
-                    b.HasKey("ProductId", "UserId");
+                    b.HasKey("ProductId", "CartId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("CartId");
 
                     b.ToTable("CartDetails");
                 });
@@ -191,13 +217,28 @@ namespace NanaFoodApi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("IsActive")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.HasKey("CategoryId");
 
                     b.ToTable("Category");
+                });
+
+            modelBuilder.Entity("NanaFoodDAL.Model.Coupon", b =>
+                {
+                    b.Property<string>("CouponCode")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<double>("Discount")
+                        .HasColumnType("float");
+
+                    b.Property<double>("MinAmount")
+                        .HasColumnType("float");
+
+                    b.HasKey("CouponCode");
+
+                    b.ToTable("Coupon");
                 });
 
             modelBuilder.Entity("NanaFoodDAL.Model.Order", b =>
@@ -554,23 +595,42 @@ namespace NanaFoodApi.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("NanaFoodDAL.Model.Cart", b =>
+                {
+                    b.HasOne("NanaFoodDAL.Model.Coupon", "Coupon")
+                        .WithMany()
+                        .HasForeignKey("CouponCode")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("NanaFoodDAL.Model.User", "User")
+                        .WithOne("Cart")
+                        .HasForeignKey("NanaFoodDAL.Model.Cart", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Coupon");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("NanaFoodDAL.Model.CartDetails", b =>
                 {
+                    b.HasOne("NanaFoodDAL.Model.Cart", "Cart")
+                        .WithMany("CartDetails")
+                        .HasForeignKey("CartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("NanaFoodDAL.Model.Product", "Product")
                         .WithMany("CartDetails")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("NanaFoodDAL.Model.User", "User")
-                        .WithMany("CartDetails")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Cart");
 
                     b.Navigation("Product");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("NanaFoodDAL.Model.Order", b =>
@@ -670,6 +730,11 @@ namespace NanaFoodApi.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("NanaFoodDAL.Model.Cart", b =>
+                {
+                    b.Navigation("CartDetails");
+                });
+
             modelBuilder.Entity("NanaFoodDAL.Model.Order", b =>
                 {
                     b.Navigation("OrderDetails");
@@ -690,7 +755,8 @@ namespace NanaFoodApi.Migrations
 
             modelBuilder.Entity("NanaFoodDAL.Model.User", b =>
                 {
-                    b.Navigation("CartDetails");
+                    b.Navigation("Cart")
+                        .IsRequired();
 
                     b.Navigation("Orders");
 

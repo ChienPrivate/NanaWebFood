@@ -11,7 +11,8 @@ using static System.Environment;
 
 // Load các biến nằm trong file .env và lấy giá trị của các biến đó (tăng tính bảo mật cho ứng dụng tránh lộ các thông tin quan trọng)
 Env.Load();
-string apikey = GetEnvironmentVariable("NANA_API_KEY"); 
+string apikey = GetEnvironmentVariable("NANA_API_KEY");
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,7 +21,7 @@ builder.Services.AddSingleton(mapper);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("NanaFoodApi"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("CloudConnection"), b => b.MigrationsAssembly("NanaFoodApi"));
 });
 builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 
@@ -54,3 +55,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+

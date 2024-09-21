@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Azure;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NanaFoodDAL.Context;
 using NanaFoodDAL.Dto;
 using NanaFoodDAL.IRepository;
 using NanaFoodDAL.Model;
@@ -11,10 +13,11 @@ namespace NanaFoodApi.Controllers
     public class CategoryController : ControllerBase
     {
         private readonly ICategoryRepo _categoryRepo;
-
-        public CategoryController(ICategoryRepo repo)
+        private readonly ApplicationDbContext _applicationDbContext;
+        public CategoryController(ICategoryRepo repo, ApplicationDbContext applicationDbContext)
         {
             _categoryRepo = repo;
+            _applicationDbContext = applicationDbContext;
         }
 
 
@@ -135,5 +138,28 @@ namespace NanaFoodApi.Controllers
             }
             return Ok(response);
         }
+
+        /*[HttpDelete("DeleteAllInDb")]
+        public async Task<ResponseDto> DeleteAllEnity()
+        {
+            var response = await _applicationDbContext.Database.EnsureDeletedAsync();
+
+            if (response != null)
+            {
+                return new ResponseDto
+                {
+                    IsSuccess = true,
+                    Message = "Delete successful",
+                    Result = response
+                };
+            }
+
+            return new ResponseDto
+            {
+                IsSuccess = false,
+                Message = "Delete failed",
+                Result = response
+            };
+        }*/
     }
 }
