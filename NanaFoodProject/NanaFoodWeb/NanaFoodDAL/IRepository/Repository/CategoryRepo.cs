@@ -21,6 +21,13 @@ namespace NanaFoodDAL.IRepository.Repository
         {
             try
             {
+                var checkNameExist = _context.Categories.Any(c => c.CategoryName == category.CategoryName);
+                if (checkNameExist)
+                {
+                    response.Message = "Tên loại món này đã tồn tại";
+                    response.IsSuccess = false;
+                    return response;
+                }
                 _context.Categories.Add(category);
                 _context.SaveChanges();
                 response.Result = _mapper.Map<CategoryDto>(category);
@@ -60,13 +67,28 @@ namespace NanaFoodDAL.IRepository.Repository
             return response;
         }
 
-        public ResponseDto GetAll()
+        public ResponseDto GetAll(int page = 1, int pageSize = 10)
         {
             try
             {
-                var categories = _context.Categories.ToList();
-                var categoryDtos = _mapper.Map<List<CategoryDto>>(categories);
-                response.Result = categoryDtos;
+                var categories = _context.Categories.Where(x => x.IsActive).ToList();
+                var totalCate = categories.Count;
+                var totalPages = (int)Math.Ceiling((decimal)totalCate / pageSize);
+
+                var CatesPerPage = categories
+                    .Skip((page - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToList();
+
+                response.Result = new
+                {
+                    TotalCount = totalCate,
+                    TotalPages = totalPages,
+                    Categories = _mapper.Map<List<CategoryDto>>(CatesPerPage)
+                };
+
+                response.IsSuccess = true;
+                response.Message = "Lấy danh sách loại món ăn thành công.";
             }
             catch (Exception ex)
             {
@@ -81,7 +103,7 @@ namespace NanaFoodDAL.IRepository.Repository
         {
             try
             {
-                var category = _context.Categories.FirstOrDefault(c => c.CategoryId == id);
+                var category = _context.Categories.Find(id);
                 if (category == null)
                 {
                     response.IsSuccess = false;
@@ -101,19 +123,35 @@ namespace NanaFoodDAL.IRepository.Repository
             return response;
         }
 
-        public ResponseDto GetByName(string name)
+        public ResponseDto GetByName(string name, int page = 1, int pageSize = 10)
         {
             try
             {
-                var category = _context.Categories.Where(x => x.CategoryName.Contains(name)).ToList();
-                if (category == null)
+                var categories = _context.Categories.Where(x => x.CategoryName.Contains(name) && x.IsActive).ToList();
+                if (categories == null)
                 {
                     response.IsSuccess = false;
                     response.Message = "Loại món này không tồn tại.";
                 }
                 else
                 {
-                    response.Result = _mapper.Map<List<CategoryDto>>(category);
+                    var totalCate = categories.Count;
+                    var totalPages = (int)Math.Ceiling((decimal)totalCate / pageSize);
+
+                    var CatesPerPage = categories
+                        .Skip((page - 1) * pageSize)
+                        .Take(pageSize)
+                        .ToList();
+
+                    response.Result = new
+                    {
+                        TotalCount = totalCate,
+                        TotalPages = totalPages,
+                        Categories = _mapper.Map<List<CategoryDto>>(CatesPerPage)
+                    };
+
+                    response.IsSuccess = true;
+                    response.Message = "Lấy danh sách loại món ăn theo tên thành công.";
                 }
             }
             catch (Exception ex)
@@ -122,6 +160,30 @@ namespace NanaFoodDAL.IRepository.Repository
                 response.Message = $"Lỗi : {ex.Message}";
             }
 
+            return response;
+        }
+
+        public ResponseDto ModifyStatus(int id, bool status)
+        {
+            try
+            {
+                var category = _context.Categories.Find(id);
+                if(category == null)
+                {
+                    response.IsSuccess = false;
+                    response.Message = $"Mã loại món không tồn tại";
+                    return response;
+                }
+                category.IsActive = status;
+                _context.SaveChangesAsync();
+                response.Message = "Cập nhật trạng thái thành công";
+                response.Result = _mapper.Map<CategoryDto>(category);
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = $"Lỗi : {ex.Message}";
+            }
             return response;
         }
 
@@ -134,10 +196,10 @@ namespace NanaFoodDAL.IRepository.Repository
                 response.Result = _mapper.Map<CategoryDto>(category);
                 response.Message = "Cập nhật loại món thành công";
             }
-            catch
+            catch (Exception ex)
             {
                 response.IsSuccess = false;
-                response.Message = "Loại món này không tồn tại";
+                response.Message = $"Lỗi : {ex.Message}";
             }
             return response;
         }

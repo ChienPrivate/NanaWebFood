@@ -8,14 +8,17 @@ using System.Threading.Tasks;
 
 namespace NanaFoodDAL.Model
 {
-    [Table("SearchHistory")]
-    public class SearchHistory
+    [Table(nameof(Cart))]
+    public class Cart
     {
         [Key]
-        public int SearchId { get; set; }
+        public int CartId { get; set; }
         [ForeignKey(nameof(User))]
         public string UserId { get; set; }
-        public string SearchString { get; set; }
+        [ForeignKey(nameof(Coupon))]
+        public string CouponCode { get; set; }
+        public Coupon Coupon { get; set; }
         public User User { get; set; }
+        public List<CartDetails> CartDetails { get; set; }
     }
 }

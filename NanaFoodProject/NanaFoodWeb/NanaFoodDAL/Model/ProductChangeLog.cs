@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace NanaFoodDAL.Model
 {
     [Table("ProductChangeLog")]
-    internal class ProductChangeLog
+    public class ProductChangeLog
     {
         [Key]
         public Guid LogId { get; set; } = Guid.NewGuid();

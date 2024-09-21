@@ -10,7 +10,7 @@ namespace NanaFoodDAL.Model
 {
     [Table("WishList")]
     [PrimaryKey(nameof(UserId),nameof(ProductId))]
-    internal class WishList
+    public class WishList
     {
         [ForeignKey(nameof(User))]
         public string UserId { get; set; }
