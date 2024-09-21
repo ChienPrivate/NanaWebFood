@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace NanaFoodDAL.Model
 {
     [Table("Order")]
-    internal class Order
+    public class Order
     {
         public int OrderId { get; set; }
         [Required(ErrorMessage = "")]

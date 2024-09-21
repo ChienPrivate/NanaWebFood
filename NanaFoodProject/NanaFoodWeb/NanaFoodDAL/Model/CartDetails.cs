@@ -11,7 +11,7 @@ namespace NanaFoodDAL.Model
 {
     [Table("CartDetails")]
     [PrimaryKey(nameof(UserId),nameof(ProductId))]
-    internal class CartDetails
+    public class CartDetails
     {
         [ForeignKey(nameof(User))]
         public string UserId { get; set; }

@@ -11,7 +11,7 @@ namespace NanaFoodDAL.Model
 {
     [Table("OrderDetails")]
     [PrimaryKey(nameof(OrderId),nameof(ProductId))]
-    internal class OrderDetails
+    public class OrderDetails
     {
         public int OrderId { get; set; }
         public int ProductId { get; set; }
