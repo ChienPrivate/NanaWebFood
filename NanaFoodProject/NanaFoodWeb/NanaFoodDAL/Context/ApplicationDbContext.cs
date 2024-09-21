@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 [assembly: InternalsVisibleTo("NanaFoodApi")]
 namespace NanaFoodDAL.Context
 {
-    internal class ApplicationDbContext : IdentityDbContext<User>
+    public class ApplicationDbContext : IdentityDbContext<User>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {

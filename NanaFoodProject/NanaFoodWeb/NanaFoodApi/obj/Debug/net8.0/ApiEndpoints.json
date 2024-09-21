@@ -167,6 +167,26 @@
   },
   {
     "ContainingType": "NanaFoodApi.Controllers.CategoryController",
+    "Method": "DeleteAllEnity",
+    "RelativePath": "api/Category/DeleteAllInDb",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "NanaFoodDAL.Dto.ResponseDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "NanaFoodApi.Controllers.CategoryController",
     "Method": "GetCategoryByName",
     "RelativePath": "api/Category/SearchName/{name}",
     "HttpMethod": "GET",
@@ -364,6 +384,32 @@
   },
   {
     "ContainingType": "NanaFoodApi.Controllers.ProductController",
+    "Method": "ActiveCategory",
+    "RelativePath": "api/Product/active/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "NanaFoodDAL.Dto.ResponseDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "NanaFoodApi.Controllers.ProductController",
     "Method": "GetByFilter",
     "RelativePath": "api/Product/Filter",
     "HttpMethod": "GET",
@@ -528,6 +574,32 @@
         "Name": "pageSize",
         "Type": "System.Int32",
         "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "NanaFoodDAL.Dto.ResponseDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "NanaFoodApi.Controllers.ProductController",
+    "Method": "UnActiveCategory",
+    "RelativePath": "api/Product/Unactive/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": [
