@@ -26,6 +26,7 @@ builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<Appl
 
 // Config các IService và Service ở chỗ này ↓
 builder.Services.AddScoped<ICategoryRepo, CategoryRepo>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
 // Config các IService và Service ở chỗ này ↑
 

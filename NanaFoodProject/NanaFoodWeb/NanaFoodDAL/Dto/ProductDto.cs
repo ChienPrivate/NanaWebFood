@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace NanaFoodDAL.Dto
 {
-    internal class ProductDto
+    public class ProductDto
     {
         public int ProductId { get; set; }
         [StringLength(50)]

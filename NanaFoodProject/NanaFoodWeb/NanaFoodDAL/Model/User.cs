@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace NanaFoodDAL.Model
 {
-    internal class User : IdentityUser
+    public class User : IdentityUser
     {
         public string? Avatar { get; set; }
         [StringLength(50, MinimumLength = 3, ErrorMessage = "Độ dài của tên phải từ 3 đến 50 ký tự")]

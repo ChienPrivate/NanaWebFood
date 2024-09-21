@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace NanaFoodDAL.Model
 {
     [Table("SearchHistory")]
-    internal class SearchHistory
+    public class SearchHistory
     {
         [Key]
         public int SearchId { get; set; }
