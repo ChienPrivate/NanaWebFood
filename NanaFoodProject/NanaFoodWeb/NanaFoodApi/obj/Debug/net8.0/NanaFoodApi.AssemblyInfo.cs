@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("NanaFoodApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+754c03cb76d2f1dcda3c469108ed2ba54ca9847b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+25b482cd2b5959125c7a24fbc1dbce09f3b3c138")]
 [assembly: System.Reflection.AssemblyProductAttribute("NanaFoodApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("NanaFoodApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

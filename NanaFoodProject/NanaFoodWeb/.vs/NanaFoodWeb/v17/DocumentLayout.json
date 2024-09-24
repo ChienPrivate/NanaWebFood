@@ -3,6 +3,22 @@
   "WorkspaceRootPath": "D:\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{57AC696F-4CEF-49F8-A080-CD08B49A8A44}|NanaFoodWeb\\NanaFoodWeb.csproj|d:\\datn\\nanawebfood\\nanafoodproject\\nanafoodweb\\nanafoodweb\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{57AC696F-4CEF-49F8-A080-CD08B49A8A44}|NanaFoodWeb\\NanaFoodWeb.csproj|solutionrelative:nanafoodweb\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{57AC696F-4CEF-49F8-A080-CD08B49A8A44}|NanaFoodWeb\\NanaFoodWeb.csproj|d:\\datn\\nanawebfood\\nanafoodproject\\nanafoodweb\\nanafoodweb\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{57AC696F-4CEF-49F8-A080-CD08B49A8A44}|NanaFoodWeb\\NanaFoodWeb.csproj|solutionrelative:nanafoodweb\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{57AC696F-4CEF-49F8-A080-CD08B49A8A44}|NanaFoodWeb\\NanaFoodWeb.csproj|d:\\datn\\nanawebfood\\nanafoodproject\\nanafoodweb\\nanafoodweb\\views\\shared\\_validationscriptspartial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{57AC696F-4CEF-49F8-A080-CD08B49A8A44}|NanaFoodWeb\\NanaFoodWeb.csproj|solutionrelative:nanafoodweb\\views\\shared\\_validationscriptspartial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1D5EB756-ACD8-473D-82B1-BA06E0F27302}|NanaFoodApi\\NanaFoodApi.csproj|d:\\datn\\nanawebfood\\nanafoodproject\\nanafoodweb\\nanafoodapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{1D5EB756-ACD8-473D-82B1-BA06E0F27302}|NanaFoodApi\\NanaFoodApi.csproj|solutionrelative:nanafoodapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{1591B43D-AD89-488F-836E-CC8B56011289}|NanaFoodDAL\\NanaFoodDAL.csproj|d:\\datn\\nanawebfood\\nanafoodproject\\nanafoodweb\\nanafooddal\\model\\cartdetails.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{1591B43D-AD89-488F-836E-CC8B56011289}|NanaFoodDAL\\NanaFoodDAL.csproj|solutionrelative:nanafooddal\\model\\cartdetails.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -19,10 +35,6 @@
       "RelativeMoniker": "D:0:0:{1591B43D-AD89-488F-836E-CC8B56011289}|NanaFoodDAL\\NanaFoodDAL.csproj|solutionrelative:nanafooddal\\model\\category.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{1D5EB756-ACD8-473D-82B1-BA06E0F27302}|NanaFoodApi\\NanaFoodApi.csproj|d:\\datn\\nanawebfood\\nanafoodproject\\nanafoodweb\\nanafoodapi\\migrations\\20240921145543_init.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1D5EB756-ACD8-473D-82B1-BA06E0F27302}|NanaFoodApi\\NanaFoodApi.csproj|solutionrelative:nanafoodapi\\migrations\\20240921145543_init.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{1D5EB756-ACD8-473D-82B1-BA06E0F27302}|NanaFoodApi\\NanaFoodApi.csproj|d:\\datn\\nanawebfood\\nanafoodproject\\nanafoodweb\\nanafoodapi\\controllers\\categorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{1D5EB756-ACD8-473D-82B1-BA06E0F27302}|NanaFoodApi\\NanaFoodApi.csproj|solutionrelative:nanafoodapi\\controllers\\categorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -33,10 +45,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{1D5EB756-ACD8-473D-82B1-BA06E0F27302}|NanaFoodApi\\NanaFoodApi.csproj|d:\\datn\\nanawebfood\\nanafoodproject\\nanafoodweb\\nanafoodapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{1D5EB756-ACD8-473D-82B1-BA06E0F27302}|NanaFoodApi\\NanaFoodApi.csproj|solutionrelative:nanafoodapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{1D5EB756-ACD8-473D-82B1-BA06E0F27302}|NanaFoodApi\\NanaFoodApi.csproj|d:\\datn\\nanawebfood\\nanafoodproject\\nanafoodweb\\nanafoodapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{1D5EB756-ACD8-473D-82B1-BA06E0F27302}|NanaFoodApi\\NanaFoodApi.csproj|solutionrelative:nanafoodapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{1591B43D-AD89-488F-836E-CC8B56011289}|NanaFoodDAL\\NanaFoodDAL.csproj|d:\\datn\\nanawebfood\\nanafoodproject\\nanafoodweb\\nanafooddal\\model\\cart.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -58,23 +66,50 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "20240921145543_init.cs",
-              "DocumentMoniker": "D:\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodApi\\Migrations\\20240921145543_init.cs",
-              "RelativeDocumentMoniker": "NanaFoodApi\\Migrations\\20240921145543_init.cs",
-              "ToolTip": "D:\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodApi\\Migrations\\20240921145543_init.cs",
-              "RelativeToolTip": "NanaFoodApi\\Migrations\\20240921145543_init.cs",
+              "DocumentIndex": 2,
+              "Title": "_ValidationScriptsPartial.cshtml",
+              "DocumentMoniker": "D:\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodWeb\\Views\\Shared\\_ValidationScriptsPartial.cshtml",
+              "RelativeDocumentMoniker": "NanaFoodWeb\\Views\\Shared\\_ValidationScriptsPartial.cshtml",
+              "ToolTip": "D:\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodWeb\\Views\\Shared\\_ValidationScriptsPartial.cshtml",
+              "RelativeToolTip": "NanaFoodWeb\\Views\\Shared\\_ValidationScriptsPartial.cshtml",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-21T14:55:44.087Z"
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-09-24T13:29:25.718Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "D:\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodWeb\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "NanaFoodWeb\\Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "D:\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodWeb\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "NanaFoodWeb\\Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AQIAAJsBAAAAAAAAAAAAANEBAABBAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-09-24T13:29:10.115Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "D:\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodWeb\\Views\\Home\\Index.cshtml",
+              "RelativeDocumentMoniker": "NanaFoodWeb\\Views\\Home\\Index.cshtml",
+              "ToolTip": "D:\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodWeb\\Views\\Home\\Index.cshtml",
+              "RelativeToolTip": "NanaFoodWeb\\Views\\Home\\Index.cshtml",
+              "ViewState": "AQIAAGAAAAAAAAAAAAAAAJcAAABAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-09-24T13:28:33.997Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
               "Title": "CartDto.cs",
               "DocumentMoniker": "D:\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\Dto\\CartDto.cs",
               "RelativeDocumentMoniker": "NanaFoodDAL\\Dto\\CartDto.cs",
@@ -82,12 +117,11 @@
               "RelativeToolTip": "NanaFoodDAL\\Dto\\CartDto.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-21T14:29:40.166Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-21T14:29:40.166Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 10,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodApi\\Program.cs",
               "RelativeDocumentMoniker": "NanaFoodApi\\Program.cs",
@@ -99,19 +133,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 3,
               "Title": "appsettings.json",
               "DocumentMoniker": "D:\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodApi\\appsettings.json",
               "RelativeDocumentMoniker": "NanaFoodApi\\appsettings.json",
               "ToolTip": "D:\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodApi\\appsettings.json",
               "RelativeToolTip": "NanaFoodApi\\appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAABaAAAAAAAAAA==",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAACnAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2024-09-21T14:14:08.512Z"
+              "WhenOpened": "2024-09-21T14:14:08.512Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 7,
               "Title": "Category.cs",
               "DocumentMoniker": "D:\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\Model\\Category.cs",
               "RelativeDocumentMoniker": "NanaFoodDAL\\Model\\Category.cs",
@@ -123,7 +158,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 6,
               "Title": "ApplicationDbContext.cs",
               "DocumentMoniker": "D:\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\Context\\ApplicationDbContext.cs",
               "RelativeDocumentMoniker": "NanaFoodDAL\\Context\\ApplicationDbContext.cs",
@@ -131,12 +166,11 @@
               "RelativeToolTip": "NanaFoodDAL\\Context\\ApplicationDbContext.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAABAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-21T07:24:24.411Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-21T07:24:24.411Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 4,
               "Title": "CartDetails.cs",
               "DocumentMoniker": "D:\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\Model\\CartDetails.cs",
               "RelativeDocumentMoniker": "NanaFoodDAL\\Model\\CartDetails.cs",
@@ -149,7 +183,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 13,
               "Title": "User.cs",
               "DocumentMoniker": "D:\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\Model\\User.cs",
               "RelativeDocumentMoniker": "NanaFoodDAL\\Model\\User.cs",
@@ -161,7 +195,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 12,
               "Title": "Coupon.cs",
               "DocumentMoniker": "D:\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\Model\\Coupon.cs",
               "RelativeDocumentMoniker": "NanaFoodDAL\\Model\\Coupon.cs",
@@ -173,7 +207,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 11,
               "Title": "Cart.cs",
               "DocumentMoniker": "D:\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\Model\\Cart.cs",
               "RelativeDocumentMoniker": "NanaFoodDAL\\Model\\Cart.cs",
@@ -185,7 +219,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 8,
               "Title": "CategoryController.cs",
               "DocumentMoniker": "D:\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodApi\\Controllers\\CategoryController.cs",
               "RelativeDocumentMoniker": "NanaFoodApi\\Controllers\\CategoryController.cs",
@@ -197,7 +231,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 9,
               "Title": "ProductController.cs",
               "DocumentMoniker": "D:\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodApi\\Controllers\\ProductController.cs",
               "RelativeDocumentMoniker": "NanaFoodApi\\Controllers\\ProductController.cs",
