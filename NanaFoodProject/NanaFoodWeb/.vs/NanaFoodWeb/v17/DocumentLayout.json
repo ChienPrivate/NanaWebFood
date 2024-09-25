@@ -1,34 +1,38 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\Admin\\Desktop\\DNTN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\",
+  "WorkspaceRootPath": "C:\\Users\\Admin\\Desktop\\asm2\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{1D5EB756-ACD8-473D-82B1-BA06E0F27302}|NanaFoodApi\\NanaFoodApi.csproj|c:\\users\\admin\\desktop\\dntn\\nanawebfood\\nanafoodproject\\nanafoodweb\\nanafoodapi\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{1D5EB756-ACD8-473D-82B1-BA06E0F27302}|NanaFoodApi\\NanaFoodApi.csproj|c:\\users\\admin\\desktop\\asm2\\nanawebfood\\nanafoodproject\\nanafoodweb\\nanafoodapi\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{1D5EB756-ACD8-473D-82B1-BA06E0F27302}|NanaFoodApi\\NanaFoodApi.csproj|solutionrelative:nanafoodapi\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{1D5EB756-ACD8-473D-82B1-BA06E0F27302}|NanaFoodApi\\NanaFoodApi.csproj|c:\\users\\admin\\desktop\\dntn\\nanawebfood\\nanafoodproject\\nanafoodweb\\nanafoodapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1D5EB756-ACD8-473D-82B1-BA06E0F27302}|NanaFoodApi\\NanaFoodApi.csproj|solutionrelative:nanafoodapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{1D5EB756-ACD8-473D-82B1-BA06E0F27302}|NanaFoodApi\\NanaFoodApi.csproj|c:\\users\\admin\\desktop\\asm2\\nanawebfood\\nanafoodproject\\nanafoodweb\\nanafoodapi\\controllers\\categorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1D5EB756-ACD8-473D-82B1-BA06E0F27302}|NanaFoodApi\\NanaFoodApi.csproj|solutionrelative:nanafoodapi\\controllers\\categorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{1591B43D-AD89-488F-836E-CC8B56011289}|NanaFoodDAL\\NanaFoodDAL.csproj|c:\\users\\admin\\desktop\\dntn\\nanawebfood\\nanafoodproject\\nanafoodweb\\nanafooddal\\irepository\\repository\\authenrepo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{1591B43D-AD89-488F-836E-CC8B56011289}|NanaFoodDAL\\NanaFoodDAL.csproj|c:\\users\\admin\\desktop\\asm2\\nanawebfood\\nanafoodproject\\nanafoodweb\\nanafooddal\\irepository\\repository\\authenrepo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{1591B43D-AD89-488F-836E-CC8B56011289}|NanaFoodDAL\\NanaFoodDAL.csproj|solutionrelative:nanafooddal\\irepository\\repository\\authenrepo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{1591B43D-AD89-488F-836E-CC8B56011289}|NanaFoodDAL\\NanaFoodDAL.csproj|c:\\users\\admin\\desktop\\dntn\\nanawebfood\\nanafoodproject\\nanafoodweb\\nanafooddal\\irepository\\iauthenrepo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{1591B43D-AD89-488F-836E-CC8B56011289}|NanaFoodDAL\\NanaFoodDAL.csproj|c:\\users\\admin\\desktop\\asm2\\nanawebfood\\nanafoodproject\\nanafoodweb\\nanafooddal\\irepository\\iauthenrepo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{1591B43D-AD89-488F-836E-CC8B56011289}|NanaFoodDAL\\NanaFoodDAL.csproj|solutionrelative:nanafooddal\\irepository\\iauthenrepo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{1591B43D-AD89-488F-836E-CC8B56011289}|NanaFoodDAL\\NanaFoodDAL.csproj|c:\\users\\admin\\desktop\\dntn\\nanawebfood\\nanafoodproject\\nanafoodweb\\nanafooddal\\dto\\userdto\\registerdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1591B43D-AD89-488F-836E-CC8B56011289}|NanaFoodDAL\\NanaFoodDAL.csproj|solutionrelative:nanafooddal\\dto\\userdto\\registerdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{1591B43D-AD89-488F-836E-CC8B56011289}|NanaFoodDAL\\NanaFoodDAL.csproj|c:\\users\\admin\\desktop\\asm2\\nanawebfood\\nanafoodproject\\nanafoodweb\\nanafooddal\\irepository\\repository\\categoryrepo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1591B43D-AD89-488F-836E-CC8B56011289}|NanaFoodDAL\\NanaFoodDAL.csproj|solutionrelative:nanafooddal\\irepository\\repository\\categoryrepo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{1591B43D-AD89-488F-836E-CC8B56011289}|NanaFoodDAL\\NanaFoodDAL.csproj|c:\\users\\admin\\desktop\\dntn\\nanawebfood\\nanafoodproject\\nanafoodweb\\nanafooddal\\dto\\userdto\\logindto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1591B43D-AD89-488F-836E-CC8B56011289}|NanaFoodDAL\\NanaFoodDAL.csproj|solutionrelative:nanafooddal\\dto\\userdto\\logindto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{1591B43D-AD89-488F-836E-CC8B56011289}|NanaFoodDAL\\NanaFoodDAL.csproj|c:\\users\\admin\\desktop\\asm2\\nanawebfood\\nanafoodproject\\nanafoodweb\\nanafooddal\\dto\\userdto\\userdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1591B43D-AD89-488F-836E-CC8B56011289}|NanaFoodDAL\\NanaFoodDAL.csproj|solutionrelative:nanafooddal\\dto\\userdto\\userdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{1D5EB756-ACD8-473D-82B1-BA06E0F27302}|NanaFoodApi\\NanaFoodApi.csproj|c:\\users\\admin\\desktop\\dntn\\nanawebfood\\nanafoodproject\\nanafoodweb\\nanafoodapi\\controllers\\categorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1D5EB756-ACD8-473D-82B1-BA06E0F27302}|NanaFoodApi\\NanaFoodApi.csproj|solutionrelative:nanafoodapi\\controllers\\categorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{1591B43D-AD89-488F-836E-CC8B56011289}|NanaFoodDAL\\NanaFoodDAL.csproj|c:\\users\\admin\\desktop\\asm2\\nanawebfood\\nanafoodproject\\nanafoodweb\\nanafooddal\\model\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1591B43D-AD89-488F-836E-CC8B56011289}|NanaFoodDAL\\NanaFoodDAL.csproj|solutionrelative:nanafooddal\\model\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1591B43D-AD89-488F-836E-CC8B56011289}|NanaFoodDAL\\NanaFoodDAL.csproj|c:\\users\\admin\\desktop\\asm2\\nanawebfood\\nanafoodproject\\nanafoodweb\\nanafooddal\\dto\\userdto\\userreturn.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1591B43D-AD89-488F-836E-CC8B56011289}|NanaFoodDAL\\NanaFoodDAL.csproj|solutionrelative:nanafooddal\\dto\\userdto\\userreturn.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -38,134 +42,108 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 13,
+          "SelectedChildIndex": 2,
           "Children": [
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{b1e99781-ab81-11d0-b683-00aa00a3ee26}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{e1b7d1f8-9b3c-49b1-8f4f-bfc63a88835d}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:129:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
-            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
             },
             {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{74946827-37a0-11d2-a273-00c04f8ef4ff}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{40ea2e6b-2121-4bb8-a43e-c83c04b51041}"
-            },
-            {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\DNTN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodApi\\Program.cs",
-              "RelativeDocumentMoniker": "NanaFoodApi\\Program.cs",
-              "ToolTip": "C:\\Users\\Admin\\Desktop\\DNTN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodApi\\Program.cs",
-              "RelativeToolTip": "NanaFoodApi\\Program.cs",
-              "ViewState": "AgIAAEwAAAAAAAAAAAAkwFkAAAA6AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-25T04:26:48.67Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "LoginDTO.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\DNTN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\Dto\\UserDTO\\LoginDTO.cs",
-              "RelativeDocumentMoniker": "NanaFoodDAL\\Dto\\UserDTO\\LoginDTO.cs",
-              "ToolTip": "C:\\Users\\Admin\\Desktop\\DNTN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\Dto\\UserDTO\\LoginDTO.cs",
-              "RelativeToolTip": "NanaFoodDAL\\Dto\\UserDTO\\LoginDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAADwvw0AAAA9AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-25T02:06:39.675Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "RegisterDto.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\DNTN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\Dto\\UserDTO\\RegisterDto.cs",
-              "RelativeDocumentMoniker": "NanaFoodDAL\\Dto\\UserDTO\\RegisterDto.cs",
-              "ToolTip": "C:\\Users\\Admin\\Desktop\\DNTN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\Dto\\UserDTO\\RegisterDto.cs",
-              "RelativeToolTip": "NanaFoodDAL\\Dto\\UserDTO\\RegisterDto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAADwvwgAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-25T02:05:41.042Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
               "Title": "CategoryController.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\DNTN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodApi\\Controllers\\CategoryController.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\asm2\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodApi\\Controllers\\CategoryController.cs",
               "RelativeDocumentMoniker": "NanaFoodApi\\Controllers\\CategoryController.cs",
-              "ToolTip": "C:\\Users\\Admin\\Desktop\\DNTN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodApi\\Controllers\\CategoryController.cs",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\asm2\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodApi\\Controllers\\CategoryController.cs",
               "RelativeToolTip": "NanaFoodApi\\Controllers\\CategoryController.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAABAAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAADcAAAAgAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-25T00:47:28.598Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-25T14:20:22.87Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "AuthController.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\DNTN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodApi\\Controllers\\AuthController.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\asm2\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodApi\\Controllers\\AuthController.cs",
               "RelativeDocumentMoniker": "NanaFoodApi\\Controllers\\AuthController.cs",
-              "ToolTip": "C:\\Users\\Admin\\Desktop\\DNTN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodApi\\Controllers\\AuthController.cs",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\asm2\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodApi\\Controllers\\AuthController.cs",
               "RelativeToolTip": "NanaFoodApi\\Controllers\\AuthController.cs",
-              "ViewState": "AgIAABYAAAAAAAAAAAAqwCkAAAAhAAAAAAAAAA==",
+              "ViewState": "AgIAAEwAAAAAAAAAAAA/wHEAAAAfAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-25T00:47:19.416Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "AuthenRepo.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\DNTN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\IRepository\\Repository\\AuthenRepo.cs",
-              "RelativeDocumentMoniker": "NanaFoodDAL\\IRepository\\Repository\\AuthenRepo.cs",
-              "ToolTip": "C:\\Users\\Admin\\Desktop\\DNTN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\IRepository\\Repository\\AuthenRepo.cs",
-              "RelativeToolTip": "NanaFoodDAL\\IRepository\\Repository\\AuthenRepo.cs",
-              "ViewState": "AgIAAEAAAAAAAAAAAAAwwGYAAAAgAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-25T00:34:38.052Z",
+              "WhenOpened": "2024-09-25T14:19:57.589Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
               "Title": "IAuthenRepo.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\DNTN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\IRepository\\IAuthenRepo.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\asm2\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\IRepository\\IAuthenRepo.cs",
               "RelativeDocumentMoniker": "NanaFoodDAL\\IRepository\\IAuthenRepo.cs",
-              "ToolTip": "C:\\Users\\Admin\\Desktop\\DNTN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\IRepository\\IAuthenRepo.cs",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\asm2\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\IRepository\\IAuthenRepo.cs",
               "RelativeToolTip": "NanaFoodDAL\\IRepository\\IAuthenRepo.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAADwvwkAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAOAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-25T00:32:51.132Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-25T10:21:49.31Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "CategoryRepo.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\asm2\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\IRepository\\Repository\\CategoryRepo.cs",
+              "RelativeDocumentMoniker": "NanaFoodDAL\\IRepository\\Repository\\CategoryRepo.cs",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\asm2\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\IRepository\\Repository\\CategoryRepo.cs",
+              "RelativeToolTip": "NanaFoodDAL\\IRepository\\Repository\\CategoryRepo.cs",
+              "ViewState": "AgIAAHkAAAAAAAAAAAAkwKAAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-25T10:13:49.804Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "UserDto.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\asm2\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\Dto\\UserDTO\\UserDto.cs",
+              "RelativeDocumentMoniker": "NanaFoodDAL\\Dto\\UserDTO\\UserDto.cs",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\asm2\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\Dto\\UserDTO\\UserDto.cs",
+              "RelativeToolTip": "NanaFoodDAL\\Dto\\UserDTO\\UserDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-25T10:09:12.819Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "User.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\asm2\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\Model\\User.cs",
+              "RelativeDocumentMoniker": "NanaFoodDAL\\Model\\User.cs",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\asm2\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\Model\\User.cs",
+              "RelativeToolTip": "NanaFoodDAL\\Model\\User.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-25T09:56:59.392Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "UserReturn.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\asm2\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\Dto\\UserDTO\\UserReturn.cs",
+              "RelativeDocumentMoniker": "NanaFoodDAL\\Dto\\UserDTO\\UserReturn.cs",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\asm2\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\Dto\\UserDTO\\UserReturn.cs",
+              "RelativeToolTip": "NanaFoodDAL\\Dto\\UserDTO\\UserReturn.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-25T09:56:50.192Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "AuthenRepo.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\asm2\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\IRepository\\Repository\\AuthenRepo.cs",
+              "RelativeDocumentMoniker": "NanaFoodDAL\\IRepository\\Repository\\AuthenRepo.cs",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\asm2\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\IRepository\\Repository\\AuthenRepo.cs",
+              "RelativeToolTip": "NanaFoodDAL\\IRepository\\Repository\\AuthenRepo.cs",
+              "ViewState": "AgIAAK0AAAAAAAAAAAAAAOkAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-25T00:34:38.052Z"
             }
           ]
         }
