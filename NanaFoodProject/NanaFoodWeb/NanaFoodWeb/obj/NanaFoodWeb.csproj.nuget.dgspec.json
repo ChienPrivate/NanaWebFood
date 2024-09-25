@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "D:\\GraduationProject\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodWeb\\NanaFoodWeb.csproj": {}
+    "C:\\Users\\Admin\\Desktop\\DNTN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodWeb\\NanaFoodWeb.csproj": {}
   },
   "projects": {
-    "D:\\GraduationProject\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodWeb\\NanaFoodWeb.csproj": {
+    "C:\\Users\\Admin\\Desktop\\DNTN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodWeb\\NanaFoodWeb.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\GraduationProject\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodWeb\\NanaFoodWeb.csproj",
+        "projectUniqueName": "C:\\Users\\Admin\\Desktop\\DNTN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodWeb\\NanaFoodWeb.csproj",
         "projectName": "NanaFoodWeb",
-        "projectPath": "D:\\GraduationProject\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodWeb\\NanaFoodWeb.csproj",
-        "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
-        "outputPath": "D:\\GraduationProject\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodWeb\\obj\\",
+        "projectPath": "C:\\Users\\Admin\\Desktop\\DNTN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodWeb\\NanaFoodWeb.csproj",
+        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Admin\\Desktop\\DNTN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodWeb\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\ASUS\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
