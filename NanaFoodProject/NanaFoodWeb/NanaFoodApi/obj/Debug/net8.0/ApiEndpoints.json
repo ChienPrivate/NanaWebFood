@@ -167,26 +167,6 @@
   },
   {
     "ContainingType": "NanaFoodApi.Controllers.CategoryController",
-    "Method": "DeleteAllEnity",
-    "RelativePath": "api/Category/DeleteAllInDb",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": [
-      {
-        "Type": "NanaFoodDAL.Dto.ResponseDto",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "NanaFoodApi.Controllers.CategoryController",
     "Method": "GetCategoryByName",
     "RelativePath": "api/Category/SearchName/{name}",
     "HttpMethod": "GET",
