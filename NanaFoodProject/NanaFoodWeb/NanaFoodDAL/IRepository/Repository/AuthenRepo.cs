@@ -62,5 +62,50 @@ namespace NanaFoodDAL.IRepository.Repository
             response.Message = "Đăng nhập thành công";
             return response;
         }
+
+        public async Task<ResponseDto> Register(RegisterDto regis)
+        {
+            try
+            {
+                var user = new User
+                {
+                    UserName = regis.UserName,
+                    Email = regis.Email,
+                    FullName = regis.FullName
+                };
+
+                var createdUser = await _userManager.CreateAsync(user, regis.Password);
+
+                if (createdUser.Succeeded)
+                {
+                    var roleResult = await _userManager.AddToRoleAsync(user, "customer");
+                    if (roleResult.Succeeded)
+                    {
+                        var roles = await _userManager.GetRolesAsync(user);
+                        response.Result = new UserReturn
+                        {
+                            UserName = user.UserName,
+                            Email = user.Email,
+                            FullName = user.FullName,
+                            Token = _tokenService.CreateToken(user, roles)
+                        };
+                        response.Message = "Đăng ký tài khoản thành công";
+                        return response;
+                    }
+                    response.IsSuccess = false;
+                    response.Message = "Đăng ký thất bại";
+                    return response;
+                }
+                response.IsSuccess = false;
+                response.Message = "Đăng ký thất bại";
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = $"Lỗi : {ex.Message}";
+            }
+            return response;
+        }
     }
 }

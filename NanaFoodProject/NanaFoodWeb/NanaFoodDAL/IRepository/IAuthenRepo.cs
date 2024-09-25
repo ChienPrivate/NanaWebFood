@@ -11,5 +11,6 @@ namespace NanaFoodDAL.IRepository
     public interface IAuthenRepo
     {
         public Task<ResponseDto> Login(LoginDTO login);
+        public Task<ResponseDto> Register(RegisterDto regis);
     }
 }

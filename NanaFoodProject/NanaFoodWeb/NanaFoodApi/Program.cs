@@ -87,6 +87,7 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddScoped<ICategoryRepo, CategoryRepo>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IAuthenRepo, AuthenRepo>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 
 // Config các IService và Service ở chỗ này ↑
 
