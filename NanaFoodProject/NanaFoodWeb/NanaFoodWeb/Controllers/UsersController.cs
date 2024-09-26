@@ -13,7 +13,7 @@ namespace NanaFoodWeb.Controllers
         {
             return View();
         }
-        [HttpPost("Edit/{id}")]
+        [HttpGet("Edit/{id}")]
         public IActionResult Edit(int? id)
         {
             if (id == null)

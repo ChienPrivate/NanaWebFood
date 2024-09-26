@@ -2,7 +2,7 @@
 
 namespace NanaFoodWeb.Models
 {
-    public class Cupon
+    public class Coupon
     {
         [Key]
         public string CouponCode { get; set; }
