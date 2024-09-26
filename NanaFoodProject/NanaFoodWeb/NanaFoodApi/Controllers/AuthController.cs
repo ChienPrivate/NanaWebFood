@@ -71,5 +71,46 @@ namespace NanaFoodApi.Controllers
             }
             return Ok(response);
         }
+
+        [HttpGet("SeachNameUser/{fullname}")]
+        public async Task<IActionResult> SeachNameUser([FromRoute] string fullname, int page = 1, int pageSize = 10)
+        {
+            var response = await _auth.SearchName(fullname, page, pageSize);
+            if (!response.IsSuccess)
+            {
+                return NotFound(response.Message);
+            }
+            return Ok(response);
+        }
+        [HttpGet("SeachEmail/{email}")]
+        public async Task<IActionResult> SeachEmail([FromRoute] string email, int page = 1, int pageSize = 10)
+        {
+            var response = await _auth.SearchMail(email, page, pageSize);
+            if (!response.IsSuccess)
+            {
+                return NotFound(response.Message);
+            }
+            return Ok(response);
+        }
+        [HttpDelete("DeleteUser/{email}")]
+        public async Task<IActionResult> DeleteUser(string email)
+        {
+            var response = await _auth.DeleteUser(email);
+            if (!response.IsSuccess)
+            {
+                return BadRequest(response.Message);
+            }
+            return Ok(response);
+        }
+        [HttpGet("GetAllUser")]
+        public async Task<IActionResult> GetAllUser(int page = 1, int pageSize = 10)
+        {
+            var reponse = await _auth.GetAllUser(page, pageSize);
+            if (!reponse.IsSuccess)
+            {
+                return BadRequest(reponse.Message);
+            }
+            return Ok(reponse);
+        }
     }
 }

@@ -12,5 +12,9 @@ namespace NanaFoodDAL.IRepository
     {
         public Task<ResponseDto> Login(LoginDTO login);
         public Task<ResponseDto> Register(RegisterDto regis);
+        public Task<ResponseDto> GetAllUser(int page, int pageSize);
+        public Task<ResponseDto> SearchMail(string email, int page, int pageSize);
+        public Task<ResponseDto> SearchName(string fullname, int page, int pageSize);
+        public Task<ResponseDto> DeleteUser(string email);
     }
 }
