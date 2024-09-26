@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using NanaFoodDAL.Dto;
+using NanaFoodDAL.Dto.UserDTO;
 using NanaFoodDAL.Model;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,7 @@ namespace NanaFoodDAL.Helper
                 config.CreateMap<WishListDto,WishList>().ReverseMap();
                 config.CreateMap<ProductChangeLogDto,ProductChangeLog>().ReverseMap();
                 config.CreateMap<SearchHistoryDto,SearchHistory>().ReverseMap();
+                config.CreateMap<UserDto, User>().ReverseMap();
             });
             return mappingconfig;
         }
