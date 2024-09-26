@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace NanaFoodDAL.Model
+namespace NanaFoodWeb.Models
 {
-    public class Coupon
+    public class Cupon
     {
         [Key]
         public string CouponCode { get; set; }

@@ -1,7 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
-namespace NanaFoodDAL.Model
+namespace NanaFoodWeb.Models
 {
     [Table("Product")]
     public class Product
@@ -20,7 +20,7 @@ namespace NanaFoodDAL.Model
         [ForeignKey(nameof(Category))]
         public int CategoryId { get; set; }
         public Category Category { get; set; }
-        public List<ProductChangeLog> ProductChangeLogs { get; set; } 
+        public List<ProductChangeLog> ProductChangeLogs { get; set; }
         public List<Review> Reviews { get; set; }
         public List<CartDetails> CartDetails { get; set; }
         public List<OrderDetails> OrderDetails { get; set; }

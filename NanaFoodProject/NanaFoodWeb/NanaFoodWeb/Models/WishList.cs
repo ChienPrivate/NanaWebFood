@@ -1,15 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace NanaFoodDAL.Model
+namespace NanaFoodWeb.Models
 {
-    [Table("Review")]
-    public class Review
+    [Table("WishList")]
+    [PrimaryKey(nameof(UserId), nameof(ProductId))]
+    public class WishList
     {
-        [Key]
-        public Guid ReviewId { get; set; } = Guid.NewGuid();
-        public string Comment { get; set; }
-        public double Rating { get; set; }
         [ForeignKey(nameof(User))]
         public string UserId { get; set; }
         [ForeignKey(nameof(Product))]

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 
-namespace NanaFoodDAL.Model
+namespace NanaFoodWeb.Models
 {
     public class User : IdentityUser
     {
@@ -18,7 +18,6 @@ namespace NanaFoodDAL.Model
         public List<SearchHistory> SearchHistories { get; set; }
         public Cart Cart { get; set; }
     }
-
     public enum UserStatus
     {
         Active,

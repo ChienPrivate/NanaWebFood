@@ -1,7 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
-namespace NanaFoodDAL.Model
+namespace NanaFoodWeb.Models
 {
     [Table("SearchHistory")]
     public class SearchHistory
