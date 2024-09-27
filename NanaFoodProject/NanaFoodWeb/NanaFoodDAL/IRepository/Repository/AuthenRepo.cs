@@ -80,7 +80,6 @@ namespace NanaFoodDAL.IRepository.Repository
                     Email = regis.Email,
                     FullName = regis.FullName
                 };
-
                 var createdUser = await _userManager.CreateAsync(user, regis.Password);
 
                 if (createdUser.Succeeded)
@@ -100,11 +99,11 @@ namespace NanaFoodDAL.IRepository.Repository
                         return response;
                     }
                     response.IsSuccess = false;
-                    response.Message = "Đăng ký thất bại";
+                    response.Message = "Có lỗi xảy ra khi xác nhận role";
                     return response;
                 }
                 response.IsSuccess = false;
-                response.Message = "Đăng ký thất bại";
+                response.Message = "Tên đăng nhập đã được sử dụng";
                 return response;
             }
             catch (Exception ex)

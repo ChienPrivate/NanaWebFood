@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using NanaFoodDAL.Model;
 using System.Runtime.CompilerServices;
@@ -27,7 +28,20 @@ namespace NanaFoodDAL.Context
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-
+            List<IdentityRole> roles = new List<IdentityRole>()
+            {
+                new IdentityRole()
+                {
+                    Name = "admin",
+                    NormalizedName = "ADMIN"
+                },
+                new IdentityRole()
+                {
+                    Name = "customer",
+                    NormalizedName = "CUSTOMER"
+                }
+            };
+            builder.Entity<IdentityRole>().HasData(roles);
             // Cấu hình cho khóa chính
 
             builder.Entity<Category>().HasKey(e => e.CategoryId);
