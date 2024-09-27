@@ -13,11 +13,9 @@ namespace NanaFoodApi.Controllers
     public class CategoryController : ControllerBase
     {
         private readonly ICategoryRepo _categoryRepo;
-        private readonly ApplicationDbContext _applicationDbContext;
-        public CategoryController(ICategoryRepo repo, ApplicationDbContext applicationDbContext)
+        public CategoryController(ICategoryRepo repo)
         {
             _categoryRepo = repo;
-            _applicationDbContext = applicationDbContext;
         }
 
 
@@ -138,28 +136,5 @@ namespace NanaFoodApi.Controllers
             }
             return Ok(response);
         }
-
-        /*[HttpDelete("DeleteAllInDb")]
-        public async Task<ResponseDto> DeleteAllEnity()
-        {
-            var response = await _applicationDbContext.Database.EnsureDeletedAsync();
-
-            if (response != null)
-            {
-                return new ResponseDto
-                {
-                    IsSuccess = true,
-                    Message = "Delete successful",
-                    Result = response
-                };
-            }
-
-            return new ResponseDto
-            {
-                IsSuccess = false,
-                Message = "Delete failed",
-                Result = response
-            };
-        }*/
     }
 }
