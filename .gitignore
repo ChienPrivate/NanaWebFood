@@ -1,0 +1,13 @@
+*.cache
+*.dll
+*.exe
+*.bin
+*.pdb
+*.suo
+*.json
+*.txt
+.vs/
+bin/
+obj/
+!appsettings.json.vs/
+!launchSettings.json

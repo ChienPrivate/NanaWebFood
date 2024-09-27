@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Azure;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NanaFoodDAL.Context;
 using NanaFoodDAL.Dto;
 using NanaFoodDAL.IRepository;
 using NanaFoodDAL.Model;
@@ -11,7 +13,6 @@ namespace NanaFoodApi.Controllers
     public class CategoryController : ControllerBase
     {
         private readonly ICategoryRepo _categoryRepo;
-
         public CategoryController(ICategoryRepo repo)
         {
             _categoryRepo = repo;
