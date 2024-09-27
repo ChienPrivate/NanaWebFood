@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("NanaFoodDAL")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+809d9985564dd11da2c0678361cf1bae4b2474fa")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+aef715ca2fa70a0c3c3f1af0bd274379ce4267e8")]
 [assembly: System.Reflection.AssemblyProductAttribute("NanaFoodDAL")]
 [assembly: System.Reflection.AssemblyTitleAttribute("NanaFoodDAL")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
