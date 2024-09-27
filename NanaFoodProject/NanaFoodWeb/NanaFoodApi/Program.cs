@@ -11,6 +11,7 @@ using NanaFoodDAL.Helper;
 using NanaFoodDAL.IRepository;
 using NanaFoodDAL.IRepository.Repository;
 using NanaFoodDAL.Model;
+using System;
 using System.Reflection;
 using static System.Environment;
 
@@ -114,5 +115,23 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+ApplyMigration();
+
 app.Run();
+
+/*Phương thức ApplyMigration() trong đoạn mã của bạn có nhiệm vụ áp dụng các migrations 
+ * (di chuyển cơ sở dữ liệu) trong ứng dụng sử dụng Entity Framework (EF) Core.
+ * Cụ thể nó kiểm tra xem có các migrations nào chưa được áp dụng và tự động cập nhật cơ sở dữ liệu nếu cần.*/
+void ApplyMigration()
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var _db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+        if (_db.Database.GetPendingMigrations().Count() > 0)
+        {
+            _db.Database.Migrate();
+        }
+    }
+}
 
