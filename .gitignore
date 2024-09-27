@@ -9,3 +9,5 @@
 .vs/
 bin/
 obj/
+!appsettings.json.vs/
+!launchSettings.json
