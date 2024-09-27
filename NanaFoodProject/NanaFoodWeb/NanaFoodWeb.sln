@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35222.181
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NanaFoodWeb", "NanaFoodWeb\NanaFoodWeb.csproj", "{57AC696F-4CEF-49F8-A080-CD08B49A8A44}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NanaFoodWeb", "NanaFoodWeb\NanaFoodWeb.csproj", "{57AC696F-4CEF-49F8-A080-CD08B49A8A44}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NanaFoodApi", "NanaFoodApi\NanaFoodApi.csproj", "{1D5EB756-ACD8-473D-82B1-BA06E0F27302}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NanaFoodApi", "NanaFoodApi\NanaFoodApi.csproj", "{1D5EB756-ACD8-473D-82B1-BA06E0F27302}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NanaFoodDAL", "NanaFoodDAL\NanaFoodDAL.csproj", "{1591B43D-AD89-488F-836E-CC8B56011289}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NanaFoodDAL", "NanaFoodDAL\NanaFoodDAL.csproj", "{1591B43D-AD89-488F-836E-CC8B56011289}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

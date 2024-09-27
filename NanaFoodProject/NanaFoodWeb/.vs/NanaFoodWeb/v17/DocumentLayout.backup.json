@@ -3,16 +3,12 @@
   "WorkspaceRootPath": "D:\\GraduationProject\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{1D5EB756-ACD8-473D-82B1-BA06E0F27302}|NanaFoodApi\\NanaFoodApi.csproj|d:\\graduationproject\\nanawebfood\\nanafoodproject\\nanafoodweb\\nanafoodapi\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{1D5EB756-ACD8-473D-82B1-BA06E0F27302}|NanaFoodApi\\NanaFoodApi.csproj|solutionrelative:nanafoodapi\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{1D5EB756-ACD8-473D-82B1-BA06E0F27302}|NanaFoodApi\\NanaFoodApi.csproj|d:\\graduationproject\\nanawebfood\\nanafoodproject\\nanafoodweb\\nanafoodapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{1D5EB756-ACD8-473D-82B1-BA06E0F27302}|NanaFoodApi\\NanaFoodApi.csproj|solutionrelative:nanafoodapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{57AC696F-4CEF-49F8-A080-CD08B49A8A44}|NanaFoodWeb\\NanaFoodWeb.csproj|d:\\graduationproject\\nanawebfood\\nanafoodproject\\nanafoodweb\\nanafoodweb\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{57AC696F-4CEF-49F8-A080-CD08B49A8A44}|NanaFoodWeb\\NanaFoodWeb.csproj|solutionrelative:nanafoodweb\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{1D5EB756-ACD8-473D-82B1-BA06E0F27302}|NanaFoodApi\\NanaFoodApi.csproj|d:\\graduationproject\\nanawebfood\\nanafoodproject\\nanafoodweb\\nanafoodapi\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{1D5EB756-ACD8-473D-82B1-BA06E0F27302}|NanaFoodApi\\NanaFoodApi.csproj|solutionrelative:nanafoodapi\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,7 +18,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 9,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Bookmark",
@@ -54,41 +50,28 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\GraduationProject\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodApi\\Program.cs",
               "RelativeDocumentMoniker": "NanaFoodApi\\Program.cs",
               "ToolTip": "D:\\GraduationProject\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodApi\\Program.cs",
               "RelativeToolTip": "NanaFoodApi\\Program.cs",
-              "ViewState": "AgIAAFMAAAAAAAAAAAAWwGcAAAAkAAAAAAAAAA==",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABkAAABIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-27T04:48:46.169Z",
+              "WhenOpened": "2024-09-27T05:20:19.461Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Program.cs",
-              "DocumentMoniker": "D:\\GraduationProject\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodWeb\\Program.cs",
-              "RelativeDocumentMoniker": "NanaFoodWeb\\Program.cs",
-              "ToolTip": "D:\\GraduationProject\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodWeb\\Program.cs",
-              "RelativeToolTip": "NanaFoodWeb\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAaAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-27T04:47:28.758Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "launchSettings.json",
               "DocumentMoniker": "D:\\GraduationProject\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodApi\\Properties\\launchSettings.json",
               "RelativeDocumentMoniker": "NanaFoodApi\\Properties\\launchSettings.json",
               "ToolTip": "D:\\GraduationProject\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodApi\\Properties\\launchSettings.json",
               "RelativeToolTip": "NanaFoodApi\\Properties\\launchSettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAcAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAOAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2024-09-27T04:47:03.967Z",
+              "WhenOpened": "2024-09-27T05:20:01.272Z",
               "EditorCaption": ""
             }
           ]
