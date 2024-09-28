@@ -48,7 +48,7 @@ namespace NanaFoodApi.Controllers
         /// ```json
         /// {
         ///   "username": "testuser",
-        ///   "password": "password123",
+        ///   "password": "Password1!",
         ///   "email": "testuser@example.com"
         /// }
         /// ```
