@@ -14,7 +14,6 @@ namespace NanaFoodDAL.IRepository
         public Task<ResponseDto> Login(LoginDTO login);
         public Task<ResponseDto> Register(RegisterDto regis);
         public Task<ResponseDto> LogOut();
-
         public Task<ResponseDto> ChangePassword(User user, ChangePassDto changePass);
 
         //public Task<ResponseDto> GetAllUser(int page, int pageSize);
