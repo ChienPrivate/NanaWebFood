@@ -101,9 +101,6 @@ StyleCopReport.xml
 *.pidb
 *.svclog
 *.scc
-*.json
-!appsettings.json
-!LaunchSettings.json
 # Chutzpah Test files
 _Chutzpah*
 
@@ -402,3 +399,5 @@ FodyWeavers.xsd
 *.sln.iml
 
 # End of https://www.toptal.com/developers/gitignore/api/csharp
+/NanaFoodProject/NanaFoodWeb/.vs/NanaFoodWeb/v17/DocumentLayout.backup.json
+/NanaFoodProject/NanaFoodWeb/.vs/NanaFoodWeb/v17/DocumentLayout.json
