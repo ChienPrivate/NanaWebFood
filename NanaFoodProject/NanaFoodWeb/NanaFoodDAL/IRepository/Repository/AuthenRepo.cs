@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using NanaFoodDAL.Context;
@@ -137,7 +138,15 @@ namespace NanaFoodDAL.IRepository.Repository
                 if (!changePasswordResult.Succeeded)
                 {
                     response.IsSuccess = false;
-                    response.Message = "Mật khẩu hiện tại không chính xác";
+                    string error = string.Join(", ", changePasswordResult.Errors.Select(e => e.Description));
+                    if (error == "Incorrect password.")
+                    {
+                        response.Message = "Mật khẩu hiện tại không chính xác";
+                    }
+                    else
+                    {
+                        response.Message = error;
+                    }
                     return response;
                 }
 
@@ -151,7 +160,6 @@ namespace NanaFoodDAL.IRepository.Repository
             }
             return response;
         }
-
 
 
 
