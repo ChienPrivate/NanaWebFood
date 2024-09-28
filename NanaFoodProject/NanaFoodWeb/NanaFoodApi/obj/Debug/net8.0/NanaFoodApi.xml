@@ -32,6 +32,12 @@
             <response code="200">Đăng ký thành công.</response>
             <response code="400">Thông tin đăng ký không hợp lệ.</response>
         </member>
+        <member name="M:NanaFoodApi.Controllers.AuthController.LogOut">
+            <summary>
+            Đăng xuất
+            </summary>
+            <returns>Đăng xuất thành công</returns>
+        </member>
         <member name="T:NanaFoodApi.Migrations.init">
             <inheritdoc />
         </member>
