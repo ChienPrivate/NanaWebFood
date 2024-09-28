@@ -14,6 +14,6 @@ namespace NanaFoodDAL.Dto.UserDTO
         [Required(ErrorMessage = "Mật khẩu không được rỗng")]
         public string Password { get; set; }
 
-        public bool keepLogined { get; set; }
+        public bool keepLogined { get; set; } = false;
     }
 }
