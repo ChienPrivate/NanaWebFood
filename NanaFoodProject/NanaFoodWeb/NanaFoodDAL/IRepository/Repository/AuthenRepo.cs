@@ -127,96 +127,22 @@ namespace NanaFoodDAL.IRepository.Repository
             }
             return response;
         }
-        public async Task<ResponseDto> DeleteUser(string email)
+
+        public async Task<ResponseDto> ChangePassword(User user,ChangePassDto changePass)
         {
             try
             {
-                var eUser = await _context.Users.FirstOrDefaultAsync(e => e.Email == email);
-                if (eUser != null)
-                {
-                    _context.Users.Remove(eUser);
-                    _context.SaveChanges();
-                }
-                response.IsSuccess = false;
-                response.Message = "Người dùng không tồn tại trong hệ thống.";
-            }
-            catch (Exception ex)
-            {
-                response.IsSuccess = false;
-                response.Message = ex.Message;
-            }
-            return response;
-        }
 
-        public async Task<ResponseDto> GetAllUser(int page = 1, int pageSize = 10)
-        {
-            try
-            {
-                var getAllU = _context.Users.ToList();
-                var totalUser = getAllU.Count;
-                var totalPages = (int)Math.Ceiling((decimal)totalUser / pageSize);
-
-                var users = getAllU
-                    .Skip((page - 1) * pageSize)
-                    .Take(pageSize)
-                    .ToList();
-                response.Result = new
-                {
-                    TotalCount = totalUser,
-                    TotalPages = totalPages,
-                    Users = _mapper.Map<List<UserDto>>(users)
-
-                };
-                response.IsSuccess = true;
-                response.Message = "Lấy danh sách người dùng thành công.";
-            }
-            catch (Exception ex)
-            {
-                response.IsSuccess = false;
-                response.Message = $"Lỗi : {ex.Message}";
-            }
-
-            return response;
-
-        }
-
-        public async Task<ResponseDto> SearchMail(string email, int page = 1, int pageSize = 10)
-        {
-            try
-            {
-                var lowerEmail = email.ToLower();
-                var userEmail = await _context.Users.Where(x => x.Email.ToLower().Contains(lowerEmail)).ToListAsync();
-                if (string.IsNullOrEmpty(email))
+                var changePasswordResult = await _userManager.ChangePasswordAsync(user, changePass.OldPassword, changePass.NewPassword);
+                if (!changePasswordResult.Succeeded)
                 {
                     response.IsSuccess = false;
-                    response.Message = "Email không được để trống.";
+                    response.Message = "Mật khẩu hiện tại không chính xác";
                     return response;
                 }
-                if (lowerEmail == null)
-                {
-                    response.IsSuccess = false;
-                    response.Message = "Email này không tồn tại trong hệ thống.";
-                }
-                else
-                {
-                    var totalUser = userEmail.Count;
-                    var totalPage = (int)Math.Ceiling((decimal)totalUser / pageSize);
 
-                    var UserPage = userEmail
-                        .Skip((page - 1) * pageSize)
-                        .Take(pageSize)
-                        .ToList();
-
-                    response.Result = new
-                    {
-                        TotalCount = totalUser,
-                        TotalPages = totalPage,
-
-                        Users = _mapper.Map<List<UserDto>>(UserPage)
-                    };
-                    response.IsSuccess = true;
-                    response.Message = "Lấy tên người dùng thành công ";
-                }
+                await _signInManager.RefreshSignInAsync(user);
+                response.Message = "Mật khẩu đã được cập nhật";;
             }
             catch (Exception ex)
             {
@@ -226,54 +152,156 @@ namespace NanaFoodDAL.IRepository.Repository
             return response;
         }
 
-        public async Task<ResponseDto> SearchName(string fullname, int page = 1, int pageSize = 10)
-        {
-            try
-            {
-                var lowerName = fullname.ToLower();
-                if (string.IsNullOrEmpty(lowerName))
-                {
-                    response.IsSuccess = false;
-                    response.Message = "Vui lòng nhập tên người dùng.";
-                }
-
-                var usersName = await _context.Users.Where(x => x.FullName.ToLower().Contains(lowerName)).ToListAsync();
-                if (usersName == null)
-                {
-                    response.IsSuccess = false;
-                    response.Message = "Người dùng không tồn tại trong hệ thống.";
-                }
-                else
-                {
-                    var totalUser = usersName.Count;
-                    var totalPage = (int)Math.Ceiling((decimal)totalUser / pageSize);
-
-                    var NamePage = usersName
-                        .Skip((page - 1) * pageSize)
-                        .Take(pageSize)
-                        .ToList();
-
-                    response.Result = new
-                    {
-                        TotalCount = totalUser,
-                        TotalPage = totalPage,
-                        Users = _mapper.Map<List<UserDto>>(NamePage)
-                    };
-
-                    response.IsSuccess = true;
-                    response.Message = "Lấy tên người dùng thành công";
-
-                }
-            }
-            catch (Exception ex)
-            {
-                response.IsSuccess = false;
-                response.Message = $"Lỗi : {ex.Message}";
-            }
-            return response;
 
 
-        }
+
+        //public async Task<ResponseDto> DeleteUser(string email)
+        //{
+        //    try
+        //    {
+        //        var eUser = await _context.Users.FirstOrDefaultAsync(e => e.Email == email);
+        //        if (eUser != null)
+        //        {
+        //            _context.Users.Remove(eUser);
+        //            _context.SaveChanges();
+        //        }
+        //        response.IsSuccess = false;
+        //        response.Message = "Người dùng không tồn tại trong hệ thống.";
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        response.IsSuccess = false;
+        //        response.Message = ex.Message;
+        //    }
+        //    return response;
+        //}
+
+        //public async Task<ResponseDto> GetAllUser(int page = 1, int pageSize = 10)
+        //{
+        //    try
+        //    {
+        //        var getAllU = _context.Users.ToList();
+        //        var totalUser = getAllU.Count;
+        //        var totalPages = (int)Math.Ceiling((decimal)totalUser / pageSize);
+
+        //        var users = getAllU
+        //            .Skip((page - 1) * pageSize)
+        //            .Take(pageSize)
+        //            .ToList();
+        //        response.Result = new
+        //        {
+        //            TotalCount = totalUser,
+        //            TotalPages = totalPages,
+        //            Users = _mapper.Map<List<UserDto>>(users)
+
+        //        };
+        //        response.IsSuccess = true;
+        //        response.Message = "Lấy danh sách người dùng thành công.";
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        response.IsSuccess = false;
+        //        response.Message = $"Lỗi : {ex.Message}";
+        //    }
+
+        //    return response;
+
+        //}
+
+        //public async Task<ResponseDto> SearchMail(string email, int page = 1, int pageSize = 10)
+        //{
+        //    try
+        //    {
+        //        var lowerEmail = email.ToLower();
+        //        var userEmail = await _context.Users.Where(x => x.Email.ToLower().Contains(lowerEmail)).ToListAsync();
+        //        if (string.IsNullOrEmpty(email))
+        //        {
+        //            response.IsSuccess = false;
+        //            response.Message = "Email không được để trống.";
+        //            return response;
+        //        }
+        //        if (lowerEmail == null)
+        //        {
+        //            response.IsSuccess = false;
+        //            response.Message = "Email này không tồn tại trong hệ thống.";
+        //        }
+        //        else
+        //        {
+        //            var totalUser = userEmail.Count;
+        //            var totalPage = (int)Math.Ceiling((decimal)totalUser / pageSize);
+
+        //            var UserPage = userEmail
+        //                .Skip((page - 1) * pageSize)
+        //                .Take(pageSize)
+        //                .ToList();
+
+        //            response.Result = new
+        //            {
+        //                TotalCount = totalUser,
+        //                TotalPages = totalPage,
+
+        //                Users = _mapper.Map<List<UserDto>>(UserPage)
+        //            };
+        //            response.IsSuccess = true;
+        //            response.Message = "Lấy tên người dùng thành công ";
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        response.IsSuccess = false;
+        //        response.Message = $"Lỗi : {ex.Message}";
+        //    }
+        //    return response;
+        //}
+
+        //public async Task<ResponseDto> SearchName(string fullname, int page = 1, int pageSize = 10)
+        //{
+        //    try
+        //    {
+        //        var lowerName = fullname.ToLower();
+        //        if (string.IsNullOrEmpty(lowerName))
+        //        {
+        //            response.IsSuccess = false;
+        //            response.Message = "Vui lòng nhập tên người dùng.";
+        //        }
+
+        //        var usersName = await _context.Users.Where(x => x.FullName.ToLower().Contains(lowerName)).ToListAsync();
+        //        if (usersName == null)
+        //        {
+        //            response.IsSuccess = false;
+        //            response.Message = "Người dùng không tồn tại trong hệ thống.";
+        //        }
+        //        else
+        //        {
+        //            var totalUser = usersName.Count;
+        //            var totalPage = (int)Math.Ceiling((decimal)totalUser / pageSize);
+
+        //            var NamePage = usersName
+        //                .Skip((page - 1) * pageSize)
+        //                .Take(pageSize)
+        //                .ToList();
+
+        //            response.Result = new
+        //            {
+        //                TotalCount = totalUser,
+        //                TotalPage = totalPage,
+        //                Users = _mapper.Map<List<UserDto>>(NamePage)
+        //            };
+
+        //            response.IsSuccess = true;
+        //            response.Message = "Lấy tên người dùng thành công";
+
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        response.IsSuccess = false;
+        //        response.Message = $"Lỗi : {ex.Message}";
+        //    }
+        //    return response;
+
+
+        //}
 
     }
 }
