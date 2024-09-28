@@ -114,7 +114,19 @@ namespace NanaFoodDAL.IRepository.Repository
             return response;
         }
 
-
+        public async Task<ResponseDto> LogOut()
+        {
+            try
+            {
+                await _signInManager.SignOutAsync();
+                response.Message = "Đăng xuất thành công";
+            } catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = "Lỗi : "+ ex.Message;
+            }
+            return response;
+        }
         public async Task<ResponseDto> DeleteUser(string email)
         {
             try
@@ -262,5 +274,6 @@ namespace NanaFoodDAL.IRepository.Repository
 
 
         }
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NanaFoodDAL.Dto;
 using NanaFoodDAL.Dto.UserDTO;
@@ -65,6 +66,22 @@ namespace NanaFoodApi.Controllers
                 return BadRequest(ModelState);
             }
             var response = await _auth.Register(regis);
+            if (!response.IsSuccess)
+            {
+                return BadRequest(response.Message);
+            }
+            return Ok(response);
+        }
+
+        /// <summary>
+        /// Đăng xuất
+        /// </summary>
+        /// <returns>Đăng xuất thành công</returns>
+        [HttpPost("LogOut")]
+        [Authorize]
+        public async Task<IActionResult> LogOut()
+        {
+            var response = await _auth.LogOut();
             if (!response.IsSuccess)
             {
                 return BadRequest(response.Message);

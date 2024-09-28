@@ -401,3 +401,10 @@ FodyWeavers.xsd
 # End of https://www.toptal.com/developers/gitignore/api/csharp
 /NanaFoodProject/NanaFoodWeb/.vs/NanaFoodWeb/v17/DocumentLayout.backup.json
 /NanaFoodProject/NanaFoodWeb/.vs/NanaFoodWeb/v17/DocumentLayout.json
+/NanaFoodProject/NanaFoodWeb/.vs/NanaFoodWeb/v17/fileList.bin
+/NanaFoodProject/NanaFoodWeb/.vs/NanaFoodWeb/v17/fileList.bin
+/NanaFoodProject/NanaFoodWeb/NanaFoodDAL/obj/Debug/net8.0/NanaFoodDAL.AssemblyInfoInputs.cache
+/NanaFoodProject/NanaFoodWeb/NanaFoodDAL/obj/Debug/net8.0/NanaFoodDAL.AssemblyInfo.cs
+/NanaFoodProject/NanaFoodWeb/NanaFoodApi/obj/Debug/net8.0/NanaFoodApi.csproj.AssemblyReference.cache
+/NanaFoodProject/NanaFoodWeb/NanaFoodApi/obj/Debug/net8.0/NanaFoodApi.AssemblyInfoInputs.cache
+/NanaFoodProject/NanaFoodWeb/NanaFoodApi/obj/Debug/net8.0/NanaFoodApi.AssemblyInfo.cs
