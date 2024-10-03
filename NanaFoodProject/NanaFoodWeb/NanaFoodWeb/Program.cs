@@ -1,3 +1,4 @@
+
 using NanaFoodWeb.IRepository.Repository;
 using NanaFoodWeb.IRepository;
 using NanaFoodWeb.Utility;
@@ -8,11 +9,17 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
-
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Set the session timeout
+    options.Cookie.HttpOnly = true; // Make the session cookie HttpOnly
+    options.Cookie.IsEssential = true; // Essential for working without user consent
+});
+builder.Services.AddRazorPages();
 var app = builder.Build();
 
-builder.Services.AddScoped<ITokenProvider, TokenProvider>();
-builder.Services.AddScoped<IBaseService, BaseService>();
+//builder.Services.AddScoped<ITokenProvider, TokenProvider>();
+//builder.Services.AddScoped<IBaseService, BaseService>();
 StaticDetails.APIBase = builder.Configuration["ServiceUrls:APIBase"];
 
 // Configure the HTTP request pipeline.
@@ -25,13 +32,18 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
+app.UseSession();
 app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
-
+//app.MapControllerRoute(
+//    name: "default",
+//    pattern: "{controller=Home}/{action=Index}/{id?}");
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Home}/{action=Index}/{id?}");
+});
 app.Run();

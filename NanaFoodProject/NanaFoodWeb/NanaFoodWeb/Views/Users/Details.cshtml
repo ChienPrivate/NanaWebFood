@@ -1,0 +1,52 @@
+﻿<div id="wrapper">
+    
+    <!-- Main Content -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content">
+            <div class="container-fluid">
+                <h1 class="h3 mb-4 text-gray-800">User Details</h1>
+                <div class="card shadow">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary" id="user-name">User Name</h6>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>User ID:</strong> <span id="user-id"></span></p>
+                        <p><strong>Role:</strong> <span id="user-role"></span></p>
+                        @* <a href="users.html" class="btn btn-primary">Back to Users</a> *@
+                        <a href="@Url.Action("Index", "Users")" class="btn btn-secondary">Back to Users</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="js/sb-admin-2.min.js"></script>
+
+<script>
+    // Sample users data for demonstration
+    const users = [
+        { id: 1, name: "Tram", role: "Customer" },
+        { id: 2, name: "Tien", role: "Admin" },
+        { id: 3, name: "Chien", role: "Admin" },
+        { id: 4, name: "Hoang", role: "Admin" },
+        { id: 5, name: "Truong", role: "Admin" }
+    ];
+
+    // Get user ID from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const userId = urlParams.get('id');
+
+    const user = users.find(u => u.id == userId);
+
+    if (user) {
+        document.getElementById('user-id').textContent = user.id;
+        document.getElementById('user-name').textContent = user.name;
+        document.getElementById('user-role').textContent = user.role;
+    } else {
+        alert("User not found");
+    }
+</script>

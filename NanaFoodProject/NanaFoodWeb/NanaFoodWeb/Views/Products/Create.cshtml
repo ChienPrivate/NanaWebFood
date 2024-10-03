@@ -1,0 +1,52 @@
+﻿
+    <div id="wrapper">
+        
+        <!-- Main Content -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <div class="container-fluid">
+                    <h1 class="h3 mb-4 text-gray-800">Add Product</h1>
+                <form id="addProductForm" asp-action="Create" asp-controller="Products">
+                        <div class="form-group">
+                            <label for="productName">Product Name</label>
+                            <input type="text" class="form-control" id="productName" placeholder="Enter product name">
+                        </div>
+                        <div class="form-group">
+                            <label for="productCategory">Category</label>
+                            <select class="form-control" id="productCategory">
+                                <option value="Category 1">Category 1</option>
+                                <option value="Category 2">Category 2</option>
+                                <option value="Category 3">Category 3</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="productPrice">Price</label>
+                            <input type="number" class="form-control" id="productPrice" placeholder="Enter product price">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Product</button>
+                        <a href="@Url.Action("Index", "Products")" class="btn btn-secondary">Cancel</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="js/sb-admin-2.min.js"></script>
+
+    <script>
+
+        $('#addProductForm').on('submit', function (e) {
+            e.preventDefault();
+            const productName = $('#productName').val();
+            const productCategory = $('#productCategory').val();
+            const productPrice = $('#productPrice').val();
+
+            alert('Product added: ' + productName + ', ' + productCategory + ', $' + productPrice);
+
+            window.location.href = 'products.html';
+        });
+    </script>
+

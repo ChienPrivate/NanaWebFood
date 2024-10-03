@@ -2,6 +2,7 @@
 
 namespace NanaFoodWeb.Controllers
 {
+    [Route("Users")]
     public class UsersController : Controller
     {
         public IActionResult Index()
@@ -13,14 +14,15 @@ namespace NanaFoodWeb.Controllers
         {
             return View();
         }
-        [HttpGet("Edit/{id}")]
-        public IActionResult Edit(int? id)
+        [HttpGet("Edit")]
+        public IActionResult Edit()
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            return View(id);
+            return View();
+        }
+        [HttpGet("Details")]
+        public IActionResult Details()
+        {
+            return View();
         }
     }
 }

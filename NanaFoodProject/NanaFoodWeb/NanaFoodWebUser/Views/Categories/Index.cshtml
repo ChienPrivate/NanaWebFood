@@ -1,0 +1,71 @@
+﻿@model IEnumerable<StoreManagement.Models.Categories>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<div class="container-fluid page-header py-5">
+</div>
+<div class="container-fluid fruite py-5">
+    <div class="container py-5">
+        <h1 class="mb-4">Category management</h1>
+        <p>
+            <a asp-action="Create" asp-controller="Categories">Create New</a>
+        </p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CategoryName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CreateBy)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.UpdateBy)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CreateDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.UpdateDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Active)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CategoryName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CreateBy)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UpdateBy)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CreateDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UpdateDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Active)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-controller="Categories" asp-route-id="@item.CategoryId">Edit</a> |
+                            <a asp-action="Details" asp-controller="Categories" asp-route-id="@item.CategoryId">Details</a> |
+                            <a asp-action="Delete" asp-controller="Categories" asp-route-id="@item.CategoryId">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

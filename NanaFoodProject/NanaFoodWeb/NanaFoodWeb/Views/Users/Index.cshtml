@@ -12,7 +12,9 @@
     <title>Admin - Users</title>
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    @* <link href="css/sb-admin-2.min.css" rel="stylesheet"> *@
+    <link href="@Url.Content("~/css/sb-admin-2.min.css")" rel="stylesheet">
+
     <style>
         .table tbody tr:hover {
             background-color: #dbb785;
@@ -61,6 +63,7 @@
                                             <td>Tram</td>
                                             <td>Customer</td>
                                             <td>
+                                                <a class="btn btn-warning btn-sm" asp-action="Details" asp-controller="Users" asp-route-id="1">Details</a>
                                                 <a class="btn btn-warning btn-sm" asp-action="Edit" asp-controller="Users" asp-route-id="1">Edit</a>
                                                 <button class="btn btn-danger btn-sm" onclick="deleteUser(1)">Delete</button>
                                             </td>
@@ -70,6 +73,7 @@
                                             <td>Tien</td>
                                             <td>Admin</td>
                                             <td>
+                                                <a class="btn btn-warning btn-sm" asp-action="Details" asp-controller="Users" asp-route-id="1">Details</a>
                                                 <a asp-action="Edit" asp-controller="Users" class="btn btn-warning btn-sm" asp-route-id="2">Edit</a>
                                                 <button class="btn btn-danger btn-sm" onclick="deleteUser(2)">Delete</button>
                                             </td>
@@ -79,6 +83,7 @@
                                             <td>Chien</td>
                                             <td>Admin</td>
                                             <td>
+                                                <a class="btn btn-warning btn-sm" asp-action="Details" asp-controller="Users" asp-route-id="1">Details</a>
                                                 <a asp-action="Edit" asp-controller="Users" class="btn btn-warning btn-sm" asp-route-id="3">Edit</a>
                                                 <button class="btn btn-danger btn-sm" onclick="deleteUser(3)">Delete</button>
                                             </td>
@@ -88,6 +93,7 @@
                                             <td>Hoang</td>
                                             <td>Admin</td>
                                             <td>
+                                                <a class="btn btn-warning btn-sm" asp-action="Details" asp-controller="Users" asp-route-id="1">Details</a>
                                                 <a asp-action="Edit" asp-controller="Users" class="btn btn-warning btn-sm" asp-route-id="4">Edit</a>
                                                 <button class="btn btn-danger btn-sm" onclick="deleteUser(4)">Delete</button>
                                             </td>
@@ -98,6 +104,7 @@
                                              <td>Truong</td>
                                              <td>Admin</td>
                                              <td>
+                                                <a class="btn btn-warning btn-sm" asp-action="Details" asp-controller="Users" asp-route-id="1">Details</a>
                                                 <a asp-action="Edit" asp-controller="Users" class="btn btn-warning btn-sm" asp-route-id="5">Edit</a>
                                                 <button class="btn btn-danger btn-sm" onclick="deleteUser(5)">Delete</button>
                                              </td>

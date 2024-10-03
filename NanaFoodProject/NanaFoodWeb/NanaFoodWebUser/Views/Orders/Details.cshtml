@@ -1,0 +1,85 @@
+﻿@model StoreManagement.Models.Orders
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="container-fluid page-header py-5">
+</div>
+<div class="container-fluid fruite py-5">
+    <div class="container py-5">
+        <div class="row g-4">
+            <div class="col-lg-12">
+                <div class="row g-4">
+                    <dl class="row">
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.GuestId)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.GuestId)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.OrderDate)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.OrderDate)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.TotalAmount)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.TotalAmount)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.OrderStatus)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.OrderStatus)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.PaymentMethod)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.PaymentMethod)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.CreateBy)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.CreateBy)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.UpdateBy)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.UpdateBy)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.CreateDate)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.CreateDate)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.UpdateDate)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.UpdateDate)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.Active)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.Active)
+                        </dd>
+                    </dl>
+                </div>
+                <div class="row g-4">
+                    <a asp-action="Edit" asp-route-id="@Model?.OrderId">Edit</a> |
+                    <a asp-action="Index">Back to List</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

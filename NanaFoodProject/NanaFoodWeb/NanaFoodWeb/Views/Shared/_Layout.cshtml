@@ -116,6 +116,7 @@
                         <a class="collapse-item" href="@Url.Action("Index", "Users")">Users</a>
                         <a class="collapse-item" href="@Url.Action("Index", "Products")">Products</a>
                         <a class="collapse-item" href="@Url.Action("Index", "Categories")">Categories</a>
+                        <a class="collapse-item" href="@Url.Action("Index", "Coupon")">Coupon</a>
                     </div>
                 </div>
 
@@ -425,6 +426,12 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="js/sb-admin-2.min.js"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 

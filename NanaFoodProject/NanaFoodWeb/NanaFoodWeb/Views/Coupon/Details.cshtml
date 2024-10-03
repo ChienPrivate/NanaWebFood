@@ -1,0 +1,58 @@
+﻿<div id="wrapper">
+    <!-- Main Content -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content">
+            <div class="container-fluid">
+                <h1 class="h3 mb-4 text-gray-800">Coupon Details</h1>
+                <div class="card shadow">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Details of Coupon Code: <span id="couponCode"></span></h6>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="discount">Discount (%):</label>
+                                <input type="text" class="form-control" id="discount" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="minimumAmount">Minimum Amount ($):</label>
+                                <input type="text" class="form-control" id="minimumAmount" readonly>
+                            </div>
+                            <a href="@Url.Action("Index", "Coupon")" class="btn btn-secondary">Back to Coupon</a>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="js/sb-admin-2.min.js"></script>
+
+<script>
+    function getCouponDetails(id) {
+        const coupons = [
+            { id: 1, code: 'SUMMER20', discount: 20, minAmount: 100},
+            { id: 2, code: 'FALL15', discount: 15, minAmount: 50}
+        ];
+
+        const coupon = coupons.find(coupon => coupon.id == id);
+        if (coupon) {
+            document.getElementById('couponCode').textContent = coupon.code;
+            document.getElementById('discount').value = coupon.discount + '%';
+            document.getElementById('minimumAmount').value = '$' + coupon.minAmount;
+
+        } else {
+            alert('Coupon not found!');
+        }
+    }
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const couponId = urlParams.get('id');
+
+    getCouponDetails(couponId);
+</script>

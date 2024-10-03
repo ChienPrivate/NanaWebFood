@@ -1,0 +1,55 @@
+﻿<div id="wrapper">
+    
+    <!-- Main Content -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content">
+            <div class="container-fluid">
+                <h1 class="h3 mb-4 text-gray-800">Product Details</h1>
+
+                <div class="card shadow">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary" id="product-name">Product Name</h6>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Product ID:</strong> <span id="product-id"></span></p>
+                        <p><strong>Category:</strong> <span id="product-category"></span></p>
+                        <p><strong>Price:</strong> <span id="product-price"></span></p>
+                        <p><strong>Description:</strong> <span id="product-description"></span></p>
+                        @* <a href="products.html" class="btn btn-primary">Back to Products</a> *@
+                        <a href="@Url.Action("Index", "Products")" class="btn btn-secondary">Back to Products</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="js/sb-admin-2.min.js"></script>
+
+<script>
+    // Sample product data for demonstration (replace with actual product data)
+    const products = [
+        { id: 1, name: "Product A", category: "Category 1", price: "$10.00", description: "This is Product A." },
+        { id: 2, name: "Product B", category: "Category 2", price: "$15.00", description: "This is Product B." },
+        { id: 3, name: "Product C", category: "Category 1", price: "$20.00", description: "This is Product C." }
+    ];
+
+    // Get product ID from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = urlParams.get('id');
+
+    const product = products.find(p => p.id == productId);
+
+    if (product) {
+        document.getElementById('product-id').textContent = product.id;
+        document.getElementById('product-name').textContent = product.name;
+        document.getElementById('product-category').textContent = product.category;
+        document.getElementById('product-price').textContent = product.price;
+        document.getElementById('product-description').textContent = product.description;
+    } else {
+        alert("Product not found");
+    }
+</script>

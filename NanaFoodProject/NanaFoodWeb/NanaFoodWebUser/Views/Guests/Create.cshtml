@@ -1,0 +1,62 @@
+﻿@model StoreManagement.Models.Guest
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="container-fluid page-header py-5">
+</div>
+<div class="container-fluid fruite py-5">
+    <div class="container py-5">
+        <div class="row g-4">
+            <div class="col-lg-12">
+                <div class="row g-4">
+                    <form asp-action="Create">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="GuestLastName" class="control-label"></label>
+                            <input asp-for="GuestLastName" class="form-control" />
+                            <span asp-validation-for="GuestLastName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="GuestFirsttName" class="control-label"></label>
+                            <input asp-for="GuestFirsttName" class="form-control" />
+                            <span asp-validation-for="GuestFirsttName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Email" class="control-label"></label>
+                            <input asp-for="Email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Address" class="control-label"></label>
+                            <input asp-for="Address" class="form-control" />
+                            <span asp-validation-for="Address" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="PhoneNumber" class="control-label"></label>
+                            <input asp-for="PhoneNumber" class="form-control" />
+                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="form-group form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" asp-for="Active" checked /> @Html.DisplayNameFor(model => model.Active)
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Create" class="btn btn-primary" />
+                        </div>
+                    </form>
+                </div>
+                <div class="row g-4">
+                    <a asp-action="Index">Back to List</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

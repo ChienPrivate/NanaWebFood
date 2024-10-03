@@ -1,0 +1,33 @@
+﻿@model IEnumerable<StoreManagement.Models.CartDetails>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Món Ăn</th>
+            <th scope="col">Giá</th>
+            <th scope="col">Số Lượng</th>
+            <th scope="col">Tổng Cộng</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            foreach (var itm in Model)
+            {
+                <tr>
+                    <td scope="row">@itm.CartDtlId</td>
+                    <td scope="row">@itm.ItemName</td>
+                    <td>@itm.Price</td>
+                    <td><input type="number" id="quantity_@itm.CartDtlId" value="@itm.Quantity" /></td>
+                    <td>@(itm.Quantity * itm.Price)</td>
+                    <td>
+                        <button type="button" onclick="UpdateQuantiy(@itm.CartDtlId)">Update Quantity</button> |
+                        <a asp-action="DeleteCartDetail" asp-route-id="@itm.CartDtlId" asp-route-quantity="@itm.Quantity">Delete</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

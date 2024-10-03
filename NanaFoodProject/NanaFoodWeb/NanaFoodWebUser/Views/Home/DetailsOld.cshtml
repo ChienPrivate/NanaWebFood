@@ -1,0 +1,238 @@
+﻿@model dynamic
+@{
+    ViewData["Title"] = "Home Page";
+    Layout = "_Layout";
+}
+@{
+
+    StoreManagement.Models.Items Itm = ViewData["Itm"] as StoreManagement.Models.Items;
+    IEnumerable<StoreManagement.Models.ItemImage> lstImage = ViewData["ListImg"] as IEnumerable<StoreManagement.Models.ItemImage>;
+}
+<div>
+    <!-- Open Content -->
+    <section class="bg-light">
+        <div class="container pb-5">
+            <div class="row">
+                <div class="col-lg-5 mt-5">
+                    <div class="card mb-3">
+                        <img class="card-img img-fluid" src="@Itm.UrlImg" alt="Card image cap" id="product-detail">
+                    </div>
+                    <div class="row">
+                        <!--Start Controls-->
+                        <div class="col-1 align-self-center">
+                            <a href="#multi-item-example" role="button" data-bs-slide="prev">
+                                <i class="text-dark fas fa-chevron-left"></i>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                        </div>
+                        <!--End Controls-->
+                        <!--Start Carousel Wrapper-->
+                        <div id="multi-item-example" class="col-10 carousel slide carousel-multi-item" data-bs-ride="carousel">
+                            <!--Start Slides-->
+                            <div class="carousel-inner product-links-wap" role="listbox">
+
+                                <!--First slide-->
+                                @foreach (var itmImg in lstImage)
+                                {
+                                    <div class="carousel-item active">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <a href="#">
+                                                    <img class="card-img img-fluid" src="@itmImg.ImageURL" alt="Product Image 1">
+                                                </a>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                }
+                                @foreach (var itmImg in lstImage)
+                                {
+                                    <div class="carousel-item">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <a href="#">
+                                                    <img class="card-img img-fluid" src="@itmImg.ImageURL" alt="Product Image 4">
+                                                </a>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                }
+                                @foreach (var itmImg in lstImage)
+                                {
+                                    <div class="carousel-item">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <a href="#">
+                                                    <img class="card-img img-fluid" src="@itmImg.ImageURL" alt="Product Image 7">
+                                                </a>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                }
+
+                                <!--/.First slide-->
+                                <!--Second slide-->
+                                @**@
+                                <!--/.Second slide-->
+                                <!--Third slide-->
+                                @**@
+                                <!--/.Third slide-->
+                            </div>
+                            <!--End Slides-->
+                        </div>
+                        <!--End Carousel Wrapper-->
+                        <!--Start Controls-->
+                        <div class="col-1 align-self-center">
+                            <a href="#multi-item-example" role="button" data-bs-slide="next">
+                                <i class="text-dark fas fa-chevron-right"></i>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </div>
+                        <!--End Controls-->
+                    </div>
+                </div>
+                <!-- col end -->
+                <div class="col-lg-7 mt-5">
+                    <div class="card">
+                        <div class="card-body">
+                            <h1 class="h2">@Itm.ItemName</h1>
+                            <p class="h3 py-2" id="itemPrice">@Itm.Price</p>
+                            <p class="py-2">
+                                <i class="fa fa-star text-warning"></i>
+                                <i class="fa fa-star text-warning"></i>
+                                <i class="fa fa-star text-warning"></i>
+                                <i class="fa fa-star text-warning"></i>
+                                <i class="fa fa-star text-secondary"></i>
+                                <span class="list-inline-item text-dark">Rating 4.8 | 36 Comments</span>
+                            </p>
+                            
+
+                            <h6>Description:</h6>
+                            <p>@Itm.Description</p>
+                            @* <ul class="list-inline">
+                                <li class="list-inline-item">
+                                    <h6>Avaliable Color :</h6>
+                                </li>
+                                <li class="list-inline-item">
+                                    <p class="text-muted"><strong>White / Black</strong></p>
+                                </li>
+                            </ul>
+
+                            <h6>Specification:</h6>
+                            <ul class="list-unstyled pb-3">
+                                <li>Intel core I5</li>
+                                <li>SSD 512G</li>
+                                <li>Ram 8G</li>
+                                <li>Win 11</li>
+
+                            </ul> *@
+
+                            <form>
+                                @*<input type="hidden" name="product-title" value="Activewear">*@
+                                <div class="row">
+
+                                    <div class="col-auto">
+                                        <ul class="list-inline pb-3">
+                                            <li class="list-inline-item text-right">
+                                                Quantity
+                                                <input name="product-quanity" id="product-quanity" value="1">
+                                            </li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="row pb-3">
+                                    <div class="col d-grid">
+                                        <button type="button" class="btn btn-success btn-lg" onclick="AddToCartShowCartPage(@Itm.ItemId)">Buy</button>
+                                    </div>
+                                    <div class="col d-grid">
+                                        <button type="button" class="btn btn-success btn-lg" onclick="AddToCart(@Itm.ItemId)">Add To Cart</button>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Close Content -->
+
+
+</div>
+
+
+<script src="assets/js/slick.min.js"></script>
+
+
+
+<script>
+    $('#carousel-related-product').slick({
+        infinite: true,
+        arrows: false,
+        slidesToShow: 4,
+        slidesToScroll: 3,
+        dots: true,
+        responsive: [{
+            breakpoint: 1024,
+            settings: {
+                slidesToShow: 3,
+                slidesToScroll: 3
+            }
+        },
+        {
+            breakpoint: 600,
+            settings: {
+                slidesToShow: 2,
+                slidesToScroll: 3
+            }
+        },
+        {
+            breakpoint: 480,
+            settings: {
+                slidesToShow: 2,
+                slidesToScroll: 3
+            }
+        }
+        ]
+    });
+    function AddToCart(itemId) {
+        debugger;
+        let itemPrice = 'itmPrice_' + itemId;
+        let a = document.getElementById('itemPrice').textContent;
+        let userID = document.getElementById("userID").value;
+        let quantity = document.getElementById("product-quanity").value;
+        let customerId = document.getElementById("customerId").value;
+        let customerCode = document.getElementById("customerCode").value;
+        //let customerCode = var myValue = document.getElementById("@(ViewBag.CustomerCode)").value;@ViewBag.;
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("AddToCart", "Home")?itemId=' + itemId + '&quantity=' + quantity+'&price='+ a,
+            success: function (data, status, xhr) {
+                console.log('data: ', data);
+            }
+        });
+    }
+    function AddToCartShowCartPage(itemId) {
+        debugger;
+        let itemPrice = 'itmPrice_' + itemId;
+        let a = document.getElementById('itemPrice').textContent;
+        let userID = document.getElementById("userID").value;
+        let quantity = document.getElementById("product-quanity").value;
+        let customerId = document.getElementById("customerId").value;
+        let customerCode = document.getElementById("customerCode").value;
+        //let customerCode = var myValue = document.getElementById("@(ViewBag.CustomerCode)").value;@ViewBag.;
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("BuyItem", "Home")?customerId=' + customerId + '&customerCode=' + customerCode + '&itemId=' + itemId + '&quantity=' + quantity+'&price='+ a,
+            success: function (data, status, xhr) {
+                console.log('data: ', data);
+                location.href = "/Cart/Index";
+            }
+        });
+    }
+</script>
+<!-- End Slider Script -->

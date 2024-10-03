@@ -1,0 +1,59 @@
+﻿<div id="wrapper">
+    
+    <!-- Main Content -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content">
+            <div class="container-fluid">
+                <h1 class="h3 mb-4 text-gray-800">Category Details</h1>
+                <div class="card shadow">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Details of Category ID: <span id="categoryId"></span></h6>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="categoryName">Category Name:</label>
+                                <input type="text" class="form-control" id="categoryName" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="categoryDescription">Description:</label>
+                                <textarea class="form-control" id="categoryDescription" rows="3" readonly></textarea>
+                            </div>
+                            <a href="@Url.Action("Index", "Categories")" class="btn btn-secondary">Back to Categories</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="js/sb-admin-2.min.js"></script>
+
+<script>
+
+    function getCategoryDetails(id) {
+        const categories = [
+            { id: 1, name: 'Category 1', description: 'This is category 1 description.' },
+            { id: 2, name: 'Category 2', description: 'This is category 2 description.' },
+            { id: 3, name: 'Category 3', description: 'This is category 3 description.' }
+        ];
+
+        const category = categories.find(cat => cat.id == id);
+        if (category) {
+            document.getElementById('categoryId').textContent = category.id;
+            document.getElementById('categoryName').value = category.name;
+            document.getElementById('categoryDescription').value = category.description;
+        } else {
+            alert('Category not found!');
+        }
+    }
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const categoryId = urlParams.get('id');
+
+    getCategoryDetails(categoryId);
+</script>
