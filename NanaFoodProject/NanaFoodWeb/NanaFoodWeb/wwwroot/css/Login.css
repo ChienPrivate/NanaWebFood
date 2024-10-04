@@ -1,0 +1,93 @@
+﻿body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+}
+
+.login-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.card {
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.card-body {
+    padding: 40px;
+}
+
+.form-label {
+    font-size: 14px;
+    color: #6c757d;
+    text-align: left; /* ??m b?o nhãn n?m bên trái */
+}
+
+.form-control {
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.forgot-password {
+    text-align: right;
+    margin-bottom: 15px;
+}
+
+    .forgot-password a {
+        text-decoration: none;
+        color: #007bff;
+    }
+
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+
+.btn-success {
+    background-color: #ff9f00;
+    border: none;
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+    .btn-success:hover {
+        background-color: #ffac26;
+    }
+
+.btn-facebook {
+    background-color: #005ff8;
+    color: #fff;
+}
+
+    .btn-facebook:hover {
+        background-color: #2778fb;
+    }
+
+.btn-google {
+    background-color: #db4437;
+    color: #fff;
+}
+
+    .btn-google:hover {
+        background-color: #c23321;
+    }
+
+.right-image {
+    max-width: 100%;
+    border-radius: 15px;
+}
+
+.text-center a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+    .text-center a:hover {
+        text-decoration: underline;
+    }
