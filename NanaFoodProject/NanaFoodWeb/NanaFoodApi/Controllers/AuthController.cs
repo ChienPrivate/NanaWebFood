@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -80,7 +81,7 @@ namespace NanaFoodApi.Controllers
             var response = await _auth.Register(regis);
             if (!response.IsSuccess)
             {
-                return BadRequest(response.Message);
+                return BadRequest(response);
             }
             return Ok(response);
         }
@@ -132,6 +133,52 @@ namespace NanaFoodApi.Controllers
             }
             return Ok(response);
         }
+
+        
+        [HttpGet("EmailConfirmation/{email}")]
+        public async Task<IActionResult> ConfirmEmail([FromRoute] string email)
+        {
+            var response = await _auth.ConfirmEmail(email);
+            if (!response.IsSuccess)
+            {
+                return BadRequest(response);
+            }
+            return Redirect("https://localhost:51326/Auth/Login");
+        }
+
+
+
+
+        /// <summary>
+        /// Đổi mật khẩu của người dùng đã đăng nhập.
+        /// </summary>
+        /// <remarks>
+        /// API này cho phép người dùng thay đổi mật khẩu hiện tại của họ. Người dùng cần cung cấp mật khẩu cũ và mật khẩu mới.
+        /// </remarks>
+        /// <param></param>
+        /// <returns>
+        /// - Nếu thành công, trả về mã trạng thái 200 OK và thông báo "Mật khẩu đã được cập nhật"
+        /// - Nếu thất bại, trả về mã lỗi 400 BadRequest với mô tả lỗi cụ thể thể.
+        /// </returns>
+        /// <response code="200">Điều hướng đến trang của github</response>
+        /// <response code="400">Sai url hoặc cấu hình credential bị sai</response>
+        /// <response code="401">Không được ủy quyền bởi tài khoản GitHub</response>
+        /// <response code="500">Có lỗi xảy ra từ phía server.</response>
+        [HttpGet("github")]
+        public async Task<IActionResult> GitHubLogin()
+        {
+            /*var properties = new AuthenticationProperties() { RedirectUri = Url.Action("GitHubExternalCallBack") };
+            return Challenge(properties, "github");*/
+
+            return Challenge(new AuthenticationProperties()
+            {
+                RedirectUri = Url.Action("GitHubExternalCallBack"),
+            }
+            , authenticationSchemes: ["github"]);
+        }
+
+
+
 
 
         //[HttpGet("SeachNameUser/{fullname}")]

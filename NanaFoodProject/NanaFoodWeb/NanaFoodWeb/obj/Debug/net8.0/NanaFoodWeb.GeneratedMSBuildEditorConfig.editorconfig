@@ -17,135 +17,143 @@ build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = NanaFoodWeb
 build_property.RootNamespace = NanaFoodWeb
-build_property.ProjectDir = C:\Users\USER\Desktop\new new\NanaWebFood\NanaFoodProject\NanaFoodWeb\NanaFoodWeb\
+build_property.ProjectDir = D:\GraduationProject\NanaWebFood\NanaFoodProject\NanaFoodWeb\NanaFoodWeb\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\USER\Desktop\new new\NanaWebFood\NanaFoodProject\NanaFoodWeb\NanaFoodWeb
+build_property.MSBuildProjectDirectory = D:\GraduationProject\NanaWebFood\NanaFoodProject\NanaFoodWeb\NanaFoodWeb
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Users/USER/Desktop/new new/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Auth/Login.cshtml]
+[D:/GraduationProject/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Auth/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aFxMb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/USER/Desktop/new new/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Auth/Register.cshtml]
+[D:/GraduationProject/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Auth/Notification.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aFxOb3RpZmljYXRpb24uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/GraduationProject/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Auth/Register.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aFxSZWdpc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/USER/Desktop/new new/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Categories/Create.cshtml]
+[D:/GraduationProject/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Categories/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdvcmllc1xDcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/USER/Desktop/new new/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Categories/Details.cshtml]
+[D:/GraduationProject/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Categories/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdvcmllc1xEZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/USER/Desktop/new new/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Categories/Edit.cshtml]
+[D:/GraduationProject/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Categories/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdvcmllc1xFZGl0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/USER/Desktop/new new/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Categories/Index.cshtml]
+[D:/GraduationProject/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Categories/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdvcmllc1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/USER/Desktop/new new/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Coupon/Create.cshtml]
+[D:/GraduationProject/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Coupon/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ291cG9uXENyZWF0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/USER/Desktop/new new/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Coupon/Details.cshtml]
+[D:/GraduationProject/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Coupon/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ291cG9uXERldGFpbHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/USER/Desktop/new new/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Coupon/Edit.cshtml]
+[D:/GraduationProject/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Coupon/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ291cG9uXEVkaXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/USER/Desktop/new new/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Coupon/Index.cshtml]
+[D:/GraduationProject/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Coupon/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ291cG9uXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/USER/Desktop/new new/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/DashBoard/Index.cshtml]
+[D:/GraduationProject/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/DashBoard/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGFzaEJvYXJkXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/USER/Desktop/new new/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Home/About.cshtml]
+[D:/GraduationProject/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Home/About.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxBYm91dC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/USER/Desktop/new new/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Home/Contact.cshtml]
+[D:/GraduationProject/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Home/Contact.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxDb250YWN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/USER/Desktop/new new/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Home/Discount.cshtml]
+[D:/GraduationProject/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Home/Discount.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxEaXNjb3VudC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/USER/Desktop/new new/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Home/Index.cshtml]
+[D:/GraduationProject/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/USER/Desktop/new new/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Home/Menu.cshtml]
+[D:/GraduationProject/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Home/Menu.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxNZW51LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/USER/Desktop/new new/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Home/Privacy.cshtml]
+[D:/GraduationProject/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/USER/Desktop/new new/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Products/Create.cshtml]
+[D:/GraduationProject/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Products/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdHNcQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/USER/Desktop/new new/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Products/Details.cshtml]
+[D:/GraduationProject/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Products/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdHNcRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/USER/Desktop/new new/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Products/Edit.cshtml]
+[D:/GraduationProject/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Products/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdHNcRWRpdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/USER/Desktop/new new/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Products/Index.cshtml]
+[D:/GraduationProject/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Products/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdHNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/USER/Desktop/new new/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Shared/Error.cshtml]
+[D:/GraduationProject/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/USER/Desktop/new new/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Shared/_ValidationScriptsPartial.cshtml]
+[D:/GraduationProject/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Shared/_Notification.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Ob3RpZmljYXRpb24uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/GraduationProject/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/USER/Desktop/new new/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Users/Create.cshtml]
+[D:/GraduationProject/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Users/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlcnNcQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/USER/Desktop/new new/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Users/Details.cshtml]
+[D:/GraduationProject/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Users/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlcnNcRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/USER/Desktop/new new/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Users/Edit.cshtml]
+[D:/GraduationProject/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Users/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlcnNcRWRpdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/USER/Desktop/new new/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Users/Index.cshtml]
+[D:/GraduationProject/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Users/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlcnNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/USER/Desktop/new new/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/_ViewImports.cshtml]
+[D:/GraduationProject/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/USER/Desktop/new new/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/_ViewStart.cshtml]
+[D:/GraduationProject/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/USER/Desktop/new new/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Shared/_AdminLayout.cshtml]
+[D:/GraduationProject/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Shared/_AdminLayout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9BZG1pbkxheW91dC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = b-36kxs6wi6m
 
-[C:/Users/USER/Desktop/new new/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Shared/_Layout.cshtml]
+[D:/GraduationProject/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-dxwf7jkve5

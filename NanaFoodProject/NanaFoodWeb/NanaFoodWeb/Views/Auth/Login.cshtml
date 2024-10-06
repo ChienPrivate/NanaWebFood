@@ -1,47 +1,56 @@
-﻿<section class="login-container">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-6 mb-5 mb-lg-0">
-                <img src="/images/Login.png" class="right-image shadow-4" alt="Login Image">
-            </div>
-            <div class="col-lg-6">
-                <div class="card cascading-right bg-body-tertiary">
-                    <div class="card-body shadow-5">
-                        <h4 class="fw-bold mb-4 text-center">Đăng Nhập</h4>
-                        <form>
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Địa chỉ email của bạn</label>
-                                <input type="email" class="form-control" id="email" placeholder="Nhập email">
-                            </div>
-                            <div class="mb-3">
-                                <label for="password" class="form-label">Mật khẩu</label>
-                                <input type="password" class="form-control" id="password" placeholder="Nhập mật khẩu">
-                            </div>
-                            <div class="mb-3 form-check">
-                                <input type="checkbox" class="form-check-input" id="rememberMe">
-                                <label class="form-check-label" for="rememberMe">Ghi nhớ mật khẩu</label>
-                            </div>
-                            <div class="forgot-password">
-                                <a href="#">Bạn quên mật khẩu?</a>
-                            </div>
-                            <button type="submit" class="btn btn-success w-100 mb-3">Đăng Nhập</button>
-                            <div class="text-center mb-3">Hoặc tiếp tục với</div>
-                            <button type="button" class="btn btn-facebook w-100 mb-2">
-                                <i class="fa fa-facebook"></i> Đăng nhập bằng Facebook
-                            </button>
-                            <button type="button" class="btn btn-google w-100">
+﻿<div style="
+height: 75vh;
+margin-top: 10%">
+    <section class="login-container">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-5 mb-lg-0">
+                    <img src="/images/Login.png" class="right-image shadow-4" alt="Login Image">
+                </div>
+                <div class="col-lg-6">
+                    <div class="card cascading-right bg-body-tertiary">
+                        <div class="card-body shadow-5">
+                            <h4 class="fw-bold mb-4 text-center">Đăng Nhập</h4>
+                            <form method="post">
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Địa chỉ email của bạn</label>
+                                    <input type="email" class="form-control" id="email" placeholder="Nhập email">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="password" class="form-label">Mật khẩu</label>
+                                    <input type="password" class="form-control" id="password" placeholder="Nhập mật khẩu">
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <div class="mb-3 form-check">
+                                        <input type="checkbox" class="form-check-input" id="rememberMe">
+                                        <label class="form-check-label" for="rememberMe">Ghi nhớ mật khẩu</label>
+                                    </div>
+                                    <div class="forgot-password">
+                                        <a href="#">Bạn quên mật khẩu?</a>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-success w-100 mb-3">Đăng Nhập</button>
+                                <div class="text-center mb-3">Hoặc tiếp tục với</div>                              
+                            </form>
+                            <button type="button" class="btn btn-outline-danger btn-google w-100 mb-2">
                                 <i class="fa fa-google"></i> Đăng nhập bằng Google
                             </button>
-                        </form>
-                        <div class="text-center mt-4">
-                            <p>Bạn chưa có tài khoản? <a href="#">Đăng ký</a></p>
+                            <button type="button" class="btn btn-outline-primary w-100 mb-2">
+                                <i class="fa fa-facebook"></i> Đăng nhập bằng Facebook
+                            </button>
+                            <button type="button" class="btn btn-outline-dark btn-google w-100 mb-2">
+                                <i class="fa fa-github"></i> Đăng nhập bằng GitHub
+                            </button>
+                            <div class="text-center mt-4">
+                                <p>Bạn chưa có tài khoản? <a asp-action="Register">Đăng ký</a></p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
-<link href="/css/login.css" />
+    </section>
+</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
