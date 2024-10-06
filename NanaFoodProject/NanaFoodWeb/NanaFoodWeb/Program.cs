@@ -16,10 +16,14 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true; // Essential for working without user consent
 });
 builder.Services.AddRazorPages();
+
+builder.Services.AddScoped<ITokenProvider, TokenProvider>();
+builder.Services.AddScoped<IBaseService, BaseService>();
+builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+
 var app = builder.Build();
 
-//builder.Services.AddScoped<ITokenProvider, TokenProvider>();
-//builder.Services.AddScoped<IBaseService, BaseService>();
+
 StaticDetails.APIBase = builder.Configuration["ServiceUrls:APIBase"];
 
 // Configure the HTTP request pipeline.

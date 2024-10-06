@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using NanaFoodDAL.Context;
 using NanaFoodDAL.Dto;
 using NanaFoodDAL.Dto.UserDTO;
+using NanaFoodDAL.Helper;
 using NanaFoodDAL.Model;
 using System;
 using System.Collections.Generic;
@@ -24,9 +25,16 @@ namespace NanaFoodDAL.IRepository.Repository
         private readonly IConfiguration _config;
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
+        private readonly EmailPoster _emailPoster;
         ResponseDto response = new ResponseDto();
 
-        public AuthenRepo(SignInManager<User> signInManager, UserManager<User> userManager, ITokenService tokenService, IConfiguration config, ApplicationDbContext context, IMapper mapper)
+        public AuthenRepo(SignInManager<User> signInManager,
+            UserManager<User> userManager, 
+            ITokenService tokenService, 
+            IConfiguration config, 
+            ApplicationDbContext context, 
+            IMapper mapper,
+            EmailPoster emailPoster)
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -34,6 +42,7 @@ namespace NanaFoodDAL.IRepository.Repository
             _config = config;
             _mapper = mapper;
             _context = context;
+            _emailPoster = emailPoster;
         }
 
         public async Task<ResponseDto> Login(LoginDTO login)
@@ -75,6 +84,15 @@ namespace NanaFoodDAL.IRepository.Repository
         {
             try
             {
+                var userEmail = await _userManager.FindByEmailAsync(regis.Email);
+
+                if (userEmail != null)
+                {
+                    response.IsSuccess = false;
+                    response.Message = "Email này đã được sử dụng";
+                    return response;
+                }
+
                 var user = new User
                 {
                     UserName = regis.UserName,
@@ -97,6 +115,14 @@ namespace NanaFoodDAL.IRepository.Repository
                             Token = _tokenService.CreateToken(user, roles)
                         };
                         response.Message = "Đăng ký tài khoản thành công";
+                        var template = _emailPoster.EmailConfirmTemplate($"https://localhost:7094/api/Auth/EmailConfirmation/{Uri.EscapeDataString(user.Email)}");
+                        var sendmailResult = _emailPoster.SendMail(user.Email,"Xác thực email",template);
+                        if (sendmailResult != "gửi mail thành công")
+                        {
+                            response.IsSuccess = false;
+                            response.Message = "Xảy ra lỗi xảy ra khi gửi mail";
+                            return response;
+                        }
                         return response;
                     }
                     response.IsSuccess = false;
@@ -157,6 +183,33 @@ namespace NanaFoodDAL.IRepository.Repository
             {
                 response.IsSuccess = false;
                 response.Message = $"Lỗi : {ex.Message}";
+            }
+            return response;
+        }
+
+        public async Task<ResponseDto> ConfirmEmail(string email)
+        {
+            try
+            {
+                var euser = await _userManager.FindByEmailAsync(email);
+                if (euser != null)
+                {
+                    var token = await _userManager.GenerateEmailConfirmationTokenAsync(euser);
+                    await _userManager.ConfirmEmailAsync(euser, token);
+                    response.IsSuccess = true;
+                    response.Message = "Xác thực thành công";
+                }
+                else
+                {
+                    response.IsSuccess = false;
+                    response.Message = "Xác thực thất bại kiểm tra lại email";
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = ex.Message;
             }
             return response;
         }

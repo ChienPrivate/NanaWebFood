@@ -1,9 +1,11 @@
 using AutoMapper;
 using DotNetEnv;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NanaFoodDAL.Context;
@@ -12,7 +14,11 @@ using NanaFoodDAL.IRepository;
 using NanaFoodDAL.IRepository.Repository;
 using NanaFoodDAL.Model;
 using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http.Headers;
 using System.Reflection;
+using System.Security.Claims;
+using System.Text.Json;
 using static System.Environment;
 
 // Load các biến nằm trong file .env và lấy giá trị của các biến đó (tăng tính bảo mật cho ứng dụng tránh lộ các thông tin quan trọng)
@@ -46,6 +52,58 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuerSigningKey = true,
         IssuerSigningKey = new SymmetricSecurityKey(
             System.Text.Encoding.UTF8.GetBytes(builder.Configuration["ApiSettings:JwtOptions:SigningKey"]))
+    };
+}).AddOAuth("github", o =>
+{
+    o.SignInScheme = JwtBearerDefaults.AuthenticationScheme;
+    o.ClientId = builder.Configuration["Authentication:Github:ClientId"];
+    o.ClientSecret = builder.Configuration["Authentication:Github:ClientSecret"];
+
+    o.AuthorizationEndpoint = "https://github.com/login/oauth/authorize";
+    o.TokenEndpoint = "https://github.com/login/oauth/access_token";
+
+    o.CallbackPath = "/oauth/github-cb";
+    o.SaveTokens = true;
+    o.UserInformationEndpoint = "https://api.github.com/user";
+
+    o.ClaimActions.MapJsonKey("sub", "id");
+    o.ClaimActions.MapJsonKey(ClaimTypes.Name, "login");
+
+    o.Events.OnCreatingTicket = async ctx =>
+    {
+        using var request = new HttpRequestMessage(HttpMethod.Get, ctx.Options.UserInformationEndpoint);
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", ctx.AccessToken);
+        using var result = await ctx.Backchannel.SendAsync(request);
+        var user = await result.Content.ReadFromJsonAsync<JsonElement>();
+
+        ctx.RunClaimActions(user);
+
+        var claims = new[]
+        {
+            new Claim(JwtRegisteredClaimNames.Sub, ctx.Principal.FindFirst(ClaimTypes.NameIdentifier).Value),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new Claim(ClaimTypes.Name, ctx.Principal.FindFirst(ClaimTypes.Name).Value),
+        };
+
+        var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(builder.Configuration["ApiSettings:JwtOptions:SigningKey"]));
+        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+        var token = new JwtSecurityToken(
+            issuer: builder.Configuration["ApiSettings:JwtOptions:Issuer"],
+            audience: builder.Configuration["ApiSettings:JwtOptions:Audience"],
+            claims: claims,
+            expires: DateTime.Now.AddMinutes(30),
+            signingCredentials: creds);
+
+        var jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
+
+        // Lưu JWT vào response để trả về cho người dùng
+        ctx.Response.Cookies.Append("jwt", jwtToken, new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = true,
+            SameSite = SameSiteMode.Strict
+        });
     };
 });
 
@@ -83,12 +141,14 @@ builder.Services.AddSwaggerGen(options =>
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
     options.IncludeXmlComments(xmlPath);
 });
+    
 
 // Config các IService và Service ở chỗ này ↓
 builder.Services.AddScoped<ICategoryRepo, CategoryRepo>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IAuthenRepo, AuthenRepo>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<EmailPoster>();
 
 // Config các IService và Service ở chỗ này ↑
 
