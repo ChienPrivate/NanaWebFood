@@ -51,7 +51,7 @@ namespace NanaFoodApi.Controllers
             var response = await _auth.Login(login);
             if (!response.IsSuccess)
             {
-                return BadRequest(response.Message);
+                return BadRequest(response);
             }
             return Ok(response);
         }
@@ -97,7 +97,7 @@ namespace NanaFoodApi.Controllers
             var response = await _auth.LogOut();
             if (!response.IsSuccess)
             {
-                return BadRequest(response.Message);
+                return BadRequest(response);
             }
             return Ok(response);
         }
@@ -146,6 +146,17 @@ namespace NanaFoodApi.Controllers
             return Redirect("https://localhost:51326/Auth/Login");
         }
 
+        [HttpGet("CheckEmailConfirm")]
+        public async Task<IActionResult> CheckEmailConfirm()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var response = await _auth.CheckEmailConfirm(user);
+            if (!response.IsSuccess)
+            {
+                return BadRequest(response);
+            }
+            return Ok(response);
+        }
 
 
 
