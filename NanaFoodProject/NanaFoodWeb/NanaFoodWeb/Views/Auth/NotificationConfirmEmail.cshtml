@@ -1,0 +1,33 @@
+﻿@using Newtonsoft.Json
+@model NanaFoodWeb.Models.Dto.ResponseDto
+
+@{
+    ViewBag.UserModel = JsonConvert.DeserializeObject<UserReturn>(Model.Result.ToString()) as UserReturn;
+}
+
+<div style="font-family: Arial, sans-serif;
+background-color: #f4f4f4;
+padding: 20px;
+max-width: 600px;
+margin: 0 auto;
+border-radius: 8px;
+box-shadow: 0 0 10px rgba(0,0,0,0.1);
+min-height: 75vh;
+margin-top: 10%;
+clear: both;"
+     class="mb-5">
+    <div style="background-color: #d92020; padding: 15px; border-radius: 8px 8px 0 0; color: white; text-align: center;">
+        <h2 class="text-white">Tài khoản chưa được kích hoạt</h2>
+    </div>
+    <div style="padding: 20px; background-color: white; border-radius: 0 0 8px 8px;">
+        <p>Xin chào <strong>@ViewBag.UserModel?.FullName</strong>,</p>
+        <ul style="list-style-type: none; padding: 0;">
+            <li><strong>Email:</strong> @ViewBag.UserModel?.Email hiện chưa được kích hoạt</li>
+        </ul>
+        <h2>Để bắt đầu sử dụng tài khoản, hãy truy cập email mà bạn đã đăng ký để kích hoạt tài khoản</h2>
+        <p>Nếu bạn có bất kỳ câu hỏi nào, đừng ngần ngại liên hệ với chúng tôi qua <a href="mailto:trinhvantruong@gmail.com" style="color: #4CAF50; text-decoration: none;">trinhvantruong@gmail.com</a>.</p>
+        <p>Cảm ơn bạn đã tin tưởng và sử dụng dịch vụ của chúng tôi!</p>
+        <p>Trân trọng,</p>
+        <p><strong><a asp-controller="Home" asp-action="Index">Nana Food</a> Team</strong></p>
+    </div>
+</div>

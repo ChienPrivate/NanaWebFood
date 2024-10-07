@@ -1,4 +1,5 @@
-﻿using NanaFoodWeb.Models;
+﻿using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
+using NanaFoodWeb.Models;
 using NanaFoodWeb.Models.Dto;
 using NanaFoodWeb.Utility;
 
@@ -16,9 +17,23 @@ namespace NanaFoodWeb.IRepository.Repository
             throw new NotImplementedException();
         }
 
-        public Task<ResponseDto> LoginAsync(LoginDto login)
+        public async Task<ResponseDto> CheckEmailConfirm()
         {
-            throw new NotImplementedException();
+            return await _baseService.SendAsync(new RequestDto()
+            {
+                ApiType = StaticDetails.ApiType.GET,
+                Url = StaticDetails.APIBase + "/api/Auth/CheckEmailConfirm"
+            });
+        }
+
+        public async Task<ResponseDto> LoginAsync(LoginDto login)
+        {
+            return await _baseService.SendAsync(new RequestDto()
+            {
+                ApiType = StaticDetails.ApiType.POST,
+                Data = login,
+                Url = StaticDetails.APIBase + "/api/Auth/Login"
+            });
         }
 
         public Task<ResponseDto> LogOutAsync()

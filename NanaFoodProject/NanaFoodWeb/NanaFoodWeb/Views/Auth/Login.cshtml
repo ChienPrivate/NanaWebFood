@@ -1,4 +1,5 @@
-﻿<div style="
+﻿@model NanaFoodWeb.Models.Dto.LoginDto
+<div style="
 height: 75vh;
 margin-top: 10%">
     <section class="login-container">
@@ -11,22 +12,24 @@ margin-top: 10%">
                     <div class="card cascading-right bg-body-tertiary">
                         <div class="card-body shadow-5">
                             <h4 class="fw-bold mb-4 text-center">Đăng Nhập</h4>
-                            <form method="post">
+                            <form asp-controller="auth" asp-action="login" enctype="multipart/form-data">
                                 <div class="mb-3">
-                                    <label for="email" class="form-label">Địa chỉ email của bạn</label>
-                                    <input type="email" class="form-control" id="email" placeholder="Nhập email">
+                                    <label for="fullname" class="form-label">Tên đăng nhập</label>
+                                    <input asp-for=UserName type="text" class="form-control" id="username" placeholder="Nhập tên tài khoản">
+                                    <span asp-validation-for="UserName" class="text-danger"></span>
                                 </div>
                                 <div class="mb-3">
                                     <label for="password" class="form-label">Mật khẩu</label>
-                                    <input type="password" class="form-control" id="password" placeholder="Nhập mật khẩu">
+                                    <input asp-for=Password type="password" class="form-control" id="password" placeholder="Nhập mật khẩu">
+                                    <span asp-validation-for="Password" class="text-danger"></span>
                                 </div>
                                 <div class="d-flex justify-content-between">
                                     <div class="mb-3 form-check">
-                                        <input type="checkbox" class="form-check-input" id="rememberMe">
+                                        <input asp-for=keepLogined type="checkbox" class="form-check-input" id="rememberMe">
                                         <label class="form-check-label" for="rememberMe">Ghi nhớ mật khẩu</label>
                                     </div>
                                     <div class="forgot-password">
-                                        <a href="#">Bạn quên mật khẩu?</a>
+                                        <a href="#">Quên mật khẩu?</a>
                                     </div>
                                 </div>
                                 <button type="submit" class="btn btn-success w-100 mb-3">Đăng Nhập</button>

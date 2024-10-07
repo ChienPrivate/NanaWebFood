@@ -214,6 +214,18 @@ namespace NanaFoodDAL.IRepository.Repository
             return response;
         }
 
+        public async Task<ResponseDto> CheckEmailConfirm(User user)
+        {
+            if (user.EmailConfirmed)
+            {
+                response.IsSuccess = true;
+                return response;
+            }
+            response.IsSuccess = false;
+            response.Message = "Email chưa được xác thực";
+            return response;
+        }
+
 
 
         //public async Task<ResponseDto> DeleteUser(string email)
