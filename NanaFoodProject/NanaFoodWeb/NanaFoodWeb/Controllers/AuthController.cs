@@ -1,18 +1,28 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using NanaFoodWeb.IRepository;
 using NanaFoodWeb.Models;
 using NanaFoodWeb.Models.Dto;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using NuGet.Common;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace NanaFoodWeb.Controllers
 {
     public class AuthController : Controller
     {
         private readonly IAuthRepository _authRepo;
-        public AuthController(IAuthRepository authRepo)
+        private readonly ITokenProvider _tokenProvider;
+        
+
+        public AuthController(IAuthRepository authRepo, ITokenProvider tokenProvider)
         {
             _authRepo = authRepo;
+            _tokenProvider = tokenProvider;
         }
         public IActionResult Login()
         {
@@ -24,7 +34,7 @@ namespace NanaFoodWeb.Controllers
                 TempData["success"] = "Kích hoạt tài khoản thành công!";
             }
 
-            if (HttpContext.Session.GetString("Token") != null)
+            if (HttpContext.Session.GetString("Token") != null && HttpContext.User.Identity.IsAuthenticated)
             {
                 return RedirectToAction("Index", "Home");
             }
@@ -47,10 +57,21 @@ namespace NanaFoodWeb.Controllers
             if (response != null && response.IsSuccess == true)
             {
                 var checkEmailConfirmResponse = await _authRepo.CheckEmailConfirm();
-                if(checkEmailConfirmResponse!= null && checkEmailConfirmResponse.IsSuccess == true)
+                if (checkEmailConfirmResponse != null && checkEmailConfirmResponse.IsSuccess == true)
                 {
                     var userReturn = JsonConvert.DeserializeObject<UserReturn>(response.Result.ToString());
                     HttpContext.Session.SetString("Token", userReturn.Token);
+                    try
+                    {
+                        await SignInUser(userReturn); // phương thức dùng để đổi trạng thài người dùng sang IsAuthenticated
+                        _tokenProvider.SetToken(userReturn.Token); // lưu token vào cookie
+                    }
+                    catch (Exception ex)
+                    {
+                        TempData["error"] = ex.Message.ToString();
+                        return View();
+                    }
+                    
                     TempData["success"] = response.Message?.ToString();
                     return RedirectToAction("Index", "Home");
                 }
@@ -61,6 +82,16 @@ namespace NanaFoodWeb.Controllers
             TempData["error"] = message;
             return View(login);
         }
+
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync();
+            HttpContext.Session.SetString("Token", string.Empty);
+            _tokenProvider.ClearToken();
+
+            return RedirectToAction("Index", "Home");
+        }
+
 
         public IActionResult NotificationConfirmEmail()
         {
@@ -73,12 +104,12 @@ namespace NanaFoodWeb.Controllers
         }
 
 
-        public IActionResult Register() 
+        public IActionResult Register()
         {
             return View();
         }
 
-        
+
         public IActionResult Notification()
         {
             if (TempData["response"] != null)
@@ -118,6 +149,28 @@ namespace NanaFoodWeb.Controllers
         public IActionResult GitHubLogin()
         {
             return Redirect("https://localhost:7094/github");
+        }
+
+
+        private async Task SignInUser(UserReturn? model)
+        {
+            var handler = new JwtSecurityTokenHandler();
+
+            var jwt = handler.ReadJwtToken(model.Token);
+
+            var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
+            identity.AddClaim(new Claim(JwtRegisteredClaimNames.Email,
+
+                jwt.Claims.FirstOrDefault(u => u.Type == JwtRegisteredClaimNames.Email).Value));
+            identity.AddClaim(new Claim(JwtRegisteredClaimNames.Sub,
+                jwt.Claims.FirstOrDefault(u => u.Type == "nameid").Value));
+            identity.AddClaim(new Claim(JwtRegisteredClaimNames.Name,
+                jwt.Claims.FirstOrDefault(u => u.Type == "given_name").Value));
+            identity.AddClaim(new Claim(ClaimTypes.Role,
+                jwt.Claims.FirstOrDefault(u => u.Type == "role").Value));
+
+            var principal = new ClaimsPrincipal(identity);
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
         }
     }
 }
