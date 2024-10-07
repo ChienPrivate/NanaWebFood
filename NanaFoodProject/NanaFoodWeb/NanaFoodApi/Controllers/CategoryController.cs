@@ -45,8 +45,8 @@ namespace NanaFoodApi.Controllers
         }
 
         // GET: api/category/SearchName/{name}
-        [HttpGet("SearchName/{name}")]
-        public ActionResult<ResponseDto> GetCategoryByName([FromRoute] string name, int page = 1, int pageSize = 10)
+        [HttpGet("SearchName")]
+        public ActionResult<ResponseDto> GetCategoryByName( string name="", int page = 1, int pageSize = 10)
         {
             var response = _categoryRepo.GetByName(name, page, pageSize);
             if (!response.IsSuccess)

@@ -1,14 +1,8 @@
 ﻿using AutoMapper;
-using Azure;
 using Microsoft.EntityFrameworkCore;
 using NanaFoodDAL.Context;
 using NanaFoodDAL.Dto;
 using NanaFoodDAL.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NanaFoodDAL.IRepository.Repository
 {
@@ -30,7 +24,13 @@ namespace NanaFoodDAL.IRepository.Repository
                 }
                 _context.Categories.Add(category);
                 _context.SaveChanges();
-                response.Result = _mapper.Map<CategoryDto>(category);
+                //response.Result = _mapper.Map<CategoryDto>(category);
+                response.Result = new
+                {
+                    TotalCount = 1,
+                    TotalPages = 1,
+                    Data = _mapper.Map<CategoryDto>(category)
+                };
                 response.Message = "Tạo loại món thành công.";
             }
             catch (Exception ex)
@@ -84,7 +84,7 @@ namespace NanaFoodDAL.IRepository.Repository
                 {
                     TotalCount = totalCate,
                     TotalPages = totalPages,
-                    Categories = _mapper.Map<List<CategoryDto>>(CatesPerPage)
+                    Data = _mapper.Map<List<CategoryDto>>(CatesPerPage)
                 };
 
                 response.IsSuccess = true;
@@ -111,7 +111,12 @@ namespace NanaFoodDAL.IRepository.Repository
                 }
                 else
                 {
-                    response.Result = _mapper.Map<CategoryDto>(category);
+                    response.Result = new
+                    {
+                        TotalCount = 1,
+                        TotalPages = 1,
+                        Data = _mapper.Map<CategoryDto>(category)
+                    };
                 }
             }
             catch (Exception ex)
@@ -127,6 +132,10 @@ namespace NanaFoodDAL.IRepository.Repository
         {
             try
             {
+                if (string.IsNullOrEmpty(name))
+                {
+                    return GetAll(page, pageSize);
+                }
                 var categories = _context.Categories.Where(x => x.CategoryName.Contains(name) && x.IsActive).ToList();
                 if (categories == null)
                 {
@@ -147,7 +156,7 @@ namespace NanaFoodDAL.IRepository.Repository
                     {
                         TotalCount = totalCate,
                         TotalPages = totalPages,
-                        Categories = _mapper.Map<List<CategoryDto>>(CatesPerPage)
+                        Data = _mapper.Map<List<CategoryDto>>(CatesPerPage)
                     };
 
                     response.IsSuccess = true;

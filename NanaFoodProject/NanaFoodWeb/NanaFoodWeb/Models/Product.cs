@@ -19,7 +19,7 @@ namespace NanaFoodWeb.Models
         public bool IsActive { get; set; }
         [ForeignKey(nameof(Category))]
         public int CategoryId { get; set; }
-        public Category Category { get; set; }
+        public CategoryDto Category { get; set; }
         public List<ProductChangeLog> ProductChangeLogs { get; set; }
         public List<Review> Reviews { get; set; }
         public List<CartDetails> CartDetails { get; set; }

@@ -11,7 +11,7 @@ namespace NanaFoodWeb.Data
 
         }
 
-        public DbSet<Category> Categories { get; set; }
+        public DbSet<CategoryDto> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductChangeLog> ProductChangeLogs { get; set; }
         public DbSet<Cart> Carts { get; set; }
@@ -28,7 +28,7 @@ namespace NanaFoodWeb.Data
 
             // Cấu hình cho khóa chính
 
-            builder.Entity<Category>().HasKey(e => e.CategoryId);
+            builder.Entity<CategoryDto>().HasKey(e => e.CategoryId);
 
             builder.Entity<Product>().HasKey(e => e.ProductId);
 

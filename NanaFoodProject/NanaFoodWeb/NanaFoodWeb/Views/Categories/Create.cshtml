@@ -1,5 +1,7 @@
-﻿@{
+﻿@model NanaFoodWeb.Models.CategoryDto
+@{
     Layout = "_AdminLayout";
+    ViewData["Title"] = "Create";
 }
 
 <div id="wrapper">
@@ -9,14 +11,33 @@
         <div id="content">
             <div class="container-fluid">
                 <h1 class="h3 mb-4 text-gray-800">Add Category</h1>
-                <form id="addCategoryForm" asp-action="Create" asp-controller="Categories">
+                @* <form id="addCategoryForm" asp-action="Create" asp-controller="Categories">
                     <div class="form-group">
                         <label for="categoryName">Category Name</label>
                         <input type="text" class="form-control" id="categoryName" placeholder="Enter category name" required>
                     </div>
                     <button type="submit" class="btn btn-primary">Add Category</button>
                     <a href="@Url.Action("Index", "Categories")" class="btn btn-secondary">Cancel</a>
+                </form> *@
+                <form asp-action="Create" asp-controller="Categories" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="CategoryName" class="control-label"></label>
+                        <input asp-for="CategoryName" class="form-control" />
+                        <span asp-validation-for="CategoryName" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" asp-for="IsActive" checked /> @Html.DisplayNameFor(model => model.IsActive)
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Create" class="btn btn-primary" />
+                    </div>
+                    <a href="@Url.Action("Index", "Categories")" class="btn btn-secondary">Cancel</a>
                 </form>
+                
             </div>
         </div>
     </div>
@@ -27,7 +48,7 @@
 <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 <script src="js/sb-admin-2.min.js"></script>
 
-<script>
+@* <script>
 
     $('#addCategoryForm').on('submit', function (e) {
         e.preventDefault();
@@ -37,4 +58,4 @@
 
         window.location.href = 'categories.html';
     });
-</script>
+</script> *@
