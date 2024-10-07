@@ -143,7 +143,7 @@ namespace NanaFoodApi.Controllers
             {
                 return BadRequest(response);
             }
-            return Redirect("https://localhost:51326/Auth/Login");
+            return Redirect("https://localhost:51326/Auth/Login?message=activation-success");
         }
 
         [HttpGet("CheckEmailConfirm")]

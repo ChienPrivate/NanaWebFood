@@ -16,6 +16,14 @@ namespace NanaFoodWeb.Controllers
         }
         public IActionResult Login()
         {
+            var message = Request.Query["message"];
+
+            // Nếu có message và là "activation-success", đặt TempData
+            if (!string.IsNullOrEmpty(message) && message == "activation-success")
+            {
+                TempData["success"] = "Kích hoạt tài khoản thành công!";
+            }
+
             if (HttpContext.Session.GetString("Token") != null)
             {
                 return RedirectToAction("Index", "Home");
