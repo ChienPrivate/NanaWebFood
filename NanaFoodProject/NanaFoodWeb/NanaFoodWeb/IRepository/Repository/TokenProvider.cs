@@ -1,4 +1,6 @@
 ﻿using NanaFoodWeb.Utility;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace NanaFoodWeb.IRepository.Repository
 {
@@ -25,9 +27,20 @@ namespace NanaFoodWeb.IRepository.Repository
             return hasToken is true ? token : null;
         }
 
+        public string? ReadToken(string type, string token)
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var jwt = handler.ReadJwtToken(token);
+            var value = jwt.Claims.FirstOrDefault(u => u.Type == type)?.Value;
+
+            return value?.ToString() ?? string.Empty;
+        }
+
         public void SetToken(string token)
         {
             _contextAccessor.HttpContext?.Response.Cookies.Append(StaticDetails.TokenCookie, token);
         }
+
+
     }
 }

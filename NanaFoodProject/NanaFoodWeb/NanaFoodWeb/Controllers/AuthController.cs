@@ -70,6 +70,13 @@ namespace NanaFoodWeb.Controllers
                     }
                     
                     TempData["success"] = response.Message?.ToString();
+                     var role = _tokenProvider.ReadToken("role",userReturn.Token);
+
+                    if (role == "admin")
+                    {
+                        return RedirectToAction("Index", "DashBoard");
+                    }
+
                     return RedirectToAction("Index", "Home");
                 }
                 TempData["response"] = JsonConvert.SerializeObject(response);
@@ -146,6 +153,11 @@ namespace NanaFoodWeb.Controllers
         public IActionResult GitHubLogin()
         {
             return Redirect("https://localhost:7094/github");
+        }
+
+        public IActionResult AccessDenied()
+        {
+            return View();
         }
 
 

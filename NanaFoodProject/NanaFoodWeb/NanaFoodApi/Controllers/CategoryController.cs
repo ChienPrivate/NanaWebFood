@@ -1,4 +1,5 @@
 ﻿using Azure;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NanaFoodDAL.Context;
@@ -10,6 +11,7 @@ namespace NanaFoodApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "admin")]
     public class CategoryController : ControllerBase
     {
         private readonly ICategoryRepo _categoryRepo;

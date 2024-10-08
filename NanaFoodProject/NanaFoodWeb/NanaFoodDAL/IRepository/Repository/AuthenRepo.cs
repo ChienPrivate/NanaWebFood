@@ -241,12 +241,12 @@ namespace NanaFoodDAL.IRepository.Repository
                     response.Message = "Người dùng không tồn tại hoặc chưa kích hoạt email";
                     return response;
                 }
-
+                var newPassword = GenerateRandomPassword();
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var result = await _userManager.ResetPasswordAsync(user, code, GenerateRandomPassword());
+                var result = await _userManager.ResetPasswordAsync(user, code, newPassword);
                 if (result.Succeeded)
                 {
-                    var template = _emailPoster.EmailConfirmTemplate($"https://localhost:7094/api/Auth/EmailConfirmation/{Uri.EscapeDataString(user.Email)}");
+                    var template = _emailPoster.EmailForgorPasswordTemplate(newPassword);
                     var sendmailResult = _emailPoster.SendMail(user.Email, "Khôi phục mật khẩu", template);
                     if (sendmailResult != "gửi mail thành công")
                     {
