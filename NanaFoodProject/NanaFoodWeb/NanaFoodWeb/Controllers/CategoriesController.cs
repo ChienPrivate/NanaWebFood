@@ -26,28 +26,17 @@ namespace NanaFoodWeb.Controllers
         public async Task<ActionResult> Index(string searchQuery, int? page=1)
         {
             string apiName = "Category/SearchName?page=" + page + "&pageSize=10&name=" + searchQuery;
-            ResponseDto resopne =await _callAPICenter.GetMethod<ResponseDto>(apiName, "");
-            if (resopne.IsSuccess)
+            ResponseDto respone =await _callAPICenter.GetMethod<ResponseDto>(apiName, "");
+            if (respone.IsSuccess)
             {
                 ViewBag.CurrentPage = page;
                 
-                var resultData = JsonConvert.DeserializeObject<Result<List<CategoryDto>>>(resopne.Result.ToString());
+                var resultData = JsonConvert.DeserializeObject<Result<List<CategoryDto>>>(respone.Result.ToString());
                 ViewBag.TotalPages = resultData.TotalPages;
                 TempData["success"] = "Data loaded successfully!";
                 return View(resultData.Data);
             }
-            /*ViewBag.CurrentFilter = searchQuery;
-
-            var categories = _categoryRepo.GetAll(1,10);
-
-            if (!string.IsNullOrEmpty(searchQuery))
-            {
-                //categories = categories.Where(c => c.CategoryName.Contains(searchQuery)).ToList();
-            }
-
-            int pageSize = 10;
-            int pageNumber = (page ?? 1);*/
-            //return View(categories.ToPagedList(pageNumber, pageSize));
+            
             return View(new List<CategoryDto>());
         }
         [HttpGet("Create")]
@@ -62,23 +51,23 @@ namespace NanaFoodWeb.Controllers
             if (ModelState.IsValid)
             {
                 string apiName = "Category";
-                ResponseDto resopne = await _callAPICenter.PostMethod<ResponseDto>(category,apiName, "");
-                if (resopne.IsSuccess)
+                ResponseDto respone = await _callAPICenter.PostMethod<ResponseDto>(category,apiName, "");
+                if (respone.IsSuccess)
                 {
-                    var resultData = JsonConvert.DeserializeObject<Result<CategoryDto>>(resopne.Result.ToString());
+                    var resultData = JsonConvert.DeserializeObject<Result<CategoryDto>>(respone.Result.ToString());
                     //return View(resultData.Data);
                     return RedirectToAction("Index");
                 }
-                var message = Request.Query["message"];
-                if (!string.IsNullOrEmpty(message) && message == "activation-success")
-                {
-                    TempData["success"] = "Thêm danh mục thành công!";
-                }
-                else
-                {
-                   TempData["erorr"] = "Thêm không thành công";
-                }
-                //TempData["Success"] = "Thêm danh mục thành công!";
+                //var message = Request.Query["message"];
+                //if (!string.IsNullOrEmpty(message) && message == "activation-success")
+                //{
+                //    TempData["success"] = "Thêm danh mục thành công!";
+                //}
+                //else
+                //{
+                //   TempData["erorr"] = "Thêm không thành công";
+                //}
+                TempData["success"] = "Created successfully!";
                 
             }
 
@@ -93,14 +82,14 @@ namespace NanaFoodWeb.Controllers
             if (ModelState.IsValid)
             {
                 string apiName = "Category/"+ category.CategoryId;
-                ResponseDto resopne = await _callAPICenter.PutMethod<ResponseDto>(category, apiName, "");
-                if (resopne.IsSuccess)
+                ResponseDto respone = await _callAPICenter.PutMethod<ResponseDto>(category, apiName, "");
+                if (respone.IsSuccess)
                 {
-                    var resultData = JsonConvert.DeserializeObject<Result<CategoryDto>>(resopne.Result.ToString());
+                    var resultData = JsonConvert.DeserializeObject<Result<CategoryDto>>(respone.Result.ToString());
                     return View(resultData.Data);
                 }
                 //_categoryRepo.Update(category);
-                TempData["Success"] = "Sửa danh mục thành công!";
+                TempData["success"] = "Updated successfully!";
                 return RedirectToAction("Index");
             }
             return View(category);
@@ -109,16 +98,17 @@ namespace NanaFoodWeb.Controllers
         public async Task<ActionResult> Delete(int id)
         {
             string apiName = "Category/" + id;
-            ResponseDto resopne = await _callAPICenter.DeleteMethod<ResponseDto>(apiName, "");
-            if (resopne.IsSuccess)
+            ResponseDto respone = await _callAPICenter.DeleteMethod<ResponseDto>(apiName, "");
+            if (respone.IsSuccess)
             {
+                TempData["success"] = "Deleted successfully!";
                 return RedirectToAction("Index");
             }
             else {
                 
-                string message =  resopne.Message;
+                string message = respone.Message;
                 return NotFound(message);
-                //return resopne.;
+                
             }
             /*var category = _categoryRepo.GetById(id);
             if (category == null)
@@ -145,27 +135,23 @@ namespace NanaFoodWeb.Controllers
         public async Task<ActionResult> Edit(int id)
         {
             string apiName = "Category/" + id;
-            ResponseDto resopne = await _callAPICenter.GetMethod<ResponseDto>(apiName, "");
-            if (resopne.IsSuccess)
+            ResponseDto respone = await _callAPICenter.GetMethod<ResponseDto>(apiName, "");
+            if (respone.IsSuccess)
             {
-                var resultData = JsonConvert.DeserializeObject<Result<CategoryDto>>(resopne.Result.ToString());
+                var resultData = JsonConvert.DeserializeObject<Result<CategoryDto>>(respone.Result.ToString());
                 return View(resultData.Data);
             }
-            /*var category = _categoryRepo.GetById(id);
-            if (category == null)
-            {
-                return NotFound();
-            }*/
+
             return View(new CategoryDto());
         }
         [HttpGet("Details")]
         public async Task<ActionResult> Details(int id)
         {
             string apiName = "Category/" + id;
-            ResponseDto resopne = await _callAPICenter.GetMethod<ResponseDto>(apiName, "");
-            if (resopne.IsSuccess)
+            ResponseDto respone = await _callAPICenter.GetMethod<ResponseDto>(apiName, "");
+            if (respone.IsSuccess)
             {
-                var resultData = JsonConvert.DeserializeObject<Result<CategoryDto>>(resopne.Result.ToString());
+                var resultData = JsonConvert.DeserializeObject<Result<CategoryDto>>(respone.Result.ToString());
                 return View(resultData.Data);
             }
             return View(new CategoryDto());

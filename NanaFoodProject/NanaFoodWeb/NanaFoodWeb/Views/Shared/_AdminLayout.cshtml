@@ -359,6 +359,7 @@
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
+                <partial name="_Notification" />
                 @RenderBody()
                 <!-- /.container-fluid -->
 
@@ -408,7 +409,7 @@
     <!-- Toastr -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <!-- Sử dụng Toastr để hiển thị thông báo thành công -->
-    <script type="text/javascript">
+    @* <script type="text/javascript">
         $(function () {
             var successMessage = '@TempData["Success"]';
             if (successMessage) {
@@ -420,7 +421,7 @@
                 toastr.error(errorMessage);
             }
         });
-    </script>
+    </script> *@
 
     <!-- Bootstrap core JavaScript-->
     <script src="~/template/vendor/jquery/jquery.min.js"></script>
