@@ -1,0 +1,54 @@
+﻿@{
+    var isAdmin = User.IsInRole("admin");
+    string controller = "Home";
+    string action = "Index";
+    if (isAdmin)
+    {
+        Layout = "_AdminLayout";
+        controller = "DashBoard";
+    }
+}
+
+<style>
+    body-section {
+        font-family: Arial, sans-serif;
+        background-color: #f8f9fa;
+        color: #333;
+        text-align: center;
+        padding: 50px;
+    }
+
+    h1 {
+        color: #dc3545;
+        font-size: 3em;
+    }
+
+    p {
+        font-size: 1.2em;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+        a:hover {
+            text-decoration: underline;
+        }
+</style>
+
+<div style="
+min-height: 75vh;
+margin-top: 10%;
+clear: both;" >
+
+    <div class="container text-center">
+        <img src="https://i.etsystatic.com/48106844/r/il/ed6449/5714780511/il_570xN.5714780511_kbzc.jpg" style="max-width: 12rem; margin-top: 1%" />
+    </div>
+    <div class="p-2 container body-section bg-light rounded-2">
+
+        <h1>403 - Từ chối truy cập</h1>
+        <p>Xin lỗi, bạn không có quyền truy cập vào trang này.</p>
+        <p>Vui lòng <a asp-controller="@controller" asp-action="@action">quay về trang chủ</a> hoặc liên hệ với bộ phận hỗ trợ nếu bạn tin rằng đây là lỗi.</p>
+    </div>
+     
+</div>

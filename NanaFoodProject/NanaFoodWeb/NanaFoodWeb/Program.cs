@@ -18,6 +18,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     {
         options.LoginPath = "/Auth/Login"; // Đường dẫn để chuyển hướng khi chưa đăng nhập
         options.LogoutPath = "/Auth/Logout"; // Đường dẫn khi đăng xuất
+        options.AccessDeniedPath = "/Auth/AccessDenied"; // đường dẫn khi từ chối truy cập
         options.ExpireTimeSpan = TimeSpan.FromMinutes(60); // Thời gian hết hạn của cookie
         options.SlidingExpiration = true; // Kéo dài thời gian hết hạn nếu người dùng tiếp tục hoạt động
         options.Cookie.HttpOnly = true; // Chỉ truy cập cookie qua HTTP (bảo mật hơn)
