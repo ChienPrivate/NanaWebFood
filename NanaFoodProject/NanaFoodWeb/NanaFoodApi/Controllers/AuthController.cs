@@ -188,7 +188,16 @@ namespace NanaFoodApi.Controllers
             , authenticationSchemes: ["github"]);
         }
 
-
+        [HttpPost("ForgotPassword/{email}")]
+        public async Task<IActionResult> ForgotPassword([FromRoute] string email)
+        {
+            var response = await _auth.ForgotPassword(email);
+            if(response != null && response.IsSuccess)
+            {
+                return Ok(response);
+            }
+            return BadRequest(response);
+        }
 
 
 
