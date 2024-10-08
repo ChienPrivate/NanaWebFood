@@ -53,34 +53,37 @@ namespace NanaFoodWeb.Controllers
 
             if (response != null && response.IsSuccess == true)
             {
+                var userReturn = JsonConvert.DeserializeObject<UserReturn>(response.Result.ToString());
+
+                try
+                {
+                    await SignInUser(userReturn); // phương thức dùng để đổi trạng thài người dùng sang IsAuthenticated
+                    _tokenProvider.SetToken(userReturn.Token); // lưu token vào cookie
+                    HttpContext.Session.SetString("Token", userReturn.Token); // lưu token vào session
+                }
+                catch (Exception ex)
+                {
+                    TempData["error"] = ex.Message.ToString();
+                    return View();
+                }
+
+                TempData["success"] = response.Message?.ToString();
+                var role = _tokenProvider.ReadToken("role", userReturn.Token);
+
+                if (role == "admin")
+                {
+                    return RedirectToAction("Index", "DashBoard");
+                }
+
                 var checkEmailConfirmResponse = await _authRepo.CheckEmailConfirm();
                 if (checkEmailConfirmResponse != null && checkEmailConfirmResponse.IsSuccess == true)
                 {
-                    var userReturn = JsonConvert.DeserializeObject<UserReturn>(response.Result.ToString());
-                    HttpContext.Session.SetString("Token", userReturn.Token);
-                    try
-                    {
-                        await SignInUser(userReturn); // phương thức dùng để đổi trạng thài người dùng sang IsAuthenticated
-                        _tokenProvider.SetToken(userReturn.Token); // lưu token vào cookie
-                    }
-                    catch (Exception ex)
-                    {
-                        TempData["error"] = ex.Message.ToString();
-                        return View();
-                    }
-                    
-                    TempData["success"] = response.Message?.ToString();
-                     var role = _tokenProvider.ReadToken("role",userReturn.Token);
-
-                    if (role == "admin")
-                    {
-                        return RedirectToAction("Index", "DashBoard");
-                    }
-
-                    return RedirectToAction("Index", "Home");
+                    TempData["response"] = JsonConvert.SerializeObject(response);
+                    return RedirectToAction(nameof(NotificationConfirmEmail));
                 }
-                TempData["response"] = JsonConvert.SerializeObject(response);
-                return RedirectToAction(nameof(NotificationConfirmEmail));
+
+                return RedirectToAction("Index", "Home");
+                
             }
 
             TempData["error"] = message;
