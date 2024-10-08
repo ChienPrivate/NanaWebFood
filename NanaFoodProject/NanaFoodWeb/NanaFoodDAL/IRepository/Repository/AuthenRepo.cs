@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
+using Azure.Core;
+using CloudinaryDotNet;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using NanaFoodDAL.Context;
@@ -13,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
 namespace NanaFoodDAL.IRepository.Repository
@@ -226,7 +230,73 @@ namespace NanaFoodDAL.IRepository.Repository
             return response;
         }
 
+        public async Task<ResponseDto> ForgotPassword(string email)
+        {
+            try
+            {
+                var user = await _userManager.FindByEmailAsync(email);
+                if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+                {
+                    response.IsSuccess= false;
+                    response.Message = "Người dùng không tồn tại hoặc chưa kích hoạt email";
+                    return response;
+                }
 
+                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var result = await _userManager.ResetPasswordAsync(user, code, GenerateRandomPassword());
+                if (result.Succeeded)
+                {
+                    var template = _emailPoster.EmailConfirmTemplate($"https://localhost:7094/api/Auth/EmailConfirmation/{Uri.EscapeDataString(user.Email)}");
+                    var sendmailResult = _emailPoster.SendMail(user.Email, "Khôi phục mật khẩu", template);
+                    if (sendmailResult != "gửi mail thành công")
+                    {
+                        response.IsSuccess = false;
+                        response.Message = "Xảy ra lỗi xảy ra khi gửi mail";
+                        return response;
+                    }
+                    response.IsSuccess = true;
+                    response.Message = "Mật khẩu mới đã được gửi về email của bạn";
+                    return response;
+                }
+                response.IsSuccess = false;
+                response.Message = string.Join(",",result.Errors.Select(error => error.Description));
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = ex.Message;
+                return response;
+            }
+            
+        }
+
+        private string GenerateRandomPassword()
+        {
+            Random random = new Random();
+            string uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            string digits = "0123456789";
+            string specialChars = "!@#$%^&*()";
+            string allChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()";
+
+            char[] result = new char[6];
+
+            // Đảm bảo có ít nhất 1 ký tự in hoa, 1 chữ số, 1 ký tự đặc biệt
+            result[0] = uppercase[random.Next(uppercase.Length)];
+            result[1] = digits[random.Next(digits.Length)];
+            result[2] = specialChars[random.Next(specialChars.Length)];
+
+            // Tạo 3 ký tự ngẫu nhiên từ tất cả các ký tự
+            for (int i = 3; i < 6; i++)
+            {
+                result[i] = allChars[random.Next(allChars.Length)];
+            }
+
+            // Trộn lại các ký tự ngẫu nhiên
+            result = result.OrderBy(x => random.Next()).ToArray();
+
+            return new string(result);
+        }
 
         //public async Task<ResponseDto> DeleteUser(string email)
         //{
