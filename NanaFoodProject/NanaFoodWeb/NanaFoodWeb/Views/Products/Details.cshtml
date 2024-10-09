@@ -1,26 +1,47 @@
 ﻿@{
     Layout = "_AdminLayout";
 }
-
+@model NanaFoodWeb.Models.Dto.ProductDto
 <div id="wrapper">
     
     <!-- Main Content -->
     <div id="content-wrapper" class="d-flex flex-column">
         <div id="content">
             <div class="container-fluid">
-                <h1 class="h3 mb-4 text-gray-800">Product Details</h1>
-
-                <div class="card shadow">
+                <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary" id="product-name">Product Name</h6>
+                        <h6 class="m-0 font-weight-bold text-primary" id="product-name">@Model.ProductName</h6>
                     </div>
                     <div class="card-body">
-                        <p><strong>Product ID:</strong> <span id="product-id"></span></p>
-                        <p><strong>Category:</strong> <span id="product-category"></span></p>
-                        <p><strong>Price:</strong> <span id="product-price"></span></p>
-                        <p><strong>Description:</strong> <span id="product-description"></span></p>
-                        @* <a href="products.html" class="btn btn-primary">Back to Products</a> *@
-                        <a href="@Url.Action("Index", "Products")" class="btn btn-secondary">Back to Products</a>
+                        <div class="row">
+                            <!-- Image Section -->
+                            <div class="col-md-5 text-center image-container">
+                                <img class="img-fluid rounded shadow-lg" src="@Model.ImageUrl" alt="@Model.ProductName" style="width:200px; height:300px;" />
+                            </div>
+
+                            <!-- Product Details Section -->
+                            <div class="col-md-7">
+                                <div class="product-details">
+                                    <h4 class="text-info">Thông tin sản phẩm</h4>
+                                    <hr />
+                                    <p><strong>Product ID:</strong> <span id="product-id">@Model.ProductId</span></p>
+                                    <p><strong>Category ID:</strong> <span id="product-category">@Model.CategoryId</span></p>
+                                    <p><strong>Price:</strong> <span id="product-price">@Model.Price.ToString("C")</span></p>
+                                    <p><strong>Description:</strong> <span id="product-description">@Model.View</span></p>
+                                    <hr />
+
+                                    <!-- Button Section -->
+                                    <div class="button-group">
+                                        <a href="@Url.Action("Index", "Products")" class="btn btn-secondary mr-2">Trở lại</a>
+                                        <a class="btn btn-warning btn-sm mr-2" asp-action="Edit" asp-controller="Products" asp-route-id="@Model.ProductId">Sửa</a>
+                                        <form asp-action="Delete" asp-controller="Products" method="post" style="display:inline">
+                                            <input type="hidden" name="id" value="@Model.ProductId" />
+                                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -32,28 +53,3 @@
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 <script src="js/sb-admin-2.min.js"></script>
-
-<script>
-    // Sample product data for demonstration (replace with actual product data)
-    const products = [
-        { id: 1, name: "Product A", category: "Category 1", price: "$10.00", description: "This is Product A." },
-        { id: 2, name: "Product B", category: "Category 2", price: "$15.00", description: "This is Product B." },
-        { id: 3, name: "Product C", category: "Category 1", price: "$20.00", description: "This is Product C." }
-    ];
-
-    // Get product ID from URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const productId = urlParams.get('id');
-
-    const product = products.find(p => p.id == productId);
-
-    if (product) {
-        document.getElementById('product-id').textContent = product.id;
-        document.getElementById('product-name').textContent = product.name;
-        document.getElementById('product-category').textContent = product.category;
-        document.getElementById('product-price').textContent = product.price;
-        document.getElementById('product-description').textContent = product.description;
-    } else {
-        alert("Product not found");
-    }
-</script>

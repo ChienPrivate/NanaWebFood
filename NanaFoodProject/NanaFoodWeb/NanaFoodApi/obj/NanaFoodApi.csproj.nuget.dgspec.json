@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Admin\\Desktop\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodApi\\NanaFoodApi.csproj": {}
+    "C:\\Users\\Admin\\Desktop\\clone\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodApi\\NanaFoodApi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Admin\\Desktop\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodApi\\NanaFoodApi.csproj": {
+    "C:\\Users\\Admin\\Desktop\\clone\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodApi\\NanaFoodApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Admin\\Desktop\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodApi\\NanaFoodApi.csproj",
+        "projectUniqueName": "C:\\Users\\Admin\\Desktop\\clone\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodApi\\NanaFoodApi.csproj",
         "projectName": "NanaFoodApi",
-        "projectPath": "C:\\Users\\Admin\\Desktop\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodApi\\NanaFoodApi.csproj",
+        "projectPath": "C:\\Users\\Admin\\Desktop\\clone\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodApi\\NanaFoodApi.csproj",
         "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Admin\\Desktop\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodApi\\obj\\",
+        "outputPath": "C:\\Users\\Admin\\Desktop\\clone\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodApi\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
           "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -33,8 +29,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\Admin\\Desktop\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\NanaFoodDAL.csproj": {
-                "projectPath": "C:\\Users\\Admin\\Desktop\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\NanaFoodDAL.csproj"
+              "C:\\Users\\Admin\\Desktop\\clone\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\NanaFoodDAL.csproj": {
+                "projectPath": "C:\\Users\\Admin\\Desktop\\clone\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\NanaFoodDAL.csproj"
               }
             }
           }
@@ -92,21 +88,17 @@
         }
       }
     },
-    "C:\\Users\\Admin\\Desktop\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\NanaFoodDAL.csproj": {
+    "C:\\Users\\Admin\\Desktop\\clone\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\NanaFoodDAL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Admin\\Desktop\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\NanaFoodDAL.csproj",
+        "projectUniqueName": "C:\\Users\\Admin\\Desktop\\clone\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\NanaFoodDAL.csproj",
         "projectName": "NanaFoodDAL",
-        "projectPath": "C:\\Users\\Admin\\Desktop\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\NanaFoodDAL.csproj",
+        "projectPath": "C:\\Users\\Admin\\Desktop\\clone\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\NanaFoodDAL.csproj",
         "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Admin\\Desktop\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\obj\\",
+        "outputPath": "C:\\Users\\Admin\\Desktop\\clone\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
           "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [

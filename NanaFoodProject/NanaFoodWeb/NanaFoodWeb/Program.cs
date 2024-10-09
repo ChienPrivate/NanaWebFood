@@ -38,6 +38,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddScoped<ITokenProvider, TokenProvider>();
 builder.Services.AddScoped<IBaseService, BaseService>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+builder.Services.AddScoped<IProductRepo, ProductRepo>();
 
 var app = builder.Build();
 
