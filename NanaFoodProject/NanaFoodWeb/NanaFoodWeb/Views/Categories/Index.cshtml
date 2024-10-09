@@ -1,4 +1,5 @@
-﻿@model IEnumerable<NanaFoodWeb.Models.CategoryDto>
+﻿@using Syncfusion.EJ2
+@model IEnumerable<NanaFoodWeb.Models.CategoryDto>
 @{
     Layout = "_AdminLayout";
     ViewData["Title"] = "Index";
@@ -71,23 +72,9 @@
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
                                                             <div class="modal-body">
-
                                                                 <div class="mb-2 mt-2">
-                                                                    <div class="row">
-                                                                        <div class="col-md-8">
-                                                                            <label>Mã danh mục:</label>
-                                                                            <input asp-for="@item.CategoryId" class="form-control" readonly />
-                                                                        </div>
-                                                                        <div class="col-md-4">
-                                                                            <label>Trạng thái</label>
-                                                                            <div>
-                                                                                <label class="switch">
-                                                                                    <input asp-for="@item.IsActive" type="checkbox">
-                                                                                    <span class="slider"></span>
-                                                                                </label>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
+                                                                    <label>Mã danh mục:</label>
+                                                                    <input asp-for="@item.CategoryId" class="form-control" readonly />
                                                                 </div>
                                                                 <div class="mb-2 mt-2">
                                                                     <label>Tên danh mục:</label>
@@ -98,11 +85,29 @@
                                                                     <textarea asp-for="@item.Description" class="form-control" rows="5" readonly></textarea>
                                                                 </div>
                                                                 <div class="mb-2 mt-2">
+                                                                    <label>Trạng thái</label>
+                                                                    <div class="d-flex align-items-center">
+                                                                        <div>
+                                                                            @Html.EJS().Switch(item.CategoryId.ToString()).Checked(item.IsActive).Disabled(true).Render()
+                                                                        </div>
+                                                                        <h5 class="ms-2">
+                                                                            @if (item.IsActive)
+                                                                            {
+                                                                                <span class="badge bg-success">Hoạt động</span>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <span class="badge bg-secondary">Vô hiệu</span>
+                                                                            }
+                                                                        </h5>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="mb-2 mt-2">
                                                                     <label>Hình ảnh: </label>
                                                                     <div class="rounded-3 bg-body-tertiary shadow w-50 shadow-sm">
                                                                         <img class="rounded-3" style="width:100%"
-                                                                             src="https://cdn.nhathuoclongchau.com.vn/unsafe/800x0/filters:quality(95)/https://cms-prod.s3-sgn09.fptcloud.com/vitamin_b_co_trong_thuc_pham_nao_1_bc12b90d9d.jpg" />
-                                                                    </div>
+                                                                             src="@item.CategoryImage" 
+                                                                             alt="Image"/>                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">

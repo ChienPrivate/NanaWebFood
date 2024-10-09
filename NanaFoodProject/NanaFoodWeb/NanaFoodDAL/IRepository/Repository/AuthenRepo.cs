@@ -119,7 +119,7 @@ namespace NanaFoodDAL.IRepository.Repository
                             Token = _tokenService.CreateToken(user, roles)
                         };
                         response.Message = "Đăng ký tài khoản thành công";
-                        var template = _emailPoster.EmailConfirmTemplate($"https://localhost:7094/api/Auth/EmailConfirmation/{Uri.EscapeDataString(user.Email)}");
+                        var template = _emailPoster.EmailConfirmTemplate(user.FullName,$"https://localhost:7094/api/Auth/EmailConfirmation/{Uri.EscapeDataString(user.Email)}");
                         var sendmailResult = _emailPoster.SendMail(user.Email,"Xác thực email",template);
                         if (sendmailResult != "gửi mail thành công")
                         {

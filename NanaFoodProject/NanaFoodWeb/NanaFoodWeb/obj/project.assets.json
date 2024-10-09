@@ -2275,6 +2275,32 @@
           }
         }
       },
+      "Syncfusion.EJ2.AspNet.Core/27.1.52": {
+        "type": "package",
+        "dependencies": {
+          "Newtonsoft.Json": "13.0.2",
+          "Syncfusion.Licensing": "27.1.52"
+        },
+        "compile": {
+          "lib/net8.0/Syncfusion.EJ2.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/Syncfusion.EJ2.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Syncfusion.Licensing/27.1.52": {
+        "type": "package",
+        "compile": {
+          "lib/net8.0/Syncfusion.Licensing.dll": {}
+        },
+        "runtime": {
+          "lib/net8.0/Syncfusion.Licensing.dll": {}
+        }
+      },
       "System.CodeDom/5.0.0": {
         "type": "package",
         "compile": {
@@ -7398,6 +7424,55 @@
         "runtimes/ubuntu.16.10-x64/native/System.Security.Cryptography.Native.OpenSsl.so"
       ]
     },
+    "Syncfusion.EJ2.AspNet.Core/27.1.52": {
+      "sha512": "/zbjkl/G6gP+mopCZfLV2xxzs1+7IA9qVC1qE3UNh+G5c0AUIZnJge+Hy6xKxzrUqkewPuOMkr08yUjcuN0JJA==",
+      "type": "package",
+      "path": "syncfusion.ej2.aspnet.core/27.1.52",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.txt",
+        "README.md",
+        "lib/net6.0/Syncfusion.EJ2.dll",
+        "lib/net6.0/Syncfusion.EJ2.xml",
+        "lib/net7.0/Syncfusion.EJ2.dll",
+        "lib/net7.0/Syncfusion.EJ2.xml",
+        "lib/net8.0/Syncfusion.EJ2.dll",
+        "lib/net8.0/Syncfusion.EJ2.xml",
+        "lib/netstandard2.0/Syncfusion.EJ2.dll",
+        "lib/netstandard2.0/Syncfusion.EJ2.xml",
+        "lib/netstandard2.1/Syncfusion.EJ2.dll",
+        "lib/netstandard2.1/Syncfusion.EJ2.xml",
+        "syncfusion.ej2.aspnet.core.27.1.52.nupkg.sha512",
+        "syncfusion.ej2.aspnet.core.nuspec",
+        "syncfusion_logo.png"
+      ]
+    },
+    "Syncfusion.Licensing/27.1.52": {
+      "sha512": "st24vdjzGwbUs4OvM7EmCfZpyf724Tf3xectuYGGhqMtObr1bNEzCQWUZA2Ftz+xmpat7zNR+2XusQ+qY7q2xQ==",
+      "type": "package",
+      "path": "syncfusion.licensing/27.1.52",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.txt",
+        "README.md",
+        "lib/MonoAndroid90/Syncfusion.Licensing.dll",
+        "lib/Xamarin.Mac/Syncfusion.Licensing.dll",
+        "lib/Xamarin.iOS10/Syncfusion.Licensing.dll",
+        "lib/net40/Syncfusion.Licensing.dll",
+        "lib/net45/Syncfusion.Licensing.dll",
+        "lib/net462/Syncfusion.Licensing.dll",
+        "lib/net6.0/Syncfusion.Licensing.dll",
+        "lib/net7.0/Syncfusion.Licensing.dll",
+        "lib/net8.0/Syncfusion.Licensing.dll",
+        "lib/netstandard2.0/Syncfusion.Licensing.dll",
+        "lib/uap10.0/Syncfusion.Licensing.dll",
+        "syncfusion.licensing.27.1.52.nupkg.sha512",
+        "syncfusion.licensing.nuspec",
+        "syncfusion_logo.png"
+      ]
+    },
     "System.CodeDom/5.0.0": {
       "sha512": "JPJArwA1kdj8qDAkY2XGjSWoYnqiM7q/3yRNkt6n28Mnn95MuEGkZXUbPBf7qc3IjwrGY5ttQon7yqHZyQJmOQ==",
       "type": "package",
@@ -10487,6 +10562,7 @@
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 8.0.5",
       "NanaFoodDAL >= 1.0.0",
       "Newtonsoft.Json >= 13.0.3",
+      "Syncfusion.EJ2.AspNet.Core >= 27.1.52",
       "System.IdentityModel.Tokens.Jwt >= 7.1.2"
     ]
   },
@@ -10559,6 +10635,10 @@
           "Newtonsoft.Json": {
             "target": "Package",
             "version": "[13.0.3, )"
+          },
+          "Syncfusion.EJ2.AspNet.Core": {
+            "target": "Package",
+            "version": "[27.1.52, )"
           },
           "System.IdentityModel.Tokens.Jwt": {
             "target": "Package",

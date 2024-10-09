@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "dGgHOrALO2A=",
+  "dgSpecHash": "BO81jp5oUzE=",
   "success": true,
   "projectFilePath": "D:\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodWeb\\NanaFoodWeb.csproj",
   "expectedPackageFiles": [
@@ -144,6 +144,8 @@
     "C:\\Users\\Admin01\\.nuget\\packages\\runtime.ubuntu.14.04-x64.runtime.native.system.security.cryptography.openssl\\4.3.2\\runtime.ubuntu.14.04-x64.runtime.native.system.security.cryptography.openssl.4.3.2.nupkg.sha512",
     "C:\\Users\\Admin01\\.nuget\\packages\\runtime.ubuntu.16.04-x64.runtime.native.system.security.cryptography.openssl\\4.3.2\\runtime.ubuntu.16.04-x64.runtime.native.system.security.cryptography.openssl.4.3.2.nupkg.sha512",
     "C:\\Users\\Admin01\\.nuget\\packages\\runtime.ubuntu.16.10-x64.runtime.native.system.security.cryptography.openssl\\4.3.2\\runtime.ubuntu.16.10-x64.runtime.native.system.security.cryptography.openssl.4.3.2.nupkg.sha512",
+    "C:\\Users\\Admin01\\.nuget\\packages\\syncfusion.ej2.aspnet.core\\27.1.52\\syncfusion.ej2.aspnet.core.27.1.52.nupkg.sha512",
+    "C:\\Users\\Admin01\\.nuget\\packages\\syncfusion.licensing\\27.1.52\\syncfusion.licensing.27.1.52.nupkg.sha512",
     "C:\\Users\\Admin01\\.nuget\\packages\\system.codedom\\5.0.0\\system.codedom.5.0.0.nupkg.sha512",
     "C:\\Users\\Admin01\\.nuget\\packages\\system.collections\\4.3.0\\system.collections.4.3.0.nupkg.sha512",
     "C:\\Users\\Admin01\\.nuget\\packages\\system.collections.concurrent\\4.3.0\\system.collections.concurrent.4.3.0.nupkg.sha512",
