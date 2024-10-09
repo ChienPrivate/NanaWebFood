@@ -159,6 +159,10 @@
               "target": "Package",
               "version": "[13.0.3, )"
             },
+            "Syncfusion.EJ2.AspNet.Core": {
+              "target": "Package",
+              "version": "[27.1.52, )"
+            },
             "System.IdentityModel.Tokens.Jwt": {
               "target": "Package",
               "version": "[7.1.2, )"

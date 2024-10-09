@@ -29,18 +29,18 @@ body {
 /* From Uiverse.io by cbolson */
 /* From Uiverse.io by MetaBlue2000 */
 /* From Uiverse.io by victoryamaykin */
-.switch {
+.btn-switcher-z35 {
     position: relative;
     display: inline-block;
     width: 120px;
     height: 34px;
 }
 
-    .switch input {
-        display: none;
-    }
+.switch input {
+    display: none;
+}
 
-.slider {
+.slip-oposite {
     position: absolute;
     cursor: pointer;
     top: 0;
@@ -53,7 +53,7 @@ body {
     border-radius: 34px;
 }
 
-    .slider:before {
+    .slip-oposite:before {
         position: absolute;
         content: "";
         height: 26px;
@@ -66,22 +66,22 @@ body {
         border-radius: 50%;
     }
 
-input:checked + .slider {
-    background-color: #0E6EB8;
+input:checked + .slip-oposite {
+    background-color: #33CC66;
 }
 
-input:focus + .slider {
+input:focus + .slip-oposite {
     box-shadow: 0 0 1px #2196F3;
 }
 
-input:checked + .slider:before {
+input:checked + .slip-oposite:before {
     -webkit-transform: translateX(26px);
     -ms-transform: translateX(26px);
     transform: translateX(85px);
 }
 
 /*------ ADDED CSS ---------*/
-.slider:after {
+.slip-oposite:after {
     content: 'Vô hiệu';
     color: white;
     display: block;
