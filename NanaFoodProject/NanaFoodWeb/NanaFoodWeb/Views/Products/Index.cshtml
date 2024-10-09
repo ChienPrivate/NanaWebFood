@@ -1,81 +1,75 @@
 ﻿@{
     Layout = "_AdminLayout";
 }
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
 
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+@model NanaFoodWeb.Models.Dto.ViewModels.ProductVM
 
-    <div id="wrapper"> 
+<div id="wrapper">
 
-        <!-- Main Content -->
-        <div id="content-wrapper" class="d-flex flex-column">
-            <div id="content">
-                <div class="container-fluid">
-                    <h1 class="h3 mb-4 text-gray-800">Product List</h1>
-                    @* <a href="add-product.html" class="btn btn-primary mb-3">Add Product</a> *@
-                    <p>
-                        <a asp-action="Create" class="btn btn-primary mb-3" asp-controller="Products">Add Product</a>
-                    </p>
-                    <div class="card shadow">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Products</h6>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th>Product ID</th>
-                                            <th>Product Name</th>
-                                            <th>Category</th>
-                                            <th>Price</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Product A</td>
-                                            <td>Category 1</td>
-                                            <td>$10.00</td>
+    <!-- Main Content -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content">
+            <div class="container-fluid">
+                <h1 class="h3 mb-4 text-gray-800">Product List</h1>
+                @* <a href="add-product.html" class="btn btn-primary mb-3">Add Product</a> *@
+                <p>
+                    <a asp-action="Create" class="btn btn-primary mb-3" asp-controller="Products">Add Product</a>
+                </p>
+                <div class="card shadow">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Products</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Product ID</th>
+                                        <th>Product Name</th>
+                                        <th>Category</th>
+                                        <th>Price</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.Products)
+                                    {
+                                        <tr id="product-row-@item.ProductId">
+                                            <td>@item.ProductId</td>
+                                            <td>@item.ProductName</td>
+                                            <td>@item.Description</td>
                                             <td>
-                                                <a class="btn btn-warning btn-sm" asp-action="Edit" asp-controller="Products" asp-route-id="1">Edit</a>
-                                                <a class="btn btn-warning btn-sm" asp-action="Details" asp-controller="Products" asp-route-id="1">Details</a>
-                                                @* <a href="detail-product.html?id=1" class="btn btn-info btn-sm">Details</a>
-                                                <a href="edit-product.html?id=1" class="btn btn-warning btn-sm">Edit</a> *@
-                                                <button class="btn btn-danger btn-sm" onclick="deleteProduct(1)">Delete</button>
+                                                <img class="img-fluid rounded mx-auto d-block" src="@item.ImageUrl" style="width:50px" />
+                                            </td>
+                                            <td>
+                                                <a class="btn btn-warning btn-sm" asp-action="Edit" asp-controller="Products" asp-route-id="@item.ProductId">Edit</a>
+                                                <a class="btn btn-warning btn-sm" asp-action="Details" asp-controller="Products" asp-route-id="@item.ProductId">Details</a>
+                                                <!-- Form Delete -->
+                                                <form asp-action="Delete" asp-controller="Products" method="post" style="display:inline">
+                                                    <input type="hidden" name="id" value="@item.ProductId" />
+                                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                                </form>
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td>Product B</td>
-                                            <td>Category 2</td>
-                                            <td>$15.00</td>
-                                            <td>
-                                                @* <a href="detail-product.html?id=2" class="btn btn-info btn-sm">Details</a>
-                                                <a href="edit-product.html?id=2" class="btn btn-warning btn-sm">Edit</a> *@
-                                                <a class="btn btn-warning btn-sm" asp-action="Edit" asp-controller="Products" asp-route-id="2">Edit</a>
-                                                <a class="btn btn-warning btn-sm" asp-action="Details" asp-controller="Products" asp-route-id="2">Details</a>
-                                                <button class="btn btn-danger btn-sm" onclick="deleteProduct(2)">Delete</button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>3</td>
-                                            <td>Product C</td>
-                                            <td>Category 1</td>
-                                            <td>$20.00</td>
-                                            <td>
-                                                @* <a href="detail-product.html?id=3" class="btn btn-info btn-sm">Details</a>
-                                                <a href="edit-product.html?id=3" class="btn btn-warning btn-sm">Edit</a> *@
-                                                <a class="btn btn-warning btn-sm" asp-action="Edit" asp-controller="Products" asp-route-id="3">Edit</a>
-                                                <a class="btn btn-warning btn-sm" asp-action="Details" asp-controller="Products" asp-route-id="3">Details</a>
-                                                <button class="btn btn-danger btn-sm" onclick="deleteProduct(3)">Delete</button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                                    }
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>

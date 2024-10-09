@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NanaFoodDAL.Dto;
 using NanaFoodDAL.IRepository;
-using NanaFoodDAL.IRepository.Repository;
 using NanaFoodDAL.Model;
 
 namespace NanaFoodApi.Controllers
@@ -30,8 +28,8 @@ namespace NanaFoodApi.Controllers
             return Ok(response);
         }
 
-        [HttpGet("{id:int}")]
-        public ResponseDto GetById([FromRoute]int id)
+        [HttpGet("getbyId/{id:int}")]
+        public ResponseDto GetById([FromRoute] int id)
         {
             return _foodService.GetById(id);
         }
@@ -48,7 +46,7 @@ namespace NanaFoodApi.Controllers
             return null;
         }
 
-        [HttpDelete("{id:int}")]
+        [HttpDelete("delete/{id:int}")]
         public ResponseDto Delete([FromRoute] int id)
         {
             return _foodService.Delete(id);
@@ -86,7 +84,7 @@ namespace NanaFoodApi.Controllers
             return _foodService.TopViewed(page, pageSize);
         }
 
-        [HttpPut]
+        [HttpPut("update")]
         public ResponseDto Update([FromBody] ProductDto productDto)
         {
             if (ModelState.IsValid)

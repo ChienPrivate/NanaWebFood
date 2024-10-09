@@ -1,55 +1,120 @@
-﻿@{
-    Layout = "_AdminLayout";
+﻿@using Syncfusion.EJ2
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    
 }
+@model NanaFoodWeb.Models.Dto.ProductDto
+<div id="wrapper">
 
-    <div id="wrapper">
-        
-        <!-- Main Content -->
-        <div id="content-wrapper" class="d-flex flex-column">
-            <div id="content">
-                <div class="container-fluid">
-                    <h1 class="h3 mb-4 text-gray-800">Add Product</h1>
-                <form id="addProductForm" asp-action="Create" asp-controller="Products">
-                        <div class="form-group">
-                            <label for="productName">Product Name</label>
-                            <input type="text" class="form-control" id="productName" placeholder="Enter product name">
+    <!-- Main Content -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content">
+            <div class="container-fluid">
+                <h1 class="h3 mb-4 text-gray-800">Add Product</h1>
+                <form id="addProductForm" asp-action="Create" asp-controller="Products" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label asp-for="ProductName">Product Name</label>
+                        <input type="text" class="form-control" asp-for="ProductName" placeholder="Enter product name">
+                        <span asp-validation-for="ProductName" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="CategoryId">Category</label>
+                        <input type="text" class="form-control" asp-for="CategoryId" placeholder="Enter Category">
+                        <span asp-validation-for="CategoryId" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Price">Price</label>
+                        <input type="number" class="form-control" asp-for="Price" placeholder="Enter product price">
+                        <span asp-validation-for="Price" class="text-danger"></span>
+                    </div>
+
+                    <!-- Sửa đổi phần chọn ảnh -->
+                    <div class="form-group">
+                        <label asp-for="ImageUrl">Select Image</label>
+                        <input type="text" class="form-control" asp-for="ImageUrl" placeholder="IMG">
+                        <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Description">Description</label>
+                        <textarea class="form-control" asp-for="Description" placeholder="Enter product description"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    @* <div class="form-group">
+                        <label asp-for="IsActive"></label>
+                        <input asp-for="IsActive" class="form-check-input" type="checkbox" id="productIsActive" />
+                        <span asp-validation-for="IsActive" class="text-danger"></span>
+                    </div> *@
+                    <div class="form-group mb-2 mt-2">
+                        <label>Trạng thái</label>
+                        <div class="d-flex align-items-center">
+                            <div>
+                                @{
+                                    var IsActive = true ? "true" : "false";
+                                }
+                                @Html.EJS().Switch("Switch").Checked(Model.IsActive).Value(IsActive).Name("IsActive").Change("onSwitchChange").Render()
+                            </div>
+                            <h5 class="ms-2">
+                                <span id="badgeStatus" class="badge @(Model.IsActive ? "bg-success" : "bg-secondary")">
+                                    @(Model.IsActive ? "Hoạt động" : "Vô hiệu")
+                                </span>
+                            </h5>
                         </div>
-                        <div class="form-group">
-                            <label for="productCategory">Category</label>
-                            <select class="form-control" id="productCategory">
-                                <option value="Category 1">Category 1</option>
-                                <option value="Category 2">Category 2</option>
-                                <option value="Category 3">Category 3</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="productPrice">Price</label>
-                            <input type="number" class="form-control" id="productPrice" placeholder="Enter product price">
-                        </div>
-                        <button type="submit" class="btn btn-primary">Add Product</button>
-                        <a href="@Url.Action("Index", "Products")" class="btn btn-secondary">Cancel</a>
-                    </form>
-                </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg px-4 mr-2">Add Product</button>
+                    <a href="@Url.Action("Index", "Products")" class="btn btn-secondary">Cancel</a>
+                </form>
             </div>
         </div>
     </div>
+</div>
 
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-    <script src="js/sb-admin-2.min.js"></script>
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="js/sb-admin-2.min.js"></script>
 
-    <script>
 
-        $('#addProductForm').on('submit', function (e) {
-            e.preventDefault();
-            const productName = $('#productName').val();
-            const productCategory = $('#productCategory').val();
-            const productPrice = $('#productPrice').val();
+<style>
+    .e-switch-wrapper .e-switch-handle.e-switch-active {
+        background-color: #ffffff !important; /* Màu xanh lá cây */
+    }
 
-            alert('Product added: ' + productName + ', ' + productCategory + ', $' + productPrice);
+    .e-switch-wrapper .e-switch-on {
+        background-color: #28a745 !important; /* Màu xanh lá cây */
+    }
 
-            window.location.href = 'products.html';
-        });
-    </script>
+</style>
+
+@* script cho switch file EJS2 *@
+<script>
+    function onSwitchChange(args) {
+        var badgeElement = $('#badgeStatus');
+        if (args.checked) {  // Kiểm tra trạng thái bật/tắt của switch
+            badgeElement.text('Hoạt động');
+            badgeElement.removeClass('bg-secondary').addClass('bg-success');
+        } else {
+            badgeElement.text('Vô hiệu');
+            badgeElement.removeClass('bg-success').addClass('bg-secondary');
+        }
+    }
+</script>
+
+
+<script>
+
+    $('#addProductForm').on('submit', function (e) {
+        e.preventDefault();
+        const productName = $('#productName').val();
+        const productCategory = $('#productCategory').val();
+        const productPrice = $('#productPrice').val();
+
+        alert('Product added: ' + productName + ', ' + productCategory + ', $' + productPrice);
+
+        window.location.href = 'products.html';
+    });
+</script>
+
 
