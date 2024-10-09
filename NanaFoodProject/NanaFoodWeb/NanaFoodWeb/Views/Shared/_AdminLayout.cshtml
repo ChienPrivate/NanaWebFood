@@ -9,6 +9,11 @@
     <meta name="author" content="">
     <title>@ViewData["Title"] - NanaFoodWeb</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <!-- Syncfusion ASP.NET Core controls styles -->
+    <link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/27.1.48/material.css" />
+    
+
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/NanaFoodWeb.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
@@ -19,7 +24,11 @@
     <!-- CSS Toastr -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
     <!-- Custom styles for this template-->
-    <link href="~/template/css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="~/template/css/sb-admin-2.min.css" rel="stylesheet asp-append-version=" true"">
+    <link href="~/css/ejs2.css" rel="stylesheet" asp-append-version="true" />
+
+    <!-- Syncfusion ASP.NET Core controls scripts -->
+    <script src="https://cdn.syncfusion.com/ej2/27.1.48/dist/ej2.min.js"></script>
 </head>
 
  <body id="page-top">
@@ -425,7 +434,6 @@
     <script src="~/js/Template/js/demo/chart-area-demo.js"></script>
     <script src="~/js/demo/chart-area-demo.js"></script>
     <script src="~/js/Template/js/demo/chart-pie-demo.js"></script>
-    <script src="~/js/Template/js/demo/chart-pie-demo.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
@@ -435,7 +443,13 @@
     <script src="~/vendor/jquery-easing/jquery.easing.min.js"></script>
     <script src="~/js/sb-admin-2.min.js"></script>
 
+    <script src="~/template/vendor/jquery/jquery.min.js"></script>
+    <script src="~/template/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+
     @await RenderSectionAsync("Scripts", required: false)
+
+    <ejs-scripts></ejs-scripts>
 </body>
 
 

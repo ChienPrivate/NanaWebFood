@@ -46,7 +46,8 @@ namespace NanaFoodWeb.Controllers
         [HttpGet("Create")]
         public ActionResult Create()
         {
-            return View();
+            var categories = new CategoryDto();
+            return View(categories);
         }
         // POST: Category/Create
         [HttpPost("Create")]
