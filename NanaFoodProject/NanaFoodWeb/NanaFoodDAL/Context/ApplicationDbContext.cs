@@ -38,7 +38,7 @@ namespace NanaFoodDAL.Context
                 new IdentityRole()
                 {
                     Name = "customer",
-                    NormalizedName = "CUSTOMER"
+                    NormalizedName = "CUSTOMER",
                 }
             };
             builder.Entity<IdentityRole>().HasData(roles);

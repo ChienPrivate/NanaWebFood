@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using NanaFoodWeb.IRepository;
+using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
 
@@ -15,10 +16,10 @@ namespace NanaFoodWeb.CallAPICenter
             using (HttpClient client = new HttpClient())
             {
                 //HttpContent httpContent = new StringContent(JsonConvert.SerializeObject(requestData), Encoding.UTF8, "application/json");
-
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                client.DefaultRequestHeaders.TryAddWithoutValidation("x-token", token);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                /*client.DefaultRequestHeaders.TryAddWithoutValidation("x-token", token);*/
                 string domain = URLAPI + apiName;
                 try
                 {
@@ -49,7 +50,7 @@ namespace NanaFoodWeb.CallAPICenter
 
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
                 //client.DefaultRequestHeaders.TryAddWithoutValidation("x-token", token);
                 string domain = URLAPI + apiName;
@@ -81,7 +82,7 @@ namespace NanaFoodWeb.CallAPICenter
 
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                client.DefaultRequestHeaders.TryAddWithoutValidation("x-token", token);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 string domain = URLAPI + apiName;
                 try
                 {
@@ -111,7 +112,7 @@ namespace NanaFoodWeb.CallAPICenter
 
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                client.DefaultRequestHeaders.TryAddWithoutValidation("x-token", token);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 string domain = URLAPI + apiName;
                 try
                 {

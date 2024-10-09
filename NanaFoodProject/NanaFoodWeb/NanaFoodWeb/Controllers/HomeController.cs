@@ -1,31 +1,51 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NanaFoodWeb.Extensions;
+using NanaFoodWeb.IRepository;
 using NanaFoodWeb.Models;
 using System.Diagnostics;
 
 namespace NanaFoodWeb.Controllers
 {
+    [ExcludeAdmin]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly ITokenProvider _tokenProvider;
+        public HomeController(ILogger<HomeController> logger, ITokenProvider tokenProvider)
         {
             _logger = logger;
+            _tokenProvider = tokenProvider;
         }
 
+        [AllowAnonymous]
         public IActionResult Index()
         {
+            var token = _tokenProvider.GetToken();
+
+            if ( token != null )
+            {
+                var role = _tokenProvider.ReadToken("role", token);
+                if (role == "admin")
+                {
+                    return RedirectToAction("Index", "DashBoard");
+                }
+            }
+
             return View();
         }
+
 
         public IActionResult About() 
         {
             return View();
         }
+
         public IActionResult Discount()
         {
             return View();
         }
+
         public IActionResult Contact()
         {
             return View();

@@ -8,35 +8,39 @@
     <!-- Main Content -->
     <div id="content-wrapper" class="d-flex flex-column">
         <div id="content">
-            <div>
-                <form asp-action="Index" method="get" class="form-inline my-2 my-lg-0">
-                    <div class="input-group">
-                        <input type="text" class="form-control" name="searchQuery" value="@ViewBag.CurrentFilter" placeholder="Search by category name..." aria-label="Search" />
-                        <div class="input-group-append">
-                            <button class="btn btn-outline-primary" type="submit">Search</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
             <div class="container-fluid">
                 <h1 class="h3 mb-4 text-gray-800">Category List</h1>
+                @* <a href="add-product.html" class="btn btn-primary mb-3">Add Product</a> *@
                 <p>
                     <a asp-action="Create" class="btn btn-primary mb-3" asp-controller="Categories">Add Category</a>
                 </p>
+                
                 <div class="card shadow">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Categories</h6>
+                        <div class="d-flex align-items-md-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">Categories</h6>
+                            <div>
+                                <form asp-action="Index" method="get" class="form-inline my-2 my-lg-0">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="searchQuery" value="@ViewBag.CurrentFilter" placeholder="Nhập tên danh mục" aria-label="Search" />
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-primary" type="submit">Search</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-bordered">
                                 <thead>
                                     <tr>
-                                        <th>Category ID</th>
-                                        <th>Category Name</th>
-                                        <th>Description</th>
-                                        <th>Image</th>
-                                        <th>Actions</th>
+                                        <th>Mã danh mục</th>
+                                        <th>Tên danh mục</th>
+                                        <th>Mô tả</th>
+                                        <th>Hình ảnh</th>
+                                        <th>Tùy chọn</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -46,16 +50,77 @@
                                             <td>@item.CategoryId</td>
                                             <td>@item.CategoryName</td>
                                             <td>@item.Description</td>
-                                            <td>@item.ImageUrl</td>
-                                           
+                                            <td>
+                                                <img src="@item.CategoryImage" style="width:10rem" />
+                                            </td>
                                             <td>
                                                 <a class="btn btn-warning btn-sm" asp-action="Edit" asp-controller="Categories" asp-route-id="@item.CategoryId">Edit</a>
-                                                <a class="btn btn-warning btn-sm" asp-action="Details" asp-controller="Categories" asp-route-id="@item.CategoryId">Details</a>                                 
-                                                <a class="btn btn-danger btn-sm" asp-controller="Categories" asp-action="Delete" asp-route-id="@item.CategoryId">Delete</a>
+                                                <a class="btn btn-warning btn-sm" asp-action="Details" asp-controller="Categories" asp-route-id="@item.CategoryId">Details</a>
+
+                                                <!-- Nút Xóa với data-bs-target duy nhất -->
+                                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal-@item.CategoryId">
+                                                    Xóa danh mục
+                                                </button>
+
+                                                <!-- Modal với ID duy nhất cho từng danh mục -->
+                                                <div class="modal fade" id="deleteModal-@item.CategoryId" tabindex="-1" aria-labelledby="deleteModalLabel-@item.CategoryId" aria-hidden="true">
+                                                    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h1 class="modal-title fs-5" id="deleteModalLabel-@item.CategoryId">Bạn có chắc chắn xóa danh mục này ?</h1>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+
+                                                                <div class="mb-2 mt-2">
+                                                                    <div class="row">
+                                                                        <div class="col-md-8">
+                                                                            <label>Mã danh mục:</label>
+                                                                            <input asp-for="@item.CategoryId" class="form-control" readonly />
+                                                                        </div>
+                                                                        <div class="col-md-4">
+                                                                            <label>Trạng thái</label>
+                                                                            <div>
+                                                                                <label class="switch">
+                                                                                    <input asp-for="@item.IsActive" type="checkbox">
+                                                                                    <span class="slider"></span>
+                                                                                </label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="mb-2 mt-2">
+                                                                    <label>Tên danh mục:</label>
+                                                                    <input asp-for="@item.CategoryName" class="form-control" readonly />
+                                                                </div>
+                                                                <div class="mb-2 mt-2">
+                                                                    <label>Mô tả:</label>
+                                                                    <textarea asp-for="@item.Description" class="form-control" rows="5" readonly></textarea>
+                                                                </div>
+                                                                <div class="mb-2 mt-2">
+                                                                    <label>Hình ảnh: </label>
+                                                                    <div class="rounded-3 bg-body-tertiary shadow w-50 shadow-sm">
+                                                                        <img class="rounded-3" style="width:100%"
+                                                                             src="https://cdn.nhathuoclongchau.com.vn/unsafe/800x0/filters:quality(95)/https://cms-prod.s3-sgn09.fptcloud.com/vitamin_b_co_trong_thuc_pham_nao_1_bc12b90d9d.jpg" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <form method="post">
+                                                                    <button type="submit" class="btn btn-danger" asp-controller="Categories" asp-action="Delete" asp-route-id="@item.CategoryId">Xóa</button>
+                                                                </form>
+                                                                <form>
+                                                                    <button type="submit" class="btn btn-warning">Vô hiệu hóa</button>
+                                                                </form>
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
                                     }
-                                    
+
                                 </tbody>
                             </table>
                         </div>

@@ -26,6 +26,10 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = D:\DATN\NanaWebFood\NanaFoodProject\NanaFoodWeb\NanaFoodWeb
 build_property._RazorSourceGeneratorDebug = 
 
+[D:/DATN/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Auth/AccessDenied.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aFxBY2Nlc3NEZW5pZWQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/DATN/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Auth/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aFxMb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -56,10 +60,6 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/DATN/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Categories/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdvcmllc1xFZGl0LmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/DATN/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Categories/Index - Copy.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdvcmllc1xJbmRleCAtIENvcHkuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/DATN/NanaWebFood/NanaFoodProject/NanaFoodWeb/NanaFoodWeb/Views/Categories/Index.cshtml]
