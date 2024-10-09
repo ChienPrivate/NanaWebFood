@@ -11,14 +11,7 @@
         <div id="content">
             <div class="container-fluid">
                 <h1 class="h3 mb-4 text-gray-800">Add Category</h1>
-                @* <form id="addCategoryForm" asp-action="Create" asp-controller="Categories">
-                    <div class="form-group">
-                        <label for="categoryName">Category Name</label>
-                        <input type="text" class="form-control" id="categoryName" placeholder="Enter category name" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Add Category</button>
-                    <a href="@Url.Action("Index", "Categories")" class="btn btn-secondary">Cancel</a>
-                </form> *@
+                
                 <form asp-action="Create" asp-controller="Categories" method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
@@ -26,7 +19,16 @@
                         <input asp-for="CategoryName" class="form-control" />
                         <span asp-validation-for="CategoryName" class="text-danger"></span>
                     </div>
-
+                    <div class="form-group form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" asp-for="ImageUrl" /> @Html.DisplayNameFor(model => model.ImageUrl)
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Description" class="control-label"></label>
+                        <input asp-for="Description" class="form-control" />
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
                     <div class="form-group form-check">
                         <label class="form-check-label">
                             <input class="form-check-input" asp-for="IsActive" checked /> @Html.DisplayNameFor(model => model.IsActive)

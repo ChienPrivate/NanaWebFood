@@ -4,7 +4,46 @@
     ViewData["Title"] = "Details";
 }
 
+
 <div id="wrapper">
+
+    <!-- Main Content -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content">
+            <div class="container-fluid">
+                <h1 class="h3 mb-4 text-gray-800">Category Details</h1>
+                <div class="card shadow">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary" id="category-name">@Html.DisplayFor(model => model.CategoryName)</h6>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Category Name:</strong> <span id="category-name">@Html.DisplayFor(model => model.CategoryName)</span></p>
+                        <p><strong>Description:</strong> <span id="description">@Html.DisplayFor(model => model.Description)</span></p>
+                        <p><strong>Image:</strong> <span id="image">@Html.DisplayFor(model => model.ImageUrl)</span></p>
+                        <p>
+                            <strong>  </strong> <span >
+                                @if (Model.IsActive)
+                                {
+                                    <input class="form-check-input" asp-for="IsActive" checked /> @Html.DisplayNameFor(model => model.IsActive)
+                                }
+
+                                else
+                                {
+                                    <input class="form-check-input" asp-for="IsActive"/> @Html.DisplayNameFor(model => model.IsActive)
+
+                                }
+
+                            </span>
+                        </p>
+                        <a asp-action="Edit" asp-controller="Categories" class="btn btn-primary" asp-route-id="@Model?.CategoryId">Edit</a>
+                        <a href="@Url.Action("Index", "Users")" class="btn btn-secondary">Back to Users</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@* <div id="wrapper">
     
     <!-- Main Content -->
     <div id="content-wrapper" class="d-flex flex-column">
@@ -13,11 +52,10 @@
                 <h1 class="h3 mb-4 text-gray-800">Category Details</h1>
                 <div class="card shadow">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Details of Category: </h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Details of Categoryyyyy: </h6>
                     </div>
                     <div class="card-body">
                         <div class="row g-4">
-
                             <dl class="row">
                                 <dt class="col-sm-2">
                                     @Html.DisplayNameFor(model => model.CategoryName)
@@ -33,7 +71,10 @@
                                     @Html.DisplayFor(model => model.IsActive)
                                 </dd>
                             </dl>
-                        </div>
+                        </div> 
+                         <p><strong>Category Name:</strong> <span id="product-id">@Html.DisplayFor(model => model.CategoryName)</span></p>
+                        <p><strong>Description:</strong> <span id="product-description"></span></p>                        <p><strong>Image:</strong> <span id="product-price"></span></p>
+                        <p><strong>Image:</strong> <span id="product-price"></span></p> 
                         <div class="row g-4">
                             <a asp-action="Edit" asp-controller="Categories" asp-route-id="@Model?.CategoryId">Edit</a> 
                             <a asp-action="Index">Back to List</a>
@@ -44,33 +85,9 @@
         </div>
     </div>
 </div>
-
+ *@
 <script src="vendor/jquery/jquery.min.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 <script src="js/sb-admin-2.min.js"></script>
 
-@* <script>
-
-    function getCategoryDetails(id) {
-        const categories = [
-            { id: 1, name: 'Category 1', description: 'This is category 1 description.' },
-            { id: 2, name: 'Category 2', description: 'This is category 2 description.' },
-            { id: 3, name: 'Category 3', description: 'This is category 3 description.' }
-        ];
-
-        const category = categories.find(cat => cat.id == id);
-        if (category) {
-            document.getElementById('categoryId').textContent = category.id;
-            document.getElementById('categoryName').value = category.name;
-            document.getElementById('categoryDescription').value = category.description;
-        } else {
-            alert('Category not found!');
-        }
-    }
-
-    const urlParams = new URLSearchParams(window.location.search);
-    const categoryId = urlParams.get('id');
-
-    getCategoryDetails(categoryId);
-</script> *@
