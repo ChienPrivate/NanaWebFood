@@ -52,7 +52,9 @@
                                             <td>@item.CategoryName</td>
                                             <td>@item.Description</td>
                                             <td>
-                                                <img src="@item.CategoryImage" style="width:10rem" />
+                                                <div class="text-center">
+                                                    <img class="d-block mx-auto rounded-2" src="@item.CategoryImage" style="width:10rem" />
+                                                </div>
                                             </td>
                                             <td>
                                                 <a class="btn btn-warning btn-sm" asp-action="Edit" asp-controller="Categories" asp-route-id="@item.CategoryId">Edit</a>

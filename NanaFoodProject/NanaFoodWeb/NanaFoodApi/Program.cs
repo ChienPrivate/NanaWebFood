@@ -151,6 +151,7 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IAuthenRepo, AuthenRepo>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<EmailPoster>();
+builder.Services.AddScoped<CloudinaryService>();
 
 // Config các IService và Service ở chỗ này ↑
 

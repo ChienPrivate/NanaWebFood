@@ -5,10 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using CloudinaryDotNet.Actions;
 using CloudinaryDotNet;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Components.Forms;
 
 namespace NanaFoodDAL.Helper
 {
-    internal class CloudinaryService
+    public class CloudinaryService
     {
         // kích thước tối đa hình ảnh 10 * 1024 * 1024 = 10 mb
         private readonly Cloudinary _cloudinary;
@@ -22,8 +24,11 @@ namespace NanaFoodDAL.Helper
             _cloudinary = new Cloudinary(account);
         }
 
-        public async Task<string> UploadImageAsync(Stream imageStream, string fileName)
+        public async Task<string> UploadImageAsync(IFormFile file)
         {
+            using var imageStream  = file.OpenReadStream();
+            string fileName = file.Name;
+
             var UploadParam = new ImageUploadParams
             {
                 File = new FileDescription(fileName, imageStream),

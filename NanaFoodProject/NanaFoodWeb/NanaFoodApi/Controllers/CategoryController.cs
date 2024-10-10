@@ -70,6 +70,8 @@ namespace NanaFoodApi.Controllers
             var category = new Category
             {
                 CategoryName = categoryDto.CategoryName,
+                Description = categoryDto.Description,
+                CategoryImage = categoryDto.CategoryImage,
                 IsActive = categoryDto.IsActive
             };
 

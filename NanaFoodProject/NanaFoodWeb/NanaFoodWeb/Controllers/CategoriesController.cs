@@ -1,5 +1,6 @@
 ﻿using Azure;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using NanaFoodDAL.IRepository;
 using NanaFoodDAL.Model;
 using NanaFoodWeb.CallAPICenter;
@@ -18,12 +19,16 @@ namespace NanaFoodWeb.Controllers
         private readonly CallApiCenter _callAPICenter;
         private readonly ConvertHelper _convertHelper;
         private readonly ITokenProvider _tokenProvider;
+        private readonly IHelperRepository _helperRepository;
         //private readonly ICategoryRepo _categoryRepo;
-        public CategoriesController(ITokenProvider tokenProvider) 
+        public CategoriesController(
+            ITokenProvider tokenProvider,
+            IHelperRepository helperRepository) 
         {
             _callAPICenter = new CallApiCenter();
             _convertHelper= new ConvertHelper();
             _tokenProvider = tokenProvider;
+            _helperRepository = helperRepository;
             //_categoryRepo = categoryRepo;
         }
         [HttpGet("Index")]
@@ -51,11 +56,29 @@ namespace NanaFoodWeb.Controllers
         }
         // POST: Category/Create
         [HttpPost("Create")]
-        public async Task<ActionResult> Create(CategoryDto category)
+        public async Task<ActionResult> Create(CategoryDto category, IFormFile UploadFile)
         {
+
+            if (UploadFile != null && UploadFile.Length > 0)
+            {
+                // Gọi service để upload hình ảnh
+                var uploadResponse = await _helperRepository.UploadImageAsync(UploadFile);
+
+                var imageUrl = uploadResponse.Result?.ToString() ?? "Tải ảnh lên thất bại";
+
+                if (!string.IsNullOrEmpty(imageUrl))
+                {
+                    // Gắn URL của hình ảnh vào model
+                    category.CategoryImage = imageUrl;
+                }
+            }
+
             if (ModelState.IsValid)
             {
                 var token = _tokenProvider.GetToken();
+
+
+                
                 string apiName = "Category";
                 ResponseDto respone = await _callAPICenter.PostMethod<ResponseDto>(category,apiName, token);
                 if (respone.IsSuccess)
