@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 using NanaFoodWeb.IRepository;
 using NanaFoodWeb.Models;
 using NanaFoodWeb.Models.Dto;
@@ -151,6 +152,30 @@ namespace NanaFoodWeb.Controllers
             TempData["error"] = message;
             return View();
         }
+
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword(string email)
+        {
+            var response = await _authRepo.ForgotPassword(email);
+            string message = response.Message?.ToString() ?? "Có lỗi xảy ra";
+            if (response != null && response.IsSuccess == true)
+            {
+                return RedirectToAction("ForgotPasswordConfirmation");
+            }
+                ModelState.AddModelError("Email", message);
+                return View();
+        }
+
+        public IActionResult ForgotPasswordConfirmation()
+        {
+            return View();
+        }
+
 
         [HttpPost]
         public IActionResult GitHubLogin()

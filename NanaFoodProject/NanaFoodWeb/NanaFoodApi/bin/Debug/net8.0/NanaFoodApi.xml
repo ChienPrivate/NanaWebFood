@@ -78,6 +78,22 @@
             <response code="401">Không được ủy quyền bởi tài khoản GitHub</response>
             <response code="500">Có lỗi xảy ra từ phía server.</response>
         </member>
+        <member name="M:NanaFoodApi.Controllers.AuthController.ForgotPassword(System.String)">
+            <summary>
+            Người dùng lấy lại mật khẩu
+            </summary>
+            <remarks>
+            API này cho phép người dùng yêu cầu cung cấp 1 mật khẩu mới tới email
+            </remarks>
+            <param name="email">Email của tài khoản cần lấy lại mật khẩu</param>
+            <returns>
+            - Nếu thành công, trả về mã trạng thái 200 OK và thông báo "Mật khẩu mới đã được gửi về email của bạn"
+            - Nếu thất bại, trả về mã lỗi 400 BadRequest với mô tả lỗi cụ thể.
+            </returns>
+            <response code="200">Gửi mật khẩu mới vào email</response>
+            <response code="400">Yêu cầu không hợp lệ hoặc không gửi được email.</response>
+            <response code="500">Có lỗi xảy ra từ phía server.</response>
+        </member>
         <member name="T:NanaFoodApi.Migrations.init">
             <inheritdoc />
         </member>

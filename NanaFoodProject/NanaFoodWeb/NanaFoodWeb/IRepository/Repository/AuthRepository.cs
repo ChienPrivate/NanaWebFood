@@ -2,6 +2,7 @@
 using NanaFoodWeb.Models;
 using NanaFoodWeb.Models.Dto;
 using NanaFoodWeb.Utility;
+using NuGet.Protocol.Plugins;
 
 namespace NanaFoodWeb.IRepository.Repository
 {
@@ -23,6 +24,15 @@ namespace NanaFoodWeb.IRepository.Repository
             {
                 ApiType = StaticDetails.ApiType.GET,
                 Url = StaticDetails.APIBase + "/api/Auth/CheckEmailConfirm"
+            });
+        }
+
+        public async Task<ResponseDto> ForgotPassword(string email)
+        {
+            return await _baseService.SendAsync(new RequestDto()
+            {
+                ApiType = StaticDetails.ApiType.POST,
+                Url = StaticDetails.APIBase + $"/api/Auth/ForgotPassword/{email}"
             });
         }
 

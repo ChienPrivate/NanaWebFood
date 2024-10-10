@@ -135,7 +135,7 @@ namespace NanaFoodDAL.Helper
 ";
         }
 
-        public string EmailForgorPasswordTemplate(string content)
+        public string EmailForgorPasswordTemplate(string password)
         {
             return $@"<!DOCTYPE html>
 <html lang=""en"">
@@ -231,7 +231,7 @@ namespace NanaFoodDAL.Helper
             <hr>
         </div>
         <div class=""text-center bg-white fs-1 content-container"">
-            <h2>{content}</h2>
+            <h2>{password}</h2>
         </div>
     </div>
 
