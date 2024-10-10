@@ -43,82 +43,95 @@ namespace NanaFoodDAL.Helper
         {
             return $@"
 <!DOCTYPE html>
-<html lang=""en"">
+<html>
   <head>
-    <meta charset=""UTF-8"" />
-    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"" />
-    <title>Xác nhận email</title>
+    <meta charset=""utf-8"" />
     <style>
       body {{
-        font-family: ""Arial"", sans-serif;
+        font-family: Arial, sans-serif;
         margin: 0;
         padding: 0;
         background-color: #f4f4f4;
       }}
-
-      .card {{
-        max-width: 600px;
-        margin: 0 auto;
+      .container {{
+        background-color: #ffffff;
+        width: 80%;
+        max-width: 6000px;
+        margin: 20px auto;
         padding: 20px;
-        background-color: #fff;
-        border-radius: 8px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        text-align: center;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       }}
 
       .header {{
+        background-color: #f7d200;
+        padding: 10px 20px;
+        text-align: center;
         font-size: 24px;
-        color: #333;
-        margin-bottom: 20px;
+        font-weight: bold;
       }}
 
-      .body {{
-        margin-bottom: 20px;
-      }}
-
-      p {{
+      .content {{
+        padding: 20px;
+        text-align: center;
         line-height: 1.6;
-        color: #555;
       }}
 
+      .footer {{
+        background-color: #eeeeee;
+        padding: 10px 20px;
+        text-align: center;
+        font-size: 12px;
+      }}
+
+      .confirmation-code {{
+        text-align: left;
+        font-size: 15px;
+        color: #333;
+        margin: 20px 0;
+        padding: 10px;
+        min-width: 200px;
+        display: inline-block;
+      }}
       .button {{
         display: inline-block;
         padding: 12px 25px;
-        background-color: #007bff;
-        color: #fff;
+        background-color: #f7d200;
+        color: #141414;
         text-decoration: none;
         border-radius: 5px;
         font-weight: bold;
         transition: background-color 0.3s ease;
+        display: flex;
+        justify-content: center;
       }}
 
       .button:hover {{
-        background-color: #0056b3;
-      }}
-
-      .footer {{
-        font-size: 0.8em;
-        color: #888;
+        background-color: #d8ca09;
       }}
     </style>
   </head>
+
   <body>
-    <div class=""card"">
-      <div class=""header"">Chào mừng đến với <strong>NanaFood</strong></div>
-      <div class=""body"">
-        <p>Xin chào <strong>{name}</strong>,</p>
-        <p>
+    <div class=""container"">
+      <div class=""header"">Chào mừng đến với NanaFood</div>
+      <div class=""content"">
+        <i>Xin chào </i><strong>{name}</strong>
+        <i style=""margin: 0; display: block"">
           Cảm ơn bạn đã đăng ký tài khoản với chúng tôi. Để hoàn tất quá trình
           đăng ký, vui lòng nhấp vào liên kết xác nhận bên dưới
-        </p>
-        <a href=""{content}"" class=""button"">Xác nhận email</a>
+        </i>
+        <div class=""confirmation-code"">
+          <a href=""{content}"" class=""button"">Xác nhận email</a>
+        </div>
       </div>
       <div class=""footer"">
-        Nếu bạn không yêu cầu xác nhận email này, vui lòng bỏ qua email này.
+        Đây là email tự động, vui lòng không trả lời. Nếu bạn cần hỗ trợ, xin
+        vui lòng liên hệ sử dụng chức năng hỗ trợ trong ứng dụng.
       </div>
     </div>
   </body>
 </html>
+
 ";
         }
 
