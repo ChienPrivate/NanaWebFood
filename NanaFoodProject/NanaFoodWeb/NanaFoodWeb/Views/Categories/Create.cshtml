@@ -12,7 +12,7 @@
         <div id="content">
             <div class="container-fluid">
                 <h1 class="h3 mb-4 text-gray-800">Add Category</h1>
-                <form asp-action="Create" asp-controller="Categories" method="post">
+                <form asp-action="Create" asp-controller="Categories" method="post" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
                         <label asp-for="CategoryName" class="control-label"></label>
@@ -32,7 +32,10 @@
                         <label>Trạng thái</label>
                         <div class="d-flex align-items-center">
                             <div>
-                                @Html.EJS().Switch("Switch").Checked().Value(Model.IsActive.ToString()).Change("onSwitchChange").Render()
+                                @{
+                                    var IsActive = true ? "true" : "false";
+                                }
+                                @Html.EJS().Switch("Switch").Checked(Model.IsActive).Value(IsActive).Name("IsActive").Change("onSwitchChange").Render()
                             </div>
                             <h5 class="ms-2">
                                 <span id="badgeStatus" class="badge @(Model.IsActive ? "bg-success" : "bg-secondary")">
@@ -48,13 +51,18 @@
                                 <div id='dropArea' style='height: auto;'>
                                     <span id='drop'> Chọn hoặc kéo thả hình ảnh của bạn tại đây <a href='' id='browse'><u>Browse</u></a> </span>
                                     @Html.EJS().Uploader("UploadFiles").DropArea(".control-fluid").AllowedExtensions(".jpg,.png,.jpeg").Selected("onSelect").Success("onUploadSuccess").Progress("onFileUpload").Removing("onFileRemove").Failure("onUploadFailed").AsyncSettings(new Syncfusion.EJ2.Inputs.UploaderAsyncSettings { SaveUrl = @Url.Content("https://services.syncfusion.com/aspnet/production/api/FileUploader/Save"), RemoveUrl = @Url.Content("https://services.syncfusion.com/aspnet/production/api/FileUploader/Remove") }).Render()
+                                    @* <input asp-for="CategoryImage"  type="file" hidden id="CategoryImageInput" name="UploadFile" value="@Model.CategoryImage" />
+                                    <span asp-validation-for="CategoryImage" class="text-danger"></span> *@
+                                    <input type="file" id="hiddenFileInput" name="UploadFile" style="display:none;" />
+@*                                     <input asp-for="CategoryImage" type="hidden" id="CategoryImageInput" name="CategoryImage" value="@Model.CategoryImage" />
+                                    <span asp-validation-for="CategoryImage" class="text-danger"></span> *@
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-4 mt-2 property-section">
                             <div class="" id="property" title="Properties">
-                                @Html.EJS().Button("clearbtn").CssClass("e-btn e-css").Content("Clear All").Render()
-                                @Html.EJS().Button("uploadbtn").CssClass("e-btn e-css").Content("Upload All").Render()
+                                @Html.EJS().Button("clearbtn").CssClass("e-btn e-css").Content("Xóa ảnh").Render()
+                                @Html.EJS().Button("uploadbtn").CssClass("e-btn e-css").Content("Upload ảnh").Render()
                             </div>
                         </div>
                     </div>
@@ -70,47 +78,19 @@
     </div>
 </div>
 
-<script src="vendor/jquery/jquery.min.js"></script>
-<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-<script src="js/sb-admin-2.min.js"></script>
-
 <script src="~/template/vendor/jquery/jquery.min.js"></script>
+<script src="~/template/vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="~/js/template/js/sb-admin-2.min.js"></script>
+<script src="~/template/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-<style>
-    .e-switch-wrapper .e-switch-handle.e-switch-active {
-        background-color: #ffffff !important; /* Màu xanh lá cây */
-    }
-
-    .e-switch-wrapper .e-switch-on {
-        background-color: #28a745 !important; /* Màu xanh lá cây */
-    }
-
-
-</style>
-
-@* script cho switch file EJS2 *@
+@*ES2 kéo thả hình ảnh *@
 <script>
-    function onSwitchChange(args) {
-        var badgeElement = $('#badgeStatus');
-        if (args.checked) {  // Kiểm tra trạng thái bật/tắt của switch
-            badgeElement.text('Hoạt động');
-            badgeElement.removeClass('bg-secondary').addClass('bg-success');
-        } else {
-            badgeElement.text('Vô hiệu');
-            badgeElement.removeClass('bg-success').addClass('bg-secondary');
-        }
-    }
-</script>
-
-
-@* script cho upload file EJS2 *@
-<script>
-
-    document.getElementById('browse').onclick = function () {
-        document.getElementsByClassName('e-file-select-wrap')[0].querySelector('button').click();
-        return false;
-    };
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('browse').onclick = function () {
+            document.getElementsByClassName('e-file-select-wrap')[0].querySelector('button').click();
+            return false;
+        };
+    });
     document.getElementById('clearbtn').onclick = function () {
         if (!ej.base.isNullOrUndefined(document.getElementById('dropArea').querySelector('ul'))) {
             var uploadObj = document.getElementById("UploadFiles").ej2_instances[0]
@@ -121,6 +101,8 @@
             uploadObj.element.value = '';
         }
     };
+
+    document.getElementById("uploadbtn").style.visibility = "hidden";
     document.getElementById('uploadbtn').onclick = function () {
         var uploadObj = document.getElementById("UploadFiles").ej2_instances[0]
         if (document.getElementById('dropArea').querySelector('ul') && uploadObj.getFilesData().length > 0) {
@@ -133,40 +115,68 @@
     if (ej.base.Browser.isDevice) {
         document.getElementById('drop').style.padding = '0px 10%';
     }
+
     function onSelect(args) {
-        // var uploadObj = document.getElementById("UploadFiles").ej2_instances[0];
+        // Xóa danh sách tệp hiện tại để chỉ giữ một tệp duy nhất
+        if (this.filesData && this.filesData.length > 0) {
+            document.getElementById('dropArea').querySelector('ul').innerHTML = '';
+            this.filesData = [];
+        }
 
-        // Xóa file đã chọn trước đó chỉ trong vùng hình ảnh
-        // if (uploadObj.getFilesData().length > 0) {
-        //     var filesData = uploadObj.getFilesData();  Lấy tất cả các file đã upload
-        //     for (var i = 0; i < filesData.length; i++) {
-        //         removeFiles({ currentTarget: { parentElement: uploadObj.fileList[i] } });  Xóa từng file
-        //     }
-        // }
-
+        // Kiểm tra xem có phần tử li hay không, nếu không thì reset filesData
         if (!document.getElementById('dropArea').querySelector('li')) {
             this.filesData = [];
         }
+
+        // Tạo ul nếu chưa có trong dropArea
         if (ej.base.isNullOrUndefined(document.getElementById('dropArea').querySelector('.e-upload-files'))) {
-            parentElement = ej.base.createElement('ul', { className: 'e-upload-files' });
+            var parentElement = ej.base.createElement('ul', { className: 'e-upload-files' });
             document.getElementsByClassName('e-upload')[0].appendChild(parentElement);
         }
-        var validFiles = validateFiles(args, this.filesData);
-        if (validFiles.length === 0) {
-            args.cancel = true;
-            return;
+
+        // Xử lý trực tiếp các tệp tin trong args.filesData
+        var selectedFiles = args.filesData;
+
+        if (selectedFiles.length > 1) {
+            alert("Bạn chỉ có thể chọn 1 file.");
+            selectedFiles = [selectedFiles[0]]; // Chỉ giữ lại file đầu tiên
         }
-        for (var i = 0; i < validFiles.length; i++) {
-            formSelectedData(validFiles[i], this);
+
+        // Lặp qua các tệp tin đã chọn và xử lý chúng (ví dụ: hiển thị chúng)
+        for (var i = 0; i < selectedFiles.length; i++) {
+            formSelectedData(selectedFiles[i], this);
         }
-        this.filesData = this.filesData.concat(validFiles);
+
+        // Cập nhật danh sách filesData với các tệp tin mới
+        this.filesData = this.filesData.concat(selectedFiles);
         args.cancel = true;
 
+        // Đặt lại giá trị của input để có thể chọn lại tệp tin nếu cần
+        document.querySelector('input[type="file"]').value = '';
+
+        // Gán file vào input file ẩn để submit dưới dạng IFormFile
+        if (selectedFiles.length > 0) {
+            const file = selectedFiles[0].rawFile;
+
+            // Gán file vào input file ẩn
+            const inputFile = document.getElementById('hiddenFileInput'); // Sửa ID nếu cần
+            const dataTransfer = new DataTransfer();
+
+            // Kiểm tra nếu DataTransfer hỗ trợ đầy đủ
+            if (file && inputFile) {
+                dataTransfer.items.add(file);
+                inputFile.files = dataTransfer.files;
+            } else {
+                console.error('File or input not found.');
+            }
+        }
     }
     function validateFiles(args, viewedFiles) {
         var modifiedFiles = [];
         var validFiles = [];
         var isModified = false;
+        var fileName = [];
+
         if (args.event.type === 'drop') {
             isModified = true;
             var allImages = ['png', 'jpg', 'jpeg'];
@@ -226,16 +236,37 @@
     function removeFiles(args) {
         var uploadObj = document.getElementById("UploadFiles").ej2_instances[0]
         var removeFile = this.filesData[this.fileList.indexOf(args.currentTarget.parentElement)];
+        var fileName = args.currentTarget.parentElement.getAttribute('data-file-name');
+        var fileIndex = this.filesData.findIndex(function (file) {
+            return file.name === fileName;
+        });
+        if (fileIndex === -1) {
+            console.error("File không tồn tại trong fileList.");
+            return;
+        }
+
+        var removeFile = this.filesData[fileIndex];
+
+        // Kiểm tra nếu removeFile là undefined
+        if (!removeFile) {
+            console.error("Tệp không tồn tại trong filesData.");
+            return;
+        }
+
         var statusCode = removeFile.statusCode;
+
         if (statusCode === '2') {
             this.remove(removeFile, true);
         } else {
             var li = args.currentTarget.parentElement;
             ej.base.detach(li);
         }
+
         filesName.splice(filesName.indexOf(removeFile.name), 1);
-        this.filesData.splice(this.fileList.indexOf(args.currentTarget.parentElement), 1);
-        this.fileList.splice(this.fileList.indexOf(args.currentTarget.parentElement), 1);
+
+        this.filesData.splice(fileIndex, 1);
+        this.fileList.splice(fileIndex, 1);
+
         uploadObj.element.value = '';
     }
     function onFileUpload(args) {
@@ -293,4 +324,17 @@
             reader.readAsDataURL(file);
         }
     }
-</script>
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+

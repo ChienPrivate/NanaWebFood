@@ -3,6 +3,7 @@ using static NanaFoodWeb.Utility.StaticDetails;
 using System.Net;
 using System.Text;
 using Newtonsoft.Json;
+using System.Net.Http.Headers;
 
 namespace NanaFoodWeb.IRepository.Repository
 {
@@ -33,7 +34,20 @@ namespace NanaFoodWeb.IRepository.Repository
                 }
 
                 message.RequestUri = new Uri(requestDTO.Url);
-                if (requestDTO.Data != null)
+                // Tạo MultipartFormDataContent nếu có file
+                if (requestDTO.Data is IFormFile file)
+                {
+                    var formContent = new MultipartFormDataContent();
+                    var stream = file.OpenReadStream(); // Mở luồng để đọc file
+                    var content = new StreamContent(stream);
+                    content.Headers.ContentType = new MediaTypeHeaderValue(file.ContentType); // Đặt ContentType của file
+
+                    // Thêm file vào nội dung
+                    formContent.Add(content, "file", file.FileName); // "file" là tên tham số trong controller
+
+                    message.Content = formContent; // Gán nội dung cho message
+                }
+                else if (requestDTO.Data != null)
                 {
                     message.Content = new StringContent(JsonConvert.SerializeObject(requestDTO.Data), Encoding.UTF8, "application/json");
                 }
