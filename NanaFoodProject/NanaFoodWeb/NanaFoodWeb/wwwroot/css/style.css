@@ -1,4 +1,4 @@
-
+﻿
 /*** Spinner Start ***/
 #spinner {
     opacity: 0;
@@ -27,6 +27,19 @@
 }
 /*** Spinner End ***/
 
+/*** filter start***/
+.filter-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Đẩy nội dung về bên phải */
+}
+
+.filter-dropdown {
+    width: 150px; /* Chiều rộng của dropdown */
+}
+
+
+/*** filter end***/
 
 /*** Button Start ***/
 .btn {
