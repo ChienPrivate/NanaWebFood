@@ -2,10 +2,16 @@
 using NanaFoodWeb.IRepository.Repository;
 using NanaFoodWeb.IRepository;
 using NanaFoodWeb.Utility;
+using DotNetEnv;
 using System.Diagnostics.Eventing.Reader;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using static System.Environment;
 
 var builder = WebApplication.CreateBuilder(args);
+
+Env.Load();
+string lisense = GetEnvironmentVariable("SyncFusionLisense");
+Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(lisense);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
