@@ -38,5 +38,35 @@ namespace NanaFoodDAL.Helper
 
             return result?.SecureUri.AbsoluteUri;
         }
+
+        public async Task<bool> DeleteImage(string imageUrl)
+        {
+            try
+            {
+                var uri = new Uri(imageUrl);
+                var segments = uri.Segments;
+
+                string publicIdWithExtension = segments[^1];
+                string publicId = Path.GetFileNameWithoutExtension(publicIdWithExtension);
+
+                Console.WriteLine($"Attempting to delete image with PublicId: {publicId}");
+
+                var deletionParams = new DeletionParams(publicId);
+                var result = await _cloudinary.DestroyAsync(deletionParams);
+
+                if (result?.Result == "not found")
+                {
+                    Console.WriteLine($"Image with PublicId '{publicId}' was not found.");
+                    return false; // Hoặc xử lý tùy theo nhu cầu
+                }
+
+                return result?.Result == "ok";
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error deleting image: {ex.Message}");
+                return false;
+            }
+        }
     }
 }

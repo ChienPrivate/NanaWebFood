@@ -15,8 +15,8 @@ namespace NanaFoodDAL.IRepository.Repository
         {
             try
             {
-                var checkNameExist = _context.Categories.Any(c => c.CategoryName == category.CategoryName);
-                if (checkNameExist)
+                var checkNameExist = _context.Categories.FirstOrDefault(c => c.CategoryName == category.CategoryName);
+                if (checkNameExist != null)
                 {
                     response.Message = "Tên loại món này đã tồn tại";
                     response.IsSuccess = false;

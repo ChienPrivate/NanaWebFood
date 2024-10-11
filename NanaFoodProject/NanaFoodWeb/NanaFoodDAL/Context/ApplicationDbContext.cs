@@ -28,7 +28,7 @@ namespace NanaFoodDAL.Context
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            List<IdentityRole> roles = new List<IdentityRole>()
+            /*List<IdentityRole> roles = new List<IdentityRole>()
             {
                 new IdentityRole()
                 {
@@ -40,8 +40,8 @@ namespace NanaFoodDAL.Context
                     Name = "customer",
                     NormalizedName = "CUSTOMER",
                 }
-            };
-            builder.Entity<IdentityRole>().HasData(roles);
+            };*/
+            /*builder.Entity<IdentityRole>().HasData(roles);*/
             // Cấu hình cho khóa chính
 
             builder.Entity<Category>().HasKey(e => e.CategoryId);

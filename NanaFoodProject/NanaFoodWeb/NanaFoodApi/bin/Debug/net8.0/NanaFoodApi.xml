@@ -142,5 +142,17 @@
         <member name="M:NanaFoodApi.Migrations.Addedmorepropforcategory.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
+        <member name="T:NanaFoodApi.Migrations.ChangeCategoryPropertiesNullability">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.ChangeCategoryPropertiesNullability.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.ChangeCategoryPropertiesNullability.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.ChangeCategoryPropertiesNullability.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
     </members>
 </doc>

@@ -15,6 +15,6 @@ function onSwitchChange(args) {
     }
 }
 
-// ES2 kéo thả hình ảnh
+// ES2 kéo thả hình ảnh 
 
 
