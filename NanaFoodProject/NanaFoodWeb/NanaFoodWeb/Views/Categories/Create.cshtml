@@ -11,7 +11,7 @@
     <div id="content-wrapper" class="d-flex flex-column">
         <div id="content">
             <div class="container-fluid">
-                <h1 class="h3 mb-4 text-gray-800">Add Category</h1>
+                <h1 class="h3 mb-4 text-gray-800">Tạo danh mục</h1>
                 <form asp-action="Create" asp-controller="Categories" method="post" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
@@ -32,10 +32,7 @@
                         <label>Trạng thái</label>
                         <div class="d-flex align-items-center">
                             <div>
-                                @{
-                                    var IsActive = true ? "true" : "false";
-                                }
-                                @Html.EJS().Switch("Switch").Checked(Model.IsActive).Value(IsActive).Name("IsActive").Change("onSwitchChange").Render()
+                                <ejs-switch ejs-for="IsActive" change="onSwitchChange" name="IsActive"></ejs-switch>
                             </div>
                             <h5 class="ms-2">
                                 <span id="badgeStatus" class="badge @(Model.IsActive ? "bg-success" : "bg-secondary")">
@@ -50,12 +47,18 @@
                             <div class="control_wrapper">
                                 <div id='dropArea' style='height: auto;'>
                                     <span id='drop'> Chọn hoặc kéo thả hình ảnh của bạn tại đây <a href='' id='browse'><u>Browse</u></a> </span>
-                                    @Html.EJS().Uploader("UploadFiles").DropArea(".control-fluid").AllowedExtensions(".jpg,.png,.jpeg").Selected("onSelect").Success("onUploadSuccess").Progress("onFileUpload").Removing("onFileRemove").Failure("onUploadFailed").AsyncSettings(new Syncfusion.EJ2.Inputs.UploaderAsyncSettings { SaveUrl = @Url.Content("https://services.syncfusion.com/aspnet/production/api/FileUploader/Save"), RemoveUrl = @Url.Content("https://services.syncfusion.com/aspnet/production/api/FileUploader/Remove") }).Render()
-                                    @* <input asp-for="CategoryImage"  type="file" hidden id="CategoryImageInput" name="UploadFile" value="@Model.CategoryImage" />
-                                    <span asp-validation-for="CategoryImage" class="text-danger"></span> *@
-                                    <input type="file" id="hiddenFileInput" name="UploadFile" style="display:none;" />
-@*                                     <input asp-for="CategoryImage" type="hidden" id="CategoryImageInput" name="CategoryImage" value="@Model.CategoryImage" />
-                                    <span asp-validation-for="CategoryImage" class="text-danger"></span> *@
+                                    <ejs-uploader 
+                                    id="UploadFiles"
+                                    dropArea=".control-fluid" 
+                                    allowedExtensions=".jpg,.png,.jpeg" 
+                                    selected="onSelect" 
+                                    success="onUploadSuccess"
+                                    progress="onFileUpload"
+                                    removing="onFileRemove"
+                                    failure="onUploadFailed"
+                                    asyncSettings="new Syncfusion.EJ2.Inputs.UploaderAsyncSettings { SaveUrl = @Url.Content("https://services.syncfusion.com/aspnet/production/api/FileUploader/Save"), RemoveUrl = @Url.Content("https://services.syncfusion.com/aspnet/production/api/FileUploader/Remove") }"></ejs-uploader>
+                                    
+                                    <input asp-for=CategoryImage type="file" id="hiddenFileInput" name="UploadFile" hidden />
                                 </div>
                             </div>
                         </div>
@@ -67,7 +70,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <input type="submit" value="Create" class="btn btn-primary" />
+                        <input type="submit" value="Xác nhận thêm" class="btn btn-primary" />
                         <a href="@Url.Action("Index", "Categories")" class="btn btn-secondary">Cancel</a>
                     </div>
                     
@@ -324,7 +327,7 @@
             reader.readAsDataURL(file);
         }
     }
-    </script>
+</script>
 
 
 

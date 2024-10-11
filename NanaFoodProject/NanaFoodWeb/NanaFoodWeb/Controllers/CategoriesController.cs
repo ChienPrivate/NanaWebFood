@@ -56,39 +56,50 @@ namespace NanaFoodWeb.Controllers
         }
         // POST: Category/Create
         [HttpPost("Create")]
-        public async Task<ActionResult> Create(CategoryDto category, IFormFile UploadFile)
+        public async Task<ActionResult> Create(CategoryDto category, IFormFile? UploadFile)
         {
-
-            if (UploadFile != null && UploadFile.Length > 0)
-            {
-                // Gọi service để upload hình ảnh
-                var uploadResponse = await _helperRepository.UploadImageAsync(UploadFile);
-
-                var imageUrl = uploadResponse.Result?.ToString() ?? "Tải ảnh lên thất bại";
-
-                if (!string.IsNullOrEmpty(imageUrl))
-                {
-                    // Gắn URL của hình ảnh vào model
-                    category.CategoryImage = imageUrl;
-                }
-            }
-
+            string imageUrl = string.Empty;
+            
             if (ModelState.IsValid)
             {
                 var token = _tokenProvider.GetToken();
-
-
-                
                 string apiName = "Category";
+                if (UploadFile != null && UploadFile.Length > 0)
+                {
+                    // Gọi service để upload hình ảnh
+                    var uploadResponse = await _helperRepository.UploadImageAsync(UploadFile);
+
+                    imageUrl = uploadResponse.Result?.ToString() ?? "Tải ảnh lên thất bại";
+
+                    if (!string.IsNullOrEmpty(imageUrl))
+                    {
+                        // Gắn URL của hình ảnh vào model
+                        category.CategoryImage = imageUrl;
+                    }
+                    else
+                    {
+                        category.CategoryImage = "Chưa có hình ảnh";
+                    }
+
+                }
+                
                 ResponseDto respone = await _callAPICenter.PostMethod<ResponseDto>(category,apiName, token);
                 if (respone.IsSuccess)
                 {
                     var resultData = JsonConvert.DeserializeObject<Result<CategoryDto>>(respone.Result.ToString());
                     //return View(resultData.Data);
+                    TempData["success"] = "Tạo danh mục thành công";
                     return RedirectToAction("Index");
                 }
-                TempData["success"] = "Tạo danh mục thành công";
                 
+                
+            }
+            else
+            {
+                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    Console.WriteLine(error.ErrorMessage);
+                }
             }
 
             return View(category);
@@ -97,21 +108,39 @@ namespace NanaFoodWeb.Controllers
         // POST: Category/Edit/5
         [HttpPost("Edit/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(CategoryDto category)
+        public async Task<ActionResult> Edit(CategoryDto category,IFormFile? UploadFile)
         {
+            string imageUrl = string.Empty;
             var token = _tokenProvider.GetToken();
             if (ModelState.IsValid)
             {
+                if (UploadFile != null && UploadFile.Length > 0)
+                {
+                    // Gọi service để upload hình ảnh
+                    var uploadResponse = await _helperRepository.UploadImageAsync(UploadFile);
+
+                    imageUrl = uploadResponse.Result?.ToString() ?? "Tải ảnh lên thất bại";
+
+                    if (!string.IsNullOrEmpty(imageUrl))
+                    {
+                        // Gắn URL của hình ảnh vào model
+                        category.CategoryImage = imageUrl;
+                    }
+                    else
+                    {
+                        category.CategoryImage = "Chưa có hình ảnh";
+                    }
+
+                }
                 string apiName = "Category/"+ category.CategoryId;
                 ResponseDto respone = await _callAPICenter.PutMethod<ResponseDto>(category, apiName, token);
                 if (respone.IsSuccess)
                 {
                     var resultData = JsonConvert.DeserializeObject<Result<CategoryDto>>(respone.Result.ToString());
-                    return View(resultData.Data);
+                    TempData["success"] = "cập nhật thành công!";
+                    return RedirectToAction("Index");
                 }
-                //_categoryRepo.Update(category);
-                TempData["success"] = "cập nhật thành công!";
-                return RedirectToAction("Index");
+                
             }
             return View(category);
         }
@@ -145,7 +174,7 @@ namespace NanaFoodWeb.Controllers
 
         [HttpGet("Edit/{id}")]
         public async Task<ActionResult> Edit(int id)
-        {
+       {
             var token = _tokenProvider.GetToken();
             string apiName = "Category/" + id;
             ResponseDto respone = await _callAPICenter.GetMethod<ResponseDto>(apiName, token);

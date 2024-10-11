@@ -33,5 +33,34 @@ namespace NanaFoodApi.Controllers
 
             return _response;
         }
+
+
+        [HttpDelete("ImageRemover")]
+        public async Task<ResponseDto> RemoveImage(string imageUrl)
+        {
+            try
+            {
+                var result = await _cloudinaryService.DeleteImage(imageUrl);
+                if (result)
+                {
+                    _response.Message = "Gỡ ảnh thành công";
+                    _response.Result = imageUrl;
+                    _response.IsSuccess = true;
+                }
+                else
+                {
+                    _response.Message = "Gỡ ảnh không thành công";
+                    _response.IsSuccess = false;
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ex.Message;
+            }
+
+            return _response;
+        }
     }
 }
