@@ -10,10 +10,10 @@
     <div id="content-wrapper" class="d-flex flex-column">
         <div id="content">
             <div class="container-fluid">
-                <h1 class="h3 mb-4 text-gray-800">Category List</h1>
+                <h1 class="h3 mb-4 text-gray-800">Danh sách danh mục</h1>
                 @* <a href="add-product.html" class="btn btn-primary mb-3">Add Product</a> *@
                 <p>
-                    <a asp-action="Create" class="btn btn-primary mb-3" asp-controller="Categories">Add Category</a>
+                    <a asp-action="Create" class="btn btn-primary mb-3" asp-controller="Categories"><i class="bi bi-plus-circle"></i> Add Category</a>
                 </p>
                 
                 <div class="card shadow">
@@ -40,6 +40,7 @@
                                         <th>Mã danh mục</th>
                                         <th>Tên danh mục</th>
                                         <th>Mô tả</th>
+                                        <th>Trạng thái</th>
                                         <th>Hình ảnh</th>
                                         <th>Tùy chọn</th>
                                     </tr>
@@ -52,17 +53,22 @@
                                             <td>@item.CategoryName</td>
                                             <td>@item.Description</td>
                                             <td>
+                                                <span id="badgeStatus" class="badge @(item.IsActive ? "bg-success" : "bg-secondary")">
+                                                    @(item.IsActive ? "Hoạt động" : "Vô hiệu")
+                                                </span>
+                                            </td>
+                                            <td>
                                                 <div class="text-center">
                                                     <img class="d-block mx-auto rounded-2" src="@item.CategoryImage" style="width:10rem" />
                                                 </div>
                                             </td>
                                             <td>
-                                                <a class="btn btn-warning btn-sm" asp-action="Edit" asp-controller="Categories" asp-route-id="@item.CategoryId">Edit</a>
-                                                <a class="btn btn-warning btn-sm" asp-action="Details" asp-controller="Categories" asp-route-id="@item.CategoryId">Details</a>
+                                                <a class="btn btn-warning btn-sm" asp-action="Edit" asp-controller="Categories" asp-route-id="@item.CategoryId"><i class="bi bi-wrench-adjustable"></i> Chỉnh sửa</a>
+                                                <a class="btn btn-info btn-sm" asp-action="Details" asp-controller="Categories" asp-route-id="@item.CategoryId"><i class="bi bi-info-circle"></i> Chi tiết</a>
 
                                                 <!-- Nút Xóa với data-bs-target duy nhất -->
                                                 <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal-@item.CategoryId">
-                                                    Xóa danh mục
+                                                    <i class="bi bi-trash"></i> Xóa danh mục
                                                 </button>
 
                                                 <!-- Modal với ID duy nhất cho từng danh mục -->
@@ -92,7 +98,7 @@
                                                                         <div>
                                                                             @Html.EJS().Switch(item.CategoryId.ToString()).Checked(item.IsActive).Disabled(true).Render()
                                                                         </div>
-                                                                        <h5 class="ms-2">
+                                                                        <h4 class="ms-2">
                                                                             @if (item.IsActive)
                                                                             {
                                                                                 <span class="badge bg-success">Hoạt động</span>
@@ -101,7 +107,7 @@
                                                                             {
                                                                                 <span class="badge bg-secondary">Vô hiệu</span>
                                                                             }
-                                                                        </h5>
+                                                                        </h4>
                                                                     </div>
                                                                 </div>
                                                                 <div class="mb-2 mt-2">
@@ -109,17 +115,30 @@
                                                                     <div class="rounded-3 bg-body-tertiary shadow w-50 shadow-sm">
                                                                         <img class="rounded-3" style="width:100%"
                                                                              src="@item.CategoryImage" 
-                                                                             alt="Image"/>                                                                    </div>
+                                                                             alt="Image"/> 
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <form method="post">
-                                                                    <button type="submit" class="btn btn-danger" asp-controller="Categories" asp-action="Delete" asp-route-id="@item.CategoryId">Xóa</button>
+                                                                    <button type="submit" 
+                                                                        class="btn btn-danger" 
+                                                                        asp-controller="Categories" 
+                                                                        asp-action="Delete" 
+                                                                        asp-route-searchQuery="@ViewData["searchQuery"]" 
+                                                                        asp-route-page="@ViewData["page"]" 
+                                                                        asp-route-id="@item.CategoryId"><i class="bi bi-file-earmark-x"></i> Xóa</button>
                                                                 </form>
-                                                                <form>
-                                                                    <button type="submit" class="btn btn-warning">Vô hiệu hóa</button>
+                                                                <form method="post">
+                                                                    <button type="submit" 
+                                                                        asp-controller="Categories" 
+                                                                        asp-action="Deactivate" 
+                                                                        asp-route-searchQuery="@ViewData["searchQuery"]" 
+                                                                        asp-route-page="@ViewData["page"]" 
+                                                                        asp-route-id="@item.CategoryId" 
+                                                                        class="btn btn-warning"><i class="bi bi-eye-slash"></i> Vô hiệu hóa</button>
                                                                 </form>
-                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-escape"></i> Đóng</button>
                                                             </div>
                                                         </div>
                                                     </div>

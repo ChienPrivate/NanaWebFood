@@ -71,7 +71,7 @@ namespace NanaFoodDAL.IRepository.Repository
         {
             try
             {
-                var categories = _context.Categories.Where(x => x.IsActive).ToList();
+                var categories = _context.Categories.ToList();
                 var totalCate = categories.Count;
                 var totalPages = (int)Math.Ceiling((decimal)totalCate / pageSize);
 

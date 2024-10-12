@@ -1,4 +1,5 @@
-﻿@model NanaFoodWeb.Models.CategoryDto
+﻿@using Syncfusion.EJ2
+@model NanaFoodWeb.Models.CategoryDto
 @{
     Layout = "_AdminLayout";
     ViewData["Title"] = "Details";
@@ -17,26 +18,35 @@
                         <h6 class="m-0 font-weight-bold text-primary" id="category-name">@Html.DisplayFor(model => model.CategoryName)</h6>
                     </div>
                     <div class="card-body">
-                        <p><strong>Category Name:</strong> <span id="category-name">@Html.DisplayFor(model => model.CategoryName)</span></p>
-                        <p><strong>Description:</strong> <span id="description">@Html.DisplayFor(model => model.Description)</span></p>
+                        <p><strong>Tên danh mục:</strong> <span id="category-name">@Html.DisplayFor(model => model.CategoryName)</span></p>
+                        <p><strong>Mô tả:</strong> <span id="description">@Html.DisplayFor(model => model.Description)</span></p>
+                        <div class="mb-2 mt-2">
+                            <label>Trạng thái:</label>
+                            <div class="d-flex align-items-center">
+                                <div>
+                                    <ejs-switch ejs-for="IsActive" change="onSwitchChange" name="IsActive" disabled></ejs-switch>
+                                </div>
+                                <h5 class="ms-2">
+                                    <span id="badgeStatus" class="badge @(Model.IsActive ? "bg-success" : "bg-secondary")">
+                                        @(Model.IsActive ? "Hoạt động" : "Vô hiệu")
+                                    </span>
+                                </h5>
+                            </div>
+                        </div>
+                        <p><strong>Hình ảnh: </strong></p>
+                        <div class="col-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <img src="@Model.CategoryImage" class="rounded-3" style="width:100%;" />
+                                </div>
+                            </div>
+                        </div>
+
                         @* <p><strong>Image:</strong> <span id="image">@Html.DisplayFor(model => model.ImageUrl)</span></p> *@
-                        <p>
-                            <strong>  </strong> <span >
-                                @if (Model.IsActive)
-                                {
-                                    <input class="form-check-input" asp-for="IsActive" checked /> @Html.DisplayNameFor(model => model.IsActive)
-                                }
-
-                                else
-                                {
-                                    <input class="form-check-input" asp-for="IsActive"/> @Html.DisplayNameFor(model => model.IsActive)
-
-                                }
-
-                            </span>
-                        </p>
-                        <a asp-action="Edit" asp-controller="Categories" class="btn btn-primary" asp-route-id="@Model?.CategoryId">Edit</a>
-                        <a href="@Url.Action("Index", "Users")" class="btn btn-secondary">Back to Users</a>
+                        <div class="mt-2">
+                            <a asp-action="Edit" asp-controller="Categories" class="btn btn-primary" asp-route-id="@Model?.CategoryId">Chỉnh sửa</a>
+                            <a href="@Url.Action("Index", "Categories")" class="btn btn-secondary">Trở về danh sách</a>
+                        </div>
                     </div>
                 </div>
             </div>
