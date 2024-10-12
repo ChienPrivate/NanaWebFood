@@ -11,7 +11,7 @@
     <div id="content-wrapper" class="d-flex flex-column">
         <div id="content">
             <div class="container-fluid">
-                <h1 class="h3 mb-4 text-gray-800">Tạo danh mục</h1>
+                <h1 class="h3 mb-4 text-gray-800"> Tạo danh mục</h1>
                 <form asp-action="Create" asp-controller="Categories" method="post" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
@@ -57,14 +57,14 @@
                                     removing="onFileRemove"
                                     failure="onUploadFailed"
                                     asyncSettings="new Syncfusion.EJ2.Inputs.UploaderAsyncSettings { SaveUrl = @Url.Content("https://services.syncfusion.com/aspnet/production/api/FileUploader/Save"), RemoveUrl = @Url.Content("https://services.syncfusion.com/aspnet/production/api/FileUploader/Remove") }"></ejs-uploader>
-                                    
-                                    <input asp-for=CategoryImage type="file" id="hiddenFileInput" name="UploadFile" hidden />
+                                    <input asp-for=CategoryImage hidden />
+                                    <input type="file" id="hiddenFileInput" name="UploadFile" hidden />
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-4 mt-2 property-section">
-                            <div class="" id="property" title="Properties">
-                                @Html.EJS().Button("clearbtn").CssClass("e-btn e-css").Content("Xóa ảnh").Render()
+                            <div class="text-center" id="property" title="Properties">
+                                @Html.EJS().Button("clearbtn").CssClass("e-btn e-css hidden-element").Content("Xóa ảnh").Render()
                                 @Html.EJS().Button("uploadbtn").CssClass("e-btn e-css").Content("Upload ảnh").Render()
                             </div>
                         </div>

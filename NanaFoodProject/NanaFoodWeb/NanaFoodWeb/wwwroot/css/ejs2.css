@@ -298,6 +298,10 @@ progress::-webkit-progress-bar {
     color: #22d3ee;
 }
 
+.hidden-element{
+    visibility : hidden !important;
+}
+
 /*---------------------------------------------------------------*/
 /*switch: on change style/
 /*---------------------------------------------------------------*/

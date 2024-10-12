@@ -52,9 +52,23 @@
                                     <div class="form-group">
                                         <div class="container">
                                             <label asp-for="CategoryImage" class="control-label">Hình ảnh hiện tại</label>
-                                        <img class="rounded-3 d-block" 
-                                            src="@(!string.IsNullOrEmpty(Model.CategoryImage) ? Model.CategoryImage : "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png")" 
-                                            style="width:30rem;" />
+                                            <img id="categoryImage"
+                                                 class="rounded-3 d-block" 
+                                                src="@(!string.IsNullOrEmpty(Model.CategoryImage) ? Model.CategoryImage : "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png")" 
+                                                style="width:30rem;" />
+                                            <input id="CategoryImageInput" asp-for=CategoryImage hidden />
+                                            <div class="text-center">
+                                                <button id="removeImageBtn" type="button" class="e-btn e-css mt-4">Xóa ảnh hiện tại</button>
+                                            </div>
+                                            <script>
+                                                document.getElementById('removeImageBtn').addEventListener('click', function () {
+                                                    // Thay đổi hình ảnh về ảnh mặc định
+                                                    document.getElementById('categoryImage').src = 'https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png';
+
+                                                    // Làm trống input
+                                                    document.getElementById('CategoryImageInput').value = '';
+                                                });
+                                            </script>
                                         </div>
                                     </div>
                                 </div>
@@ -79,13 +93,14 @@
                                                             removing="onFileRemove"
                                                             failure="onUploadFailed"
                                                             asyncSettings="new Syncfusion.EJ2.Inputs.UploaderAsyncSettings { SaveUrl = @Url.Content("https://services.syncfusion.com/aspnet/production/api/FileUploader/Save"), RemoveUrl = @Url.Content("https://services.syncfusion.com/aspnet/production/api/FileUploader/Remove") }"></ejs-uploader>
-                                                            <input asp-for=CategoryImage type="file" id="hiddenFileInput" name="UploadFile" hidden />
+                                                        
+                                                        <input type="file" id="hiddenFileInput" name="UploadFile" hidden />
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-md-4 mt-2 property-section">
                                             <div class="" id="property" title="Properties">
-                                                @Html.EJS().Button("clearbtn").CssClass("e-btn e-css").Content("Xóa ảnh").Render()
+                                                @Html.EJS().Button("clearbtn").CssClass("e-btn e-css hidden-element").Content("Xóa ảnh").Type("button").Render()
                                                 @Html.EJS().Button("uploadbtn").CssClass("e-btn e-css").Content("Upload ảnh").Render()
                                             </div>
                                         </div>
