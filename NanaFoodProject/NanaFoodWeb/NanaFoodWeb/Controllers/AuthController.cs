@@ -58,9 +58,8 @@ namespace NanaFoodWeb.Controllers
 
                 try
                 {
-                    await SignInUser(userReturn); // phương thức dùng để đổi trạng thài người dùng sang IsAuthenticated
+                    await SignInUser(userReturn); // phương thức dùng để đổi trạng thái người dùng sang IsAuthenticated
                     _tokenProvider.SetToken(userReturn.Token); // lưu token vào cookie
-                    HttpContext.Session.SetString("Token", userReturn.Token); // lưu token vào session
                 }
                 catch (Exception ex)
                 {
@@ -76,14 +75,15 @@ namespace NanaFoodWeb.Controllers
                     return RedirectToAction("Index", "DashBoard");
                 }
 
-                var checkEmailConfirmResponse = await _authRepo.CheckEmailConfirm();
-                if (checkEmailConfirmResponse != null && checkEmailConfirmResponse.IsSuccess == true)
+                var checkEmailConfirmResponse = await _authRepo.CheckEmailConfirm(_tokenProvider.ReadToken("email",userReturn.Token));
+                TempData["response"] = JsonConvert.SerializeObject(response);
+                if (checkEmailConfirmResponse != null && checkEmailConfirmResponse.IsSuccess)
                 {
                     TempData["response"] = JsonConvert.SerializeObject(response);
-                    return RedirectToAction(nameof(NotificationConfirmEmail));
+                    return RedirectToAction("Index", "Home");
                 }
-
-                return RedirectToAction("Index", "Home");
+                TempData["success"] = null;
+                return RedirectToAction(nameof(NotificationConfirmEmail));
                 
             }
 
