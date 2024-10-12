@@ -18,12 +18,12 @@ namespace NanaFoodWeb.IRepository.Repository
             throw new NotImplementedException();
         }
 
-        public async Task<ResponseDto> CheckEmailConfirm()
+        public async Task<ResponseDto> CheckEmailConfirm(string email)
         {
             return await _baseService.SendAsync(new RequestDto()
             {
                 ApiType = StaticDetails.ApiType.GET,
-                Url = StaticDetails.APIBase + "/api/Auth/CheckEmailConfirm"
+                Url = StaticDetails.APIBase + $"/api/Auth/CheckEmailConfirm/{email}"
             });
         }
 

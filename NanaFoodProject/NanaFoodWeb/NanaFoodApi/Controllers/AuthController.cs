@@ -146,10 +146,10 @@ namespace NanaFoodApi.Controllers
             return Redirect("https://localhost:51326/Auth/Login?message=activation-success");
         }
 
-        [HttpGet("CheckEmailConfirm")]
-        public async Task<IActionResult> CheckEmailConfirm()
+        [HttpGet("CheckEmailConfirm/{email}")]
+        public async Task<IActionResult> CheckEmailConfirm(string email)
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _userManager.FindByEmailAsync(email);
             var response = await _auth.CheckEmailConfirm(user);
             if (!response.IsSuccess)
             {
