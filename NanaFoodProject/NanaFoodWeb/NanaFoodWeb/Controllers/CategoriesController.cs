@@ -113,7 +113,7 @@ namespace NanaFoodWeb.Controllers
         // POST: Category/Edit/5
         [HttpPost("Edit/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(CategoryDto category,IFormFile? UploadFile, int? page, string searchQuery)
+        public async Task<ActionResult> Edit(CategoryDto category,IFormFile? UploadFile, int? page, string? searchQuery)
         {
             string imageUrl = string.Empty;
             var token = _tokenProvider.GetToken();
