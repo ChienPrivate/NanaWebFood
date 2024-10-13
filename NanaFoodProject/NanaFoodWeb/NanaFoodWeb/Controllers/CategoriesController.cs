@@ -117,8 +117,8 @@ namespace NanaFoodWeb.Controllers
         {
             string imageUrl = string.Empty;
             var token = _tokenProvider.GetToken();
-            if (ModelState.IsValid)
-            {
+            //if (ModelState.IsValid)
+            //{
                 if (UploadFile != null && UploadFile.Length > 0)
                 {
                     // Gọi service để upload hình ảnh
@@ -146,7 +146,7 @@ namespace NanaFoodWeb.Controllers
                     return RedirectToAction("Index", new { searchQuery = searchQuery , page = page });
                 }
                 
-            }
+            //}
             return View(category);
         }
         [HttpPost("Delete")]
