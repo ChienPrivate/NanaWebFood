@@ -53,9 +53,8 @@
                                         <div class="container">
                                             <label asp-for="CategoryImage" class="control-label">Hình ảnh hiện tại</label>
                                             <img id="categoryImage"
-                                                 class="rounded-3 d-block" 
-                                                src="@(!string.IsNullOrEmpty(Model.CategoryImage) ? Model.CategoryImage : "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png")" 
-                                                style="width:30rem;" />
+                                                 class="rounded-3 d-block w-100" 
+                                                 src="@(!string.IsNullOrEmpty(Model.CategoryImage) ? Model.CategoryImage : "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png")" />
                                             <input id="CategoryImageInput" asp-for=CategoryImage hidden />
                                             <div class="text-center">
                                                 <button id="removeImageBtn" type="button" class="e-btn e-css mt-4">Xóa ảnh hiện tại</button>
