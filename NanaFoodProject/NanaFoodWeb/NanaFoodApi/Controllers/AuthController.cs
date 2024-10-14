@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -187,6 +188,18 @@ namespace NanaFoodApi.Controllers
             }
             , authenticationSchemes: ["github"]);
         }
+
+        [HttpGet("google")]
+        public async Task<IActionResult> GoogleLogin()
+        {
+            var redirectUri = "https://localhost:51326/Auth/ExternalLoginCallBack";
+            return Challenge(new AuthenticationProperties()
+            {
+                RedirectUri = redirectUri,
+            }
+            , authenticationSchemes: GoogleDefaults.AuthenticationScheme);
+        }
+
 
         /// <summary>
         /// Người dùng lấy lại mật khẩu

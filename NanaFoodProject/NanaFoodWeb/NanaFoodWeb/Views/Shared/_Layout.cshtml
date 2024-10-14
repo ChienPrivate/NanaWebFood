@@ -1,7 +1,7 @@
 ﻿@using System.IdentityModel.Tokens.Jwt;
 
 @{
-    var givenName = User.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Name)?.Value ?? "Khách";
+    var Name = User.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Name)?.Value ?? "Khách";
     var nameId = User.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub)?.Value;
 }
 <!DOCTYPE html>
@@ -78,7 +78,7 @@
                         @if (User.Identity.IsAuthenticated)
                         {
                             <a class="my-auto btn btn-outline-warning rounded-2 p-2 d-flex align-items-center" asp-route-id="@nameId" asp-controller="Auth" asp-action="Profile">
-                                <i class="fas fa-user fa-2x me-2"></i> @givenName
+                                <i class="fas fa-user fa-2x me-2"></i> @Name
                             </a>
                             <a class="my-auto ms-2 d-flex align-items-center" asp-controller="Auth" asp-action="Logout">
                                 <i class="fa-solid fa-arrow-right-from-bracket fa-2x"></i>
