@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -198,6 +199,17 @@ namespace NanaFoodApi.Controllers
                 RedirectUri = redirectUri,
             }
             , authenticationSchemes: GoogleDefaults.AuthenticationScheme);
+        }
+
+        [HttpGet("facebook")]
+        public async Task<IActionResult> FacebookLogin()
+        {
+            var redirectUri = "https://localhost:51326/Auth/ExternalLoginCallBack";
+            return Challenge(new AuthenticationProperties()
+            {
+                RedirectUri = redirectUri,
+            }
+            , authenticationSchemes: FacebookDefaults.AuthenticationScheme);
         }
 
 

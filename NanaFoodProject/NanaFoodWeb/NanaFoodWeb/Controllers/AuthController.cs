@@ -189,6 +189,12 @@ namespace NanaFoodWeb.Controllers
             return Redirect("https://localhost:7094/api/Auth/google");
         }
 
+        [HttpPost]
+        public IActionResult FacebookLogin()
+        {
+            return Redirect("https://localhost:7094/api/Auth/facebook");
+        }
+
         public async Task<IActionResult> ExternalLoginCallback(string data)
         {
             if (!string.IsNullOrEmpty(data))

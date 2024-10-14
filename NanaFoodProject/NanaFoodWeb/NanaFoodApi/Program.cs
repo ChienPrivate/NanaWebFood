@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OAuth;
+using Microsoft.AspNetCore.Authentication.OAuth.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -73,7 +74,7 @@ builder.Services.AddAuthentication(options =>
     o.TokenEndpoint = "https://github.com/login/oauth/access_token";
 
     o.CallbackPath = "/Auth/ExternalLoginCallBack";
-    o.SaveTokens = true;
+    /*o.SaveTokens = true;*/
     o.UserInformationEndpoint = "https://api.github.com/user";
 
     o.ClaimActions.MapJsonKey("sub", "id");
@@ -95,6 +96,7 @@ builder.Services.AddAuthentication(options =>
             // Lấy thông tin từ claims
             var username = ctx.Principal.FindFirstValue("sub"); // Lấy username từ claim "sub"
             var fullName = ctx.Principal.FindFirstValue(ClaimTypes.Name); // Lấy fullname từ claim "login"
+            var imageUrl = user.GetProperty("avatar_url").GetString();
 
             // Sử dụng ApplicationDbContext để tìm kiếm hoặc tạo user
             using var scope = ctx.HttpContext.RequestServices.CreateScope();
@@ -104,7 +106,7 @@ builder.Services.AddAuthentication(options =>
             var tokenService = scope.ServiceProvider.GetRequiredService<ITokenService>();
 
             // Kiểm tra xem user đã tồn tại hay chưa
-            var existingUser = await dbContext.Users.FirstOrDefaultAsync(u => u.UserName == username);
+            var existingUser = await dbContext.Users.FirstOrDefaultAsync(u => u.UserName == "G" + username);
             string token;
 
             if (existingUser != null)
@@ -123,7 +125,8 @@ builder.Services.AddAuthentication(options =>
                     EmailConfirmed = true,
                     Email = "githubexample@github.com",  // Có thể thay đổi email khi cần
                     UserName = "G"+username,
-                    FullName = fullName
+                    FullName = fullName,
+                    AvatarUrl = imageUrl
                 };
                 var createUserResult = await userManager.CreateAsync(newUser);
 
@@ -178,8 +181,7 @@ builder.Services.AddAuthentication(options =>
     o.UserInformationEndpoint = "https://www.googleapis.com/oauth2/v3/userinfo";
 
     o.CallbackPath = "/Auth/google";
-    o.SaveTokens = true;
-
+    /*o.SaveTokens = true;*/
     o.ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "sub");
     o.ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
     o.ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
@@ -213,7 +215,7 @@ builder.Services.AddAuthentication(options =>
             var tokenService = scope.ServiceProvider.GetRequiredService<ITokenService>();
 
             // Kiểm tra xem user đã tồn tại hay chưa
-            var existingUser = await dbContext.Users.FirstOrDefaultAsync(u => u.UserName == userId);
+            var existingUser = await dbContext.Users.FirstOrDefaultAsync(u => u.UserName == "GG" + userId);
             string token;
 
             if (existingUser != null)
@@ -282,6 +284,109 @@ builder.Services.AddAuthentication(options =>
     o.SignInScheme = JwtBearerDefaults.AuthenticationScheme;
     o.ClientId = builder.Configuration["Authentication:Facebook:ClientId"];
     o.ClientSecret = builder.Configuration["Authentication:Facebook:ClientSecret"];
+    o.AuthorizationEndpoint = FacebookDefaults.AuthorizationEndpoint;
+    o.TokenEndpoint = FacebookDefaults.TokenEndpoint;
+    o.UserInformationEndpoint = FacebookDefaults.UserInformationEndpoint;
+
+    o.Scope.Add("public_profile");
+    o.Scope.Add("email");
+
+    o.ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
+    o.ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
+    o.ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
+
+    o.Events = new OAuthEvents
+    {
+        OnCreatingTicket = async ctx =>
+        {
+            // Gửi yêu cầu đến UserInformationEndpoint
+            /*var requestUrl = $"https://graph.facebook.com/melfields-first_name.last_name.picture.email&accesstoken={ctx.AccessToken}";*/
+
+            using var request = new HttpRequestMessage(HttpMethod.Get, ctx.Options.UserInformationEndpoint);
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", ctx.AccessToken);
+            using var result = await ctx.Backchannel.SendAsync(request);
+            result.EnsureSuccessStatusCode();
+            var user = await result.Content.ReadFromJsonAsync<JsonElement>();
+            
+            // Áp dụng claims từ thông tin người dùng nhận được từ Google
+            ctx.RunClaimActions(user);
+
+            // Lấy thông tin từ claims
+            var userId = user.GetProperty("id").GetString(); // Lấy username từ claim "sub"
+            var email = ctx.Principal.FindFirstValue(ClaimTypes.Email);
+            var fullName = ctx.Principal.FindFirstValue(ClaimTypes.Name); // Lấy fullname từ claim Name
+
+            // Sử dụng ApplicationDbContext để tìm kiếm hoặc tạo user mới
+            using var scope = ctx.HttpContext.RequestServices.CreateScope();
+            var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+            var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var tokenService = scope.ServiceProvider.GetRequiredService<ITokenService>();
+
+            // Kiểm tra xem user đã tồn tại hay chưa
+            var existingUser = await dbContext.Users.FirstOrDefaultAsync(u => u.UserName == "FB" + userId);
+            string token;
+
+            if (existingUser != null)
+            {
+                // Lấy các vai trò (roles) của user đã tồn tại
+                var roles = await userManager.GetRolesAsync(existingUser);
+
+                // Tạo JWT token cho user đã tồn tại
+                token = tokenService.CreateToken(existingUser, roles);
+            }
+            else
+            {
+                // Tạo user mới
+                var newUser = new User
+                {
+                    EmailConfirmed = true,
+                    Email = email,  // Email từ Google
+                    UserName = "FB" + userId,
+                    FullName = fullName,
+                };
+                var createUserResult = await userManager.CreateAsync(newUser);
+
+                // Kiểm tra và tạo role nếu chưa tồn tại
+                string roleName = "customer";
+                if (!await roleManager.RoleExistsAsync(roleName))
+                {
+                    await roleManager.CreateAsync(new IdentityRole(roleName));
+                }
+
+                // Gán role cho user mới
+                await userManager.AddToRoleAsync(newUser, roleName);
+
+                // Tạo Cart cho user mới (nếu cần)
+                var cart = new Cart
+                {
+                    UserId = newUser.Id,
+                };
+                await dbContext.Carts.AddAsync(cart);
+                await dbContext.SaveChangesAsync();
+
+                // Tạo JWT token cho user mới
+                var roles = new List<string> { roleName };
+                token = tokenService.CreateToken(newUser, roles);
+            }
+
+            // Mã hóa JWT token thành Base64
+            var base64Token = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(token));
+
+            // RedirectUri với token mã hóa Base64
+            var redirectUri = $"{ctx.Properties.RedirectUri}?data={base64Token}";
+
+            // Chuyển hướng đến client với token
+            ctx.Response.Redirect(redirectUri);
+        },
+
+        OnTicketReceived = ctx =>
+        {
+            // Ngăn việc tự động đăng nhập
+            ctx.HandleResponse();
+            return Task.CompletedTask;
+        }
+    };
 });
 
 builder.Services.AddEndpointsApiExplorer();
