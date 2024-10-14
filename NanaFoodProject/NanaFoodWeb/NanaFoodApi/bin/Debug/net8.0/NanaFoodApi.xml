@@ -63,7 +63,7 @@
         </member>
         <member name="M:NanaFoodApi.Controllers.AuthController.GitHubLogin">
             <summary>
-            Đổi mật khẩu của người dùng đã đăng nhập.
+            Đăng nhập bằng tài khoản Github
             </summary>
             <remarks>
             API này cho phép người dùng thay đổi mật khẩu hiện tại của họ. Người dùng cần cung cấp mật khẩu cũ và mật khẩu mới.
@@ -152,6 +152,18 @@
             <inheritdoc />
         </member>
         <member name="M:NanaFoodApi.Migrations.ChangeCategoryPropertiesNullability.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:NanaFoodApi.Migrations.ModifyNullableInCart">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.ModifyNullableInCart.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.ModifyNullableInCart.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.ModifyNullableInCart.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
     </members>

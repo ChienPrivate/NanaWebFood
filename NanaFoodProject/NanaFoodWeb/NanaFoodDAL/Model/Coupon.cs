@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NanaFoodDAL.Model
 {
+    [Table("Coupon")]
     public class Coupon
     {
         [Key]

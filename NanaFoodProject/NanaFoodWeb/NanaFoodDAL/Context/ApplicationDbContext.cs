@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using NanaFoodDAL.Model;
+using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("NanaFoodApi")]
@@ -24,6 +25,7 @@ namespace NanaFoodDAL.Context
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetails> OrderDetails { get; set; }
         public DbSet<SearchHistory> SearchHistories { get; set; }
+        public DbSet<Coupon> Coupons { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -43,6 +45,7 @@ namespace NanaFoodDAL.Context
             };*/
             /*builder.Entity<IdentityRole>().HasData(roles);*/
             // Cấu hình cho khóa chính
+            builder.Entity<Coupon>().ToTable("Coupon");
 
             builder.Entity<Category>().HasKey(e => e.CategoryId);
 
