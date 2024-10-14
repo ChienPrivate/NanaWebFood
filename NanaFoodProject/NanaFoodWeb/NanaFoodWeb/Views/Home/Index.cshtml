@@ -24,6 +24,17 @@
 <!-- banner End -->
 <!-- Featurs Section Start -->
 <div class="container-fluid featurs py-3">
+
+    <fb:login-button scope="public_profile,email"
+                     onlogin="checkLoginState();">
+    </fb:login-button>
+
+    <!-- Facebook response notification -->
+    <div id="authstatus">
+
+    </div>
+
+
     <div class="container py-3">
         <div class="row g-4">
             <div class="col-md-6 col-lg-3">
@@ -608,3 +619,39 @@
     </div>
 </div>
 <!-- Tastimonial End -->
+
+@section Scripts{
+    <script>
+
+        window.fbAsyncInit = function() {
+          FB.init({
+            appId      : '1047902410133401',
+            cookie     : true,
+            xfbml      : true,
+            version    : 'v21.0'
+          });
+
+          FB.AppEvents.logPageView();
+
+          // Kiểm tra phiên bản SDK
+          FB.getLoginStatus(function (response) {
+              console.log('Facebook SDK version: ' + FB.version);
+          });
+
+        };
+
+        (function(d, s, id){
+           var js, fjs = d.getElementsByTagName(s)[0];
+           if (d.getElementById(id)) {return;}
+           js = d.createElement(s); js.id = id;
+           js.src = "https://connect.facebook.net/en_US/sdk.js";
+           fjs.parentNode.insertBefore(js, fjs);
+         }(document, 'script', 'facebook-jssdk'));
+
+         function checkLoginState(){
+            FB.getLoginStatus(function (response) {
+                $("#authstatus").html("<code>" + JSON.stringify(response, null, 2) +"</code>")
+            });
+         }
+    </script>
+}

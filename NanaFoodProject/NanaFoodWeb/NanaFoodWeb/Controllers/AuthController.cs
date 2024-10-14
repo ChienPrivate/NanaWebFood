@@ -183,6 +183,12 @@ namespace NanaFoodWeb.Controllers
             return Redirect("https://localhost:7094/api/Auth/github");
         }
 
+        [HttpPost]
+        public IActionResult GoogleLogin()
+        {
+            return Redirect("https://localhost:7094/api/Auth/google");
+        }
+
         public async Task<IActionResult> ExternalLoginCallback(string data)
         {
             if (!string.IsNullOrEmpty(data))
@@ -222,10 +228,12 @@ namespace NanaFoodWeb.Controllers
                 jwt.Claims.FirstOrDefault(u => u.Type == JwtRegisteredClaimNames.Email).Value));
             identity.AddClaim(new Claim(JwtRegisteredClaimNames.Sub,
                 jwt.Claims.FirstOrDefault(u => u.Type == "nameid").Value));
-            identity.AddClaim(new Claim(JwtRegisteredClaimNames.Name,
+            identity.AddClaim(new Claim(JwtRegisteredClaimNames.GivenName,
                 jwt.Claims.FirstOrDefault(u => u.Type == "given_name").Value));
             identity.AddClaim(new Claim(ClaimTypes.Role,
                 jwt.Claims.FirstOrDefault(u => u.Type == "role").Value));
+            identity.AddClaim(new Claim(JwtRegisteredClaimNames.Name,
+                jwt.Claims.FirstOrDefault(u => u.Type == "name").Value));
 
             var principal = new ClaimsPrincipal(identity);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);

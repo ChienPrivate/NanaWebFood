@@ -34,6 +34,7 @@ namespace NanaFoodDAL.IRepository.Repository
             {
                 new Claim(JwtRegisteredClaimNames.Email,user.Email),
                 new Claim(JwtRegisteredClaimNames.GivenName, user.UserName),
+                new Claim(JwtRegisteredClaimNames.Name, user.FullName),
                 new Claim(ClaimTypes.NameIdentifier,user.Id)
             };
 
