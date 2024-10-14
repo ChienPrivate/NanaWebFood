@@ -58,7 +58,7 @@ namespace NanaFoodWeb.Controllers
 
                 try
                 {
-                    await SignInUser(userReturn); // phương thức dùng để đổi trạng thái người dùng sang IsAuthenticated
+                    await SignInUser(userReturn.Token); // phương thức dùng để đổi trạng thái người dùng sang IsAuthenticated
                     _tokenProvider.SetToken(userReturn.Token); // lưu token vào cookie
                 }
                 catch (Exception ex)
@@ -180,7 +180,28 @@ namespace NanaFoodWeb.Controllers
         [HttpPost]
         public IActionResult GitHubLogin()
         {
-            return Redirect("https://localhost:7094/github");
+            return Redirect("https://localhost:7094/api/Auth/github");
+        }
+
+        public async Task<IActionResult> ExternalLoginCallback(string data)
+        {
+            if (!string.IsNullOrEmpty(data))
+            {
+                // Decode the base64 data
+                var jsonResponse = System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(data));
+
+                if (jsonResponse != null)
+                {
+
+                    await SignInUser(jsonResponse);
+                    _tokenProvider.SetToken(jsonResponse);
+                    TempData["success"] = "Login Successful";
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+
+            TempData["error"] = "Error logging in with Google.";
+            return RedirectToAction("Login");
         }
 
         public IActionResult AccessDenied()
@@ -189,11 +210,11 @@ namespace NanaFoodWeb.Controllers
         }
 
 
-        private async Task SignInUser(UserReturn? model)
+        private async Task SignInUser(string token)
         {
             var handler = new JwtSecurityTokenHandler();
 
-            var jwt = handler.ReadJwtToken(model.Token);
+            var jwt = handler.ReadJwtToken(token);
 
             var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
             identity.AddClaim(new Claim(JwtRegisteredClaimNames.Email,

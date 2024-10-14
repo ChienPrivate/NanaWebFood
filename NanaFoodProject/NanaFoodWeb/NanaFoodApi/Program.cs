@@ -3,9 +3,11 @@ using DotNetEnv;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NanaFoodDAL.Context;
@@ -39,9 +41,13 @@ builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<Appl
 
 builder.Services.AddAuthentication(options =>
 {
-    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+
+    // Scheme mặc định khi thách thức (Challenge) là JWT
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+    // Scheme mặc định cho việc đăng nhập (SignIn) là Cookie
+    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 }).AddJwtBearer(options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters
@@ -64,48 +70,100 @@ builder.Services.AddAuthentication(options =>
     o.AuthorizationEndpoint = "https://github.com/login/oauth/authorize";
     o.TokenEndpoint = "https://github.com/login/oauth/access_token";
 
-    o.CallbackPath = "/oauth/github-cb";
+    o.CallbackPath = "/Auth/ExternalLoginCallBack";
     o.SaveTokens = true;
     o.UserInformationEndpoint = "https://api.github.com/user";
 
     o.ClaimActions.MapJsonKey("sub", "id");
     o.ClaimActions.MapJsonKey(ClaimTypes.Name, "login");
 
-    o.Events.OnCreatingTicket = async ctx =>
+    o.Events = new OAuthEvents
     {
-        using var request = new HttpRequestMessage(HttpMethod.Get, ctx.Options.UserInformationEndpoint);
-        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", ctx.AccessToken);
-        using var result = await ctx.Backchannel.SendAsync(request);
-        var user = await result.Content.ReadFromJsonAsync<JsonElement>();
-
-        ctx.RunClaimActions(user);
-
-        var claims = new[]
+        OnCreatingTicket = async ctx =>
         {
-            new Claim(JwtRegisteredClaimNames.Sub, ctx.Principal.FindFirst(ClaimTypes.NameIdentifier).Value),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new Claim(ClaimTypes.Name, ctx.Principal.FindFirst(ClaimTypes.Name).Value),
-        };
+            using var request = new HttpRequestMessage(HttpMethod.Get, ctx.Options.UserInformationEndpoint);
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", ctx.AccessToken);
+            using var result = await ctx.Backchannel.SendAsync(request);
+            result.EnsureSuccessStatusCode();
+            var user = await result.Content.ReadFromJsonAsync<JsonElement>();
 
-        var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(builder.Configuration["ApiSettings:JwtOptions:SigningKey"]));
-        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            // Áp dụng claims từ user nhận được
+            ctx.RunClaimActions(user);
 
-        var token = new JwtSecurityToken(
-            issuer: builder.Configuration["ApiSettings:JwtOptions:Issuer"],
-            audience: builder.Configuration["ApiSettings:JwtOptions:Audience"],
-            claims: claims,
-            expires: DateTime.Now.AddMinutes(30),
-            signingCredentials: creds);
+            // Lấy thông tin từ claims
+            var username = ctx.Principal.FindFirstValue("sub"); // Lấy username từ claim "sub"
+            var fullName = ctx.Principal.FindFirstValue(ClaimTypes.Name); // Lấy fullname từ claim "login"
 
-        var jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
+            // Sử dụng ApplicationDbContext để tìm kiếm hoặc tạo user
+            using var scope = ctx.HttpContext.RequestServices.CreateScope();
+            var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+            var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var tokenService = scope.ServiceProvider.GetRequiredService<ITokenService>();
 
-        // Lưu JWT vào response để trả về cho người dùng
-        ctx.Response.Cookies.Append("jwt", jwtToken, new CookieOptions
+            // Kiểm tra xem user đã tồn tại hay chưa
+            var existingUser = await dbContext.Users.FirstOrDefaultAsync(u => u.UserName == username);
+            string token;
+
+            if (existingUser != null)
+            {
+                // Lấy các vai trò (roles) của user đã tồn tại
+                var roles = await userManager.GetRolesAsync(existingUser);
+
+                // Tạo JWT token cho user đã tồn tại
+                token = tokenService.CreateToken(existingUser, roles);
+            }
+            else
+            {
+                // Tạo user mới
+                var newUser = new User
+                {
+                    EmailConfirmed = true,
+                    Email = "githubexample@github.com",  // Có thể thay đổi email khi cần
+                    UserName = username,
+                    FullName = fullName
+                };
+                var createUserResult = await userManager.CreateAsync(newUser);
+
+                // Kiểm tra và tạo role nếu chưa tồn tại
+                string roleName = "customer";
+                if (!await roleManager.RoleExistsAsync(roleName))
+                {
+                    await roleManager.CreateAsync(new IdentityRole(roleName));
+                }
+
+                // Gán role cho user mới
+                await userManager.AddToRoleAsync(newUser, roleName);
+
+                // Tạo Cart cho user mới
+                var cart = new Cart
+                {
+                    UserId = newUser.Id,
+                };
+                await dbContext.Carts.AddAsync(cart);
+                await dbContext.SaveChangesAsync();
+
+                // Tạo JWT token cho user mới
+                var roles = new List<string> { roleName };
+                token = tokenService.CreateToken(newUser, roles);
+            }
+
+            // Mã hóa JWT token thành Base64
+            var base64Token = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(token));
+
+            // RedirectUri với token mã hóa Base64
+            var redirectUri = $"{ctx.Properties.RedirectUri}?data={base64Token}";
+
+            // Chuyển hướng đến client với token
+            ctx.Response.Redirect(redirectUri);
+        },
+
+        OnTicketReceived = ctx =>
         {
-            HttpOnly = true,
-            Secure = true,
-            SameSite = SameSiteMode.Strict
-        });
+            // Điều này sẽ ngăn việc tự động đăng nhập qua SignInAsync 
+            ctx.HandleResponse(); // Chặn xử lý đăng nhập dưới API
+            return Task.CompletedTask;
+        }
     };
 });
 

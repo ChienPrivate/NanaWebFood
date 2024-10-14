@@ -8,10 +8,14 @@ namespace NanaFoodDAL.Model
     {
         [Key]
         public int CartId { get; set; }
+
         [ForeignKey(nameof(User))]
         public string UserId { get; set; }
+
+        // CouponCode có thể null
         [ForeignKey(nameof(Coupon))]
-        public string CouponCode { get; set; }
+        public string? CouponCode { get; set; }
+
         public Coupon Coupon { get; set; }
         public User User { get; set; }
         public List<CartDetails> CartDetails { get; set; }

@@ -161,7 +161,7 @@ namespace NanaFoodApi.Controllers
 
 
         /// <summary>
-        /// Đổi mật khẩu của người dùng đã đăng nhập.
+        /// Đăng nhập bằng tài khoản Github
         /// </summary>
         /// <remarks>
         /// API này cho phép người dùng thay đổi mật khẩu hiện tại của họ. Người dùng cần cung cấp mật khẩu cũ và mật khẩu mới.
@@ -180,10 +180,10 @@ namespace NanaFoodApi.Controllers
         {
             /*var properties = new AuthenticationProperties() { RedirectUri = Url.Action("GitHubExternalCallBack") };
             return Challenge(properties, "github");*/
-
+            var redirectUri = "https://localhost:51326/Auth/ExternalLoginCallBack";
             return Challenge(new AuthenticationProperties()
             {
-                RedirectUri = Url.Action("GitHubExternalCallBack"),
+                RedirectUri = redirectUri,
             }
             , authenticationSchemes: ["github"]);
         }
