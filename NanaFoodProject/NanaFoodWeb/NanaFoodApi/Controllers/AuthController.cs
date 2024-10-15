@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
@@ -19,12 +20,14 @@ namespace NanaFoodApi.Controllers
         private readonly IAuthenRepo _auth;
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
+        private readonly IMapper _mapper;
 
-        public AuthController(IAuthenRepo auth, SignInManager<User> signInManager, UserManager<User> userManager)
+        public AuthController(IAuthenRepo auth, SignInManager<User> signInManager, UserManager<User> userManager, IMapper mapper)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _auth = auth;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -238,7 +241,25 @@ namespace NanaFoodApi.Controllers
             return BadRequest(response);
         }
 
-
+        [HttpGet("GetInformation")]
+        public async Task<IActionResult> GetInfo()
+        {
+            var user = await _signInManager.UserManager.GetUserAsync(User);
+            if(user != null)
+            {
+                return Ok(new ResponseDto()
+                {
+                    IsSuccess = true,
+                    Result = _mapper.Map<UserDto>(user),
+                    Message = "Lấy thông tin người dùng thành công"
+                });
+            }
+            return BadRequest(new ResponseDto()
+            {
+                IsSuccess = false,
+                Message = "Lấy thông tin người dùng thất bại"
+            });
+        }
 
         //[HttpGet("SeachNameUser/{fullname}")]
         //public async Task<IActionResult> SeachNameUser([FromRoute] string fullname, int page = 1, int pageSize = 10)

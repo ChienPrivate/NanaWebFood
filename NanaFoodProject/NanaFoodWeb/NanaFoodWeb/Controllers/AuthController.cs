@@ -222,6 +222,16 @@ namespace NanaFoodWeb.Controllers
         }
 
 
+        public async Task<IActionResult> GetInfo()
+        {
+            var response = await _authRepo.GetInfo();
+            if(response != null && response.IsSuccess)
+            {
+                return View(JsonConvert.DeserializeObject<UserDto>(response.Result.ToString()));
+            }
+            return RedirectToAction("AccessDenied");
+        }
+
         private async Task SignInUser(string token)
         {
             var handler = new JwtSecurityTokenHandler();
