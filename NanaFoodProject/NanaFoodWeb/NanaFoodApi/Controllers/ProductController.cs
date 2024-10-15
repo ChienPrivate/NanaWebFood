@@ -9,7 +9,6 @@ namespace NanaFoodApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "admin")]
     public class ProductController(IProductRepository foodService, IMapper mapper) : ControllerBase
     {
         readonly IProductRepository _foodService = foodService;

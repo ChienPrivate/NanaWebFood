@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using NanaFoodWeb.Extensions;
 using NanaFoodWeb.IRepository;
 using NanaFoodWeb.Models;
+using NanaFoodWeb.Models.Dto.ViewModels;
+using Newtonsoft.Json;
 using System.Diagnostics;
 
 namespace NanaFoodWeb.Controllers
@@ -12,18 +14,21 @@ namespace NanaFoodWeb.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ITokenProvider _tokenProvider;
-        public HomeController(ILogger<HomeController> logger, ITokenProvider tokenProvider)
+        private readonly IProductRepo _productRepo;
+        public HomeController(ILogger<HomeController> logger, ITokenProvider tokenProvider, IProductRepo productRepo)
         {
             _logger = logger;
             _tokenProvider = tokenProvider;
+            _productRepo = productRepo;
         }
 
         [AllowAnonymous]
-        public IActionResult Index()
+        public async Task <IActionResult> Index(string searchQuery, int? page = 1, int pageSize = 10)
         {
-            var token = _tokenProvider.GetToken();
+            var token = _tokenProvider.GetToken(); // Lấy token nếu có
 
-            if ( token != null )
+            // Nếu có token và vai trò là admin, chuyển hướng đến Dashboard
+            if (token != null)
             {
                 var role = _tokenProvider.ReadToken("role", token);
                 if (role == "admin")
@@ -31,7 +36,30 @@ namespace NanaFoodWeb.Controllers
                     return RedirectToAction("Index", "DashBoard");
                 }
             }
-            return View();
+
+            // Lấy danh sách sản phẩm
+            ViewData["page"] = page;
+            ViewData["searchQuery"] = searchQuery;
+
+            var response = _productRepo.GetAll(page ?? 1, pageSize);
+
+            if (response.IsSuccess)
+            {
+                var productList = JsonConvert.DeserializeObject<ProductVM>(response.Result.ToString());
+                int totalItems = productList.TotalCount;
+                int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);  
+                ViewData["totalPages"] = totalPages;
+                ViewData["currentPage"] = page;
+
+                if (productList == null)
+                {
+                    productList = new ProductVM();
+                }
+
+                return View(productList); 
+            }
+
+            return View(); 
         }
 
 
