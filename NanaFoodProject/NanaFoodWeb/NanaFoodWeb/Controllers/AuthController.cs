@@ -207,12 +207,12 @@ namespace NanaFoodWeb.Controllers
 
                     await SignInUser(jsonResponse);
                     _tokenProvider.SetToken(jsonResponse);
-                    TempData["success"] = "Login Successful";
+                    TempData["success"] = "Đăng nhập thanh công";
                     return RedirectToAction("Index", "Home");
                 }
             }
 
-            TempData["error"] = "Error logging in with Google.";
+            TempData["error"] = "Xảy ra lỗi trong quá trình xác thực";
             return RedirectToAction("Login");
         }
 
