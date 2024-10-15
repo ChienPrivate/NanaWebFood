@@ -232,6 +232,12 @@ namespace NanaFoodWeb.Controllers
             return RedirectToAction("AccessDenied");
         }
 
+        [HttpPost]
+        public async Task<IActionResult> GetInfo(UserDto user)
+        {
+            return View();
+        }
+
         private async Task SignInUser(string token)
         {
             var handler = new JwtSecurityTokenHandler();
