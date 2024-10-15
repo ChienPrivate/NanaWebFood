@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using NanaFoodDAL.Dto;
 using NanaFoodDAL.Dto.UserDTO;
 using NanaFoodDAL.IRepository;
+using NanaFoodDAL.IRepository.Repository;
 using NanaFoodDAL.Model;
 
 namespace NanaFoodApi.Controllers
@@ -21,13 +22,15 @@ namespace NanaFoodApi.Controllers
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
         private readonly IMapper _mapper;
+        private readonly ITokenService _tokenService;
 
-        public AuthController(IAuthenRepo auth, SignInManager<User> signInManager, UserManager<User> userManager, IMapper mapper)
+        public AuthController(IAuthenRepo auth, SignInManager<User> signInManager, UserManager<User> userManager, IMapper mapper, ITokenService tokenService)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _auth = auth;
             _mapper = mapper;
+            _tokenService = tokenService;
         }
 
         /// <summary>
