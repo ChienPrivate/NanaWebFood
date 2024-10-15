@@ -11,5 +11,6 @@ namespace NanaFoodWeb.IRepository
         public Task<ResponseDto> ChangePasswordAsync(User user, ChangePasswordDto changePass);
         public Task<ResponseDto> CheckEmailConfirm(string email);
         public Task<ResponseDto> ForgotPassword(string email);
+        public Task<ResponseDto> GetInfo();
     }
 }

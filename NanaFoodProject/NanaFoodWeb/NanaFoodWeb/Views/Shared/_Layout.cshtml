@@ -37,6 +37,10 @@
 
     <!-- Link for Toasted -->
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+    <!-- Syncfusion ASP.NET Core controls styles -->
+    <link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/27.1.48/material.css" />
+    <!-- Syncfusion ASP.NET Core controls scripts -->
+    <script src="https://cdn.syncfusion.com/ej2/27.1.48/dist/ej2.min.js"></script>
 </head>
 <body>
 
@@ -77,7 +81,7 @@
                         </a>
                         @if (User.Identity.IsAuthenticated)
                         {
-                            <a class="my-auto btn btn-outline-warning rounded-2 p-2 d-flex align-items-center" asp-route-id="@nameId" asp-controller="Auth" asp-action="Profile">
+                            <a class="my-auto btn btn-outline-warning rounded-2 p-2 d-flex align-items-center" asp-controller="Auth" asp-action="GetInfo">
                                 <i class="fas fa-user fa-2x me-2"></i> @Name
                             </a>
                             <a class="my-auto ms-2 d-flex align-items-center" asp-controller="Auth" asp-action="Logout">
@@ -120,6 +124,7 @@
     <footer class="text-center py-4 bg-dark text-light">
         <p>&copy; 2024 Nana Fastfood. Bản quyền thuộc về . Thiết kế bởi nhóm 4 C# FPT Polytechnic.</p>
     </footer>
+    <ejs-scripts></ejs-scripts>
 </body>
 
 
