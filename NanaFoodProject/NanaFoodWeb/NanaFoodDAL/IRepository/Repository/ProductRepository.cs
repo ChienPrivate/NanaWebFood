@@ -78,7 +78,7 @@ namespace NanaFoodDAL.IRepository.Repository
         {
             try
             {
-                var products = _context.Products.Where(p => p.IsActive).ToList();
+                var products = _context.Products.ToList();
                 var totalCount = products.Count;
                 var totalPages = (int)Math.Ceiling((decimal)totalCount / pageSize);
 
@@ -108,7 +108,7 @@ namespace NanaFoodDAL.IRepository.Repository
         {
             try
             {
-                var products = _context.Products.Where(p => p.IsActive && p.CategoryId == categoryid).ToList();
+                var products = _context.Products.Where(p => p.CategoryId == categoryid).ToList();
                 var totalCount = products.Count;
                 var totalPages = (int)Math.Ceiling((decimal)totalCount / pageSize);
                 var productsPerPage = products
@@ -135,7 +135,7 @@ namespace NanaFoodDAL.IRepository.Repository
         {
             try
             {
-                var products = _context.Products.Where(x => x.IsActive).ToList().AsQueryable();
+                var products = _context.Products.ToList().AsQueryable();
                 if (minrange.HasValue && maxrange.HasValue)
                 {
                     products = products.Where(x => x.Price <= maxrange.Value && x.Price >= minrange.Value);
@@ -189,7 +189,7 @@ namespace NanaFoodDAL.IRepository.Repository
         {
             try
             {
-                var products = _context.Products.Where(p => p.IsActive && p.ProductName.Contains(query)).ToList();
+                var products = _context.Products.Where(p => p.ProductName.Contains(query)).ToList();
                 var totalCount = products.Count;
                 var totalPages = (int)Math.Ceiling((decimal)totalCount / pageSize);
                 var productsPerPage = products
@@ -243,7 +243,7 @@ namespace NanaFoodDAL.IRepository.Repository
                 List<Product> products;
                 if (sort == "desc")
                 {
-                    products = _context.Products.Where(p => p.IsActive).OrderByDescending(x => x.Price).ToList();
+                    products = _context.Products.OrderByDescending(x => x.Price).ToList();
                 }
                 else
                 {
@@ -275,7 +275,7 @@ namespace NanaFoodDAL.IRepository.Repository
         {
             try
             {
-                var products = _context.Products.Where(p => p.IsActive).OrderByDescending(x => x.View).ToList();
+                var products = _context.Products.OrderByDescending(x => x.View).ToList();
                 var totalCount = products.Count;
                 var totalPages = (int)Math.Ceiling((decimal)totalCount / pageSize);
                 var productsPerPage = products

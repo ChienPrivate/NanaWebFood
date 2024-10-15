@@ -14,11 +14,11 @@ namespace NanaFoodDAL.Dto
         public int ProductId { get; set; }
         [StringLength(50)]
         public string ProductName { get; set; }
-        public string ImageUrl { get; set; }
+        public string? ImageUrl { get; set; }
         public double Price { get; set; }
         public int View { get; set; }
         [StringLength(450)]
-        public string Description { get; set; }
+        public string? Description { get; set; }
         public bool IsActive { get; set; }
         public int CategoryId { get; set; }
     }

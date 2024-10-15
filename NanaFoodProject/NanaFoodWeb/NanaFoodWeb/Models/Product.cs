@@ -10,11 +10,11 @@ namespace NanaFoodWeb.Models
         public int ProductId { get; set; }
         [StringLength(100)]
         public string ProductName { get; set; }
-        public string ImageUrl { get; set; }
+        public string? ImageUrl { get; set; }
         public double Price { get; set; }
         public int View { get; set; }
         [StringLength(200)]
-        public string Description { get; set; }
+        public string? Description { get; set; }
         [Required]
         public bool IsActive { get; set; }
         [ForeignKey(nameof(Category))]
