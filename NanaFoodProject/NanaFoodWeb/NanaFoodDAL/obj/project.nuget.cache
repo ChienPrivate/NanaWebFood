@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "HAsuk4FkvuQ=",
+  "dgSpecHash": "c5GL9RZ04DY=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Admin\\Desktop\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\NanaFoodDAL.csproj",
+  "projectFilePath": "C:\\Users\\Admin\\Desktop\\AGFGF\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\NanaFoodDAL.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Admin\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",

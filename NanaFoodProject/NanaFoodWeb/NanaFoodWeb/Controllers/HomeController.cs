@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NanaFoodWeb.Extensions;
 using NanaFoodWeb.IRepository;
@@ -31,7 +31,6 @@ namespace NanaFoodWeb.Controllers
                     return RedirectToAction("Index", "DashBoard");
                 }
             }
-
             return View();
         }
 
