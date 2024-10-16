@@ -8,6 +8,7 @@ using NanaFoodWeb.IRepository;
 using NanaFoodWeb.IRepository.Repository;
 using NanaFoodWeb.Models;
 using NanaFoodWeb.Models.Dto;
+using NanaFoodWeb.Models.Dto.ViewModels;
 using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -231,13 +232,18 @@ namespace NanaFoodWeb.Controllers
             var response = await _authRepo.GetInfo();
             if(response != null && response.IsSuccess)
             {
-                return View(JsonConvert.DeserializeObject<UserDto>(response.Result.ToString()));
+                var viewmodel = new ChangePassAndUserDto()
+                {
+                    UserDto = JsonConvert.DeserializeObject<UserDto>(response.Result.ToString()),
+                    changepass = null
+                };
+                return View(viewmodel);
             }
             return RedirectToAction("AccessDenied");
         }
 
         [HttpPost]
-        public async Task<IActionResult> GetInfo(UserDto user, IFormFile? UploadFile)
+        public async Task<IActionResult> GetInfo(ChangePassAndUserDto viewmodel, IFormFile? UploadFile)
         {
             string imageUrl = string.Empty;
             if (ModelState.IsValid)
@@ -252,15 +258,15 @@ namespace NanaFoodWeb.Controllers
                     if (!string.IsNullOrEmpty(imageUrl))
                     {
                         // Gắn URL của hình ảnh vào model
-                        user.AvatarUrl = imageUrl;
+                        viewmodel.UserDto.AvatarUrl = imageUrl;
                     }
                     else
                     {
-                        user.AvatarUrl = "https://placehold.co/300x300";
+                        viewmodel.UserDto.AvatarUrl = "https://placehold.co/300x300";
                     }
                 }
 
-                var respone = await _authRepo.UpdateInfo(user);
+                var respone = await _authRepo.UpdateInfo(viewmodel.UserDto);
                 if (respone.IsSuccess)
                 {
                     TempData["success"] = respone.Message;
@@ -268,7 +274,20 @@ namespace NanaFoodWeb.Controllers
                 }
             }
 
-            return View(user);
+            return View(viewmodel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePassAndUserDto viewmodel)
+        {
+            var response = await _authRepo.ChangePasswordAsync(viewmodel.changepass);
+            if (response != null && response.IsSuccess)
+            {
+                TempData["success"] = response.Message;
+                return RedirectToAction("GetInfo");
+            }
+            TempData["error"] = response.Message;
+            return RedirectToAction("GetInfo");
         }
 
         private async Task SignInUser(string token)

@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using NanaFoodWeb.Models;
 using NanaFoodWeb.Models.Dto;
 using NanaFoodWeb.Utility;
@@ -13,9 +14,14 @@ namespace NanaFoodWeb.IRepository.Repository
         {
             _baseService = baseService;
         }
-        public Task<ResponseDto> ChangePasswordAsync(User user, ChangePasswordDto changePass)
+        public async Task<ResponseDto> ChangePasswordAsync(ChangePasswordDto changePass)
         {
-            throw new NotImplementedException();
+            return await _baseService.SendAsync(new RequestDto()
+            {
+                ApiType = StaticDetails.ApiType.POST,
+                Data = changePass,
+                Url = StaticDetails.APIBase + $"/api/Auth/ChangePassword"
+            });
         }
 
         public async Task<ResponseDto> CheckEmailConfirm(string email)

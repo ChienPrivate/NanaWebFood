@@ -133,7 +133,11 @@ namespace NanaFoodApi.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _signInManager.UserManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return Unauthorized("Người dùng chưa đăng nhập");
+            }
             var response = await _auth.ChangePassword(user, changepass);
             if (!response.IsSuccess)
             {
