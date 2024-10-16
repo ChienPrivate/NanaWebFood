@@ -264,6 +264,17 @@ namespace NanaFoodApi.Controllers
             });
         }
 
+        [HttpPut("UpdateUser")]
+        public async Task<IActionResult> UpdateUser(UserDto userdto)
+        {
+            var response = await _auth.UpdateUser(userdto);
+            if (response != null && response.IsSuccess)
+            {
+                return Ok(response);
+            }
+            return BadRequest(response);
+        }
+
         //[HttpGet("SeachNameUser/{fullname}")]
         //public async Task<IActionResult> SeachNameUser([FromRoute] string fullname, int page = 1, int pageSize = 10)
         //{

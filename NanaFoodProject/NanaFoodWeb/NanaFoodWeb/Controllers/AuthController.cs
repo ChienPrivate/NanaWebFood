@@ -2,7 +2,10 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
+using NanaFoodDAL.Model;
+using NanaFoodWeb.CallAPICenter;
 using NanaFoodWeb.IRepository;
+using NanaFoodWeb.IRepository.Repository;
 using NanaFoodWeb.Models;
 using NanaFoodWeb.Models.Dto;
 using Newtonsoft.Json;
@@ -15,12 +18,13 @@ namespace NanaFoodWeb.Controllers
     {
         private readonly IAuthRepository _authRepo;
         private readonly ITokenProvider _tokenProvider;
-        
+        private readonly IHelperRepository _helperRepository;
 
-        public AuthController(IAuthRepository authRepo, ITokenProvider tokenProvider)
+        public AuthController(IAuthRepository authRepo, ITokenProvider tokenProvider, IHelperRepository helperRepository)
         {
             _authRepo = authRepo;
             _tokenProvider = tokenProvider;
+            _helperRepository = helperRepository;
         }
         public IActionResult Login()
         {
@@ -221,7 +225,7 @@ namespace NanaFoodWeb.Controllers
             return View();
         }
 
-
+        [HttpGet]
         public async Task<IActionResult> GetInfo()
         {
             var response = await _authRepo.GetInfo();
@@ -233,9 +237,38 @@ namespace NanaFoodWeb.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> GetInfo(UserDto user)
+        public async Task<IActionResult> GetInfo(UserDto user, IFormFile? UploadFile)
         {
-            return View();
+            string imageUrl = string.Empty;
+            if (ModelState.IsValid)
+            {
+                if (UploadFile != null && UploadFile.Length > 0)
+                {
+                    // Gọi service để upload hình ảnh
+                    var uploadResponse = await _helperRepository.UploadImageAsync(UploadFile);
+
+                    imageUrl = uploadResponse.Result?.ToString() ?? "Tải ảnh lên thất bại";
+
+                    if (!string.IsNullOrEmpty(imageUrl))
+                    {
+                        // Gắn URL của hình ảnh vào model
+                        user.AvatarUrl = imageUrl;
+                    }
+                    else
+                    {
+                        user.AvatarUrl = "https://placehold.co/300x300";
+                    }
+                }
+
+                var respone = await _authRepo.UpdateInfo(user);
+                if (respone.IsSuccess)
+                {
+                    TempData["success"] = respone.Message;
+                    return View(JsonConvert.DeserializeObject<UserDto>(respone.Result.ToString()));
+                }
+            }
+
+            return View(user);
         }
 
         private async Task SignInUser(string token)
