@@ -298,6 +298,34 @@ namespace NanaFoodDAL.IRepository.Repository
             return new string(result);
         }
 
+        public async Task<ResponseDto> UpdateUser(UserDto userdto)
+        {
+            try
+            {
+                var user = await  _userManager.FindByEmailAsync(userdto.Email);
+                if(user == null)
+                {
+                    response.IsSuccess = false;
+                    response.Message = "Người dùng không tồn tại";
+                    return response;
+                }
+                user.PhoneNumber = userdto.PhoneNumber;
+                user.Address = userdto.Address;
+                user.AvatarUrl = userdto.AvatarUrl;
+                user.FullName = userdto.FullName;
+
+                await _context.SaveChangesAsync();
+                response.Result = _mapper.Map<UserDto>(user);
+                response.Message = "Cập nhật thành công";
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = $"Lỗi : {ex.Message}";
+            }
+            return response;
+        }
+
         //public async Task<ResponseDto> DeleteUser(string email)
         //{
         //    try
