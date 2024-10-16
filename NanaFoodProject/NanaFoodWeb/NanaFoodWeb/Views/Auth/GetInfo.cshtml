@@ -1,4 +1,4 @@
-﻿@model NanaFoodWeb.Models.Dto.UserDto
+﻿@model NanaFoodWeb.Models.Dto.ViewModels.ChangePassAndUserDto
 @using Syncfusion.EJ2
 <div style="
 margin-top: 7%">
@@ -18,12 +18,54 @@ margin-top: 7%">
             <div class="col-lg-4">
                 <div class="card mb-4">
                     <div class="card-body text-center">
-                        <img src="@Model.AvatarUrl" alt="avatar"
+                        <img src="@Model.UserDto.AvatarUrl" alt="avatar"
                              class="rounded-circle img-fluid" style="width: 150px;">
-                        <h5 class="my-3">@Model.UserName</h5>
+                            <h5 class="my-3">@Model.UserDto.UserName</h5>
                         <div class="d-flex justify-content-center mb-2">
-                                <a href="#" type="button" class="btn" style="background : #ffc107; color: black ">Tải ảnh lên<i class="bi bi-upload ps-2"></i></a>
-                            <button type="button" class="btn btn-outline-danger ms-1">Đăng xuất</button>
+
+                                <!-- Button trigger modal -->
+                                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#changePass">
+                                    Đổi mật khẩu
+                                </button>
+
+                                <form asp-action="ChangePassword" method="post">
+                                    <div class="modal fade" id="changePass" tabindex="-1" aria-labelledby="changePassLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="changePassLabel">Đổi mật khẩu</h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="mb-2">
+                                                        <ejs-textbox ejs-for=changepass.OldPassword floatLabelType=Auto placeholder="Mật khẩu hiện tại"></ejs-textbox>
+                                                        @* <label asp-for="changepass.OldPassword" class="mb-1"></label>
+                                                        <input asp-for="changepass.OldPassword" class="form-control border-1 border-warning rounded-1" autofocus />
+                                                        <span class="text-primary" asp-validation-for="changepass.OldPassword"></span> *@
+                                                    </div>
+                                                    <div class="mb-2">
+                                                        <ejs-textbox ejs-for=changepass.NewPassword floatLabelType=Auto placeholder="Mật khẩu mới"></ejs-textbox>
+
+                                                        @* <label asp-for="changepass.NewPassword" class="mb-1"></label>
+                                                        <input type="password" asp-for="changepass.NewPassword" class="form-control border-1 border-warning rounded-1" />
+                                                        <span class="text-primary" asp-validation-for="changepass.NewPassword"></span> *@
+                                                    </div>
+                                                    <div class="mb-2">
+                                                        <ejs-textbox ejs-for=changepass.ConfirmPassword floatLabelType=Auto placeholder="Xác nhận mật khẩu"></ejs-textbox>
+
+                                                        @* <label asp-for="changepass.ConfirmPassword" class="mb-1"></label>
+                                                        <input type="password" asp-for="changepass.ConfirmPassword" class="form-control border-1 border-warning rounded-1" />
+                                                        <span class="text-primary" asp-validation-for="changepass.ConfirmPassword"></span> *@
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Đóng</button>
+                                                    <button type="submit" class="btn btn-outline-secondary">Đổi mật khẩu</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
                         </div>
                     </div>
                 </div>
@@ -32,10 +74,10 @@ margin-top: 7%">
                 <div class="card mb-4">
                     <div class="card-body">
                             <form asp-controller="Auth" asp-action="GetInfo" enctype="multipart/form-data" method="post">
-                                <input asp-for=UserName id="UserName" value="@Model.UserName" hidden/>
+                                <input asp-for=UserDto.UserName id="UserName" value="@Model.UserDto.UserName" hidden />
 
                                 <div class="form-group">
-                                    <label asp-for="AvatarUrl" class="control-label">Hình ảnh</label>
+                                    <label asp-for="UserDto.AvatarUrl" class="control-label">Hình ảnh</label>
                                     <div class="control-section control-fluid">
                                         <div class="control_wrapper">
                                             <div id='dropArea' style='height: auto;'>
@@ -50,7 +92,7 @@ margin-top: 7%">
                                                               failure="onUploadFailed"
                                                               cssClass=""
                                                               asyncSettings="new Syncfusion.EJ2.Inputs.UploaderAsyncSettings { SaveUrl = @Url.Content("https://services.syncfusion.com/aspnet/production/api/FileUploader/Save"), RemoveUrl = @Url.Content("https://services.syncfusion.com/aspnet/production/api/FileUploader/Remove") }"></ejs-uploader>
-                                                <input asp-for=AvatarUrl hidden />
+                                                <input asp-for=UserDto.AvatarUrl hidden />
                                                 <input type="file" id="hiddenFileInput" name="UploadFile" hidden />
                                             </div>
                                         </div>
@@ -68,8 +110,8 @@ margin-top: 7%">
                                         <p class="mb-0">Full Name</p>
                                     </div>
                                     <div class="col-sm-9">
-                                        <input asp-for=FullName type="text" class="form-control" id="FullName" value="@Model.FullName" placeholder="Nhập tên tài khoản">
-                                        <span asp-validation-for="FullName" class="text-danger"></span>
+                                        <input asp-for=UserDto.FullName type="text" class="form-control" id="FullName" value="@Model.UserDto.FullName" placeholder="Nhập tên tài khoản">
+                                        <span asp-validation-for="UserDto.FullName" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <hr>
@@ -78,8 +120,8 @@ margin-top: 7%">
                                         <p class="mb-0">Email</p>
                                     </div>
                                     <div class="col-sm-9">
-                                        <input asp-for=Email type="email" class="form-control" id="Email" value="@Model.Email" placeholder="Nhập địa chỉ email">
-                                        <span asp-validation-for="Email" class="text-danger"></span>
+                                        <input asp-for=UserDto.Email type="email" class="form-control" id="Email" value="@Model.UserDto.Email" placeholder="Nhập địa chỉ email">
+                                        <span asp-validation-for="UserDto.Email" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <hr>
@@ -88,8 +130,8 @@ margin-top: 7%">
                                         <p class="mb-0">Phone</p>
                                     </div>
                                     <div class="col-sm-9">
-                                        <input asp-for=PhoneNumber type="tel" class="form-control" id="PhoneNumber" value="@Model.PhoneNumber" placeholder="Nhập số điện thoại">
-                                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                        <input asp-for=UserDto.PhoneNumber type="tel" class="form-control" id="PhoneNumber" value="@Model.UserDto.PhoneNumber" placeholder="Nhập số điện thoại">
+                                        <span asp-validation-for="UserDto.PhoneNumber" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <hr>
@@ -98,8 +140,8 @@ margin-top: 7%">
                                         <p class="mb-0">Address</p>
                                     </div>
                                     <div class="col-sm-9">
-                                        <input asp-for=Address type="text" class="form-control" id="Address" value="@Model.Address" placeholder="Nhập địa chỉ chính xác">
-                                        <span asp-validation-for="Address" class="text-danger"></span>
+                                        <input asp-for=UserDto.Address type="text" class="form-control" id="Address" value="@Model.UserDto.Address" placeholder="Nhập địa chỉ chính xác">
+                                        <span asp-validation-for="UserDto.Address" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <hr>
