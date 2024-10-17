@@ -6978,24 +6978,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Admin\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\Admin\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Admin\\Desktop\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\NanaFoodDAL.csproj",
+      "projectUniqueName": "C:\\Users\\Admin\\Desktop\\vddsvdsdv\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\NanaFoodDAL.csproj",
       "projectName": "NanaFoodDAL",
-      "projectPath": "C:\\Users\\Admin\\Desktop\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\NanaFoodDAL.csproj",
+      "projectPath": "C:\\Users\\Admin\\Desktop\\vddsvdsdv\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\NanaFoodDAL.csproj",
       "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Admin\\Desktop\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\obj\\",
+      "outputPath": "C:\\Users\\Admin\\Desktop\\vddsvdsdv\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
         "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -7074,7 +7069,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

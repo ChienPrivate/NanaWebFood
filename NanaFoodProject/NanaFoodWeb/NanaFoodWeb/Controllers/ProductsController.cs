@@ -12,7 +12,6 @@ using Newtonsoft.Json;
 namespace NanaFoodWeb.Controllers
 {
     [Route("Products")]
-    [Authorize(Roles = "admin")]
     public class ProductsController(IProductRepo productRepo, IHelperRepository helperRepository, ITokenProvider tokenProvider) : Controller
     {
         private CallApiCenter _callApiCenter = new CallApiCenter();
