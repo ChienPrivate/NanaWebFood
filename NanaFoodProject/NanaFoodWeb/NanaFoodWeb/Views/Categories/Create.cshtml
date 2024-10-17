@@ -46,7 +46,7 @@
                         <div class="control-section control-fluid">
                             <div class="control_wrapper">
                                 <div id='dropArea' style='height: auto;'>
-                                    <span id='drop'> Chọn hoặc kéo thả hình ảnh của bạn tại đây <a href='' id='browse'><u>Browse</u></a> </span>
+                                    <span id='drop'> Chọn hoặc kéo thả hình ảnh của bạn tại đây <a href='' id='browse'><u>Chọn hình ảnh</u></a> </span>
                                     <ejs-uploader 
                                     id="UploadFiles"
                                     dropArea=".control-fluid" 
@@ -121,6 +121,24 @@
     }
 
     function onSelect(args) {
+
+
+// Cập nhật mới --- ngày 17/10------------------------- 
+        // Chỉ giữ lại các file có đuôi png, jpg, jpeg
+        var allowedExtensions = ['png', 'jpg', 'jpeg'];
+        var selectedFiles = args.filesData.filter(function(file) {
+        var fileExtension = file.name.split('.').pop().toLowerCase();
+            return allowedExtensions.includes(fileExtension);
+        });
+
+        // Nếu có file không hợp lệ, hủy bỏ sự kiện
+        if (selectedFiles.length !== args.filesData.length) {
+            alert("file đang chọn không hợp lệ");
+            args.cancel = true;
+            return;
+        }
+// Cập nhật mới --- ngày 17/10
+
         // Xóa danh sách tệp hiện tại để chỉ giữ một tệp duy nhất
         if (this.filesData && this.filesData.length > 0) {
             document.getElementById('dropArea').querySelector('ul').innerHTML = '';

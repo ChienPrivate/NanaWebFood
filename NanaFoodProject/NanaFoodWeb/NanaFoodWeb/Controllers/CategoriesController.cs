@@ -1,4 +1,5 @@
 ﻿using Azure;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using NanaFoodDAL.IRepository;
@@ -14,6 +15,7 @@ using NuGet.Common;
 namespace NanaFoodWeb.Controllers
 {
     [Route("Categories")]
+    [Authorize(Roles = "admin")]
     public class CategoriesController : Controller
     {
         private readonly CallApiCenter _callAPICenter;
