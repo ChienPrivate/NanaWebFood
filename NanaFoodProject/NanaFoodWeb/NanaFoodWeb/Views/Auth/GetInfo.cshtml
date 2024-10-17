@@ -19,7 +19,7 @@ margin-top: 7%">
                 <div class="card mb-4">
                     <div class="card-body text-center">
                         <img src="@Model.UserDto.AvatarUrl" alt="avatar"
-                             class="rounded-circle img-fluid" style="width: 150px;">
+                             class="rounded-circle img-fluid" style="width: 150px; height:150px;">
                             <h5 class="my-3">@Model.UserDto.UserName</h5>
                         <div class="d-flex justify-content-center mb-2">
 
@@ -75,36 +75,6 @@ margin-top: 7%">
                     <div class="card-body">
                             <form asp-controller="Auth" asp-action="GetInfo" enctype="multipart/form-data" method="post">
                                 <input asp-for=UserDto.UserName id="UserName" value="@Model.UserDto.UserName" hidden />
-
-                                <div class="form-group">
-                                    <label asp-for="UserDto.AvatarUrl" class="control-label">Hình ảnh</label>
-                                    <div class="control-section control-fluid">
-                                        <div class="control_wrapper">
-                                            <div id='dropArea' style='height: auto;'>
-                                                <span id='drop'> Chọn hoặc kéo thả hình ảnh của bạn tại đây <a href='' id='browse'><u>Browse</u></a> </span>
-                                                <ejs-uploader id="UploadFiles"
-                                                              dropArea=".control-fluid"
-                                                              allowedExtensions=".jpg,.png,.jpeg"
-                                                              selected="onSelect"
-                                                              success="onUploadSuccess"
-                                                              progress="onFileUpload"
-                                                              removing="onFileRemove"
-                                                              failure="onUploadFailed"
-                                                              cssClass=""
-                                                              asyncSettings="new Syncfusion.EJ2.Inputs.UploaderAsyncSettings { SaveUrl = @Url.Content("https://services.syncfusion.com/aspnet/production/api/FileUploader/Save"), RemoveUrl = @Url.Content("https://services.syncfusion.com/aspnet/production/api/FileUploader/Remove") }"></ejs-uploader>
-                                                <input asp-for=UserDto.AvatarUrl hidden />
-                                                <input type="file" id="hiddenFileInput" name="UploadFile" hidden />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 mt-2 property-section">
-                                        <div class="text-center" id="property" title="Properties">
-                                            @Html.EJS().Button("clearbtn").CssClass("e-btn e-css hidden-element").Content("Xóa ảnh").Render()
-                                            @Html.EJS().Button("uploadbtn").CssClass("e-btn e-css").Content("Upload ảnh").Render()
-                                        </div>
-                                    </div>
-                                </div>
-
                                 <div class="row">
                                     <div class="col-sm-3 d-flex align-items-center">
                                         <p class="mb-0">Full Name</p>
@@ -142,6 +112,37 @@ margin-top: 7%">
                                     <div class="col-sm-9">
                                         <input asp-for=UserDto.Address type="text" class="form-control" id="Address" value="@Model.UserDto.Address" placeholder="Nhập địa chỉ chính xác">
                                         <span asp-validation-for="UserDto.Address" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3 d-flex align-items-center">
+                                        <p class="mb-0">Hình ảnh</p>
+                                    </div>
+                                    <div class="col-sm-9 control-section control-fluid">
+                                        <div class="control_wrapper">
+                                            <div id='dropArea' style='height: auto;'>
+                                                <span id='drop'> Kéo thả hình ảnh của bạn hoặc tải lên tại đây <a href='' id='browse'><u>Browse</u></a> </span>
+                                                <ejs-uploader id="UploadFiles"
+                                                              dropArea=".control-fluid"
+                                                              allowedExtensions=".jpg,.png,.jpeg"
+                                                              selected="onSelect"
+                                                              success="onUploadSuccess"
+                                                              progress="onFileUpload"
+                                                              removing="onFileRemove"
+                                                              failure="onUploadFailed"
+                                                              cssClass=""
+                                                              asyncSettings="new Syncfusion.EJ2.Inputs.UploaderAsyncSettings { SaveUrl = @Url.Content("https://services.syncfusion.com/aspnet/production/api/FileUploader/Save"), RemoveUrl = @Url.Content("https://services.syncfusion.com/aspnet/production/api/FileUploader/Remove") }"></ejs-uploader>
+                                                <input asp-for=UserDto.AvatarUrl hidden />
+                                                <input type="file" id="hiddenFileInput" name="UploadFile" hidden />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mt-2 property-section" hidden>
+                                        <div class="text-center" id="property" title="Properties">
+                                            @Html.EJS().Button("clearbtn").CssClass("e-btn e-css hidden-element").Content("Xóa ảnh").Render()
+                                            @Html.EJS().Button("uploadbtn").CssClass("e-btn e-css").Content("Upload ảnh").Render()
+                                        </div>
                                     </div>
                                 </div>
                                 <hr>

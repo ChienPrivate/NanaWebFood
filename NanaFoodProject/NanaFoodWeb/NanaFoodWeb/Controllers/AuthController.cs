@@ -270,7 +270,8 @@ namespace NanaFoodWeb.Controllers
                 if (respone.IsSuccess)
                 {
                     TempData["success"] = respone.Message;
-                    return View(JsonConvert.DeserializeObject<UserDto>(respone.Result.ToString()));
+                    viewmodel.UserDto = JsonConvert.DeserializeObject<UserDto>(respone.Result.ToString());
+                    return View(viewmodel);
                 }
             }
 
