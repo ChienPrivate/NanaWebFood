@@ -4,16 +4,16 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace NanaFoodDAL.Model
 {
     [Table("CartDetails")]
-    [PrimaryKey(nameof(CartId),nameof(ProductId))]
+    [PrimaryKey(nameof(UserId),nameof(ProductId))]
     public class CartDetails
     {
-        [ForeignKey(nameof(Cart))]
-        public int CartId { get; set; }
+        [ForeignKey(nameof(User))]
+        public string UserId { get; set; }
         [ForeignKey(nameof(Product))]
         public int ProductId { get; set; }
         public double Total { get; set;}
         public int Quantity { get; set; }
-        public Cart Cart { get; set; }
+        public User User { get; set; }
         public Product Product { get; set; }
     }
 }
