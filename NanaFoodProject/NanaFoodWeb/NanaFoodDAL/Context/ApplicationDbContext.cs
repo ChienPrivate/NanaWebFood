@@ -18,7 +18,6 @@ namespace NanaFoodDAL.Context
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductChangeLog> ProductChangeLogs { get; set; }
-        public DbSet<Cart> Carts { get; set; }
         public DbSet<CartDetails> CartDetails { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<WishList> WishLists { get; set; }
@@ -53,17 +52,9 @@ namespace NanaFoodDAL.Context
 
             builder.Entity<ProductChangeLog>().HasKey(e => e.LogId);
 
-            builder.Entity<Cart>().HasKey(e => e.CartId);
-
             builder.Entity<Review>().HasKey(e => e.ReviewId);
 
             builder.Entity<Order>().HasKey(e => e.OrderId);
-
-            // Cấu hình khóa ngoại cho bảng Cart
-            builder.Entity<Cart>()
-                .HasOne(e => e.User)
-                .WithOne(e => e.Cart)
-                .HasForeignKey<Cart>(e => e.UserId);
 
 
             // Cấu hình khóa chính và khóa ngoại cho WishList
@@ -82,12 +73,12 @@ namespace NanaFoodDAL.Context
                 .OnDelete(DeleteBehavior.Cascade);
 
             // Cấu hình khóa chính và khóa ngoại cho CartDetails
-            builder.Entity<CartDetails>().HasKey(e => new { e.ProductId, e.CartId });
+            builder.Entity<CartDetails>().HasKey(e => new { e.ProductId, e.UserId });
 
             builder.Entity<CartDetails>()
-                .HasOne(e => e.Cart)
+                .HasOne(e => e.User)
                 .WithMany(e => e.CartDetails)
-                .HasForeignKey(e => e.CartId)
+                .HasForeignKey(e => e.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<CartDetails>()
