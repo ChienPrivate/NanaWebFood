@@ -141,14 +141,6 @@ builder.Services.AddAuthentication(options =>
                 // Gán role cho user mới
                 await userManager.AddToRoleAsync(newUser, roleName);
 
-                // Tạo Cart cho user mới
-                var cart = new Cart
-                {
-                    UserId = newUser.Id,
-                };
-                await dbContext.Carts.AddAsync(cart);
-                await dbContext.SaveChangesAsync();
-
                 // Tạo JWT token cho user mới
                 var roles = new List<string> { roleName };
                 token = tokenService.CreateToken(newUser, roles);
@@ -250,14 +242,6 @@ builder.Services.AddAuthentication(options =>
                 // Gán role cho user mới
                 await userManager.AddToRoleAsync(newUser, roleName);
 
-                // Tạo Cart cho user mới (nếu cần)
-                var cart = new Cart
-                {
-                    UserId = newUser.Id,
-                };
-                await dbContext.Carts.AddAsync(cart);
-                await dbContext.SaveChangesAsync();
-
                 // Tạo JWT token cho user mới
                 var roles = new List<string> { roleName };
                 token = tokenService.CreateToken(newUser, roles);
@@ -358,14 +342,6 @@ builder.Services.AddAuthentication(options =>
                 // Gán role cho user mới
                 await userManager.AddToRoleAsync(newUser, roleName);
 
-                // Tạo Cart cho user mới (nếu cần)
-                var cart = new Cart
-                {
-                    UserId = newUser.Id,
-                };
-                await dbContext.Carts.AddAsync(cart);
-                await dbContext.SaveChangesAsync();
-
                 // Tạo JWT token cho user mới
                 var roles = new List<string> { roleName };
                 token = tokenService.CreateToken(newUser, roles);
@@ -435,6 +411,17 @@ builder.Services.AddScoped<EmailPoster>();
 builder.Services.AddScoped<CloudinaryService>();
 
 // Config các IService và Service ở chỗ này ↑
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllOrigins",
+        builder =>
+        {
+            builder.AllowAnyOrigin()
+                   .AllowAnyMethod()
+                   .AllowAnyHeader();
+        });
+});
 
 
 // Add services to the container.

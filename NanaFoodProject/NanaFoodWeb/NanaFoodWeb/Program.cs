@@ -48,6 +48,8 @@ builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IProductRepo, ProductRepo>();
 builder.Services.AddScoped<IHelperRepository, HelperRepository>();
 
+
+
 var app = builder.Build();
 
 
