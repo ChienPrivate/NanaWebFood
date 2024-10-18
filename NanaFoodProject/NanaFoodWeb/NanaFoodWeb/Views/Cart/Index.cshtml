@@ -1,0 +1,50 @@
+﻿@model NanaFoodWeb.Models.CartDto
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Index";
+}
+
+<div class="cart-container">
+    <table>
+        <thead>
+            <tr>
+                <th scope="col">XÓA</th>
+                <th scope="col">SẢN PHẨM</th>
+                <th scope="col">GIÁ</th>
+                <th scope="col">SỐ LƯỢNG</th>
+                <th scope="col">TỔNG</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <a asp-action="" asp-route-id="" asp-route-quantity="">Xoá</a>
+                </td>
+                <td><img src="https://via.placeholder.com/50" alt="Khoai tây chiên" style="margin-right: 10px; vertical-align: middle;">Khoai tây chiên bơ giòn</td>
+                <td>23,000 đ</td>
+                <td>
+                    <input type="number" value="1" min="1" style="width: 50px;">
+                </td>
+                <td>23,000 đ</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Phần tổng kết giỏ hàng -->
+    <div class="cart-summary">
+        <p>Tạm tính: <span>23,000 đ</span></p>
+        <p>Tổng: <span>23,000 đ</span></p>
+
+        <button class="btn">TIẾN HÀNH THANH TOÁN</button>
+
+        <div class="discount-code">
+            <input type="text" placeholder="Mã ưu đãi">
+            <button>Áp dụng</button>
+        </div>
+
+        <div class="action-buttons">
+            <a href="#">← Tiếp tục xem sản phẩm</a>
+            <button type="button" id="updateButton" onclick="UpdateQuantiy(@itm.CartDtlId)">Cập nhật giỏ hàng</button>
+        </div>
+    </div>
+</div>

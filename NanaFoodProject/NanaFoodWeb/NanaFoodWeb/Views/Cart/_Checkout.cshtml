@@ -1,0 +1,87 @@
+﻿@{
+    Layout = "_Layout";
+
+}
+
+<div class="container">
+    <div class="login-prompt">
+        Bạn đã có tài khoản? <a href="#">Ấn vào đây để đăng nhập</a>
+    </div>
+    <div class="discount-code">
+        Bạn có mã ưu đãi? <a href="#">Ấn vào đây để nhập mã</a>
+    </div>
+
+    <h3>Thông tin thanh toán</h3>
+    <div class="checkout-form">
+
+        <div class="billing-info">
+            <label for="first-name">Tên </label>
+            <input type="text" id="first-name" placeholder="Tên" required>
+
+            <label for="last-name">Họ </label>
+            <input type="text" id="last-name" placeholder="Họ" required>
+
+            <label for="address">Địa chỉ </label>
+            <input type="text" id="address" placeholder="Địa chỉ" required>
+
+            <label for="city">Tỉnh / Thành phố </label>
+            <input type="text" id="city" placeholder="Tỉnh / Thành phố" required>
+
+            <label for="phone">Số điện thoại </label>
+            <input type="tel" id="phone" placeholder="Số điện thoại" required>
+
+            <label for="email">Địa chỉ email </label>
+            <input type="email" id="email" placeholder="Địa chỉ email" required>
+
+            <input type="checkbox" id="create-account">
+            <label for="create-account">Tạo tài khoản mới?</label>
+
+            <h3>Thông tin bổ sung</h3>
+            <label for="order-notes">Ghi chú đơn hàng (tùy chọn)</label>
+            <textarea id="order-notes" placeholder="Ghi chú về đơn hàng, ví dụ: thời gian hay chỉ dẫn địa điểm giao hàng chi tiết hơn."></textarea>
+        </div>
+
+        <div class="order-summary">
+            <h3>Đơn hàng của bạn</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>SẢN PHẨM</th>
+                        <th>TẠM TÍNH</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Khoai tây chiên bơ giòn × 1</td>
+                        <td>23,000 đ</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>Tạm tính</th>
+                        <td>23,000 đ</td>
+                    </tr>
+                    <tr>
+                        <th>Tổng</th>
+                        <td>23,000 đ</td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <div class="payment-method">
+                <p>
+                    <input type="radio" id="bank-transfer" name="payment-method" checked>
+                    <label for="bank-transfer">Chuyển khoản ngân hàng</label>
+                </p>
+                <p>Thực hiện thanh toán vào ngay tài khoản ngân hàng của chúng tôi. Vui lòng sử dụng ID Đơn hàng của bạn như một phần để tham khảo khi thanh toán. Đơn hàng của bạn sẽ không được vận chuyển cho tới khi tiền được gửi vào tài khoản của chúng tôi.</p>
+
+                <p>
+                    <input type="radio" id="cod" name="payment-method">
+                    <label for="cod">Trả tiền mặt khi nhận hàng</label>
+                </p>
+            </div>
+
+            <button>ĐẶT HÀNG</button>
+        </div>
+    </div>
+</div>
