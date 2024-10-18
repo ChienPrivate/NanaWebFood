@@ -1,26 +1,9 @@
-﻿@{
-    Layout = "_AdminLayout";
-}
-@if (TempData["SuccessMessage"] != null)
-{
-    <div class="alert alert-success">
-        @TempData["SuccessMessage"]
-    </div>
-}
-
-@if (TempData["ErrorMessage"] != null)
-{
-    <div class="alert alert-danger">
-        @TempData["ErrorMessage"]
-    </div>
-}
+﻿@model NanaFoodWeb.Models.Dto.ViewModels.ProductVM
 @{
     var currentPage = ViewData["currentPage"] as int? ?? 1;
     var totalPages = ViewData["totalPages"] as int? ?? 1;
 }
 @using Syncfusion.EJ2
-@model NanaFoodWeb.Models.Dto.ViewModels.ProductVM
-
 <div id="wrapper">
 
     <!-- Main Content -->
@@ -28,7 +11,7 @@
         <div id="content">
             <div class="container-fluid">
                 <h1 class="h3 mb-4 text-gray-800">Danh sách sản phẩm</h1>
-                @* <a href="add-product.html" class="btn btn-primary mb-3">Add Product</a> *@
+
                 <p>
                     <a asp-action="Create" class="btn btn-primary mb-3" asp-controller="Products">Thêm mới</a>
                 </p>
@@ -204,3 +187,4 @@
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
+

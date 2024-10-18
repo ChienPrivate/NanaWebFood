@@ -71,9 +71,20 @@ namespace NanaFoodWeb.IRepository.Repository
 
         public ResponseDto GetBySearch(string query, int page, int pageSize)
         {
-            throw new NotImplementedException();
+            return _baseService.SendAsync(new RequestDto()
+            {
+                ApiType = StaticDetails.ApiType.GET,
+                Url = StaticDetails.APIBase + $"/api/Product/Get-by-name?query={query}&page={page}&pageSize={pageSize}",
+            }).Result;
         }
-
+        public ResponseDto UnActiveCategory(int id)
+        {
+            return _baseService.SendAsync(new RequestDto()
+            {
+                ApiType = StaticDetails.ApiType.PUT,
+                Url = StaticDetails.APIBase + $"/api/Product/Unactive/{id}"
+            }).Result;
+        }
         public ResponseDto ModifyStatus(int id, bool status)
         {
             throw new NotImplementedException();

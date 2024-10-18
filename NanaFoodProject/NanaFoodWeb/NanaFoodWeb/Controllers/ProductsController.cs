@@ -182,6 +182,7 @@ namespace NanaFoodWeb.Controllers
             }
             return RedirectToAction("Index", new { searchQuery = searchQuery, page = page });
         }
+
         [HttpGet("Details/{id}")]
         public IActionResult Details(int id)
         {
@@ -194,6 +195,41 @@ namespace NanaFoodWeb.Controllers
             }
 
             TempData["ErrorMessage"] = "Không tìm thấy sản phẩm.";
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost("deactive/{id}")]
+        public IActionResult Deactivate(int id, string searchQuery, int? page)
+        {
+            var response = _productRepo.UnActiveCategory(id);
+            if (response == null)
+            {
+                TempData["ErrorMessage"] = "Xoá thất bại vui lòng kiểm tra lại thông tin.";
+                return RedirectToAction("Index");
+            }
+            if (response.IsSuccess)
+            {
+                TempData["SuccessMessage"] = "Xoá thành công.";
+
+            }
+            else
+            {
+                TempData["ErrorMessage"] = response.Message ?? "Failed to delete the product.";
+            }
+            return RedirectToAction("Index", new { searchQuery = searchQuery, page = page });
+        }
+
+        [HttpGet("SearchByName")]
+        public IActionResult SearchByName(string? query, int? page, int pageSize = 10)
+        {
+            var response = _productRepo.GetBySearch(query, 1, pageSize);
+            if (response?.IsSuccess == true && response.Result != null)
+            {
+                var productDto = JsonConvert.DeserializeObject<ProductVM>(response.Result.ToString());
+                return View(productDto);
+            }
+
+            TempData["ErrorMessage"] = "Không tìm thấy sản phẩm nào.";
             return RedirectToAction("Index");
         }
     }
