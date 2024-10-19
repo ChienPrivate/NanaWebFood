@@ -1,0 +1,181 @@
+﻿
+@{
+    Layout = "_Layout";
+
+}
+
+<div id="content" class="col-sm-9">
+    <h2 class="title">Thông tin đơn hàng</h2>
+
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <td colspan="2" class="text-left">Chi tiết đơn hàng</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="width: 50%;" class="text-left">
+                    <b>Mã đơn hàng:</b> #214521
+                    <br>
+                    <b>Ngày đặt:</b> 20/10/2024
+                </td>
+                <td style="width: 50%;" class="text-left">
+                    <b>Phương thức thanh toán:</b> Tiền mặt
+                    <br>
+                    <b>Phương thức vận chuyển:</b> Giao hàng nhanh
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <td style="width: 50%; vertical-align: top;" class="text-left">Địa chỉ thanh toán</td>
+                <td style="width: 50%; vertical-align: top;" class="text-left">Địa chỉ vận chuyển</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="text-left">
+                    Hà
+                    <br>Công viên phần mềm Quang Trung
+                    <br>Tô Ký
+                    <br>Quận 12
+                    <br>Thành phố Hồ Chí Minh
+                </td>
+                <td class="text-left">
+                    Hà
+                    <br>Công viên phần mềm Quang Trung
+                    <br>Tô Ký
+                    <br>Quận 12
+                    <br>Thành phố Hồ Chí Minh
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <td class="text-left">Sản phẩm</td>
+                    <td class="text-left">Mã sản phẩm</td>
+                    <td class="text-right">Số lượng</td>
+                    <td class="text-right">Giá</td>
+                    <td class="text-right">Tổng</td>
+                    <td style="width: 20px;"></td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="text-left">Khoai tây chiên </td>
+                    <td class="text-left">23</td>
+                    <td class="text-right">1</td>
+                    <td class="text-right">$13.20</td>
+                    <td class="text-right">$13.20</td>
+                    <td style="white-space: nowrap;" class="text-right">
+                        <a class="btn btn-primary"
+                           title="" data-toggle="tooltip" href="#" data-original-title="Reorder">
+                            <i class="fa fa-shopping-cart"></i>
+                        </a>
+                        <a class="btn btn-danger" title="" data-toggle="tooltip" href="return.html"
+                           data-original-title="Return"><i class="fa fa-reply"></i></a>
+                    </td>
+                </tr>
+
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3"></td>
+                    <td class="text-right">
+                        <b>Tổng</b>
+                    </td>
+                    <td class="text-right">$13.20</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td colspan="3"></td>
+                    <td class="text-right">
+                        <b>Phí vận chuyển</b>
+                    </td>
+                    <td class="text-right">$1.00</td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td colspan="3"></td>
+                    <td class="text-right">
+                        <b>Thuế (20%)</b>
+                    </td>
+                    <td class="text-right">$2.20</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td colspan="3"></td>
+                    <td class="text-right">
+                        <b>Tổng cộng</b>
+                    </td>
+                    <td class="text-right">$18.60</td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <h3>Order History</h3>
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <td class="text-left">Ngày đặt</td>
+                <td class="text-left">Trạng thái</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="text-left">20/10/2024</td>
+                <td class="text-left">Đang thực hiện</td>
+            </tr>
+            <tr>
+                <td class="text-left">21/10/2024</td>
+                <td class="text-left">Đang giao</td>
+            </tr>
+            <tr>
+                <td class="text-left">24/10/2024</td>
+                <td class="text-left">Đã giao thành công</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="buttons clearfix">
+        <div class="pull-right">
+            <a class="btn btn-primary" href="#">Tiếp tục</a>
+        </div>
+    </div>
+
+
+
+</div>
+
+<aside class="col-sm-3 hidden-xs" id="column-right">
+    <h2 class="subtitle">Account</h2>
+    <div class="list-group">
+        <ul class="list-item">
+            <li>
+                <a href="login.html">Đăng Nhập</a>
+            </li>
+            <li>
+                <a href="register.html">Đăng Ký</a>
+            </li>
+            <li>
+                <a href="#">Quên Mật Khẩu</a>
+            </li>
+            <li>
+                <a href="#">Tài Khoản Của Tôi</a>
+            </li>
+            <li>
+                <a href="#">Địa Chỉ Nhận Hàng</a>
+            </li>
+            <li>
+                <a href="#">Lịch Sử Đơn Hàng</a>
+            </li>
+        </ul>
+    </div>
+</aside>

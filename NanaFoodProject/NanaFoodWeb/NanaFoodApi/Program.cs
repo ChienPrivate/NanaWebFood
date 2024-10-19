@@ -409,7 +409,7 @@ builder.Services.AddScoped<IAuthenRepo, AuthenRepo>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<EmailPoster>();
 builder.Services.AddScoped<CloudinaryService>();
-
+builder.Services.AddScoped<ICartRepo, CartRepo>();
 // Config các IService và Service ở chỗ này ↑
 
 builder.Services.AddCors(options =>
@@ -430,6 +430,8 @@ builder.Services.AddControllers();
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
+
+app.UseCors("AllowAllOrigins");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

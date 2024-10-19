@@ -1,4 +1,4 @@
-﻿
+﻿@* @model NanaFoodWeb.Models.CartDto *@
 @{
     Layout = "_Layout";
     ViewData["Title"] = "Index";
@@ -44,7 +44,7 @@
 
         <div class="action-buttons">
             <a href="#">← Tiếp tục xem sản phẩm</a>
-            <button type="button" id="updateButton" onclick="">Cập nhật giỏ hàng</button>
+          @*   <button type="button" id="updateButton" onclick="UpdateQuantiy(@itm.CartDtlId)">Cập nhật giỏ hàng</button> *@
         </div>
     </div>
 </div>

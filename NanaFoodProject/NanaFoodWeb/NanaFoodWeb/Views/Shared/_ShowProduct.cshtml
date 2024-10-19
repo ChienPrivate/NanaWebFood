@@ -1,0 +1,190 @@
+﻿@model NanaFoodWeb.Models.Dto.ViewModels.ProductVM
+@{
+    var currentPage = ViewData["currentPage"] as int? ?? 1;
+    var totalPages = ViewData["totalPages"] as int? ?? 1;
+}
+@using Syncfusion.EJ2
+<div id="wrapper">
+
+    <!-- Main Content -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content">
+            <div class="container-fluid">
+                <h1 class="h3 mb-4 text-gray-800">Danh sách sản phẩm</h1>
+
+                <p>
+                    <a asp-action="Create" class="btn btn-primary mb-3" asp-controller="Products">Thêm mới</a>
+                </p>
+                <div class="card shadow">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Products</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Tên sản phẩm</th>
+                                        <th>Giá</th>
+                                        <th>Mô tả</th>
+                                        <th>Trạng thái</th>
+                                        <th>Hình ảnh</th>
+                                        <th>Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.Products)
+                                    {
+                                        <tr id="product-row-@item.ProductId">
+                                            <td>@item.ProductId</td>
+                                            <td>@item.ProductName</td>
+                                            <td>@item.Price</td>
+                                            <td>@item.Description</td>
+                                            <td>
+                                                <span id="badgeStatus" class="badge @(item.IsActive ? "bg-success" : "bg-secondary")">
+                                                    @(item.IsActive ? "Hoạt động" : "Vô hiệu")
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <img class="img-fluid rounded mx-auto d-block" src="@item.ImageUrl" style="width:50px" />
+                                            </td>
+                                            <td>
+                                                <a class="btn btn-warning btn-sm" asp-action="Edit" asp-controller="Products" asp-route-id="@item.ProductId"><i class="bi bi-wrench-adjustable"></i> Chỉnh sửa</a>
+                                                <a class="btn btn-info btn-sm" asp-action="Details" asp-controller="Products" asp-route-id="@item.ProductId"><i class="bi bi-info-circle"></i> Chi tiết</a>
+                                                <!-- Form Delete -->
+                                                <!-- Nút Xóa với data-bs-target duy nhất -->
+                                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal-@item.ProductId">
+                                                    <i class="bi bi-trash"></i> Xóa danh mục
+                                                </button>
+
+                                                <!-- Modal với ID duy nhất cho từng danh mục -->
+                                                <div class="modal fade" id="deleteModal-@item.ProductId" tabindex="-1" aria-labelledby="deleteModalLabel-@item.ProductId" aria-hidden="true">
+                                                    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h1 class="modal-title fs-5" id="deleteModalLabel-@item.ProductId">Bạn có chắc chắn xóa danh mục này ?</h1>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="mb-2 mt-2">
+                                                                    <label>ID:</label>
+                                                                    <input asp-for="@item.ProductId" class="form-control" readonly />
+                                                                </div>
+                                                                <div class="mb-2 mt-2">
+                                                                    <label>Tên Sản phẩm:</label>
+                                                                    <input asp-for="@item.ProductName" class="form-control" readonly />
+                                                                </div>
+                                                                <div class="mb-2 mt-2">
+                                                                    <label>Gía:</label>
+                                                                    <textarea asp-for="@item.Price" class="form-control" rows="5" readonly></textarea>
+                                                                </div>
+                                                                <div class="mb-2 mt-2">
+                                                                    <label>Lượt xem:</label>
+                                                                    <textarea asp-for="@item.View" class="form-control" rows="5" readonly></textarea>
+                                                                </div>
+                                                                <div class="mb-2 mt-2">
+                                                                    <label>Mô tả:</label>
+                                                                    <textarea asp-for="@item.Description" class="form-control" rows="5" readonly></textarea>
+                                                                </div>
+                                                                <div class="mb-2 mt-2">
+                                                                    <label>Trạng thái</label>
+                                                                    <div class="d-flex align-items-center">
+                                                                        <div>
+                                                                            @Html.EJS().Switch(item.ProductId.ToString()).Checked(item.IsActive).Disabled(true).Render()
+                                                                        </div>
+                                                                        <h4 class="ms-2">
+                                                                            @if (item.IsActive)
+                                                                            {
+                                                                                <span class="badge bg-success">Hoạt động</span>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <span class="badge bg-secondary">Vô hiệu</span>
+                                                                            }
+                                                                        </h4>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="mb-2 mt-2">
+                                                                    <label>Hình ảnh: </label>
+                                                                    <div class="rounded-3 bg-body-tertiary shadow w-50 shadow-sm">
+                                                                        <img class="rounded-3" style="width:100%"
+                                                                             src="@item.ImageUrl"
+                                                                             alt="Image" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <form method="post">
+                                                                    <button type="submit"
+                                                                            class="btn btn-danger"
+                                                                            asp-controller="Products"
+                                                                            asp-action="Delete"
+                                                                            asp-route-searchQuery="@ViewData["searchQuery"]"
+                                                                            asp-route-page="@ViewData["page"]"
+                                                                            asp-route-id="@item.ProductId">
+                                                                        <i class="bi bi-file-earmark-x"></i> Xóa
+                                                                    </button>
+                                                                </form>
+                                                                <form method="post">
+                                                                    <button type="submit"
+                                                                            asp-controller="Products"
+                                                                            asp-action="Deactivate"
+                                                                            asp-route-searchQuery="@ViewData["searchQuery"]"
+                                                                            asp-route-page="@ViewData["page"]"
+                                                                            asp-route-id="@item.ProductId"
+                                                                            class="btn btn-warning">
+                                                                        <i class="bi bi-eye-slash"></i> Vô hiệu hóa
+                                                                    </button>
+                                                                </form>
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-escape"></i> Đóng</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-center">
+                                @if (currentPage > 1)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link" href="@Url.Action("Index", new { page = currentPage - 1, searchQuery = ViewData["searchQuery"] })" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                }
+
+                                @for (var i = 1; i <= totalPages; i++)
+                                {
+                                    <li class="page-item @(i == currentPage ? "active" : "")">
+                                        <a class="page-link" href="@Url.Action("Index", new { page = i, searchQuery = ViewData["searchQuery"] })">
+                                            @i
+                                        </a>
+                                    </li>
+                                }
+
+                                @if (currentPage < totalPages)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link" href="@Url.Action("Index", new { page = currentPage + 1, searchQuery = ViewData["searchQuery"] })" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        </nav>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
+

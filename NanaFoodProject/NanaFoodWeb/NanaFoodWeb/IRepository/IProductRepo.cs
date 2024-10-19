@@ -16,6 +16,7 @@ namespace NanaFoodWeb.IRepository
         ResponseDto TopViewed(int page, int pageSize);
         ResponseDto Sorting(string sort, int page, int pageSize);
         ResponseDto ModifyStatus(int id, bool status);
+        ResponseDto UnActiveCategory(int id);
 
     }
 }
