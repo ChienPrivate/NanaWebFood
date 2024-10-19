@@ -16,7 +16,6 @@ namespace NanaFoodWeb.Models
         public List<WishList> WishLists { get; set; }
         public List<Order> Orders { get; set; }
         public List<SearchHistory> SearchHistories { get; set; }
-        public Cart Cart { get; set; }
     }
     public enum UserStatus
     {

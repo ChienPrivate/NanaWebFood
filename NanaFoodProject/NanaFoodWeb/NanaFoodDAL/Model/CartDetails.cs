@@ -7,9 +7,9 @@ namespace NanaFoodDAL.Model
     [PrimaryKey(nameof(UserId),nameof(ProductId))]
     public class CartDetails
     {
-        [ForeignKey(nameof(User))]
+        [ForeignKey(nameof(UserId))]
         public string UserId { get; set; }
-        [ForeignKey(nameof(Product))]
+        [ForeignKey(nameof(ProductId))]
         public int ProductId { get; set; }
         public double Total { get; set;}
         public int Quantity { get; set; }
