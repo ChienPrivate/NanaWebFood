@@ -1,4 +1,6 @@
-﻿namespace NanaFoodWeb.Models.Dto
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace NanaFoodWeb.Models.Dto
 {
     public class UserDto
     {
@@ -22,18 +24,29 @@
         /// </summary>
         public string? AvatarUrl { get; set; }
 
+        /// <summary>
+        /// Đường dẫn ảnh đại diện
+        /// </summary>
         public string? UserName { get; set; }
+
+        /// <summary>
+        /// Đường dẫn ảnh đại diện
+        /// </summary>
         public string? PhoneNumber { get; set; }
 
         /// <summary>
         /// Trạng thái
         /// </summary>
-        public enum UserStatus
-        {
-            Active,
-            Inactive,
-            Delete,
-            Block
-        }
+        [Required]
+        [EnumDataType(typeof(UserStatus))]
+        public UserStatus Status { get; set; }
+        
     }
-    }
+/*    public enum UserStatus
+    {
+        Active,
+        Inactive,
+        Delete,
+        Block
+    }*/
+}

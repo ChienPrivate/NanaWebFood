@@ -15,6 +15,17 @@ function onSwitchChange(args) {
     }
 }
 
+function onSwitchChangeUserForm(args) {
+    var badgeElement = $('#badgeStatus');
+    if (args.checked) {  // Kiểm tra trạng thái bật/tắt của switch
+        badgeElement.text('Kích hoạt');
+        badgeElement.removeClass('bg-secondary').addClass('bg-success');
+    } else {
+        badgeElement.text('Vô hiệu');
+        badgeElement.removeClass('bg-success').addClass('bg-secondary');
+    }
+}
+
 // ES2 kéo thả hình ảnh 
 
 
