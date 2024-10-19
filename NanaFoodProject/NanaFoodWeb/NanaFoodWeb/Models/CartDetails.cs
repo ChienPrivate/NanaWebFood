@@ -1,10 +1,11 @@
-﻿namespace NanaFoodWeb.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace NanaFoodWeb.Models
 {
     public class CartDetails
     {
-        public int CartId { get; set; }
+        public string? UserId { get; set; }
         public int ProductId { get; set; }
-        public double Total { get; set; }
         public int Quantity { get; set; }
     }
 }

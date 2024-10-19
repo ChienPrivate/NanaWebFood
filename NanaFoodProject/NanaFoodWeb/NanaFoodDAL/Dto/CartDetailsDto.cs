@@ -9,14 +9,12 @@ using System.Threading.Tasks;
 
 namespace NanaFoodDAL.Dto
 {
-    internal class CartDetailsDto
+    public class CartDetailsDto
     {
-        [Required(ErrorMessage = "Không được để trống UserId")]
-        public string UserId { get; set; }
+        public string? UserId { get; set; }
         public int ProductId { get; set; }
-        [Column(TypeName = "decimal(18,2)")]
-        public double Total { get; set; }
         [Range(1,int.MaxValue, ErrorMessage = "Số lượng phải lớn hơn 0")]
         public int Quantity { get; set; }
+        public double? Total { get; set; }
     }
 }
