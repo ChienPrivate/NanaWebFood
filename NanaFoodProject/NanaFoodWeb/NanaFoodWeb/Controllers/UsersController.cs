@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using NanaFoodWeb.IRepository;
@@ -9,6 +10,7 @@ using Newtonsoft.Json;
 namespace NanaFoodWeb.Controllers
 {
     [Route("Users")]
+    [Authorize(Roles = "admin")]
     public class UsersController : Controller
     {
         private readonly IUserRepository _userRepository;
