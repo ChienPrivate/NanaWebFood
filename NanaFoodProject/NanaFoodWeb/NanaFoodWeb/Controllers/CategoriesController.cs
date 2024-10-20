@@ -156,15 +156,15 @@ namespace NanaFoodWeb.Controllers
         {
             var token = _tokenProvider.GetToken();
             string apiName = "Category/" + id;
-            ResponseDto respone = await _callAPICenter.DeleteMethod<ResponseDto>(apiName, token);
-            if (respone.IsSuccess)
+            ResponseDto response = await _callAPICenter.DeleteMethod<ResponseDto>(apiName, token);
+            if (response.IsSuccess)
             {
                 TempData["success"] = "Xóa danh mục thành công";
                 return RedirectToAction("Index", new { searchQuery = searchQuery, page = page });
             }
             else {
                 
-                string message = respone.Message;
+                string message = response.Message;
                 return NotFound(message);
             }
 

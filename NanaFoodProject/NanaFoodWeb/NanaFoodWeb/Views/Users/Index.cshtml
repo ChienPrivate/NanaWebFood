@@ -1,139 +1,174 @@
-﻿@{
+﻿@using Syncfusion.EJ2
+@{
     Layout = "_AdminLayout";
 }
 
-<!-- users.html -->
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+<div class="col-lg-12 control-section">
+    <div class="mt-2 mb-2">
+        <a asp-controller="Users" asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-circle"></i> Tạo người dùng mới</a>
+    </div>
+    <div class="control-wrapper">
+        <div class="control-section">
+            @Html.EJS().Grid("Grid").DataSource((IEnumerable<object>)ViewBag.lazyLoadData).Columns(col =>
+                     {
+                         // col.Field("Id").HeaderText("ID").Width("130").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).IsPrimaryKey(true).Add();
+                         col.Field("AvatarUrl").HeaderText("Hình ảnh").Template("#template1").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                         col.Field("FullName").HeaderText("Họ tên").Format("C2").Width("135").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                         col.Field("UserName").HeaderText("Tên đăng nhập").Format("C2").Width("135").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Right).Add();
+                         col.Field("Status").HeaderText("Trạng thái").Width("160").Template("#userStatusTemplate").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                         col.Field("PhoneNumber").HeaderText("Số điện").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                         col.Field("Address").HeaderText("Địa chỉ").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                         col.Field("Email").HeaderText("Email").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                         col.Field("EmailConfirmed").HeaderText("Xác thực email").Width("160").Template("#emailConfirmedTemplate").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                         col.Field("Roles").HeaderText("Vai trò").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                         
 
-    <title>Admin - Users</title>
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-    @* <link href="css/sb-admin-2.min.css" rel="stylesheet"> *@
-    <link href="@Url.Content("~/css/sb-admin-2.min.css")" rel="stylesheet">
+                         col.Field("commands").HeaderText("Thao tác").Template("#commandTemplate").Width("200").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
 
-    <style>
-        .table tbody tr:hover {
-            background-color: #dbb785;
+                     }).AllowPaging().PageSettings(page => page.PageCount(3).PageSizes(true).PageSize(10)).AllowSorting().AllowFiltering().FilterSettings(filter => { filter.Type(Syncfusion.EJ2.Grids.FilterType.Excel); }).Toolbar(new List<string>() { "Search" }).AllowResizing(false).AutoFit(false).Render()
+        </div>
+    </div>
+</div>
+
+<style>
+
+    .statustemp.e-notavailablecolor {
+        background-color: #6c757d; /* Màu secondary của Bootstrap */
+        width: 100px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .statustemp.e-availablecolor {
+        background-color: #28a745; /* Màu success của Bootstrap */
+        width: 100px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .statustxt.e-availablecolor {
+        color: white;
+    }
+
+    .statustxt.e-notavailablecolor {
+        color: white;
+    }
+
+    .statustemp {
+        position: relative;
+        height: 19px;
+        text-align: center;
+        border-radius: 5px; /* Bo tròn góc */
+    }
+
+</style>
+
+
+<script type="text/javascript">
+    function emailConfirmedDetail(e) {
+        var div = document.createElement('div');
+        var h6 = document.createElement('h6'); // Tạo thẻ h5 để bọc thẻ span
+        var span = document.createElement('span');
+        if (e.EmailConfirmed === true) {
+            span.className = 'badge bg-success rounded-3';
+            span.textContent = 'Kích hoạt'
+        }
+        if (e.EmailConfirmed === false) {
+            span.className = 'badge bg-secondary rounded-3';
+            span.textContent = 'Vô hiệu'
         }
 
-        .btn {
-            transition: background-color 0.3s ease;
+        h6.appendChild(span); // Đưa span vào bên trong thẻ h5
+        div.appendChild(h6); // Đưa h6 vào bên trong div
+
+        return div.outerHTML;
+    }
+
+    function userStatusDetail(e) {
+        var div = document.createElement('div');
+        var h6 = document.createElement('h6'); // Tạo thẻ h6 để bọc thẻ span
+        var span = document.createElement('span');
+
+        switch (e.Status) {
+            case 0: // Active
+                span.className = 'badge bg-success rounded-3'; // Active - success
+                span.textContent = 'Hoạt động';
+                break;
+            case 1: // Inactive
+                span.className = 'badge bg-secondary rounded-3'; // Inactive - secondary
+                span.textContent = 'Ngưng hoạt động';
+                break;
+            case 2: // Delete
+                span.className = 'badge bg-danger rounded-3'; // Delete - danger
+                span.textContent = 'Đã xóa';
+                break;
+            case 3: // Block
+                span.className = 'badge bg-warning rounded-3'; // Block - warning
+                span.textContent = 'Đình chỉ';
+                break;
+            default:
+                span.className = 'badge bg-secondary rounded-3'; // Default if no matching status
+                span.textContent = 'Không xác định';
+                break;
         }
 
-            .btn:hover {
-                background-color: #69cfb7;
-            }
-    </style>
-</head>
+        h6.appendChild(span); // Đưa span vào bên trong thẻ h5
+        div.appendChild(h6); // Đưa h5 vào bên trong div
 
-<body id="page-top">
-    <div id="wrapper">       
+        return div.outerHTML;
+    }
+</script>
 
-        <!-- Main Content -->
-        <div id="content-wrapper" class="d-flex flex-column">
-            <div id="content">
-                <div class="container-fluid">
-                    <h1 class="h3 mb-4 text-gray-800">User List</h1>
-                    @* <a href="@Url.Action("Create", "Users")" class="btn btn-primary mb-3">Add User</a> *@
-                    <p>
-                        <a asp-action="Create" class="btn btn-primary mb-3" asp-controller="Users">Add User</a>
-                    </p>
-                    <div class="card shadow">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Users</h6>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th>User ID</th>
-                                            <th>User Name</th>
-                                            <th>Role</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Tram</td>
-                                            <td>Customer</td>
-                                            <td>
-                                                <a class="btn btn-warning btn-sm" asp-action="Details" asp-controller="Users" asp-route-id="1">Details</a>
-                                                <a class="btn btn-warning btn-sm" asp-action="Edit" asp-controller="Users" asp-route-id="1">Edit</a>
-                                                <button class="btn btn-danger btn-sm" onclick="deleteUser(1)">Delete</button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td>Tien</td>
-                                            <td>Admin</td>
-                                            <td>
-                                                <a class="btn btn-warning btn-sm" asp-action="Details" asp-controller="Users" asp-route-id="1">Details</a>
-                                                <a asp-action="Edit" asp-controller="Users" class="btn btn-warning btn-sm" asp-route-id="2">Edit</a>
-                                                <button class="btn btn-danger btn-sm" onclick="deleteUser(2)">Delete</button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>3</td>
-                                            <td>Chien</td>
-                                            <td>Admin</td>
-                                            <td>
-                                                <a class="btn btn-warning btn-sm" asp-action="Details" asp-controller="Users" asp-route-id="1">Details</a>
-                                                <a asp-action="Edit" asp-controller="Users" class="btn btn-warning btn-sm" asp-route-id="3">Edit</a>
-                                                <button class="btn btn-danger btn-sm" onclick="deleteUser(3)">Delete</button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>4</td>
-                                            <td>Hoang</td>
-                                            <td>Admin</td>
-                                            <td>
-                                                <a class="btn btn-warning btn-sm" asp-action="Details" asp-controller="Users" asp-route-id="1">Details</a>
-                                                <a asp-action="Edit" asp-controller="Users" class="btn btn-warning btn-sm" asp-route-id="4">Edit</a>
-                                                <button class="btn btn-danger btn-sm" onclick="deleteUser(4)">Delete</button>
-                                            </td>
-                                        </tr>
-                                    
-                                        <tr>
-                                             <td>5</td>
-                                             <td>Truong</td>
-                                             <td>Admin</td>
-                                             <td>
-                                                <a class="btn btn-warning btn-sm" asp-action="Details" asp-controller="Users" asp-route-id="1">Details</a>
-                                                <a asp-action="Edit" asp-controller="Users" class="btn btn-warning btn-sm" asp-route-id="5">Edit</a>
-                                                <button class="btn btn-danger btn-sm" onclick="deleteUser(5)">Delete</button>
-                                             </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+<script type="text/x-jsrender" id="emailConfirmedTemplate">
+    ${emailConfirmedDetail(data)}
+</script>
+
+<script type="text/x-jsrender" id="userStatusTemplate">
+    ${userStatusDetail(data)}
+</script>
+
+<script type="text/x-jsrender" id="commandTemplate">
+
+    <a href="/Users/Edit/${Id}" class="btn btn-warning mb-1 d-block"><i class="bi bi-wrench-adjustable"></i> Chỉnh sửa</a>
+
+    @* <button type="button" class="btn btn-danger mb-1 d-block form-control" data-bs-toggle="modal" data-bs-target="#deleteUserModal-${UserName}">
+        <i class="bi bi-trash"></i> Xóa
+    </button>
+
+    <div class="modal fade" id="deleteUserModal-${UserName}" tabindex="-1" aria-labelledby="deleteUserModalLabel-${UserName}" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteUserModalLabel-${UserName}">Xác nhận xóa người dùng</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Bạn có chắc chắn muốn xóa người dùng: <strong>${UserName}</strong> không?
+                </div>
+                <div class="modal-footer">
+                    <form method="post" action="/Users/Delete/${Id}">
+                        <input type="hidden" name="UserName" value="${Id}" />
+                        <button type="submit" class="btn btn-danger">Xóa</button>
+                    </form>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
                 </div>
             </div>
         </div>
+    </div> *@
+
+
+    <a href="/Users/Delete/${Id}" class="btn btn-danger mb-1 d-block"><i class="bi bi-trash"></i> Xóa</a>
+
+    <a href="/Users/Details/${Id}" class="btn btn-info mb-1 d-block"><i class="bi bi-info-circle"></i> Chi tiết</a>
+</script>
+
+<script id="template1" type="text/x-template">
+    <div class="image w-50 rounded-3">
+        <img class="img-fluid" src="${AvatarUrl}" />
     </div>
-
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-    <script src="js/sb-admin-2.min.js"></script>
-
-    <script>
-        function deleteUser(id) {
-            if (confirm("Are you sure you want to delete this user?")) {
-                alert("User " + id + " deleted.");
-            }
-        }
-    </script>
-</body>
-</html>
+</script>

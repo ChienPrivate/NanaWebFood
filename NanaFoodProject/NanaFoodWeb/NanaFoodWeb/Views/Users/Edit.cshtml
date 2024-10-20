@@ -1,96 +1,422 @@
-﻿@{
+﻿@using Syncfusion.EJ2
+@model NanaFoodWeb.Models.Dto.UpdateUserRequestDto
+@{
     Layout = "_AdminLayout";
-}
-
-<div id="wrapper">
-        
-        <!-- Main Content -->
-        <div id="content-wrapper" class="d-flex flex-column">
-            <div id="content">
-                <div class="container-fluid">
-                    <h1 class="h3 mb-4 text-gray-800">Edit User</h1>
-                    <form id="editUserForm" asp-action="Edit" method="post" asp-controller="Users">
-                        <div class="form-group">
-                            <label for="userId">User ID</label>
-                            <input type="text" class="form-control" id="userId" value="1" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label for="userName">User Name</label>
-                            <input type="text" class="form-control" id="userName" value="Trâm">
-                        </div>
-                        <div class="form-group">
-                            <label for="userRole">Role</label>
-                            <select class="form-control" id="userRole">
-                                <option value="Admin">Admin</option>
-                                <option value="Customer">Customer</option>
-                                <option value="Supplier">Supplier</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Save Changes</button>
-                        <a href="@Url.Action("Index", "Users")" class="btn btn-secondary">Cancel</a>
-                    </form>
-                </div>
-            </div>
-        </div>
-</div>
-
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-    <script src="js/sb-admin-2.min.js"></script>
-
-    <script>
-
-        $('#editUserForm').on('submit', function (e) {
-            e.preventDefault();
-            const userId = $('#userId').val();
-            const userName = $('#userName').val();
-            const userRole = $('#userRole').val();
-
-            alert('User updated: ' + userId + ', ' + userName + ', ' + userRole);
-
-            window.location.href = 'users.html';
-        });
-    </script>
-
-
-@* @model NanaFoodWeb.Models.User*@
-@* @{
     ViewData["Title"] = "Edit";
 }
 
-<!-- Main Content -->
 <div id="wrapper">
+
+    <!-- Main Content -->
     <div id="content-wrapper" class="d-flex flex-column">
         <div id="content">
             <div class="container-fluid">
-                <h1 class="h3 mb-4 text-gray-800">Edit User</h1>
-                <form asp-action="Edit" method="post" asp-controller="Users">
+                <h1 class="h3 mb-4 text-gray-800"> Cập nhật người dùng</h1>
+                <form asp-action="Edit" asp-controller="Users" method="post" enctype="multipart/form-data">
+                    <input asp-for="Id" hidden />
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
-                        <label asp-for="UserId"></label>
-                        <input asp-for="UserId" class="form-control" readonly />
+                        <label asp-for="FullName" class="control-label">Họ tên</label>
+                        <input asp-for="FullName" class="form-control" />
+                        <span asp-validation-for="FullName" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="UserName"></label>
-                        <input asp-for="UserName" class="form-control" />
+                        <label asp-for="UserName" class="control-label">Tên đăng nhập</label>
+                        <input asp-for="UserName" class="form-control" readonly/>
                         <span asp-validation-for="UserName" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="Role"></label>
-                        <select asp-for="Role" class="form-control">
-                            <option value="Admin">Admin</option>
-                            <option value="Customer">Customer</option>
-                            <option value="Supplier">Supplier</option>
+                        <label asp-for="Password" class="control-label">Mật khẩu</label>
+                        <input asp-for="Password" type="password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Xác nhận mật khẩu</label>
+                        <input asp-for="Password" name="confirmPassword" type="password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Email" class="control-label"></label>
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="mb-2 mt-2">
+                        <label>Trạng thái</label>
+                        <div class="d-flex align-items-center">
+                            <div>
+                                <ejs-switch ejs-for="EmailConfirmed" change="onSwitchChangeUserForm" name="EmailConfirmed"></ejs-switch>
+                            </div>
+                            <h5 class="ms-2">
+                                <span id="badgeStatus" class="badge @(Model.EmailConfirmed ? "bg-success" : "bg-secondary")">
+                                    @(Model.EmailConfirmed ? "Kích hoạt" : "Vô hiệu")
+                                </span>
+                            </h5>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Address" class="control-label">Địa chỉ</label>
+                        <textarea asp-for="Address" class="form-control" rows="5"></textarea>
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="PhoneNumber" class="control-label">Số điện thoại</label>
+                        <input asp-for="PhoneNumber" type="tel" class="form-control" />
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Status" class="control-label">Trạng thái</label>
+                        <select asp-for="Status" asp-items="@ViewBag.StatusList" class="form-select">
+                            <option label="Chọn trạng thái"></option>
+                        </select>
+                        <span asp-validation-for="Status" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Role" class="control-label"></label>
+                        <select asp-for="Role" asp-items="@ViewBag.RoleList" class="form-select">
+                            <option label="Chọn Vai trò"></option>
                         </select>
                         <span asp-validation-for="Role" class="text-danger"></span>
                     </div>
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
-                    <a href="@Url.Action("Index", "Users")" class="btn btn-secondary">Cancel</a>
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Cập nhật hình ảnh</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <div class="container">
+                                            <label asp-for="AvatarUrl" class="control-label">Hình ảnh hiện tại</label>
+                                            <img id="categoryImage"
+                                                 class="rounded-3 d-block w-100" 
+                                                 src="@(!string.IsNullOrEmpty(Model.AvatarUrl) ? Model.AvatarUrl : "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png")" />
+                                            <input id="CategoryImageInput" asp-for=AvatarUrl hidden />
+                                            <div class="text-center">
+                                                <button id="removeImageBtn" type="button" class="e-btn e-css mt-4">Xóa ảnh hiện tại</button>
+                                            </div>
+                                            <script>
+                                                document.getElementById('removeImageBtn').addEventListener('click', function () {
+                                                    // Thay đổi hình ảnh về ảnh mặc định
+                                                    document.getElementById('categoryImage').src = 'https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png';
+
+                                                    // Làm trống input
+                                                    document.getElementById('CategoryImageInput').value = '';
+                                                });
+                                            </script>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-1 d-flex align-items-center">
+                                    <div style="border-left: 1px solid rgba(0, 0, 0, 0.2); height: 100%;"></div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label asp-for="AvatarUrl" class="control-label">Hình ảnh cần cập nhật</label>
+                                        <div class="control-section control-fluid">
+                                            <div class="control_wrapper">
+                                                <div id='dropArea' style='height: auto;'>
+                                                    <span id='drop'> Chọn hoặc kéo thả hình ảnh của bạn tại đây <a href='' id='browse'><u>Browse</u></a> </span>
+                                                        <ejs-uploader 
+                                                            id="UploadFiles"
+                                                            dropArea=".control-fluid" 
+                                                            allowedExtensions=".jpg,.png,.jpeg" 
+                                                            selected="onSelect" 
+                                                            success="onUploadSuccess"
+                                                            progress="onFileUpload"
+                                                            removing="onFileRemove"
+                                                            failure="onUploadFailed"
+                                                            asyncSettings="new Syncfusion.EJ2.Inputs.UploaderAsyncSettings { SaveUrl = @Url.Content("https://services.syncfusion.com/aspnet/production/api/FileUploader/Save"), RemoveUrl = @Url.Content("https://services.syncfusion.com/aspnet/production/api/FileUploader/Remove") }"></ejs-uploader>
+                                                        
+                                                        <input type="file" id="hiddenFileInput" name="UploadFile" hidden />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mt-2 property-section">
+                                            <div class="" id="property" title="Properties">
+                                                @Html.EJS().Button("clearbtn").CssClass("e-btn e-css hidden-element").Content("Xóa ảnh").Type("button").Render()
+                                                @Html.EJS().Button("uploadbtn").CssClass("e-btn e-css").Content("Upload ảnh").Render()
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group mt-2">
+                        <input type="submit" value="Cập nhật" class="btn btn-primary" />
+                        <a href="@Url.Action("Index", "Users")" class="btn btn-secondary">Trở về danh sách</a>
+                    </div>
+
                 </form>
+
             </div>
         </div>
     </div>
 </div>
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-} *@
+
+<script src="~/template/vendor/jquery/jquery.min.js"></script>
+<script src="~/template/vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="~/js/template/js/sb-admin-2.min.js"></script>
+<script src="~/template/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+@*ES2 kéo thả hình ảnh *@
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('browse').onclick = function () {
+            document.getElementsByClassName('e-file-select-wrap')[0].querySelector('button').click();
+            return false;
+        };
+    });
+    document.getElementById('clearbtn').onclick = function () {
+        if (!ej.base.isNullOrUndefined(document.getElementById('dropArea').querySelector('ul'))) {
+            var uploadObj = document.getElementById("UploadFiles").ej2_instances[0]
+            ej.base.detach(document.getElementById('dropArea').querySelector('ul'));
+            uploadObj.filesData = [];
+            uploadObj.fileList = [];
+            filesName = [];
+            uploadObj.element.value = '';
+        }
+    };
+
+    document.getElementById("uploadbtn").style.visibility = "hidden";
+    document.getElementById('uploadbtn').onclick = function () {
+        var uploadObj = document.getElementById("UploadFiles").ej2_instances[0]
+        if (document.getElementById('dropArea').querySelector('ul') && uploadObj.getFilesData().length > 0) {
+            uploadObj.upload(uploadObj.getFilesData());
+        }
+    };
+    var parentElement;
+    var filesName = [];
+    var progressbarContainer;
+    if (ej.base.Browser.isDevice) {
+        document.getElementById('drop').style.padding = '0px 10%';
+    }
+
+    function onSelect(args) {
+
+
+        // Cập nhật mới --- ngày 17/10-------------------------
+        // Chỉ giữ lại các file có đuôi png, jpg, jpeg
+        var allowedExtensions = ['png', 'jpg', 'jpeg'];
+        var selectedFiles = args.filesData.filter(function (file) {
+            var fileExtension = file.name.split('.').pop().toLowerCase();
+            return allowedExtensions.includes(fileExtension);
+        });
+
+        // Nếu có file không hợp lệ, hủy bỏ sự kiện
+        if (selectedFiles.length !== args.filesData.length) {
+            alert("file đang chọn không hợp lệ");
+            args.cancel = true;
+            return;
+        }
+        // Cập nhật mới --- ngày 17/10
+
+        // Xóa danh sách tệp hiện tại để chỉ giữ một tệp duy nhất
+        if (this.filesData && this.filesData.length > 0) {
+            document.getElementById('dropArea').querySelector('ul').innerHTML = '';
+            this.filesData = [];
+        }
+
+        // Kiểm tra xem có phần tử li hay không, nếu không thì reset filesData
+        if (!document.getElementById('dropArea').querySelector('li')) {
+            this.filesData = [];
+        }
+
+        // Tạo ul nếu chưa có trong dropArea
+        if (ej.base.isNullOrUndefined(document.getElementById('dropArea').querySelector('.e-upload-files'))) {
+            var parentElement = ej.base.createElement('ul', { className: 'e-upload-files' });
+            document.getElementsByClassName('e-upload')[0].appendChild(parentElement);
+        }
+
+        // Xử lý trực tiếp các tệp tin trong args.filesData
+        var selectedFiles = args.filesData;
+
+        if (selectedFiles.length > 1) {
+            alert("Bạn chỉ có thể chọn 1 file.");
+            selectedFiles = [selectedFiles[0]]; // Chỉ giữ lại file đầu tiên
+        }
+
+        // Lặp qua các tệp tin đã chọn và xử lý chúng (ví dụ: hiển thị chúng)
+        for (var i = 0; i < selectedFiles.length; i++) {
+            formSelectedData(selectedFiles[i], this);
+        }
+
+        // Cập nhật danh sách filesData với các tệp tin mới
+        this.filesData = this.filesData.concat(selectedFiles);
+        args.cancel = true;
+
+        // Đặt lại giá trị của input để có thể chọn lại tệp tin nếu cần
+        document.querySelector('input[type="file"]').value = '';
+
+        // Gán file vào input file ẩn để submit dưới dạng IFormFile
+        if (selectedFiles.length > 0) {
+            const file = selectedFiles[0].rawFile;
+
+            // Gán file vào input file ẩn
+            const inputFile = document.getElementById('hiddenFileInput'); // Sửa ID nếu cần
+            const dataTransfer = new DataTransfer();
+
+            // Kiểm tra nếu DataTransfer hỗ trợ đầy đủ
+            if (file && inputFile) {
+                dataTransfer.items.add(file);
+                inputFile.files = dataTransfer.files;
+            } else {
+                console.error('File or input not found.');
+            }
+        }
+    }
+    function validateFiles(args, viewedFiles) {
+        var modifiedFiles = [];
+        var validFiles = [];
+        var isModified = false;
+        var fileName = [];
+
+        if (args.event.type === 'drop') {
+            isModified = true;
+            var allImages = ['png', 'jpg', 'jpeg'];
+            var chooseFiles = args.filesData;
+            for (var i = 0; i < chooseFiles.length; i++) {
+                var selectFile = chooseFiles[i];
+                if (allImages.indexOf(selectFile.type) !== -1) {
+                    modifiedFiles.push(selectFile);
+                }
+            }
+        }
+        var files = modifiedFiles.length > 0 || isModified ? modifiedFiles : args.filesData;
+        if (filesName.length > 0) {
+            for (var j = 0; j < files.length; j++) {
+                var file = files[j];
+                if (filesName.indexOf(file.name) === -1) {
+                    filesName.push(file.name);
+                    validFiles.push(file);
+                }
+            }
+        } else {
+            for (var k = 0; k < files.length; k++) {
+                var validFile = files[k];
+                filesName.push(validFile.name);
+                validFiles.push(validFile);
+            }
+        }
+        return validFiles;
+    }
+    function formSelectedData(file, proxy) {
+        var liEle = ej.base.createElement('li', { className: 'e-upload-file-list', attrs: { 'data-file-name': file.name } });
+        var imageTag = ej.base.createElement('IMG', { className: 'upload-image', attrs: { 'alt': 'Image' } });
+        var wrapper = ej.base.createElement('span', { className: 'wrapper' });
+        wrapper.appendChild(imageTag);
+        liEle.appendChild(wrapper);
+        liEle.appendChild(ej.base.createElement('div', { className: 'name file-name', innerHTML: file.name, attrs: { 'title': file.name } }));
+        liEle.appendChild(ej.base.createElement('div', { className: 'file-size', innerHTML: proxy.bytesToSize(file.size) }));
+        var clearbtn;
+        var uploadbtn;
+        clearbtn = ej.base.createElement('span', { id: 'removeIcon', className: 'e-icons e-file-remove-btn', attrs: { 'title': 'Remove' } });
+        ej.base.EventHandler.add(clearbtn, 'click', removeFiles, proxy);
+        uploadbtn = ej.base.createElement('span', { className: 'e-upload-icon e-icons e-file-remove-btn', attrs: { 'title': 'Upload' } });
+        uploadbtn.setAttribute('id', 'iconUpload');
+        ej.base.EventHandler.add(uploadbtn, 'click', uploadFile, proxy);
+        progressbarContainer = ej.base.createElement('progress', { className: 'progressbar', id: 'progressBar', attrs: { value: '0', max: '100' } });
+        liEle.appendChild(clearbtn);
+        liEle.appendChild(uploadbtn);
+        liEle.appendChild(progressbarContainer);
+        readURL(liEle, file);
+        document.querySelector('.e-upload-files').appendChild(liEle);
+        proxy.fileList.push(liEle);
+    }
+    function uploadFile(args) {
+        var uploadObj = document.getElementById("UploadFiles").ej2_instances[0]
+        uploadObj.upload([this.filesData[this.fileList.indexOf(args.currentTarget.parentElement)]]);
+    }
+    function removeFiles(args) {
+        var uploadObj = document.getElementById("UploadFiles").ej2_instances[0]
+        var removeFile = this.filesData[this.fileList.indexOf(args.currentTarget.parentElement)];
+        var fileName = args.currentTarget.parentElement.getAttribute('data-file-name');
+        var fileIndex = this.filesData.findIndex(function (file) {
+            return file.name === fileName;
+        });
+        if (fileIndex === -1) {
+            console.error("File không tồn tại trong fileList.");
+            return;
+        }
+
+        var removeFile = this.filesData[fileIndex];
+
+        // Kiểm tra nếu removeFile là undefined
+        if (!removeFile) {
+            console.error("Tệp không tồn tại trong filesData.");
+            return;
+        }
+
+        var statusCode = removeFile.statusCode;
+
+        if (statusCode === '2') {
+            this.remove(removeFile, true);
+        } else {
+            var li = args.currentTarget.parentElement;
+            ej.base.detach(li);
+        }
+
+        filesName.splice(filesName.indexOf(removeFile.name), 1);
+
+        this.filesData.splice(fileIndex, 1);
+        this.fileList.splice(fileIndex, 1);
+
+        uploadObj.element.value = '';
+    }
+    function onFileUpload(args) {
+        var li = document.getElementById('dropArea').querySelector('[data-file-name="' + args.file.name + '"]');
+        var iconEle = li.querySelector('#iconUpload');
+        iconEle.style.cursor = 'not-allowed';
+        iconEle.classList.add('e-uploaded');
+        ej.base.EventHandler.remove(li.querySelector('#iconUpload'), 'click', uploadFile);
+        var progressValue = Math.round((args.e.loaded / args.e.total) * 100);
+        if (!isNaN(progressValue) && li.querySelector('.progressbar')) {
+            li.getElementsByTagName('progress')[0].value = progressValue;
+        }
+    }
+    function onUploadSuccess(args) {
+        var _this = this;
+        var spinnerElement = document.getElementById('dropArea');
+        var li = document.getElementById('dropArea').querySelector('[data-file-name="' + args.file.name + '"]');
+        if (li && !ej.base.isNullOrUndefined(li.querySelector('.progressbar'))) {
+            li.querySelector('.progressbar').style.visibility = 'hidden';
+        }
+        if (args.operation === 'upload') {
+            ej.base.EventHandler.remove(li.querySelector('#iconUpload'), 'click', uploadFile);
+            li.querySelector('.file-name').style.color = 'green';
+            li.querySelector('.e-icons').onclick = function () { generateSpinner(_this.uploadWrapper); };
+        }
+        if (args.operation === 'remove') {
+            if (li) {
+                ej.base.detach(li);
+            }
+            ej.popups.hideSpinner(spinnerElement);
+            ej.base.detach(spinnerElement.querySelector('.e-spinner-pane'));
+        }
+    }
+    function generateSpinner(targetElement) {
+        ej.popups.createSpinner({ target: targetElement, width: '25px' });
+        ej.popups.showSpinner(targetElement);
+    }
+    function onUploadFailed(args) {
+        var li = document.getElementById('dropArea').querySelector('[data-file-name="' + args.file.name + '"]');
+        li.querySelector('.file-name').style.color = 'red';
+        if (args.operation === 'upload') {
+            ej.base.EventHandler.remove(li.querySelector('#iconUpload'), 'click', uploadFile);
+            li.querySelector('.progressbar').style.visibility = 'hidden';
+        }
+    }
+    function onFileRemove(args) {
+        args.postRawFile = false;
+    }
+    function readURL(li, args) {
+        var preview = li.querySelector('.upload-image');
+        var file = args.rawFile;
+        var reader = new FileReader();
+        reader.addEventListener('load', function () { preview.src = reader.result; }, false);
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    }
+</script>
