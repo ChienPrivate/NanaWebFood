@@ -32,7 +32,7 @@
     <!-- CSS Toastr -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
     <!-- Custom styles for this template-->
-    <link href="~/template/css/sb-admin-2.min.css" rel="stylesheet asp-append-version="true">
+    <link href="~/template/css/sb-admin-2.min.css" rel="stylesheet" asp-append-version="true">
     <link href="~/css/ejs2.css" rel="stylesheet" asp-append-version="true" />
 
     <!-- Syncfusion ASP.NET Core controls scripts -->
@@ -126,16 +126,16 @@
                 
                 <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Login Screens:</h6>
+@*                         <h6 class="collapse-header">Login Screens:</h6>
                         <a class="collapse-item" href="@Url.Action("Login", "Account")">Login</a>
                         <a class="collapse-item" href="@Url.Action("Register", "Account")">Register</a>
                         <a class="collapse-item" href="@Url.Action("ForgotPassword", "Account")">Forgot Password</a>
-                        <div class="collapse-divider"></div>
-                        <h6 class="collapse-header">Other Pages:</h6>
-                        <a class="collapse-item"  href="@Url.Action("Index", "Users")">Users</a>
-                        <a class="collapse-item"  href="@Url.Action("Index", "Products")">Products</a>
-                        <a class="collapse-item"  href="@Url.Action("Index", "Categories")">Categories</a>
-                        <a class="collapse-item"  href="@Url.Action("Index", "Coupon")">Coupon</a>
+                        <div class="collapse-divider"></div> *@
+                        <h6 class="collapse-header">Quản lý:</h6>
+                        <a class="collapse-item"  href="@Url.Action("Index", "Users")">Người dùng</a>
+                        <a class="collapse-item"  href="@Url.Action("Index", "Products")">Sản phẩm</a>
+                        <a class="collapse-item"  href="@Url.Action("Index", "Categories")">Danh mục sản phẩm</a>
+                        <a class="collapse-item"  href="@Url.Action("Index", "Coupon")">Khuyến mãi và giảm giá</a>
                     </div>
                 </div>
 
