@@ -36,17 +36,17 @@ margin-top: 10%">
                                 <div class="text-center mb-3">Hoặc tiếp tục với</div>                              
                             </form>
                             <form method="post">
-                                <button asp-action="GoogleLogin" type="submit" class="btn btn-outline-danger btn-google w-100 mb-2">
+                                <button asp-action="GoogleLogin" type="submit" class="btn btn-outline-danger w-100 mb-2">
                                     <i class="fa fa-google"></i> Đăng nhập bằng Google
                                 </button>
                             </form>
                             <form method="post">
-                                <button asp-action="FacebookLogin" type="submit" class="btn btn-outline-primary w-100 mb-2">
+                                <button asp-action="FacebookLogin" type="submit" class="btn btn-outline-facebook w-100 mb-2">
                                     <i class="fa fa-facebook"></i> Đăng nhập bằng Facebook
                                 </button>
                             </form>
                             <form method="post">
-                                <button asp-action="GitHubLogin" type="submit" class="btn btn-outline-dark btn-google w-100 mb-2">
+                                <button asp-action="GitHubLogin" type="submit" class="btn btn-outline-dark w-100 mb-2">
                                     <i class="fa fa-github"></i> Đăng nhập bằng GitHub
                                 </button>
                             </form>
@@ -61,6 +61,39 @@ margin-top: 10%">
         </div>
     </section>
 </div>
+
+<style>
+    .btn-outline-facebook {
+        color: #0d6efd;
+        border-color: #0d6efd;
+    }
+
+        .btn-outline-facebook:hover {
+            color: #fff;
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+        }
+
+        .btn-check:focus + .btn-outline-facebook, .btn-outline-facebook:focus {
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.5);
+        }
+
+        .btn-check:checked + .btn-outline-facebook, .btn-check:active + .btn-outline-facebook, .btn-outline-facebook:active, .btn-outline-facebook.active, .btn-outline-facebook.dropdown-toggle.show {
+            color: #fff;
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+        }
+
+            .btn-check:checked + .btn-outline-facebook:focus, .btn-check:active + .btn-outline-facebook:focus, .btn-outline-facebook:active:focus, .btn-outline-facebook.active:focus, .btn-outline-facebook.dropdown-toggle.show:focus {
+                box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.5);
+            }
+
+        .btn-outline-facebook:disabled, .btn-outline-facebook.disabled {
+            color: #0d6efd;
+            background-color: transparent;
+        }
+
+</style>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>

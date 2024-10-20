@@ -1,0 +1,408 @@
+﻿@using Syncfusion.EJ2
+@{
+    Layout = "_AdminLayout";
+}
+
+@model NanaFoodWeb.Models.Dto.ViewModels.ChangePassAndUserDto
+
+<div>
+    <section style="background-color: #eee;">
+        <div class="container py-5">
+            @* <div class="row">
+                <div class="col p-0">
+                    <nav aria-label="breadcrumb" class="bg-body-tertiary rounded-3 pt-3 pb-3">
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item"><a href="@Url.Action("Index","DashBoard")">Trang chủ</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Thông tin người dùng</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div> *@
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="card mb-4">
+                        <div class="card-body text-center">
+                            <img src="@Model.UserDto.AvatarUrl" alt="avatar"
+                                 class="rounded-circle img-fluid" style="width: 150px; height:150px;">
+                            <h5 class="my-3">@Model.UserDto.UserName</h5>
+                            <div class="d-flex justify-content-center mb-2">
+
+                                <!-- Button trigger modal -->
+                                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#changePass">
+                                    Đổi mật khẩu
+                                </button>
+
+                                <form asp-action="ChangePassword" method="post">
+                                    <div class="modal fade" id="changePass" tabindex="-1" aria-labelledby="changePassLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="changePassLabel">Đổi mật khẩu</h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="mb-2">
+                                                        <ejs-textbox ejs-for=changepass.OldPassword floatLabelType=Auto placeholder="Mật khẩu hiện tại"></ejs-textbox>
+                                                        @* <label asp-for="changepass.OldPassword" class="mb-1"></label>
+                                                        <input asp-for="changepass.OldPassword" class="form-control border-1 border-warning rounded-1" autofocus />
+                                                        <span class="text-primary" asp-validation-for="changepass.OldPassword"></span> *@
+                                                    </div>
+                                                    <div class="mb-2">
+                                                        <ejs-textbox ejs-for=changepass.NewPassword floatLabelType=Auto placeholder="Mật khẩu mới"></ejs-textbox>
+
+                                                        @* <label asp-for="changepass.NewPassword" class="mb-1"></label>
+                                                        <input type="password" asp-for="changepass.NewPassword" class="form-control border-1 border-warning rounded-1" />
+                                                        <span class="text-primary" asp-validation-for="changepass.NewPassword"></span> *@
+                                                    </div>
+                                                    <div class="mb-2">
+                                                        <ejs-textbox ejs-for=changepass.ConfirmPassword floatLabelType=Auto placeholder="Xác nhận mật khẩu"></ejs-textbox>
+
+                                                        @* <label asp-for="changepass.ConfirmPassword" class="mb-1"></label>
+                                                        <input type="password" asp-for="changepass.ConfirmPassword" class="form-control border-1 border-warning rounded-1" />
+                                                        <span class="text-primary" asp-validation-for="changepass.ConfirmPassword"></span> *@
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Đóng</button>
+                                                    <button type="submit" class="btn btn-outline-secondary">Đổi mật khẩu</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <form asp-controller="DashBoard" asp-action="AdministratorInformation" enctype="multipart/form-data" method="post">
+                                <input asp-for=UserDto.UserName id="UserName" value="@Model.UserDto.UserName" hidden />
+                                <div class="row">
+                                    <div class="col-sm-3 d-flex align-items-center">
+                                        <p class="mb-0">Full Name</p>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <input asp-for=UserDto.FullName type="text" class="form-control" id="FullName" value="@Model.UserDto.FullName" placeholder="Nhập tên tài khoản">
+                                        <span asp-validation-for="UserDto.FullName" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3 d-flex align-items-center">
+                                        <p class="mb-0">Email</p>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <input asp-for=UserDto.Email type="email" class="form-control" id="Email" value="@Model.UserDto.Email" placeholder="Nhập địa chỉ email">
+                                        <span asp-validation-for="UserDto.Email" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3 d-flex align-items-center">
+                                        <p class="mb-0">Phone</p>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <input asp-for=UserDto.PhoneNumber type="tel" class="form-control" id="PhoneNumber" value="@Model.UserDto.PhoneNumber" placeholder="Nhập số điện thoại">
+                                        <span asp-validation-for="UserDto.PhoneNumber" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3 d-flex align-items-center">
+                                        <p class="mb-0">Address</p>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <input asp-for=UserDto.Address type="text" class="form-control" id="Address" value="@Model.UserDto.Address" placeholder="Nhập địa chỉ chính xác">
+                                        <span asp-validation-for="UserDto.Address" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3 d-flex align-items-center">
+                                        <p class="mb-0">Hình ảnh</p>
+                                    </div>
+                                    <div class="col-sm-9 control-section control-fluid">
+                                        <div class="control_wrapper">
+                                            <div id='dropArea' style='height: auto;'>
+                                                <span id='drop'> Kéo thả hình ảnh của bạn hoặc tải lên tại đây <a href='' id='browse'><u>Browse</u></a> </span>
+                                                <ejs-uploader id="UploadFiles"
+                                                              dropArea=".control-fluid"
+                                                              allowedExtensions=".jpg,.png,.jpeg"
+                                                              selected="onSelect"
+                                                              success="onUploadSuccess"
+                                                              progress="onFileUpload"
+                                                              removing="onFileRemove"
+                                                              failure="onUploadFailed"
+                                                              cssClass=""
+                                                              asyncSettings="new Syncfusion.EJ2.Inputs.UploaderAsyncSettings { SaveUrl = @Url.Content("https://services.syncfusion.com/aspnet/production/api/FileUploader/Save"), RemoveUrl = @Url.Content("https://services.syncfusion.com/aspnet/production/api/FileUploader/Remove") }"></ejs-uploader>
+                                                <input asp-for=UserDto.AvatarUrl hidden />
+                                                <input type="file" id="hiddenFileInput" name="UploadFile" hidden />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mt-2 property-section" hidden>
+                                        <div class="text-center" id="property" title="Properties">
+                                            @Html.EJS().Button("clearbtn").CssClass("e-btn e-css hidden-element").Content("Xóa ảnh").Render()
+                                            @Html.EJS().Button("uploadbtn").CssClass("e-btn e-css").Content("Upload ảnh").Render()
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="col-sm-12 d-flex justify-content-end">
+                                    <button type="submit" class="btn btn-outline-warning">Cập nhật</button>
+                                    <a asp-action="Index" asp-controller="DashBoard" class="btn btn-secondary ms-2 me-2">Trở về</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+@*ES2 kéo thả hình ảnh *@
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('browse').onclick = function () {
+            document.getElementsByClassName('e-file-select-wrap')[0].querySelector('button').click();
+            return false;
+        };
+    });
+    document.getElementById('clearbtn').onclick = function () {
+        if (!ej.base.isNullOrUndefined(document.getElementById('dropArea').querySelector('ul'))) {
+            var uploadObj = document.getElementById("UploadFiles").ej2_instances[0]
+            ej.base.detach(document.getElementById('dropArea').querySelector('ul'));
+            uploadObj.filesData = [];
+            uploadObj.fileList = [];
+            filesName = [];
+            uploadObj.element.value = '';
+        }
+    };
+
+    document.getElementById("uploadbtn").style.visibility = "hidden";
+    document.getElementById('uploadbtn').onclick = function () {
+        var uploadObj = document.getElementById("UploadFiles").ej2_instances[0]
+        if (document.getElementById('dropArea').querySelector('ul') && uploadObj.getFilesData().length > 0) {
+            uploadObj.upload(uploadObj.getFilesData());
+        }
+    };
+    var parentElement;
+    var filesName = [];
+    var progressbarContainer;
+    if (ej.base.Browser.isDevice) {
+        document.getElementById('drop').style.padding = '0px 10%';
+    }
+
+    function onSelect(args) {
+        // Xóa danh sách tệp hiện tại để chỉ giữ một tệp duy nhất
+        if (this.filesData && this.filesData.length > 0) {
+            document.getElementById('dropArea').querySelector('ul').innerHTML = '';
+            this.filesData = [];
+        }
+
+        // Kiểm tra xem có phần tử li hay không, nếu không thì reset filesData
+        if (!document.getElementById('dropArea').querySelector('li')) {
+            this.filesData = [];
+        }
+
+        // Tạo ul nếu chưa có trong dropArea
+        if (ej.base.isNullOrUndefined(document.getElementById('dropArea').querySelector('.e-upload-files'))) {
+            var parentElement = ej.base.createElement('ul', { className: 'e-upload-files' });
+            document.getElementsByClassName('e-upload')[0].appendChild(parentElement);
+        }
+
+        // Xử lý trực tiếp các tệp tin trong args.filesData
+        var selectedFiles = args.filesData;
+
+        if (selectedFiles.length > 1) {
+            alert("Bạn chỉ có thể chọn 1 file.");
+            selectedFiles = [selectedFiles[0]]; // Chỉ giữ lại file đầu tiên
+        }
+
+        // Lặp qua các tệp tin đã chọn và xử lý chúng (ví dụ: hiển thị chúng)
+        for (var i = 0; i < selectedFiles.length; i++) {
+            formSelectedData(selectedFiles[i], this);
+        }
+
+        // Cập nhật danh sách filesData với các tệp tin mới
+        this.filesData = this.filesData.concat(selectedFiles);
+        args.cancel = true;
+
+        // Đặt lại giá trị của input để có thể chọn lại tệp tin nếu cần
+        document.querySelector('input[type="file"]').value = '';
+
+        // Gán file vào input file ẩn để submit dưới dạng IFormFile
+        if (selectedFiles.length > 0) {
+            const file = selectedFiles[0].rawFile;
+
+            // Gán file vào input file ẩn
+            const inputFile = document.getElementById('hiddenFileInput'); // Sửa ID nếu cần
+            const dataTransfer = new DataTransfer();
+
+            // Kiểm tra nếu DataTransfer hỗ trợ đầy đủ
+            if (file && inputFile) {
+                dataTransfer.items.add(file);
+                inputFile.files = dataTransfer.files;
+            } else {
+                console.error('File or input not found.');
+            }
+        }
+    }
+    function validateFiles(args, viewedFiles) {
+        var modifiedFiles = [];
+        var validFiles = [];
+        var isModified = false;
+        var fileName = [];
+
+        if (args.event.type === 'drop') {
+            isModified = true;
+            var allImages = ['png', 'jpg', 'jpeg'];
+            var chooseFiles = args.filesData;
+            for (var i = 0; i < chooseFiles.length; i++) {
+                var selectFile = chooseFiles[i];
+                if (allImages.indexOf(selectFile.type) !== -1) {
+                    modifiedFiles.push(selectFile);
+                }
+            }
+        }
+        var files = modifiedFiles.length > 0 || isModified ? modifiedFiles : args.filesData;
+        if (filesName.length > 0) {
+            for (var j = 0; j < files.length; j++) {
+                var file = files[j];
+                if (filesName.indexOf(file.name) === -1) {
+                    filesName.push(file.name);
+                    validFiles.push(file);
+                }
+            }
+        } else {
+            for (var k = 0; k < files.length; k++) {
+                var validFile = files[k];
+                filesName.push(validFile.name);
+                validFiles.push(validFile);
+            }
+        }
+        return validFiles;
+    }
+    function formSelectedData(file, proxy) {
+        var liEle = ej.base.createElement('li', { className: 'e-upload-file-list', attrs: { 'data-file-name': file.name } });
+        var imageTag = ej.base.createElement('IMG', { className: 'upload-image', attrs: { 'alt': 'Image' } });
+        var wrapper = ej.base.createElement('span', { className: 'wrapper' });
+        wrapper.appendChild(imageTag);
+        liEle.appendChild(wrapper);
+        liEle.appendChild(ej.base.createElement('div', { className: 'name file-name', innerHTML: file.name, attrs: { 'title': file.name } }));
+        liEle.appendChild(ej.base.createElement('div', { className: 'file-size', innerHTML: proxy.bytesToSize(file.size) }));
+        var clearbtn;
+        var uploadbtn;
+        clearbtn = ej.base.createElement('span', { id: 'removeIcon', className: 'e-icons e-file-remove-btn', attrs: { 'title': 'Remove' } });
+        ej.base.EventHandler.add(clearbtn, 'click', removeFiles, proxy);
+        uploadbtn = ej.base.createElement('span', { className: 'e-upload-icon e-icons e-file-remove-btn', attrs: { 'title': 'Upload' } });
+        uploadbtn.setAttribute('id', 'iconUpload');
+        ej.base.EventHandler.add(uploadbtn, 'click', uploadFile, proxy);
+        progressbarContainer = ej.base.createElement('progress', { className: 'progressbar', id: 'progressBar', attrs: { value: '0', max: '100' } });
+        liEle.appendChild(clearbtn);
+        liEle.appendChild(uploadbtn);
+        liEle.appendChild(progressbarContainer);
+        readURL(liEle, file);
+        document.querySelector('.e-upload-files').appendChild(liEle);
+        proxy.fileList.push(liEle);
+    }
+    function uploadFile(args) {
+        var uploadObj = document.getElementById("UploadFiles").ej2_instances[0]
+        uploadObj.upload([this.filesData[this.fileList.indexOf(args.currentTarget.parentElement)]]);
+    }
+    function removeFiles(args) {
+        var uploadObj = document.getElementById("UploadFiles").ej2_instances[0]
+        var removeFile = this.filesData[this.fileList.indexOf(args.currentTarget.parentElement)];
+        var fileName = args.currentTarget.parentElement.getAttribute('data-file-name');
+        var fileIndex = this.filesData.findIndex(function (file) {
+            return file.name === fileName;
+        });
+        if (fileIndex === -1) {
+            console.error("File không tồn tại trong fileList.");
+            return;
+        }
+
+        var removeFile = this.filesData[fileIndex];
+
+        // Kiểm tra nếu removeFile là undefined
+        if (!removeFile) {
+            console.error("Tệp không tồn tại trong filesData.");
+            return;
+        }
+
+        var statusCode = removeFile.statusCode;
+
+        if (statusCode === '2') {
+            this.remove(removeFile, true);
+        } else {
+            var li = args.currentTarget.parentElement;
+            ej.base.detach(li);
+        }
+
+        filesName.splice(filesName.indexOf(removeFile.name), 1);
+
+        this.filesData.splice(fileIndex, 1);
+        this.fileList.splice(fileIndex, 1);
+
+        uploadObj.element.value = '';
+    }
+    function onFileUpload(args) {
+        var li = document.getElementById('dropArea').querySelector('[data-file-name="' + args.file.name + '"]');
+        var iconEle = li.querySelector('#iconUpload');
+        iconEle.style.cursor = 'not-allowed';
+        iconEle.classList.add('e-uploaded');
+        ej.base.EventHandler.remove(li.querySelector('#iconUpload'), 'click', uploadFile);
+        var progressValue = Math.round((args.e.loaded / args.e.total) * 100);
+        if (!isNaN(progressValue) && li.querySelector('.progressbar')) {
+            li.getElementsByTagName('progress')[0].value = progressValue;
+        }
+    }
+    function onUploadSuccess(args) {
+        var _this = this;
+        var spinnerElement = document.getElementById('dropArea');
+        var li = document.getElementById('dropArea').querySelector('[data-file-name="' + args.file.name + '"]');
+        if (li && !ej.base.isNullOrUndefined(li.querySelector('.progressbar'))) {
+            li.querySelector('.progressbar').style.visibility = 'hidden';
+        }
+        if (args.operation === 'upload') {
+            ej.base.EventHandler.remove(li.querySelector('#iconUpload'), 'click', uploadFile);
+            li.querySelector('.file-name').style.color = 'green';
+            li.querySelector('.e-icons').onclick = function () { generateSpinner(_this.uploadWrapper); };
+        }
+        if (args.operation === 'remove') {
+            if (li) {
+                ej.base.detach(li);
+            }
+            ej.popups.hideSpinner(spinnerElement);
+            ej.base.detach(spinnerElement.querySelector('.e-spinner-pane'));
+        }
+    }
+    function generateSpinner(targetElement) {
+        ej.popups.createSpinner({ target: targetElement, width: '25px' });
+        ej.popups.showSpinner(targetElement);
+    }
+    function onUploadFailed(args) {
+        var li = document.getElementById('dropArea').querySelector('[data-file-name="' + args.file.name + '"]');
+        li.querySelector('.file-name').style.color = 'red';
+        if (args.operation === 'upload') {
+            ej.base.EventHandler.remove(li.querySelector('#iconUpload'), 'click', uploadFile);
+            li.querySelector('.progressbar').style.visibility = 'hidden';
+        }
+    }
+    function onFileRemove(args) {
+        args.postRawFile = false;
+    }
+    function readURL(li, args) {
+        var preview = li.querySelector('.upload-image');
+        var file = args.rawFile;
+        var reader = new FileReader();
+        reader.addEventListener('load', function () { preview.src = reader.result; }, false);
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    }
+</script>
