@@ -161,6 +161,20 @@ builder.Services.AddAuthentication(options =>
             // Điều này sẽ ngăn việc tự động đăng nhập qua SignInAsync 
             ctx.HandleResponse(); // Chặn xử lý đăng nhập dưới API
             return Task.CompletedTask;
+        },
+
+        OnRemoteFailure = ctx =>
+        {
+            // Xử lý khi đăng nhập thất bại
+            ctx.HandleResponse();
+
+            // Cập nhật đường dẫn với 'data' không có giá trị
+            var redirectUri = $"{ctx.Properties.RedirectUri}?data=";
+
+            // Chuyển hướng người dùng đến đường dẫn mới
+            ctx.Response.Redirect(redirectUri);
+
+            return Task.CompletedTask;
         }
     };
 }).AddGoogle(GoogleDefaults.AuthenticationScheme, o =>
@@ -262,6 +276,20 @@ builder.Services.AddAuthentication(options =>
             // Ngăn việc tự động đăng nhập
             ctx.HandleResponse();
             return Task.CompletedTask;
+        },
+
+        OnRemoteFailure = ctx =>
+        {
+            // Xử lý khi đăng nhập thất bại
+            ctx.HandleResponse();
+
+            // Cập nhật đường dẫn với 'data' không có giá trị
+            var redirectUri = $"{ctx.Properties.RedirectUri}?data=";
+
+            // Chuyển hướng người dùng đến đường dẫn mới
+            ctx.Response.Redirect(redirectUri);
+
+            return Task.CompletedTask;
         }
     };
 }).AddFacebook(FacebookDefaults.AuthenticationScheme, o =>
@@ -361,6 +389,20 @@ builder.Services.AddAuthentication(options =>
         {
             // Ngăn việc tự động đăng nhập
             ctx.HandleResponse();
+            return Task.CompletedTask;
+        },
+
+        OnRemoteFailure = ctx =>
+        {
+            // Xử lý khi đăng nhập thất bại
+            ctx.HandleResponse();
+
+            // Cập nhật đường dẫn với 'data' không có giá trị
+            var redirectUri = $"{ctx.Properties.RedirectUri}?data=";
+
+            // Chuyển hướng người dùng đến đường dẫn mới
+            ctx.Response.Redirect(redirectUri);
+
             return Task.CompletedTask;
         }
     };
