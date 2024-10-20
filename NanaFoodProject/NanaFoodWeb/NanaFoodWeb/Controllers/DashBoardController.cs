@@ -10,5 +10,10 @@ namespace NanaFoodWeb.Controllers
         {
             return View();
         }
+
+        public IActionResult AdminstratorInformation()
+        {
+            return View();
+        }
     }
 }
