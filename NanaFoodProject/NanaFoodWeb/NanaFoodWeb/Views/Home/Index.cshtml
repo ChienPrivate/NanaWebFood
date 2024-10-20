@@ -181,7 +181,7 @@
                                                                 <p class="text-dark fs-5 fw-bold mb-0">
                                                                     @item.Price.ToString("N0") VND
                                                                 </p>
-                                                                <a href="#"
+                                                                <a asp-action="AddToCart" asp-controller="Cart" asp-route-id="@item.ProductId"
                                                                    class="btn border border-secondary rounded-pill px-3 text-warning">
                                                                     <i class="fa fa-shopping-bag me-2 text-warning"></i>Giỏ Hàng
                                                                 </a>

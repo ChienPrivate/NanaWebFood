@@ -1,69 +1,55 @@
-﻿@* 
-@{
-    Layout = "_Layout";
-    ViewData["Title"] = "Index";
-}
-
-<div class="cart-container">
-    <table>
-        <thead>
-            <tr>
-                <th scope="col">XÓA</th>
-                <th scope="col">SẢN PHẨM</th>
-                <th scope="col">GIÁ</th>
-                <th scope="col">SỐ LƯỢNG</th>
-                <th scope="col">TỔNG</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>
-                    <a asp-action="" asp-route-id="" asp-route-quantity="">Xoá</a>
-                </td>
-                <td><img src="https://via.placeholder.com/50" alt="Khoai tây chiên" style="margin-right: 10px; vertical-align: middle;">Khoai tây chiên bơ giòn</td>
-                <td>23,000 đ</td>
-                <td>
-                    <input type="number" value="1" min="1" style="width: 50px;">
-                </td>
-                <td>23,000 đ</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <!-- Phần tổng kết giỏ hàng -->
-    <div class="cart-summary">
-        <p>Tạm tính: <span>23,000 đ</span></p>
-        <p>Tổng: <span>23,000 đ</span></p>
-
-        <button class="btn">TIẾN HÀNH THANH TOÁN</button>
-
-        <div class="discount-code">
-            <input type="text" placeholder="Mã ưu đãi">
-            <button>Áp dụng</button>
-        </div>
-
-        <div class="action-buttons">
-            <a href="#">← Tiếp tục xem sản phẩm</a>
-
-        </div>
-    </div>
-</div> *@
-@model List<NanaFoodDAL.Dto.CartDetailsDto>
+﻿<!-- orderhistory -->
+<link rel="stylesheet" href="css/orderhistory/bootstrap/css/bootstrap.min.css">
+<link href="css/orderhistory/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+<link href="js/orderhistory/datetimepicker/bootstrap-datetimepicker.min.css" rel="stylesheet">
+<link href="js/orderhistory/owl-carousel/owl.carousel.css" rel="stylesheet">
+<link href="css/orderhistory/themecss/lib.css" rel="stylesheet">
+<link href="js/orderhistory/jquery-ui/jquery-ui.min.css" rel="stylesheet">
+<link href="js/orderhistory/minicolors/miniColors.css" rel="stylesheet">
+<link href="css/orderhistory/themecss/so_searchpro.css" rel="stylesheet">
+<link href="css/orderhistory/themecss/so_megamenu.css" rel="stylesheet">
+<link href="css/orderhistory/themecss/so-categories.css" rel="stylesheet">
+<link href="css/orderhistory/themecss/so-listing-tabs.css" rel="stylesheet">
+<link href="css/orderhistory/themecss/so-newletter-popup.css" rel="stylesheet">
+<link href="css/orderhistory/footer/footer1.css" rel="stylesheet">
+<link href="css/orderhistory/header/header1.css" rel="stylesheet">
+<link id="color_scheme" href="css/orderhistory/theme.css" rel="stylesheet">
+<link href="css/orderhistory/responsive.css" rel="stylesheet">
+<link href='https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,500i,700' rel='stylesheet'
+      type='text/css'>
+<!-- oderhistory -->
+<script type="text/javascript" src="js/orderhistory/jquery-2.2.4.min.js"></script>
+<script type="text/javascript" src="js/orderhistory/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/orderhistory/owl-carousel/owl.carousel.js"></script>
+<script type="text/javascript" src="js/orderhistory/themejs/libs.js"></script>
+<script type="text/javascript" src="js/orderhistory/unveil/jquery.unveil.js"></script>
+<script type="text/javascript" src="js/orderhistory/countdown/jquery.countdown.min.js"></script>
+<script type="text/javascript" src="js/orderhistory/dcjqaccordion/jquery.dcjqaccordion.2.8.min.js"></script>
+<script type="text/javascript" src="js/orderhistory/datetimepicker/moment.js"></script>
+<script type="text/javascript" src="js/orderhistory/datetimepicker/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="js/orderhistory/jquery-ui/jquery-ui.min.js"></script>
+<script type="text/javascript" src="js/orderhistory/themejs/so_megamenu.js"></script>
+<script type="text/javascript" src="js/orderhistory/themejs/addtocart.js"></script>
+<script type="text/javascript" src="js/orderhistory/themejs/application.js"></script>
+@model List<NanaFoodWeb.Models.Dto.CartDetailsDto>
 @{
     Layout = "_Layout";
     ViewData["Title"] = "Index";
 }
 
 <div class="row">
-    <div id="content" class="col-sm-12">
+    <div id="content" class="col-sm-12" style="
+    margin-top: 15%;
+    padding-left: 5%;
+    padding-right: 5%;
+">
         <h2 class="title">Giỏ hàng của tôi</h2>
         <div class="table-responsive form-group">
             <table class="table table-bordered">
                 <thead>
                     <tr>
                         <td class="text-center">Hình ảnh</td>
-                        <td class="text-left">Sản Phẩm</td>
-                        <td class="text-left">Mã sản phẩm</td>
+                        <td class="text-left">Sản phẩm</td>
                         <td class="text-left">Số lượng</td>
                         <td class="text-right">Giá</td>
                         <td class="text-right">Tổng</td>
@@ -82,7 +68,7 @@
                             <td class="text-left">
                                 <a href="/Product/Details/@item.ProductId">@item.ProductName</a><br />
                             </td>
-                            <td class="text-left">@item.ProductId</td>
+                            <td class="text-left" hidden>@item.ProductId</td>
                             <td class="text-left" width="200px">
                                 <div class="input-group btn-block quantity">
                                     <input type="text" name="quantity" value="@item.Quantity" size="1"
@@ -92,7 +78,8 @@
                                                 class="btn btn-primary">
                                             <i class="fa fa-clone"></i>
                                         </button>
-                                        <form asp-action="DeleteProductFromCart" method="post" class="d-inline">
+                                        <form asp-action="DeleteCart" method="get" class="d-inline" asp-route-id="@item.ProductId">
+                                            @* <input type="hidden" name="productId" value="@item.ProductId" /> *@
                                             <input type="hidden" name="productId" value="@item.ProductId" />
                                             <button type="submit" data-toggle="tooltip" title="Xoá"
                                                     class="btn btn-danger">
@@ -102,8 +89,8 @@
                                     </span>
                                 </div>
                             </td>
-                            <td class="text-right">@item.Price.ToString("N0") VND</td>
-                            <td class="text-right">@item.Total.ToString("N0") VND</td>
+                            <td class="text-right">@item.Price</td>
+                            <td class="text-right">@(item.Quantity * item.Price)</td>
                         </tr>
                     }
                 </tbody>
@@ -144,7 +131,7 @@
             <div class="col-sm-4 col-sm-offset-8">
                 <table class="table table-bordered">
                     <tbody>
-                        <tr>
+                        @* <tr>
                             <td class="text-right"><strong>Tổng:</strong></td>
                             <td class="text-right">@Model.Sum(x => x.Total).ToString("N0") VND</td>
                         </tr>
@@ -155,7 +142,7 @@
                         <tr>
                             <td class="text-right"><strong>Tổng cộng:</strong></td>
                             <td class="text-right">@((Model.Sum(x => x.Total) * 0.9).ToString("N0")) VND</td>
-                        </tr>
+                        </tr> *@
                     </tbody>
                 </table>
             </div>

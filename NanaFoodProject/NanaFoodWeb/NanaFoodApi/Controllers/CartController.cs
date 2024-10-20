@@ -18,8 +18,8 @@ namespace NanaFoodApi.Controllers
 
 
         // POST api/Cart
-        [HttpPost]
-        public async Task<IActionResult> AddToCart(CartDetailsDto cartDetails)
+        [HttpPost("AddToCart")]
+        public async Task<IActionResult> AddToCart([FromBody]CartDetailsDto cartDetails)
         {
             var userid = _SignInManager.UserManager.GetUserId(User);
             cartDetails.UserId = userid;
@@ -32,7 +32,7 @@ namespace NanaFoodApi.Controllers
         }
 
         // GET api/Cart
-        [HttpGet]
+        [HttpGet("GetCart")]
         public async Task<IActionResult> GetCart()
         {
             var user = await _SignInManager.UserManager.GetUserAsync(User);

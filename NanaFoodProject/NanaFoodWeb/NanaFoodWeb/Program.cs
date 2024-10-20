@@ -1,10 +1,9 @@
 
-using NanaFoodWeb.IRepository.Repository;
-using NanaFoodWeb.IRepository;
-using NanaFoodWeb.Utility;
 using DotNetEnv;
-using System.Diagnostics.Eventing.Reader;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using NanaFoodWeb.IRepository;
+using NanaFoodWeb.IRepository.Repository;
+using NanaFoodWeb.Utility;
 using static System.Environment;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -47,7 +46,7 @@ builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IProductRepo, ProductRepo>();
 builder.Services.AddScoped<IHelperRepository, HelperRepository>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserRepository,UserRepository>();
 
 
 

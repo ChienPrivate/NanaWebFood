@@ -82,11 +82,31 @@ namespace NanaFoodDAL.IRepository.Repository
         {
             try
             {
-                var cart = await _context.CartDetails.Where(x => x.UserId == user.Id).ToListAsync();
-                if (cart.Count > 0)
+                //var cart = await _context.CartDetails.Where(x => x.UserId == user.Id).ToListAsync();
+                var cart = from a in _context.CartDetails
+                                join b in _context.Products on a.ProductId equals b.ProductId
+                                where a.UserId == user.Id
+                                select new
+                                {
+                                    UserId = a.UserId,
+                                    ProductId = a.ProductId,
+                                    Quantity = a.Quantity,
+                                    Total = a.Total,
+                                    ProductName = b.ProductName,
+                                    Price = b.Price,
+                                    Image = b.ImageUrl,
+                                };
+                var cartList = await cart.ToListAsync();
+                if (cartList.Count > 0)
                 {
                     response.IsSuccess = true;
-                    response.Result = _mapper.Map<List<CartDetailsDto>>(cart);
+                    response.Result = new
+                    {
+                        TotalCount = 1,
+                        TotalPages = 1,
+                        Data = cartList
+                    };
+                        
                     response.Message = "Lấy thông tin giỏ hàng thành công";
                 }
                 else
