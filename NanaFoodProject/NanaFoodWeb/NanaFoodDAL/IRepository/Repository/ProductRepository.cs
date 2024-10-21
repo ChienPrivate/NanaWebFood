@@ -78,6 +78,7 @@ namespace NanaFoodDAL.IRepository.Repository
         {
             try
             {
+                
                 var products = _context.Products.ToList();
                 var totalCount = products.Count;
                 var totalPages = (int)Math.Ceiling((decimal)totalCount / pageSize);
