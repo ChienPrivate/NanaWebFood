@@ -34,7 +34,19 @@
                 </p>
                 <div class="card shadow">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Products</h6>
+                        <div class="d-flex align-items-md-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">Products</h6>
+                            <div>
+                                <form asp-action="SearchByName" method="get" class="form-inline my-2 my-lg-0">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="query" value="@ViewBag.CurrentFilter" placeholder="Nhập tên sản phẩm" aria-label="Search" />
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-primary" type="submit">Search</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">

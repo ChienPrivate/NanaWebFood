@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("NanaFoodWeb")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ce7797335e3a9cc6dd39abdea9477cceae19f913")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bed0d5a0283e3855a68b5ce53c3e7dba6fa0ab89")]
 [assembly: System.Reflection.AssemblyProductAttribute("NanaFoodWeb")]
 [assembly: System.Reflection.AssemblyTitleAttribute("NanaFoodWeb")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
