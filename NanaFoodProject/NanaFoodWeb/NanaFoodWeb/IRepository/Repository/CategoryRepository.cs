@@ -18,5 +18,23 @@ namespace NanaFoodWeb.IRepository.Repository
                 Url = StaticDetails.APIBase + $"/api/Category/Unactive/{id}"
             });
         }
+
+        public async Task<ResponseDto> GetAllCategoriesAsync(int page, int pageSize, bool isSelectAll)
+        {
+            return await _baseService.SendAsync(new RequestDto
+            {
+                ApiType = StaticDetails.ApiType.GET,
+                Url = StaticDetails.APIBase + $"/api/Category?page={page}&pageSize={pageSize}&isSelectAll={isSelectAll}"
+            });
+        }
+
+        public async Task<ResponseDto> GetCategoryById(int id)
+        {
+            return await _baseService.SendAsync(new RequestDto
+            {
+                ApiType = StaticDetails.ApiType.GET,
+                Url = StaticDetails.APIBase + $"/api/Category/{id}"
+            });
+        }
     }
 }

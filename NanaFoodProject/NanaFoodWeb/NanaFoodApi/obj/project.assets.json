@@ -9086,11 +9086,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Admin\\Desktop\\New folder\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodApi\\NanaFoodApi.csproj",
+      "projectUniqueName": "C:\\Users\\Admin\\Desktop\\New folder (3)\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodApi\\NanaFoodApi.csproj",
       "projectName": "NanaFoodApi",
-      "projectPath": "C:\\Users\\Admin\\Desktop\\New folder\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodApi\\NanaFoodApi.csproj",
+      "projectPath": "C:\\Users\\Admin\\Desktop\\New folder (3)\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodApi\\NanaFoodApi.csproj",
       "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Admin\\Desktop\\New folder\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodApi\\obj\\",
+      "outputPath": "C:\\Users\\Admin\\Desktop\\New folder (3)\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodApi\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -9108,8 +9108,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\Admin\\Desktop\\New folder\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\NanaFoodDAL.csproj": {
-              "projectPath": "C:\\Users\\Admin\\Desktop\\New folder\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\NanaFoodDAL.csproj"
+            "C:\\Users\\Admin\\Desktop\\New folder (3)\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\NanaFoodDAL.csproj": {
+              "projectPath": "C:\\Users\\Admin\\Desktop\\New folder (3)\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\NanaFoodDAL.csproj"
             }
           }
         }

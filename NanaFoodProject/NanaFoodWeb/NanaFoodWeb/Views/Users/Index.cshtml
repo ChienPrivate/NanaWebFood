@@ -34,48 +34,10 @@
     </div>
 </div>
 
-<style>
-
-    .statustemp.e-notavailablecolor {
-        background-color: #6c757d; /* Màu secondary của Bootstrap */
-        width: 100px;
-        height: 30px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .statustemp.e-availablecolor {
-        background-color: #28a745; /* Màu success của Bootstrap */
-        width: 100px;
-        height: 30px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .statustxt.e-availablecolor {
-        color: white;
-    }
-
-    .statustxt.e-notavailablecolor {
-        color: white;
-    }
-
-    .statustemp {
-        position: relative;
-        height: 19px;
-        text-align: center;
-        border-radius: 5px; /* Bo tròn góc */
-    }
-
-</style>
-
-
 <script type="text/javascript">
     function emailConfirmedDetail(e) {
         var div = document.createElement('div');
-        var h6 = document.createElement('h6'); // Tạo thẻ h5 để bọc thẻ span
+        var h6 = document.createElement('h6'); // Tạo thẻ h6 để bọc thẻ span
         var span = document.createElement('span');
         if (e.EmailConfirmed === true) {
             span.className = 'badge bg-success rounded-3';
@@ -86,7 +48,7 @@
             span.textContent = 'Vô hiệu'
         }
 
-        h6.appendChild(span); // Đưa span vào bên trong thẻ h5
+        h6.appendChild(span); // Đưa span vào bên trong thẻ h6
         div.appendChild(h6); // Đưa h6 vào bên trong div
 
         return div.outerHTML;
@@ -137,7 +99,7 @@
 
 <script type="text/x-jsrender" id="commandTemplate">
 
-    <a href="/Users/Edit/${Id}" class="btn btn-outline-warning mb-1 d-block"><i class="bi bi-wrench-adjustable"></i> Chỉnh sửa</a>
+    <a href="/Users/Edit/${Id}" class="btn btn-outline-warning mb-1 d-block"><i class="fa-regular fa-pen-to-square"></i> Chỉnh sửa</a>
 
     @* <button type="button" class="btn btn-danger mb-1 d-block form-control" data-bs-toggle="modal" data-bs-target="#deleteUserModal-${UserName}">
         <i class="bi bi-trash"></i> Xóa
