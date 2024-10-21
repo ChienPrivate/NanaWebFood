@@ -5,7 +5,7 @@ namespace NanaFoodWeb.IRepository
 {
     public interface IProductRepo
     {
-        ResponseDto GetAll(int page, int pageSize);
+        ResponseDto GetAll(int page, int pageSize, bool isSelectAll);
         ResponseDto GetById(int id);
         ResponseDto Create(Product product);
         ResponseDto Update(ProductDto product);

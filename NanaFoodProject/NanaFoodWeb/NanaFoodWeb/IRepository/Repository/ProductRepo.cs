@@ -27,12 +27,12 @@ namespace NanaFoodWeb.IRepository.Repository
             }).Result;
         }
 
-        public ResponseDto GetAll(int page, int pageSize)
+        public ResponseDto GetAll(int page, int pageSize, bool isSelectAll)
         {
             return _baseService.SendAsync(new RequestDto()
             {
                 ApiType = StaticDetails.ApiType.GET,
-                Url = StaticDetails.APIBase + $"/api/Product?page={page}&pageSize={pageSize}"
+                Url = StaticDetails.APIBase + $"/api/Product?page={page}&pageSize={pageSize}&isSelectAll={isSelectAll}"
 
             }).Result;
         }

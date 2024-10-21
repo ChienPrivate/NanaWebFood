@@ -41,7 +41,7 @@ namespace NanaFoodWeb.Controllers
             ViewData["page"] = page;
             ViewData["searchQuery"] = searchQuery;
 
-            var response = _productRepo.GetAll(page ?? 1, pageSize);
+            var response = _productRepo.GetAll(page ?? 1, pageSize, true);
 
             if (response.IsSuccess)
             {
@@ -83,7 +83,7 @@ namespace NanaFoodWeb.Controllers
             ViewData["page"] = page;
             ViewData["searchQuery"] = searchQuery;
 
-            var response = _productRepo.GetAll(page ?? 1, pageSize);
+            var response = _productRepo.GetAll(page ?? 1, pageSize, true);
 
             if (response.IsSuccess)
             {

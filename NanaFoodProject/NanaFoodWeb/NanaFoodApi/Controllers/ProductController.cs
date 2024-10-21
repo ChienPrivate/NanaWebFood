@@ -15,9 +15,9 @@ namespace NanaFoodApi.Controllers
         readonly IMapper _mapper = mapper;
 
         [HttpGet]
-        public ActionResult<ResponseDto> GetAll(int page = 1, int pageSize = 10)
+        public ActionResult<ResponseDto> GetAll(int page = 1, int pageSize = 10, bool isSelectAll = true)
         {
-            var response = _foodService.GetAll(page, pageSize);
+            var response = _foodService.GetAll(page, pageSize, isSelectAll);
 
             if (!response.IsSuccess)
             {
