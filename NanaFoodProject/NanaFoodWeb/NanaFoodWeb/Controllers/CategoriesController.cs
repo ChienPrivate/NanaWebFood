@@ -36,14 +36,15 @@ namespace NanaFoodWeb.Controllers
             _categoryRepository = categoryRepository;
             //_categoryRepo = categoryRepo;
         }
-        [HttpGet("Index")]
+        /*[HttpGet("Index")]
         public async Task<ActionResult> Index(string searchQuery, int? page=1)
         {
             var token = _tokenProvider.GetToken();
             ViewData["page"] = page;
             ViewData["searchQuery"] = searchQuery;
-            string apiName = "Category/SearchName?page=" + page + "&pageSize=10&name=" + searchQuery;
+            string apiName = "Category/SearchName?page=" + page + "&pageSize=100&name=" + searchQuery;
             ResponseDto respone =await _callAPICenter.GetMethod<ResponseDto>(apiName, token);
+            var response = await _categoryRepository.GetAllCategoriesAsync();
             if (respone.IsSuccess)
             {
                 ViewBag.CurrentPage = page;
@@ -54,7 +55,24 @@ namespace NanaFoodWeb.Controllers
             }
             
             return View(new List<CategoryDto>());
+        }*/
+
+        [HttpGet("Index")]
+        public async Task<ActionResult> Index(string searchQuery, int? page = 1)
+        {
+            var response = await _categoryRepository.GetAllCategoriesAsync(page ?? 1,10,true);
+            if (response.IsSuccess)
+            {
+                var resultData = JsonConvert.DeserializeObject<List<CategoryDto>>(response.Result.ToString());
+
+                ViewBag.lazyLoadData = resultData;
+
+                return View();
+            }
+
+            return View(new List<CategoryDto>());
         }
+
         [HttpGet("Create")]
         public ActionResult Create()
         {
@@ -151,8 +169,27 @@ namespace NanaFoodWeb.Controllers
             //}
             return View(category);
         }
-        [HttpPost("Delete")]
-        public async Task<ActionResult> Delete(int id,string searchQuery, int? page)
+
+        [HttpGet("Delete/{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var response = await _categoryRepository.GetCategoryById(id);
+
+            var category = JsonConvert.DeserializeObject<Result<CategoryDto>>(response.Result.ToString());
+
+            if (response.IsSuccess)
+            {
+                return View(category.Data);
+            }
+            else
+            {
+                string message = response.Message;
+                return NotFound(message);
+            }
+        }
+
+        [HttpPost("DeleteConfirm")]
+        public async Task<ActionResult> DeleteConfirm(int id)
         {
             var token = _tokenProvider.GetToken();
             string apiName = "Category/" + id;
@@ -160,23 +197,14 @@ namespace NanaFoodWeb.Controllers
             if (response.IsSuccess)
             {
                 TempData["success"] = "Xóa danh mục thành công";
-                return RedirectToAction("Index", new { searchQuery = searchQuery, page = page });
+                return RedirectToAction("Index");
             }
-            else {
-                
+            else 
+            {    
                 string message = response.Message;
                 return NotFound(message);
             }
-
         }
-        // POST: Category/Delete/5
-/*        [HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            TempData["Success"] = "Xóa danh mục thành công!";
-            return RedirectToAction("Index");
-        }*/
 
         [HttpGet("Edit/{id}")]
         public async Task<ActionResult> Edit(int id)
@@ -192,7 +220,7 @@ namespace NanaFoodWeb.Controllers
 
             return View(new CategoryDto());
         }
-        [HttpGet("Details")]
+        [HttpGet("Details/{id}")]
         public async Task<ActionResult> Details(int id)
         {
             var token = _tokenProvider.GetToken();

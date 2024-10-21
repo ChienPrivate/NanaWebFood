@@ -12209,19 +12209,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Admin\\.nuget\\packages\\": {}
+    "C:\\Users\\ASUS\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Admin\\Desktop\\New folder\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodWeb\\NanaFoodWeb.csproj",
+      "projectUniqueName": "D:\\GraduationProject\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodWeb\\NanaFoodWeb.csproj",
       "projectName": "NanaFoodWeb",
-      "projectPath": "C:\\Users\\Admin\\Desktop\\New folder\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodWeb\\NanaFoodWeb.csproj",
-      "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Admin\\Desktop\\New folder\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodWeb\\obj\\",
+      "projectPath": "D:\\GraduationProject\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodWeb\\NanaFoodWeb.csproj",
+      "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
+      "outputPath": "D:\\GraduationProject\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodWeb\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\ASUS\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -12236,8 +12236,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\Admin\\Desktop\\New folder\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\NanaFoodDAL.csproj": {
-              "projectPath": "C:\\Users\\Admin\\Desktop\\New folder\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\NanaFoodDAL.csproj"
+            "D:\\GraduationProject\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\NanaFoodDAL.csproj": {
+              "projectPath": "D:\\GraduationProject\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\NanaFoodDAL.csproj"
             }
           }
         }
@@ -12305,7 +12305,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
