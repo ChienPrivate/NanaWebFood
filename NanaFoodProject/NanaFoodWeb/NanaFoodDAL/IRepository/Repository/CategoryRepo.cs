@@ -67,8 +67,16 @@ namespace NanaFoodDAL.IRepository.Repository
             return response;
         }
 
-        public ResponseDto GetAll(int page = 1, int pageSize = 10)
+        public async Task<ResponseDto> GetAll(int page = 1, int pageSize = 10, bool isSelectAll = true)
         {
+            if (isSelectAll)
+            {
+                response.IsSuccess = true;
+                response.Result = _mapper.Map<List<CategoryDto>>(await _context.Categories.ToListAsync());
+                response.Message = "Lấy danh sách danh mục sản phẩm thành công";
+
+                return response;
+            }
             try
             {
                 var categories = _context.Categories.ToList();
@@ -128,13 +136,13 @@ namespace NanaFoodDAL.IRepository.Repository
             return response;
         }
 
-        public ResponseDto GetByName(string name, int page = 1, int pageSize = 10)
+        public async Task<ResponseDto> GetByName(string name, int page = 1, int pageSize = 10)
         {
             try
             {
                 if (string.IsNullOrEmpty(name))
                 {
-                    return GetAll(page, pageSize);
+                    return await GetAll(page, pageSize);
                 }
                 var categories = _context.Categories.Where(x => x.CategoryName.Contains(name) && x.IsActive).ToList();
                 if (categories == null)

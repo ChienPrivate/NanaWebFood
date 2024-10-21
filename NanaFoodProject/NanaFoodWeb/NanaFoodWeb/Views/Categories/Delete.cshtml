@@ -10,13 +10,54 @@
     <div id="content-wrapper" class="d-flex flex-column">
         <div id="content">
             <div class="container-fluid">
-                <h1 class="h3 mb-4 text-gray-800">Delete Category</h1> 
-                <p>Are you sure you want to delete this category?</p>
-                <form asp-action="Delete" asp-controller="Categories">
-                    <input type="hidden" asp-for="CategoryId" />
-                    <input type="submit" value="Delete" class="btn btn-danger" /> |
-                    <a asp-action="Index">Back to List</a>
-                </form>
+                <h1 class="h3 mb-4 text-gray-800">Bạn có chắn chắn muốn xóa danh mục này ?</h1>
+                <div class="card shadow">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary" id="category-name">@Html.DisplayFor(model => model.CategoryName)</h6>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Tên danh mục:</strong> <span id="category-name">@Html.DisplayFor(model => model.CategoryName)</span></p>
+                        <p><strong>Mô tả:</strong> <span id="description">@Html.DisplayFor(model => model.Description)</span></p>
+                        <div class="mb-2 mt-2">
+                            <label>Trạng thái:</label>
+                            <div class="d-flex align-items-center">
+                                <div>
+                                    <ejs-switch ejs-for="IsActive" change="onSwitchChange" name="IsActive" disabled></ejs-switch>
+                                </div>
+                                <h5 class="ms-2">
+                                    <span id="badgeStatus" class="badge @(Model.IsActive ? "bg-success" : "bg-secondary")">
+                                        @(Model.IsActive ? "Hoạt động" : "Vô hiệu")
+                                    </span>
+                                </h5>
+                            </div>
+                        </div>
+                        <p><strong>Hình ảnh: </strong></p>
+                        <div class="col-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <img src="@Model.CategoryImage" class="rounded-3" style="width:100%;" />
+                                </div>
+                            </div>
+                        </div>
+
+                        @* <p><strong>Image:</strong> <span id="image">@Html.DisplayFor(model => model.ImageUrl)</span></p> *@
+                        <div class="mt-2 d-flex gap-1">
+                            <form method="post">
+                                <button type="submit" asp-action="DeleteConfirm" asp-controller="Categories" class="btn btn-danger" asp-route-id="@Model?.CategoryId"><i class="fa-regular fa-square-check"></i> Xóa</button>
+                            </form>
+                            <form method="post">
+                                <button type="submit"
+                                        asp-controller="Categories"
+                                        asp-action="Deactivate"
+                                        asp-route-id="@Model.CategoryId"
+                                        class="btn btn-warning">
+                                    <i class="fa-solid fa-lock"></i> Vô hiệu hóa
+                                </button>
+                            </form>
+                            <a href="@Url.Action("Index", "Categories")" class="btn btn-secondary"><i class="fa-solid fa-list"></i> Trở về danh sách</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

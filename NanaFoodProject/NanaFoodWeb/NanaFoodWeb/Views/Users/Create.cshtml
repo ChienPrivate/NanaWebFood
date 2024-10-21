@@ -40,7 +40,7 @@
                         <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
                     <div class="mb-2 mt-2">
-                        <label>Trạng thái</label>
+                        <label>Xác thực email</label>
                         <div class="d-flex align-items-center">
                             <div>
                                 <ejs-switch ejs-for="EmailConfirmed" change="onSwitchChangeUserForm" name="EmailConfirmed"></ejs-switch>
@@ -105,8 +105,8 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <input type="submit" value="Xác nhận thêm" class="btn btn-primary" />
-                        <a href="@Url.Action("Index", "Users")" class="btn btn-secondary">Trở về danh sách</a>
+                        <button type="submit" class="btn btn-primary"><i class="fa-regular fa-square-check"></i> Lưu</button>
+                        <a href="@Url.Action("Index", "Users")" class="btn btn-secondary"><i class="fa-solid fa-list"></i> Trở về danh sách</a>
                     </div>
 
                 </form>

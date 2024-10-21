@@ -23,15 +23,16 @@ namespace NanaFoodApi.Controllers
 
         // GET: api/category
         [HttpGet]
-        public ActionResult<ResponseDto> GetAllCategories(int page = 1, int pageSize = 10)
+        public async Task<ActionResult<ResponseDto>> GetAllCategories(int page = 1, int pageSize = 10, bool isSelectAll = true)
         {
-            var response = _categoryRepo.GetAll(page, pageSize);
+            var response =  await _categoryRepo.GetAll(page, pageSize, isSelectAll);
             if (!response.IsSuccess)
             {
                 return BadRequest(response);
             }
             return Ok(response);
         }
+
 
 
         // GET: api/category/{id}
@@ -48,9 +49,9 @@ namespace NanaFoodApi.Controllers
 
         // GET: api/category/SearchName/{name}
         [HttpGet("SearchName")]
-        public ActionResult<ResponseDto> GetCategoryByName( string name="", int page = 1, int pageSize = 10)
+        public async Task<ActionResult<ResponseDto>> GetCategoryByName( string name="", int page = 1, int pageSize = 10)
         {
-            var response = _categoryRepo.GetByName(name, page, pageSize);
+            var response = await _categoryRepo.GetByName(name, page, pageSize);
             if (!response.IsSuccess)
             {
                 return NotFound(response);

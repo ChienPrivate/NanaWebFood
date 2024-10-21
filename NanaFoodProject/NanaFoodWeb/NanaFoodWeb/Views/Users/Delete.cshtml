@@ -29,7 +29,7 @@
                         <input asp-for="Email" class="form-control" readonly />
                     </div>
                     <div class="mb-2 mt-2">
-                        <label>Trạng thái</label>
+                        <label>Xác thực email</label>
                         <div class="d-flex align-items-center">
                             <div>
                                 <ejs-switch ejs-for="EmailConfirmed" change="onSwitchChangeUserForm" name="EmailConfirmed" disabled></ejs-switch>
@@ -70,8 +70,8 @@
                         </div>
                     </div>
                     <div class="form-group mt-2">
-                        <button type="submit" class="btn btn-primary" asp-action="DeleteConfirm" asp-controller="Users" asp-route-userId="@Model.Id">Xác nhận xóa</button>
-                        <a href="@Url.Action("Index", "Users")" class="btn btn-secondary">Trở về danh sách</a>
+                        <button type="submit" class="btn btn-primary" asp-action="DeleteConfirm" asp-controller="Users" asp-route-userId="@Model.Id"><i class="fa-regular fa-square-check"></i> Xác nhận xóa</button>
+                        <a href="@Url.Action("Index", "Users")" class="btn btn-secondary"><i class="fa-solid fa-list"></i> Trở về danh sách</a>
                     </div>
                 </form>
             </div>
