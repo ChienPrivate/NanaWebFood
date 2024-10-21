@@ -23,6 +23,8 @@ namespace NanaFoodWeb.Controllers
         {
             ViewData["page"] = page;
             ViewData["searchQuery"] = searchQuery;
+
+            ViewBag.CurrentFilter = searchQuery;
             var response = _productRepo.GetAll(page ?? 1, pageSize);
             if (response.IsSuccess == true)
             {
