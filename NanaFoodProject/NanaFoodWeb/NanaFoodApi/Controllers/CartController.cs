@@ -56,5 +56,12 @@ namespace NanaFoodApi.Controllers
             }
             return Ok(response);
         }
+
+        // DELETE api/Cart/3/increase
+        [HttpPut("/{productId:int}/{message}")]
+        public async Task<IActionResult> UpdateCart([FromRoute] int productId, string message)
+        {
+            return Ok();
+        }
     }
 }

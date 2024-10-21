@@ -122,5 +122,10 @@ namespace NanaFoodDAL.IRepository.Repository
             }
             return response;
         }
+
+        public Task<ResponseDto> UpdateCart(int ProductId, string message)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
