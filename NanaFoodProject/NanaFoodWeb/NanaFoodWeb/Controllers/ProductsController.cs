@@ -206,8 +206,7 @@ namespace NanaFoodWeb.Controllers
             ModelState.AddModelError("", response?.Message ?? "Có lỗi xảy ra khi cập nhật sản phẩm");
             return View(productDto);
         }
-        [HttpPost]
-        [Route("Delete")]
+        [HttpPost("Delete")]
         public IActionResult Delete(int id, string searchQuery, int? page)
         {
             var response = _productRepo.Delete(id);

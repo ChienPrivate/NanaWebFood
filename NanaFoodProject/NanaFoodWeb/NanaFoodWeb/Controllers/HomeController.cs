@@ -23,7 +23,7 @@ namespace NanaFoodWeb.Controllers
         }
 
         [AllowAnonymous]
-        public async Task <IActionResult> Index(string searchQuery, int? page = 1, int pageSize = 10)
+        public async Task <IActionResult> Index(string searchQuery, int? page = 1, int pageSize = 100)
         {
             var token = _tokenProvider.GetToken(); // Lấy token nếu có
 
