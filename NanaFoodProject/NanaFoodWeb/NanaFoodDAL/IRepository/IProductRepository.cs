@@ -5,7 +5,7 @@ namespace NanaFoodDAL.IRepository
 {
     public interface IProductRepository
     {
-        ResponseDto GetAll(int page, int pageSize);
+        ResponseDto GetAll(int page, int pageSize, bool isSelectAll = true);
         ResponseDto GetById(int id);
         ResponseDto Create(Product product);
         ResponseDto Update(Product product);

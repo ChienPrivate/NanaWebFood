@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Humanizer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using NanaFoodWeb.CallAPICenter;
@@ -12,53 +13,65 @@ using Newtonsoft.Json;
 namespace NanaFoodWeb.Controllers
 {
     [Route("Products")]
-    public class ProductsController(IProductRepo productRepo, IHelperRepository helperRepository, ITokenProvider tokenProvider) : Controller
+    public class ProductsController(IProductRepo productRepo, IHelperRepository helperRepository, ITokenProvider tokenProvider,ICategoryRepository categoryRepository) : Controller
     {
         private CallApiCenter _callApiCenter = new CallApiCenter();
 
         private readonly IHelperRepository _helperRepository = helperRepository;
         private readonly ITokenProvider _tokenProvider = tokenProvider;
         readonly IProductRepo _productRepo = productRepo;
-        public async Task <IActionResult> Index(string searchQuery, int? page = 1, int pageSize = 10)
+        readonly ICategoryRepository _categoryRepository = categoryRepository;
+        public async Task <IActionResult> Index(string searchQuery, int? page = 1, int pageSize = 10 )
         {
-            ViewData["page"] = page;
-            ViewData["searchQuery"] = searchQuery;
-
-            ViewBag.CurrentFilter = searchQuery;
-            var response = _productRepo.GetAll(page ?? 1, pageSize);
-            if (response.IsSuccess == true)
+            var response = _productRepo.GetAll(page ?? 1, pageSize, true);
+            if (response.IsSuccess)
             {
-                var productList = JsonConvert.DeserializeObject<ProductVM>(response.Result.ToString());
-                int totalItems = productList.TotalCount;
-                int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
-                // Truyền dữ liệu về tổng số trang và trang hiện tại cho View
-                ViewData["totalPages"] = totalPages;
-                ViewData["currentPage"] = page;
-                if (productList == null)
-                {
-                    productList = new ProductVM();
-                }
-                return View(productList);
+                var resultData = JsonConvert.DeserializeObject<ProductVM>(response.Result.ToString());
+
+                ViewBag.lazyLoadData = resultData.Products;
+
+                return View();
             }
-            return View();
+
+            return View(new List<ProductDto>());
         }
 
         [HttpGet("Create")]
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> Create(int page , int pageSize =100)
         {
             var token = _tokenProvider.GetToken();
-            string apiName = "Category/SearchName?" + 1 + "&pageSize=100";
-            ResponseDto respone = await _callApiCenter.GetMethod<ResponseDto>(apiName, token);
-            if (respone.IsSuccess)
+
+            if (token != null)
             {
-                var resultData = JsonConvert.DeserializeObject<Result<List<CategoryDto>>>(respone.Result.ToString());
-                var ListItem = new List<SelectListItem>();
-                foreach (var e in resultData.Data)
+                var response = await _categoryRepository.GetAllCategoriesAsync(page, pageSize, true);
+
+                if (response != null && response.IsSuccess)
                 {
-                    ListItem.Add(new SelectListItem { Text = e.CategoryName, Value = e.CategoryId.ToString() });
+                    try
+                    {
+                        var categories = JsonConvert.DeserializeObject<List<CategoryDto>>(response.Result.ToString());
+
+                        if (categories != null)
+                        {
+                            var listItem = new List<SelectListItem>();
+                            foreach (var category in categories)
+                            {
+                                listItem.Add(new SelectListItem
+                                {
+                                    Text = category.CategoryName,
+                                    Value = category.CategoryId.ToString()
+                                });
+                            }
+                            ViewBag.ListCategory = listItem;
+                        }
+                    }
+                    catch (JsonSerializationException ex)
+                    {
+                        ModelState.AddModelError("", $"Error deserializing JSON: {ex.Message}");
+                    }
                 }
-                ViewBag.ListCategory = ListItem;
             }
+
             var product = new ProductDto();
             return View(product);
         }
@@ -110,31 +123,62 @@ namespace NanaFoodWeb.Controllers
         }
 
         [HttpGet("Edit/{id}")]
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(int id, int page, int pageSize)
         {
-            var token = _tokenProvider.GetToken();
-            string apiName = "Category/SearchName?" + 1 + "&pageSize=100";
-            ResponseDto respone = await _callApiCenter.GetMethod<ResponseDto>(apiName, token);
-            if (respone.IsSuccess)
-            {
-                var resultData = JsonConvert.DeserializeObject<Result<List<CategoryDto>>>(respone.Result.ToString());
-                var ListItem = new List<SelectListItem>();
-                foreach (var e in resultData.Data)
-                {
-                    ListItem.Add(new SelectListItem { Text = e.CategoryName, Value = e.CategoryId.ToString() });
-                }
-                ViewBag.ListCategory = ListItem;
-            }
-            var response = _productRepo.GetById(id);
 
-            if (response != null && response.IsSuccess)
+            var token = _tokenProvider.GetToken();
+
+            if (token != null)
             {
-                var productDto = JsonConvert.DeserializeObject<ProductDto>(response.Result.ToString());
-                return View(productDto);
+                var response = await _categoryRepository.GetAllCategoriesAsync(page, pageSize, true);
+
+                if (response != null && response.IsSuccess)
+                {
+                    try
+                    {
+                        var categories = JsonConvert.DeserializeObject<List<CategoryDto>>(response.Result.ToString());
+
+                        if (categories != null)
+                        {
+                            var listItem = new List<SelectListItem>();
+                            foreach (var category in categories)
+                            {
+                                listItem.Add(new SelectListItem
+                                {
+                                    Text = category.CategoryName,
+                                    Value = category.CategoryId.ToString()
+                                });
+                            }
+                            ViewBag.ListCategory = listItem;
+                        }
+                    }
+                    catch (JsonSerializationException ex)
+                    {
+                        ModelState.AddModelError("", $"Error deserializing JSON: {ex.Message}");
+                    }
+                }
+
+                var result = _productRepo.GetById(id);
+
+                if (result != null && result.IsSuccess) // Giả sử ResponseDto có thuộc tính IsSuccess
+                {
+                    var productDto = JsonConvert.DeserializeObject<ProductDto>(result.Result.ToString()); // Giả sử ProductDto nằm trong Result
+                    if (productDto != null)
+                    {
+                        return View(productDto); // Trả về View với đối tượng ProductDto
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("Index", new { error = "Không tìm thấy sản phẩm để chỉnh sửa." });
+                }
             }
-            return RedirectToAction("Index", new { error = "Không tìm thấy sản phẩm để chỉnh sửa." });
+
+            // Trường hợp token là null, trả về một trang lỗi hoặc điều hướng về một action khác
+            return RedirectToAction("Index", new { error = "Token không hợp lệ." });
         }
         [HttpPost("Edit/{id}")]
+
         public async Task<IActionResult> Edit(ProductDto productDto, int id, IFormFile? UploadFile)
         {
             if (!ModelState.IsValid)
