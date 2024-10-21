@@ -161,6 +161,7 @@
                             <div class="row g-4">
                                  <h3>Sản phẩm tìm kiếm hàng đầu</h3>
                                 <div class="owl-carousel owl-theme">
+
                                     @if (Model?.Products != null && Model.Products.Any(e => e.IsActive && (e.CategoryId == 37 || e.CategoryId == 38 || e.CategoryId == 54)))
                                     {
                                         @foreach (var item in Model.Products.Where(e => e.IsActive && (e.CategoryId == 37 || e.CategoryId == 38 || e.CategoryId == 47)))
