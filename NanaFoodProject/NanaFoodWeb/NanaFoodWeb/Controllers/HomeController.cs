@@ -77,8 +77,30 @@ namespace NanaFoodWeb.Controllers
         {
             return View();
         }
-        public IActionResult Menu()
+        public IActionResult Menu(string searchQuery, int? page = 1, int pageSize = 12)
         {
+            // Lấy danh sách sản phẩm
+            ViewData["page"] = page;
+            ViewData["searchQuery"] = searchQuery;
+
+            var response = _productRepo.GetAll(page ?? 1, pageSize);
+
+            if (response.IsSuccess)
+            {
+                var productList = JsonConvert.DeserializeObject<ProductVM>(response.Result.ToString());
+                int totalItems = productList.TotalCount;
+                int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+                ViewData["totalPages"] = totalPages;
+                ViewData["currentPage"] = page;
+
+                if (productList == null)
+                {
+                    productList = new ProductVM();
+                }
+
+                return View(productList);
+            }
+
             return View();
         }
         public IActionResult Privacy()

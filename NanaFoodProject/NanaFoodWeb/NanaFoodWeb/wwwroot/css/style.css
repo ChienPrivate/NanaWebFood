@@ -406,7 +406,7 @@
 
 /*** Single Page Start ***/
 .pagination {
-    display: inline-block;
+    /*display: inline-block;*/
 }
   
 .pagination a {
