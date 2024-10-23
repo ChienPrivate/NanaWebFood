@@ -187,11 +187,6 @@
 #searchModal .modal-content {
     background: rgba(255, 255, 255, .8);
 }
-/*** Navbar End ***/
-/* Add margin-top to the section to push it down */
-.slider_section {
-    margin-top: 100px; /* Adjust this value to fit your needs */
-}
 
 
 /*** featurs Start ***/
@@ -252,23 +247,28 @@
 
 .fruite .fruite-item {
     height: 100%;
+    text-decoration : none;
     transition: 0.5s;
 }
 .fruite .fruite-item:hover {
+    text-decoration : none;
     box-shadow: 0 0 55px rgba(0, 0, 0, 0.4);
 }
 
 .fruite .fruite-item .fruite-img {
+    text-decoration : none;
     overflow: hidden;
     transition: 0.5s;
     border-radius: 10px 10px 0 0;
 }
 
 .fruite .fruite-item .fruite-img img {
+    text-decoration : none;
     transition: 0.5s;
 }
 
 .fruite .fruite-item .fruite-img img:hover {
+    text-decoration : none;
     transform: scale(1.3);
 }
 /*** Fruits End ***/
