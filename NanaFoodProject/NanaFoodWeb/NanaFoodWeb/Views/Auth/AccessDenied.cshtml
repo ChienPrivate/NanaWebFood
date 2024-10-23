@@ -11,11 +11,6 @@
 
 <style>
     body-section {
-        font-family: Arial, sans-serif;
-        background-color: #f8f9fa;
-        color: #333;
-        text-align: center;
-        padding: 50px;
     }
 
     h1 {
@@ -36,20 +31,13 @@
         }
 </style>
 
-<div style="
-min-height: 75vh;
-margin-top: 10%;
-clear: both;" >
-
     <div class="container text-center">
-        <img src="https://i.etsystatic.com/48106844/r/il/ed6449/5714780511/il_570xN.5714780511_kbzc.jpg" style="max-width: 12rem; margin-top: 1%" />
+    <img src="https://i.etsystatic.com/48106844/r/il/ed6449/5714780511/il_570xN.5714780511_kbzc.jpg" style="max-width: 12rem; margin-top: 1%; position: relative; left: 2px; top: -42px;" />
     </div>
-    <div class="p-2 container body-section bg-light rounded-2">
-
-        <h1>403 - Từ chối truy cập</h1>
-        <p>Xin lỗi, bạn không có quyền truy cập vào trang này.</p>
-        <p>Vui lòng hoặc liên hệ với bộ phận hỗ trợ nếu bạn tin rằng đây là lỗi.</p>
-        <a asp-controller="@controller" asp-action="@action" class="btn btn-primary">quay về trang chủ</a>
-    </div>
-     
+<div class="container text-center" style="position: relative; left: 0px; top: -85px;">
+    <h1>403 - Từ chối truy cập</h1>
+    <p>Xin lỗi, bạn không có quyền truy cập vào trang này.</p>
+    <p>Vui lòng hoặc liên hệ với bộ phận hỗ trợ nếu bạn tin rằng đây là lỗi.</p>
+    <a asp-controller="@controller" asp-action="@action" class="btn btn-primary">Về Trang Chủ</a>
 </div>
+     
