@@ -35,7 +35,7 @@
             <div class="col-lg-10 text-end" style="height: 55px; transition: none;">
                 <ul class="nav nav-pills d-inline-flex text-center mb-5">
                     <li class="nav-item">
-                        <a class="d-flex m-2 py-2 bg-light rounded-pill active" data-bs-toggle="pill" href="#tab-1">
+                        <a class="d-flex m-2 py-2 bg-light rounded-pill active" asp-action="Menu" asp-controller="Home">
                             <span class="text-dark" style="width: 130px;">Tất cả sản phẩm</span>
                         </a>
                     </li>
@@ -68,15 +68,23 @@
             </div>
         </div>
         <div class="filter py-2">
-            <select class="form-select filter-dropdown" aria-label="filter">
-                <option selected>Bộ lọc</option>
-                <option value="1">***</option>
-                <option value="2">***</option>
-                <option value="3">***</option>
-                <option value="4">***</option>
-            </select>
-            <button class="btn filter-button"></button>
+            <form method="get" asp-action="FilterCategory" asp-controller="Home" id="categoryForm">
+                <select class="form-select filter-dropdown" aria-label="filter" name="categoryid" onchange="document.getElementById('categoryForm').submit();">
+                    <option value="" selected disabled>Chọn danh mục</option>
+                    @if (ViewBag.ListCategory != null)
+                    {
+                        foreach (var item in ViewBag.ListCategory)
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    }
+                </select>
+                <input type="hidden" name="page" value="1" />
+                <input type="hidden" name="pageSize" value="12" />
+                <!-- Nút submit đã được loại bỏ -->
+            </form>
         </div>
+
         <div class="tab-content">
             <div id="tab-1" class="tab-pane fade show p-0 active">
                 <div class="row g-4">
