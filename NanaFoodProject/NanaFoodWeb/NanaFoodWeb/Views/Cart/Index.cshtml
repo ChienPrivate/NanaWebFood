@@ -125,32 +125,88 @@
                 </div>
             </div>
         </div>
+        <!-- Phí giao hàng -->
+        <div class="panel-group" id="shipping-accordion">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a href="#collapse-shipping" class="accordion-toggle" data-toggle="collapse"
+                           data-parent="#shipping-accordion" aria-expanded="true">
+                            Phí vận chuyển
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapse-shipping" class="panel-collapse collapse in" aria-expanded="true">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <label for="TinhThanhPho">Tỉnh/Thành phố:</label>
+                            <select id="TinhThanhPho" class="form-control" onchange="calculateShippingFee()">
+                                <option value="">Chọn tỉnh/thành phố</option>
+                                <option value="HoChiMinh">Hồ Chí Minh</option>
+                                <option value="HaNoi">Hà Nội</option>
+                                <option value="AnGiang">An Giang</option>
+                                <!-- Add other locations as needed -->
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="QuanHuyen">Quận/Huyện:</label>
+                            <select id="QuanHuyen" class="form-control" onchange="calculateShippingFee()">
+                                <option value="">Chọn quận/huyện</option>
+                                <option value="Quan12">Quận 12</option>
+                                <option value="DongDa">Đống Đa</option>
+                                <option value="ChoMoi">Chợ Mới</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="PhuongXa">Phường/Xã:</label>
+                            <select id="PhuongXa" class="form-control" onchange="calculateShippingFee()">
+                                <option value="">Chọn phường/xã</option>
+                                <option value="TrungMyTay">Trung Mỹ Tây</option>
+                                <option value="KienAn">Kiến An</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ShippingFee">Phí giao hàng:</label>
+                            <span id="shippingFee">0 VND</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- Tổng chi phí -->
         <div class="row">
             <div class="col-sm-4 col-sm-offset-8">
                 <table class="table table-bordered">
                     <tbody>
-                        @* <tr>
+                        <tr>
                             <td class="text-right"><strong>Tổng:</strong></td>
-                            <td class="text-right">@Model.Sum(x => x.Total).ToString("N0") VND</td>
+                            <td class="text-right">@Model.Sum(x => x.Total) VND</td>
                         </tr>
                         <tr>
                             <td class="text-right"><strong>Giảm giá (10%):</strong></td>
-                            <td class="text-right">@((Model.Sum(x => x.Total) * 0.1).ToString("N0")) VND</td>
+                            <td class="text-right">@((Model.Sum(x => x.Total) * 0.1)) VND</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right"><strong>Phí vận chuyển:</strong></td>
+                            <td class="text-right" id="shippingFee">0 VND</td>
                         </tr>
                         <tr>
                             <td class="text-right"><strong>Tổng cộng:</strong></td>
-                            <td class="text-right">@((Model.Sum(x => x.Total) * 0.9).ToString("N0")) VND</td>
-                        </tr> *@
+                            <td class="text-right">@((Model.Sum(x => x.Total) * 0.9)) VND</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
         </div>
 
         <div class="buttons">
-            <div class="pull-left"><a href="index.html" class="btn btn-primary">Tiếp tục mua sắm</a></div>
-            <div class="pull-right"><a href="checkout.html" class="btn btn-primary">Thanh toán</a></div>
+            <a class="pull-left"><a asp-action="index" asp-controller="home" class="btn btn-primary">Tiếp tục mua sắm</a></a>
+            <a class="pull-right"><a asp-action="_Checkout" asp-controller="Cart" class="btn btn-primary">Thanh toán</a></a>
         </div>
     </div>
 </div>
