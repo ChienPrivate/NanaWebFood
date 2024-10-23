@@ -1,0 +1,33 @@
+﻿@model NanaFoodWeb.Models.Dto.ProductDto
+<div class="container">
+    <div class="mb-3 row box-shadow-edit py-3 rounded-2">
+        <div class="offset-1 col-4">
+            <img src="@Model.ImageUrl" width="400px" height="400px" />
+        </div>
+        <div class="col-6" style="position: relative; top: 0px; left: 57px;">
+            <div class="h2 fw-bold text-warning">@Model.ProductName.ToUpper()</div>
+            <div class="h5">Giá : @Model.Price.ToString("#,##") vnđ</div>
+            <div class="h6 py-1">Lượt xem : @Model.View</div>
+            <div class="h6 py-1">Số lượng :</div>
+            <form method="post" asp-action="AddtoCart" asp-controller="Cart" asp-route-id="@Model.ProductId">
+                <div class="btn-group w-50 py-1">
+                    <button type="button" class="btn btn-warning" onclick="decrease()">-</button>
+                    <input type="number" class="form-control rounded-0 text-center" name="quantity" id="quantity" readonly value="1" />
+                    <button type="button" class="btn btn-plus btn-warning" onclick="increase()">+</button>
+                </div>
+                <div class="d-flex justify-content-between py-3" style="width:250px;">
+                    <button class="btn btn-warning">Thêm giỏ hàng</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+        function increase() {
+            document.getElementById('quantity').value++;
+        }
+        function decrease() {
+            if (document.getElementById('quantity').value > 1) {
+                document.getElementById('quantity').value--;
+            }
+        }
+    </script>

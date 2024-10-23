@@ -243,6 +243,22 @@ namespace NanaFoodWeb.Controllers
             return RedirectToAction("Index");
         }
 
+
+        [HttpGet("CDetails/{id}")]
+        public IActionResult CDetails(int id)
+        {
+            var response = _productRepo.GetById(id);
+
+            if (response?.IsSuccess == true && response.Result != null)
+            {
+                var productDto = JsonConvert.DeserializeObject<ProductDto>(response.Result.ToString());
+                return View(productDto);
+            }
+
+            TempData["ErrorMessage"] = "Không tìm thấy sản phẩm.";
+            return RedirectToAction("Index");
+        }
+
         [HttpPost("deactive/{id}")]
         public IActionResult Deactivate(int id, string searchQuery, int? page)
         {
