@@ -1,0 +1,193 @@
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/details.css">
+    <link rel="stylesheet" href="cart2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Nana Fastfood - Giỏ hàng</title>
+
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-white py-3 shadow-sm">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+            <!-- Toggle -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="d-flex align-items-center justify-content-between">
+                <!-- Logo -->
+                <a class="navbar-brand mx-3" href="index.html">
+                    <img src="images/Nana.png" alt="logo" class="img-fluid logo">
+                </a>
+            </div>
+        
+            <!-- Navbar -->
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNavAltMarkup">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link mx-3 text-danger fw-bold" href="Index.html">Trang Chủ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mx-3 text-danger fw-bold" href="promo.html">Thực Đơn</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mx-3 text-danger fw-bold" href="service.html">Loại Sản Phẩm</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mx-3 text-danger fw-bold" href="restaurant-system.html">About</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="d-flex align-items-center">
+                <a class="user-icon mx-2" href="#">
+                    <i class="fa fa-user-circle-o fa-lg"></i>
+                </a>
+                <a class="search-icon mx-2" href="#" data-bs-toggle="modal" data-bs-target="#searchModal">
+                    <i class="fa fa-search fa-lg"></i>
+                </a>
+                <a class="cart-icon mx-2" href="/cart2.html">
+                    <i class="fa fa-shopping-cart fa-lg"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    
+
+    <!-- Cart Section -->
+    <div class="container-fluid py-5">
+        <div class="row">
+            <h4 class="text-center mb-4">Giỏ Hàng Của Tôi</h4>
+            <div class="col-lg-8 col-md-12">
+                <!-- Product 1 -->
+                <div class="card mb-3 p-3 shadow-sm">
+                    <div class="row g-0 align-items-center">
+                        <div class="col-md-2">
+                            <img src="/images/burger.jpg" class="img-fluid rounded-start" alt="Hamburger Cá">
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card-body">
+                                <h5 class="card-title">Hamburger Cá</h5>
+                                <a href="#" class="text-danger fw-bold">Xóa</a>
+                            </div>
+                        </div>
+                        <div class="col-md-4 d-flex justify-content-end align-items-center">
+                            <div class="d-flex">
+                                <button class="btn btn-light btn-circle">-</button>
+                                <input type="text" value="1" class="form-control text-center mx-2 quantity-input">
+                                <button class="btn btn-light btn-circle">+</button>
+                            </div>
+                            <span class="ms-3 fw-bold">40,000.00 VND</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Product 2 -->
+                <div class="card mb-3 p-3 shadow-sm">
+                    <div class="row g-0 align-items-center">
+                        <div class="col-md-2">
+                            <img src="/images/burger.jpg" class="img-fluid rounded-start" alt="Hamburger Cá">
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card-body">
+                                <h5 class="card-title">Hamburger Cá</h5>
+                                <a href="#" class="text-danger fw-bold">Xóa</a>
+                            </div>
+                        </div>
+                        <div class="col-md-4 d-flex justify-content-end align-items-center">
+                            <div class="d-flex">
+                                <button class="btn btn-light btn-circle">-</button>
+                                <input type="text" value="1" class="form-control text-center mx-2 quantity-input">
+                                <button class="btn btn-light btn-circle">+</button>
+                            </div>
+                            <span class="ms-3 fw-bold">40,000.00 VND</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Product 3 -->
+                <div class="card mb-3 p-3 shadow-sm">
+                    <div class="row g-0 align-items-center">
+                        <div class="col-md-2">
+                            <img src="/images/burger.jpg" class="img-fluid rounded-start" alt="Hamburger Cá">
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card-body">
+                                <h5 class="card-title">Hamburger Cá</h5>
+                                <a href="#" class="text-danger fw-bold">Xóa</a>
+                            </div>
+                        </div>
+                        <div class="col-md-4 d-flex justify-content-end align-items-center">
+                            <div class="d-flex">
+                                <button class="btn btn-light btn-circle">-</button>
+                                <input type="text" value="1" class="form-control text-center mx-2 quantity-input">
+                                <button class="btn btn-light btn-circle">+</button>
+                            </div>
+                            <span class="ms-3 fw-bold">40,000.00 VND</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-3 p-3 shadow-sm">
+                    <div class="row g-0 align-items-center">
+                        <div class="col-md-2">
+                            <img src="/images/burger.jpg" class="img-fluid rounded-start" alt="Hamburger Cá">
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card-body">
+                                <h5 class="card-title">Hamburger Cá</h5>
+                                <a href="#" class="text-danger fw-bold">Xóa</a>
+                            </div>
+                        </div>
+                        <div class="col-md-4 d-flex justify-content-end align-items-center">
+                            <div class="d-flex">
+                                <button class="btn btn-light btn-circle">-</button>
+                                <input type="text" value="1" class="form-control text-center mx-2 quantity-input">
+                                <button class="btn btn-light btn-circle">+</button>
+                            </div>
+                            <span class="ms-3 fw-bold">40,000.00 VND</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+
+            <!-- Cart Summary -->
+            <div class="col-lg-4 col-md-12">
+                <div class="card shadow-sm p-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Tóm tắt đơn hàng</h5>
+                        <hr>
+                        <form>
+                            <div class="mb-3">
+                                <label for="discountCode" class="form-label">Bạn có mã giảm giá?</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="discountCode" placeholder="Mã giảm giá *">
+                                    <button class="btn btn-danger">Áp dụng</button>
+                                </div>
+                            </div>
+                        </form>
+                        <hr>
+                        <div class="d-flex justify-content-between">
+                            <span>Tổng đơn hàng</span>
+                            <span>116.000đ</span>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span>Phí giao hàng</span>
+                            <span>10.000đ</span>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between">
+                            <strong>Tổng thanh toán</strong>
+                            <strong>126.000đ</strong>
+                        </div>
+                        <button class="btn btn-danger w-100 mt-3">Thanh toán 126.000đ</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
+

@@ -45,6 +45,12 @@ namespace NanaFoodWeb.Controllers
                     {
                         var resultData = JsonConvert.DeserializeObject<Result<List<CartDetailsDto>>>(response.Result.ToString());
                         ViewBag.TotalPages = resultData.TotalPages;
+                        decimal  totalMoney = resultData.Data.Sum(x => x.Quantity * (decimal)x.Price);
+                        decimal feeDeli = resultData.Data.Sum(x => x.Quantity * (decimal)x.Price);
+
+                        ViewBag.TotalMoney = totalMoney;
+                        ViewBag.FeeDeli = feeDeli;
+                        ViewBag.TotalPay = totalMoney + feeDeli;
                         return View(resultData.Data);// Pass the cart details to the view
                     }
                     

@@ -7,7 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Cart\Indexaaa.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="wwwroot\js\Template\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\Cart\Indexaaa.cshtml" />
   </ItemGroup>
 
   <ItemGroup>

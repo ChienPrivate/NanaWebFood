@@ -1,0 +1,178 @@
+/* cart.css */
+
+/* Tổng thể */
+.body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f7f7f7;
+    color: #333;
+}
+
+/* Tiêu đề của trang */
+.h4 {
+    font-size: 2.5rem;
+    color: #333;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* Card sản phẩm */
+.card {
+    border: none;
+    border-radius: 15px;
+    background-color: #fff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.card img {
+    max-width: 90px;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+}
+
+.card img:hover {
+    transform: scale(1.05);
+}
+
+.card .card-body {
+    padding: 1rem;
+}
+
+.card .card-title {
+    font-size: 1.25rem;
+    color: black;
+    font-weight: 600;
+}
+
+.card a.text-danger {
+    color: #ffc221;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.card a.text-danger:hover {
+    color: #ffc221;
+    text-decoration: underline;
+}
+
+/* Điều chỉnh số lượng sản phẩm */
+.quantity-input {
+    width: 60px;
+    height: 40px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+    margin: 0 10px;
+}
+
+.btn-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid #ddd;
+    font-size: 1.5rem;
+    background-color: #fff;
+    transition: all 0.2s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-circle:hover {
+    background-color: #ffc221;
+    color: #fff;
+    border-color: #ffc221;
+}
+
+/* Tóm tắt đơn hàng */
+.summary-card {
+    border-radius: 15px;
+    background-color: #fff;
+    padding: 1.5rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.summary-card h5 {
+    font-size: 1.8rem;
+    color: #ffc221;
+    font-weight: bold;
+}
+
+.summary-card .form-control {
+    border-radius: 5px;
+    height: 45px;
+    border: 1px solid #ddd;
+    font-size: 1rem;
+}
+
+.summary-card .btn-dark {
+    background-color: #333;
+    color: #fff;
+    border-radius: 5px;
+    font-size: 1rem;
+    padding: 10px 20px;
+    transition: background-color 0.3s ease;
+}
+
+.summary-card .btn-dark:hover {
+    background-color: #555;
+}
+
+/* Tổng đơn hàng và thanh toán */
+.summary-card .d-flex {
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.summary-card strong {
+    font-size: 1.4rem;
+}
+
+.btn-danger.w-100 {
+    background-color: #ff213b;
+    border-color: #ff213b;
+    padding: 15px;
+    font-size: 1.25rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s;
+}
+
+.btn-danger.w-100:hover {
+    background-color: #fa4056;
+    transform: scale(1.05);
+}
+
+/* Modal tìm kiếm */
+.modal-header h5 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ffc221;
+}
+
+.modal-body .form-control {
+    height: 45px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+.modal-body .btn-warning {
+    padding: 10px 25px;
+    font-size: 1rem;
+    border-radius: 5px;
+    background-color: #ffc221;
+    border-color: #ffc221;
+    transition: background-color 0.3s ease;
+}
+
+.modal-body .btn-warning:hover {
+    background-color: #ffc221;
+}

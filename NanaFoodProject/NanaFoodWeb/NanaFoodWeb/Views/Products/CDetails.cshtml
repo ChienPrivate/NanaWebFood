@@ -9,14 +9,14 @@
             <div class="h5">Giá : @Model.Price.ToString("#,##") vnđ</div>
             <div class="h6 py-1">Lượt xem : @Model.View</div>
             <div class="h6 py-1">Số lượng :</div>
-            <form method="post" asp-action="AddToCart" asp-controller="Cart" asp-route-id="@Model.ProductId">
+            <form method="get" asp-action="AddToCart" asp-controller="Cart" asp-route-id="@Model.ProductId">
                 <div class="btn-group w-50 py-1">
                     <button type="button" class="btn btn-warning" onclick="decrease()">-</button>
                     <input type="number" class="form-control rounded-0 text-center" name="quantity" id="quantity" readonly value="1" />
                     <button type="button" class="btn btn-plus btn-warning" onclick="increase()">+</button>
                 </div>
                 <div class="d-flex justify-content-between py-3" style="width:250px;">
-                    <button class="btn btn-warning">Thêm giỏ hàng</button>
+                    <button type="submit" class="btn btn-warning">Thêm giỏ hàng</button>
                 </div>
             </form>
         </div>
