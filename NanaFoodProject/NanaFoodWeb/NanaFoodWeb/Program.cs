@@ -47,6 +47,7 @@ builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IProductRepo, ProductRepo>();
 builder.Services.AddScoped<IHelperRepository, HelperRepository>();
 builder.Services.AddScoped<IUserRepository,UserRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 
 
 
@@ -54,6 +55,7 @@ var app = builder.Build();
 
 
 StaticDetails.APIBase = builder.Configuration["ServiceUrls:APIBase"];
+StaticDetails.GHNApiKey = GetEnvironmentVariable("GHN_API_KEY");
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

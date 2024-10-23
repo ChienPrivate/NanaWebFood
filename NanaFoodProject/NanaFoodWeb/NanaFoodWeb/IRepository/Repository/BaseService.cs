@@ -19,7 +19,7 @@ namespace NanaFoodWeb.IRepository.Repository
             _tokenProvider = tokenProvider;
         }
 
-        public async Task<ResponseDto> SendAsync(RequestDto requestDTO, bool withBearer = true)
+        public async Task<ResponseDto> SendAsync(RequestDto requestDTO, bool withBearer = true, string schema = "")
         {
             try
             {
@@ -31,6 +31,11 @@ namespace NanaFoodWeb.IRepository.Repository
                 {
                     var token = _tokenProvider.GetToken();
                     message.Headers.Add("Authorization", $"Bearer {token}");
+                }
+
+                if (requestDTO.AccessToken != null)
+                {
+                    message.Headers.Add(schema,requestDTO.AccessToken);
                 }
 
                 message.RequestUri = new Uri(requestDTO.Url);
@@ -84,7 +89,21 @@ namespace NanaFoodWeb.IRepository.Repository
                         return new() { IsSuccess = false, Message = "500: Internal Sever Error" };
                     default:
                         var apiContent = await apiResponse.Content.ReadAsStringAsync();
-                        var apiResponseDTO = JsonConvert.DeserializeObject<ResponseDto>(apiContent);
+
+                        ResponseDto apiResponseDTO;
+
+                        apiResponseDTO = JsonConvert.DeserializeObject<ResponseDto>(apiContent);
+
+                        if (!string.IsNullOrEmpty(apiContent) && apiResponseDTO.Result == null)
+                        {
+                            apiResponseDTO = new ResponseDto
+                            {
+                                IsSuccess = true,
+                                Message = "Yêu cầu thành công",
+                                Result = JsonConvert.DeserializeObject<object>(apiContent) // Deserialize thành object
+                            };
+                        }
+
                         return apiResponseDTO;
                 }
             }
