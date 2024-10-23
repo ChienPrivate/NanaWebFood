@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Azure;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using NanaFoodDAL.Model;
 using NanaFoodWeb.Extensions;
 using NanaFoodWeb.IRepository;
 using NanaFoodWeb.Models;
@@ -15,11 +18,13 @@ namespace NanaFoodWeb.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly ITokenProvider _tokenProvider;
         private readonly IProductRepo _productRepo;
-        public HomeController(ILogger<HomeController> logger, ITokenProvider tokenProvider, IProductRepo productRepo)
+        private readonly ICategoryRepository _categoryRepository;
+        public HomeController(ILogger<HomeController> logger, ITokenProvider tokenProvider, IProductRepo productRepo, ICategoryRepository categoryRepository)
         {
             _logger = logger;
             _tokenProvider = tokenProvider;
             _productRepo = productRepo;
+            _categoryRepository = categoryRepository;
         }
 
         [AllowAnonymous]
@@ -77,14 +82,40 @@ namespace NanaFoodWeb.Controllers
         {
             return View();
         }
-        public IActionResult Menu(string searchQuery, int? page = 1, int pageSize = 12)
+        public async Task <IActionResult> Menu(string searchQuery, int? page = 1, int pageSize = 12)
         {
+            ViewData["Action"] = "Menu";
+            var result = await _categoryRepository.GetAllCategoriesAsync(1, pageSize, true); 
+                if(result != null && result.IsSuccess)
+                {
+                    try
+                    {
+                        var categories = JsonConvert.DeserializeObject<List<CategoryDto>>(result.Result.ToString());
+
+                        if (categories != null)
+                        {
+                            var listItem = new List<SelectListItem>();
+                            foreach (var category in categories)
+                            {
+                                listItem.Add(new SelectListItem
+                                {
+                                    Text = category.CategoryName,
+                                    Value = category.CategoryId.ToString()
+                                });
+                            }
+                            ViewBag.ListCategory = listItem;
+                        }
+                    }
+                    catch (JsonSerializationException ex)
+                    {
+                        ModelState.AddModelError("", $"Error deserializing JSON: {ex.Message}");
+                    }
+                }
             // Lấy danh sách sản phẩm
             ViewData["page"] = page;
             ViewData["searchQuery"] = searchQuery;
-
             var response = _productRepo.GetAll(page ?? 1, pageSize, true);
-
+           
             if (response.IsSuccess)
             {
                 var productList = JsonConvert.DeserializeObject<ProductVM>(response.Result.ToString());
@@ -102,6 +133,61 @@ namespace NanaFoodWeb.Controllers
             }
 
             return View();
+        }
+        public async Task <IActionResult>FilterCategory(int categoryid, int page, int pageSize)
+        {
+            ViewData["Action"] = "FilterCategory";
+
+            var result = await _categoryRepository.GetAllCategoriesAsync(1, pageSize, true);
+            if (result != null && result.IsSuccess)
+            {
+                try
+                {
+                    var categories = JsonConvert.DeserializeObject<List<CategoryDto>>(result.Result.ToString());
+
+                    if (categories != null)
+                    {
+                        var listItem = new List<SelectListItem>();
+                        foreach (var category in categories)
+                        {
+                            listItem.Add(new SelectListItem
+                            {
+                                Text = category.CategoryName,
+                                Value = category.CategoryId.ToString()
+                            });
+                        }
+                        ViewBag.ListCategory = listItem;
+                    }
+                }
+                catch (JsonSerializationException ex)
+                {
+                    ModelState.AddModelError("", $"Error deserializing JSON: {ex.Message}");
+                }
+            }
+
+            Console.WriteLine($"Category ID: {categoryid}");
+            var reponse = _productRepo.GetByCategoryId(categoryid, page, pageSize);
+            if (reponse.IsSuccess)
+            {
+                var productList = JsonConvert.DeserializeObject<ProductVM>(reponse.Result.ToString());
+
+                // Calculate total pages and set up pagination data
+                int totalItems = productList.TotalCount;
+                int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+                ViewData["totalPages"] = totalPages;
+                ViewData["currentPage"] = page;
+                if (productList == null)
+                {
+                    productList = new ProductVM();
+                }
+
+                return  View("Menu", productList);
+            }
+            else
+            {
+                ModelState.AddModelError("", "Error retrieving products from the API.");
+                return View(new ProductVM());
+            }
         }
         public IActionResult Privacy()
         {

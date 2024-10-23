@@ -23,6 +23,7 @@ namespace NanaFoodApi.Controllers
 
         // GET: api/category
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult<ResponseDto>> GetAllCategories(int page = 1, int pageSize = 10, bool isSelectAll = true)
         {
             var response =  await _categoryRepo.GetAll(page, pageSize, isSelectAll);
