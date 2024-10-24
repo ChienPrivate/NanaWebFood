@@ -1,0 +1,288 @@
+﻿@{
+    ViewData["Title"] = "Order Page";
+}
+<div class="container-fluid">
+    <div class="card shadow rounded-3">
+    <div class="card-header">
+        <h1 style="font-family: 'Roboto', sans-serif;" >Thông tin đặt hàng</h1>
+    </div>
+    <div class="card-body">
+        <form method="post">
+            <div>
+                <p><strong>Đơn hàng của bạn sẽ được giao từ địa chỉ:</strong> QTSC Building 1, Công viên phần mềm Quang, Trung P, Quận 12, Hồ Chí Minh, Việt Nam</p>
+            </div>
+            <div class="row">
+                <div class="col-md-6 p-4 bg-white border-end border-3">
+                    <h2 class="text-lg font-semibold mb-4">Thông tin thanh toán</h2>
+
+                    <div class="mb-3">
+                        <label class="form-label">Họ và tên <span class="text-danger">*</span></label>
+                        <input type="text" name="FullName" class="form-control" placeholder="Họ và tên đầy đủ">
+                        <span class="text-danger"> @* Thông báo lỗi sẽ xuất hiện ở đây (nếu có) *@ </span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">Số điện thoại <span class="text-danger">*</span></label>
+                        <input type="text" name="PhoneNumber" class="form-control" placeholder="08588xxxxx">
+                        <span class="text-danger"> @* Thông báo lỗi sẽ xuất hiện ở đây (nếu có) *@ </span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">Địa chỉ nhận hàng <span class="text-danger">*</span></label>
+
+                        <div class="form-group mt-2 mb-2">
+                            <label>Tỉnh/Thành phố: </label>
+                            <select id="ProvinceList" name="Province" class="form-select">
+                                <option value=""> Hãy chọn tỉnh/thành phố </option>
+                                    @foreach (var item in (List<SelectListItem>)ViewBag.ProvinceList)
+                                    {
+                                            <option value="@item.Value">@item.Text</option>
+                                    }
+                            </select>
+                        </div>
+
+                        <div class="form-group mt-2 mb-2">
+                            <label>Quận huyện: </label>
+                            <select id="DistrictList" name="District" class="form-select">
+                                <option value=""> Hãy chọn quận/huyện </option>
+                            </select>
+                        </div>
+
+                        <div class="form-group mt-2 mb-2">
+                            <label>Phường xã: </label>
+                            <select id="WardList" name="Ward" class="form-select">
+                                <option value=""> Hãy chọn phường/xã </option>
+                            </select>
+                        </div>
+
+                        <div class="form-group mt-2 mb-2">
+                            <label>Số nhà và tên đường: </label>
+                            <input name="HouseAddressNumber" class="form-control" placeholder="hãy nhập số nhà và tên đường của bạn ở đây" />
+                        </div>
+
+                        <!-- Dropdown hiển thị dịch vụ -->
+                        <div class="form-group mt-2 mb-2" hidden>
+                            <label>Dịch vụ: </label>
+                            <select id="ServiceList" class="form-select">
+                                <option value=""> Hãy chọn dịch vụ </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">Lưu ý</label>
+                        <textarea name="Note" class="form-control" placeholder="Lưu ý dành cho đơn vị vận chuyển"></textarea>
+                        <span class="text-danger"> @* Thông báo lỗi sẽ xuất hiện ở đây (nếu có) *@ </span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">Phương thức thanh toán <span class="text-danger">*</span></label>
+                        <select name="PaymentType" class="form-select">
+                            <option value="COD">Cash on Delivery</option>
+                            <option value="MOMO">Momo</option>
+                            <option value="VNPAY">VNpay</option>
+                        </select>
+                        <span class="text-danger"> @* Thông báo lỗi sẽ xuất hiện ở đây (nếu có) *@ </span>
+                    </div>
+                </div>
+
+                <div class="col-md-6 p-4 bg-white">
+                    <h2 class="text-lg mb-4 text-center">Giỏ hàng</h2>
+
+                    <div class="mb-4">
+                        <table class="table text-center">
+                            <thead>
+                                <tr>
+                                    <th>Tên sản phẩm</th>
+                                    <th>Số lượng</th>
+                                    <th>Tổng</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                    @* Hiển thị danh sách giỏ hàng *@
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="form-group mt-2 mb-2">
+                        <p><strong>Phí Ship:</strong> <span id="shippingFee"></span> </p>
+                    </div>
+                        @*             <div class="border-top pt-2 mb-4">
+                        <div class="d-flex justify-content-between align-items-center fs-4 fw-bold">
+                            <span>Tổng cộng</span>
+                            <span>@ViewBag.TotalAmount.ToString("#,## VND")</span>
+                        </div>
+                    </div> *@
+
+                    <button type="submit" class="btn btn-primary w-100">Thanh toán</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+
+
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Lắng nghe sự kiện khi thay đổi tỉnh/thành phố
+            $('#ProvinceList').change(function () {
+                var provinceId = $(this).val(); // Lấy giá trị ProvinceID
+
+                if (provinceId) {
+                    // Reset các dropdown Phường/Xã, Dịch vụ và phí ship
+                    $('#DistrictList').empty().append('<option value=""> Hãy chọn quận/huyện </option>');
+                    $('#WardList').empty().append('<option value=""> Hãy chọn phường/xã </option>');
+                    $('#ServiceList').empty().append('<option value=""> Hãy chọn dịch vụ </option>');
+                    $('#shippingFee').text(''); // Reset lại phí ship
+
+                    // Gửi yêu cầu AJAX để lấy danh sách quận/huyện
+                    $.ajax({
+                        url: '@Url.Action("GetDistricts", "Order")',
+                        type: 'GET',
+                        data: { provinceId: provinceId },
+                        success: function (data) {
+                            $('#DistrictList').empty().append('<option value=""> Hãy chọn quận/huyện </option>');
+                            $.each(data, function (i, district) {
+                                $('#DistrictList').append('<option value="' + district.value + '">' + district.text + '</option>');
+                            });
+                        },
+                        error: function () {
+                            alert("Không thể lấy danh sách quận/huyện");
+                        }
+                    });
+                } else {
+                    // Reset danh sách quận/huyện, phường/xã, dịch vụ và phí ship nếu không chọn tỉnh/thành phố
+                    $('#DistrictList').empty().append('<option value=""> Hãy chọn quận/huyện </option>');
+                    $('#WardList').empty().append('<option value=""> Hãy chọn phường/xã </option>');
+                    $('#ServiceList').empty().append('<option value=""> Hãy chọn dịch vụ </option>');
+                    $('#shippingFee').text(''); // Reset lại phí ship
+                }
+            });
+
+            // Lắng nghe sự kiện khi thay đổi quận/huyện
+            $('#DistrictList').change(function () {
+                var districtId = $(this).val(); // Lấy giá trị DistrictID
+
+                if (districtId) {
+                    // Reset dropdown Phường/Xã và Dịch vụ
+                    $('#WardList').empty();
+                    $('#WardList').append('<option value=""> Hãy chọn phường/xã </option>');
+
+                    $('#ServiceList').empty();
+                    $('#ServiceList').append('<option value=""> Hãy chọn dịch vụ </option>');
+
+                    // Gửi yêu cầu AJAX để lấy danh sách phường/xã
+                    $.ajax({
+                        url: '@Url.Action("GetWards", "Order")',
+                        type: 'GET',
+                        data: { districtId: districtId },
+                        success: function (data) {
+                            $('#WardList').empty();
+                            $('#WardList').append('<option value=""> Hãy chọn phường/xã </option>');
+                            $.each(data, function (i, ward) {
+                                $('#WardList').append('<option value="' + ward.value + '">' + ward.text + '</option>');
+                            });
+                        },
+                        error: function () {
+                            alert("Không thể lấy danh sách phường/xã");
+                        }
+                    });
+
+                    // Gửi yêu cầu AJAX để lấy danh sách dịch vụ
+                    $.ajax({
+                        url: '@Url.Action("GetAvailableService", "Order")', // Action để lấy danh sách dịch vụ
+                        type: 'GET',
+                        data: { fromDistrict: 1454, toDistrict: districtId }, // Gửi từ quận 12 đến quận người dùng chọn
+                        success: function (data) {
+                            $('#ServiceList').empty();
+                            $('#ServiceList').append('<option value=""> Hãy chọn dịch vụ </option>');
+                            $.each(data, function (i, service) {
+                                $('#ServiceList').append('<option value="' + service.value + '">' + service.text + '</option>');
+                            });
+
+                            // Tự động chọn dịch vụ đầu tiên
+                            if (data.length > 0) {
+                                $('#ServiceList').val(data[0].value);
+                            }
+                        },
+                        error: function () {
+                            alert("Không thể lấy danh sách dịch vụ");
+                        }
+                    });
+
+                } else {
+                    $('#WardList').empty();
+                    $('#WardList').append('<option value=""> Hãy chọn phường/xã </option>');
+                    $('#ServiceList').empty();
+                    $('#ServiceList').append('<option value=""> Hãy chọn dịch vụ </option>');
+                }
+            });
+
+            // Lắng nghe sự kiện khi thay đổi phường/xã và lấy dịch vụ
+            $('#WardList').change(function () {
+                var wardId = $(this).val(); // Lấy giá trị WardID
+                var toDistrict = $('#DistrictList').val(); // Lấy giá trị quận huyện
+
+                if (toDistrict) {
+                    // Gửi yêu cầu AJAX để lấy dịch vụ
+                    $.ajax({
+                        url: '@Url.Action("GetAvailableService", "Order")',
+                        type: 'GET',
+                        data: { fromDistrict: 1454, toDistrict: toDistrict }, // Gửi từ quận 12 đến quận người dùng chọn
+                        success: function (data) {
+                            $('#ServiceList').empty();
+                            $('#ServiceList').append('<option value=""> Hãy chọn dịch vụ </option>');
+                            $.each(data, function (i, service) {
+                                $('#ServiceList').append('<option value="' + service.value + '">' + service.text + '</option>');
+                            });
+
+                            // Tự động chọn dịch vụ đầu tiên
+                            if (data.length > 0) {
+                                $('#ServiceList').val(data[0].value);
+                            }
+                        },
+                        error: function () {
+                            alert("Không thể lấy danh sách dịch vụ");
+                        }
+                    });
+                } else {
+                    $('#ServiceList').empty();
+                    $('#ServiceList').append('<option value=""> Hãy chọn dịch vụ </option>');
+                }
+            });
+            // Khi thay đổi phường/xã và dịch vụ, gửi yêu cầu tính phí ship
+            $('#WardList, #ServiceList').change(function () {
+                var wardCode = $('#WardList').val();
+                var toDistrictId = $('#DistrictList').val();
+                var serviceId = $('#ServiceList').val();
+
+                if (wardCode && toDistrictId && serviceId) {
+                    // Gọi AJAX để tính phí vận chuyển
+                    $.ajax({
+                        url: '@Url.Action("CalculateShippingFee", "Order")', // Gọi đến action
+                        type: 'POST',
+                        data: {
+                            serviceId: serviceId,      // ID của dịch vụ đã chọn
+                            toDistrictId: toDistrictId, // ID quận được chọn
+                            wardCode: wardCode         // Mã phường được chọn
+                        },
+                        success: function (response) {
+                            // Hiển thị phí ship ở phần tử #shippingFee
+                            var shippingFee = response.data;
+                            var formattedFee = shippingFee.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // Thêm dấu phẩy vào các số hàng nghìn
+                            $('#shippingFee').text(formattedFee + ' VND'); // Hiển thị phí ship
+                        },
+                        error: function () {
+                            alert("Không thể tính phí ship");
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}
+
