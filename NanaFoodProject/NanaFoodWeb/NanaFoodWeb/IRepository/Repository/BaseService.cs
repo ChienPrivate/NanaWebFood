@@ -94,15 +94,15 @@ namespace NanaFoodWeb.IRepository.Repository
 
                         apiResponseDTO = JsonConvert.DeserializeObject<ResponseDto>(apiContent);
 
-                        if (!string.IsNullOrEmpty(apiContent) && apiResponseDTO.Result == null)
-                        {
-                            apiResponseDTO = new ResponseDto
-                            {
-                                IsSuccess = true,
-                                Message = "Yêu cầu thành công",
-                                Result = JsonConvert.DeserializeObject<object>(apiContent) // Deserialize thành object
-                            };
-                        }
+                        //if (!string.IsNullOrEmpty(apiContent) && apiResponseDTO.Result == null)
+                        //{
+                        //    apiResponseDTO = new ResponseDto
+                        //    {
+                        //        IsSuccess = true,
+                        //        Message = apiResponseDTO.Message,
+                        //        Result = JsonConvert.DeserializeObject<object>(apiContent) // Deserialize thành object
+                        //    };
+                        //}
 
                         return apiResponseDTO;
                 }

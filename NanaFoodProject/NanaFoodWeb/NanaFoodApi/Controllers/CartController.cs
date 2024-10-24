@@ -17,7 +17,7 @@ namespace NanaFoodApi.Controllers
         ICartRepo _cartrepo = cartrepo;
 
 
-        // POST api/Cart
+        // POST api/Cart/AddtoCart
         [HttpPost("AddToCart")]
         public async Task<IActionResult> AddToCart([FromBody]CartDetailsDto cartDetails)
         {
@@ -31,7 +31,7 @@ namespace NanaFoodApi.Controllers
             return BadRequest(response);
         }
 
-        // GET api/Cart
+        // GET api/Cart/GetCart
         [HttpGet("GetCart")]
         public async Task<IActionResult> GetCart()
         {
@@ -57,11 +57,17 @@ namespace NanaFoodApi.Controllers
             return Ok(response);
         }
 
-        // DELETE api/Cart/3/increase
-        [HttpPut("/{productId:int}/{message}")]
+        // PUT api/Cart/UpdateCart?3&increase
+        [HttpPut("UpdateCart/{productId:int}&{message}")]
         public async Task<IActionResult> UpdateCart([FromRoute] int productId, string message)
         {
-            return Ok();
+            var userid = _SignInManager.UserManager.GetUserId(User);
+            var response = await _cartrepo.UpdateCart(productId, userid, message);
+            if (!response.IsSuccess)
+            {
+                return BadRequest(response);
+            }
+            return Ok(response);
         }
     }
 }

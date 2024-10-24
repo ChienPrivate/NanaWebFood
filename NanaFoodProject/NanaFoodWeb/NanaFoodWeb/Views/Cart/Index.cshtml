@@ -1,10 +1,10 @@
 ﻿
-
-@model List<NanaFoodWeb.Models.Dto.CartDetailsDto>
+@model List<NanaFoodWeb.Models.Dto.CartResponseDto>
 @{
     Layout = "_Layout";
     ViewData["Title"] = "Index";
 }
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <!-- Cart Section -->
 <div class="container-fluid py-5">
@@ -17,22 +17,24 @@
                 <div class="card mb-3 p-3 shadow-sm">
                     <div class="row g-0 align-items-center">
                         <div class="col-md-2">
-                            <img src="@item.Image" class="img-fluid rounded-start" alt="Hamburger Cá">
+                            <img src="@item.Image" class="img-fluid rounded-start" alt="@item.ProductName">
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-5">
                             <div class="card-body">
                                 <h5 class="card-title">@item.ProductName</h5>
                                 <a href="#" class="text-danger fw-bold">Xóa</a>
                             </div>
                         </div>
-                        <div class="col-md-4 d-flex justify-content-end align-items-center">
+                        <div class="col-md-3">
                             <div class="d-flex">
-                                <button class="btn btn-light btn-circle">-</button>
-                                <input type="text" value="@item.Quantity" class="form-control text-center mx-2 quantity-input"/>
-                                <button class="btn btn-light btn-circle">+</button>
+                                <button class="btn btn-light btn-circle" id="decreaseQuantity" data-product-id="@item.ProductId" style="height: 31px; position: relative; left: 0px; top: 13px; transition: none;">-</button>
+                                <input type="text" id="quantity" value="@item.Quantity" class="form-control text-center mx-2 quantity-input"/>
+                                <button class="btn btn-light btn-circle" id="increaseQuantity" data-product-id="@item.ProductId" style="height: 34px; position: relative; left: -1px; top: 12px; transition: none;">+</button>
                             </div>
-                            <span class="ms-3 fw-bold">@(item.Quantity * item.Price)</span>
                         </div>
+                        <div class="col-md-2">
+                            <span class="ms-3 fw-bold">@((item.Price * item.Quantity).ToString("##,##")) VNĐ</span>
+                            </div>
                     </div>
                 </div>
             }
@@ -50,28 +52,102 @@
                         <div class="mb-3">
                             <label for="discountCode" class="form-label">Bạn có mã giảm giá?</label>
                             <div class="input-group">
-                                <input type="text" class="form-control" id="discountCode" placeholder="Mã giảm giá *">
-                                <button class="btn btn-danger">Áp dụng</button>
+                                <input type="text" class="form-control" id="discoundCode" placeholder="Mã giảm giá *">
+                                <button class="btn btn-outline-danger input-group-text" style="height: 38px; transform: translate(0px, 10px); transition: none;">Áp dụng</button>
                             </div>
                         </div>
                     </form>
                     <hr>
                     <div class="d-flex justify-content-between">
                         <span>Tổng đơn hàng</span>
-                        <span>@ViewBag.TotalMoney</span>
+                        <span class="fw-bold">@Model.Select(x => x.Total).Sum().ToString("#,##") VNĐ</span>
                     </div>
                     <div class="d-flex justify-content-between">
-                        <span>Phí giao hàng</span>
-                        <span>@ViewBag.FeeDeli</span>
+                        <span>Áp dụng mã</span>
+                        <span>@(ViewBag.FeeDeli == null ? ViewBag.FeeDeli : "Not Fee Delivery")</span>
                     </div>
                     <hr>
                     <div class="d-flex justify-content-between">
                         <strong>Tổng thanh toán</strong>
-                        <strong>@ViewBag.TotalPay</strong>
+                        <strong>@(ViewBag.TotalPay == null ? ViewBag.TotalPay : "Not Total Pay Found")</strong>
                     </div>
                     <a class="btn btn-danger w-100 mt-3" asp-action="_Checkout" asp-controller="Cart" class="btn btn-primary">Thanh toán</a>
                 </div>
             </div>
         </div>
     </div>
+</div> 
+<div id="message">
+
 </div>
+<script>
+    // Hàm để đọc cookie
+    function getCookie(name) {
+        let cookieArr = document.cookie.split(";"); // Tách các cặp cookie
+        for (let i = 0; i < cookieArr.length; i++) {
+            let cookiePair = cookieArr[i].split("="); // Tách từng cặp tên-giá trị cookie
+
+            // Xóa khoảng trắng ở đầu tên cookie và so sánh với tên cần tìm
+            if (name == cookiePair[0].trim()) {
+                // Trả về giá trị của cookie nếu tìm thấy
+                return decodeURIComponent(cookiePair[1]);
+            }
+        }
+        return null; // Trả về null nếu không tìm thấy cookie
+    }
+
+    $(document).ready(function () {
+        // Lấy JWT token từ cookie
+        var jwtToken = getCookie('JWTToken');
+
+        console.log('jwt token : ' + jwtToken);
+
+        // Xử lý sự kiện click vào nút "Tăng số lượng"
+        $("#decreaseQuantity").click(function () {
+            // Lấy productId từ thuộc tính data
+            var productId = $(this).data("product-id");
+            console.log('productId' + productId);
+            // Gửi yêu cầu PUT bằng AJAX với JWT trong header
+            $.ajax({
+                url: 'https://localhost:7094/api/Cart/UpdateCart/' + productId + '&decrease', // URL của API
+                type: 'PUT', // Phương thức PUT
+                headers: {
+                    'Authorization': 'Bearer ' + jwtToken // Thêm JWT vào header
+                },
+                success: function (response) {
+                    var newTotal = response.result.newTotal;
+                    console.log('newTotal ' + newTotal);
+                    $("#quantity").text(newTotal);
+                    $("#message").text(newTotal);
+                },
+                error: function (xhr, status, error) {
+                    // Hiển thị thông báo lỗi
+                    console.log('result error' + xhr.responseText)
+                }
+            });
+        });
+        $("#increaseQuantity").click(function () {
+            // Lấy productId từ thuộc tính data
+            var productId = $(this).data("product-id");
+            console.log('productId' + productId);
+            // Gửi yêu cầu PUT bằng AJAX với JWT trong header
+            $.ajax({
+                url: 'https://localhost:7094/api/Cart/UpdateCart/' + productId + '&increase', // URL của API
+                type: 'PUT', // Phương thức PUT
+                headers: {
+                    'Authorization': 'Bearer ' + jwtToken // Thêm JWT vào header
+                },
+                success: function (response) {
+                    var newTotal = response.result.newTotal;
+                    console.log('newTotal ' + newTotal);
+                    $("#quantity").text(newTotal);
+                    $("#message").text(newTotal);
+                },
+                error: function (xhr, status, error) {
+                    // Hiển thị thông báo lỗi
+                    console.log('result error' + xhr.responseText)
+                }
+            });
+        });
+    });
+</script>
