@@ -30,6 +30,7 @@ namespace NanaFoodDAL.Helper
                 config.CreateMap<UserDto, User>().ReverseMap();
                 config.CreateMap<CreateUserRequestDto, User>().ReverseMap();
                 config.CreateMap<UpdateUserRequestDto, User>().ReverseMap();
+                config.CreateMap<ReviewDto, Review>().ReverseMap();
             });
             return mappingconfig;
         }

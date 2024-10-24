@@ -453,6 +453,8 @@ builder.Services.AddScoped<EmailPoster>();
 builder.Services.AddScoped<CloudinaryService>();
 builder.Services.AddScoped<ICartRepo, CartRepo>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 // Config các IService và Service ở chỗ này ↑
 
 builder.Services.AddCors(options =>
