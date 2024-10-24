@@ -7,24 +7,27 @@ using System.Threading.Tasks;
 
 namespace NanaFoodDAL.Dto
 {
-    internal class OrderDto
+    public class OrderDto
     {
         public int OrderId { get; set; }
-        [Required(ErrorMessage = "")]
+        [Required(ErrorMessage = "Không được để trống tên")]
         public string FullName { get; set; }
-        [Required(ErrorMessage = "")]
+        [Required(ErrorMessage = "Không được để trống số điện thoại")]
         public string PhoneNumber { get; set; }
-        [Required(ErrorMessage = "")]
+        [Required(ErrorMessage = "Không được để trống địa chỉ")]
         public string Address { get; set; }
-        [Required(ErrorMessage = "")]
+        [Required(ErrorMessage = "Hãy Chọn phương thức thanh Toán")]
         public string PaymentType { get; set; }
-        [Required(ErrorMessage = "")]
+        [Required(ErrorMessage = "Trạng thái thanh toán không được để trống")]
         public string PaymentStatus { get; set; }
-        [Required(ErrorMessage = "")]
+        [Required(ErrorMessage = "Trạng thái giao hàng không được để trống")]
         public string OrderStatus { get; set; }
-        [Required(ErrorMessage = "")]
+        [Required(ErrorMessage = "Phí ship không được để trống")]
+        public int ShipmentFee { get; set; }
+        [Required(ErrorMessage = "Mã người dùng không được để trống")]
+        public string UserId { get; set; }
+        [Required(ErrorMessage = "Ngày đặt hàng không được trống")]
         public DateTime OrderDate { get; set; } = DateTime.Now;
-        [Required(ErrorMessage = "")]
         public DateTime ReceiveDate { get; set; }
     }
 }

@@ -12,22 +12,18 @@ namespace NanaFoodDAL.Model
     public class Order
     {
         public int OrderId { get; set; }
-        [Required(ErrorMessage = "")]
         public string FullName { get; set; }
-        [Required(ErrorMessage = "")]
         public string PhoneNumber { get; set; }
-        [Required(ErrorMessage = "")]
         public string Address { get; set; }
-        [Required(ErrorMessage = "")]
         public string PaymentType { get; set; }
-        [Required(ErrorMessage = "")]
         public string PaymentStatus { get; set; }
-        [Required(ErrorMessage = "")]
         public string OrderStatus { get; set; }
-        [Required(ErrorMessage = "")]
+        public int ShipmentFee { get; set; }
         public DateTime OrderDate { get; set; } = DateTime.Now;
-        [Required(ErrorMessage = "")]
         public DateTime ReceiveDate { get; set; }
+        [ForeignKey(nameof(User))]
+        public string UserId { get; set; }
+        public User User { get; set; }
         public List<OrderDetails> OrderDetails { get; set; }
     }
 }

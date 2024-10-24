@@ -178,5 +178,17 @@
         <member name="M:NanaFoodApi.Migrations.modifydbremovecart.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
+        <member name="T:NanaFoodApi.Migrations.addcolumnShipmentFeetoOrder">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.addcolumnShipmentFeetoOrder.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.addcolumnShipmentFeetoOrder.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.addcolumnShipmentFeetoOrder.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
     </members>
 </doc>
