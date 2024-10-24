@@ -280,18 +280,37 @@ namespace NanaFoodWeb.Controllers
             return RedirectToAction("Index", new { searchQuery = searchQuery, page = page });
         }
 
-        [HttpGet("SearchByName")]
-        public IActionResult SearchByName(string? query, int? page, int pageSize = 10)
+        [HttpGet]
+        [Route("SearchByName")]
+        public async Task <IActionResult> SearchByName(string? query, int? page= 1 , int pageSize = 10)
         {
-            var response = _productRepo.GetBySearch(query, 1, pageSize);
+            ViewData["Action"] = "SearchByName";
+            var response =  _productRepo.GetBySearch(query, 1 , pageSize);
             if (response?.IsSuccess == true && response.Result != null)
             {
-                var productDto = JsonConvert.DeserializeObject<ProductVM>(response.Result.ToString());
-                return View(productDto);
+                try
+                {
+                    var productList = JsonConvert.DeserializeObject<ProductVM>(response.Result.ToString());
+
+                    if (productList != null)
+                    {
+                        int totalItems = productList.TotalCount;
+                        int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+                        ViewData["totalPages"] = totalPages;
+                        ViewData["currentPage"] = page;
+
+                        return View("~/Views/Home/Menu.cshtml", productList);
+                    }
+                }
+                catch (JsonSerializationException ex)
+                {
+                    ModelState.AddModelError("", $"Error deserializing JSON: {ex.Message}");
+                }
             }
 
             TempData["ErrorMessage"] = "Không tìm thấy sản phẩm nào.";
-            return RedirectToAction("Index");
+            return View("Menu", new ProductVM());
+
         }
     }
 }

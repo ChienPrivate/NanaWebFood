@@ -164,8 +164,6 @@ namespace NanaFoodWeb.Controllers
                     ModelState.AddModelError("", $"Error deserializing JSON: {ex.Message}");
                 }
             }
-
-            Console.WriteLine($"Category ID: {categoryid}");
             var reponse = _productRepo.GetByCategoryId(categoryid, page, pageSize);
             if (reponse.IsSuccess)
             {
