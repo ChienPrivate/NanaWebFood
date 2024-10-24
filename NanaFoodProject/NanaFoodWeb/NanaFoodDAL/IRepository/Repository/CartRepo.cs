@@ -151,7 +151,7 @@ namespace NanaFoodDAL.IRepository.Repository
             await _context.SaveChangesAsync();
             response.IsSuccess = true;
             response.Message = "Cập nhật số lượng thành công";
-            response.Result = new {newTotal = cartItem.Total};
+            response.Result = new {Total = cartItem.Total, Quantity = cartItem.Quantity};
             return response;
         }
     }

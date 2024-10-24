@@ -1,5 +1,4 @@
-﻿
-@model List<NanaFoodWeb.Models.Dto.CartResponseDto>
+﻿@model List<NanaFoodWeb.Models.Dto.CartResponseDto>
 @{
     Layout = "_Layout";
     ViewData["Title"] = "Index";
@@ -12,7 +11,7 @@
         <h4 class="text-center mb-4">Giỏ Hàng Của Tôi</h4>
         <div class="col-lg-8 col-md-12">
             <!-- Product 1 -->
-             @foreach (var item in Model)
+            @foreach (var item in Model)
             {
                 <div class="card mb-3 p-3 shadow-sm">
                     <div class="row g-0 align-items-center">
@@ -26,20 +25,18 @@
                             </div>
                         </div>
                         <div class="col-md-3">
-                            <div class="d-flex">
+                            <div class="d-flex quantity-finder">
                                 <button class="btn btn-light btn-circle" id="decreaseQuantity" data-product-id="@item.ProductId" style="height: 31px; position: relative; left: 0px; top: 13px; transition: none;">-</button>
-                                <input type="text" id="quantity" value="@item.Quantity" class="form-control text-center mx-2 quantity-input"/>
+                                <input type="text" id="quantity" value="@item.Quantity" class="form-control text-center mx-2 quantity-input" />
                                 <button class="btn btn-light btn-circle" id="increaseQuantity" data-product-id="@item.ProductId" style="height: 34px; position: relative; left: -1px; top: 12px; transition: none;">+</button>
                             </div>
                         </div>
                         <div class="col-md-2">
-                            <span class="ms-3 fw-bold">@((item.Price * item.Quantity).ToString("##,##")) VNĐ</span>
-                            </div>
+                            <span class="ms-3 fw-bold total">@((item.Price * item.Quantity).ToString("##,##")) VNĐ</span>
+                        </div>
                     </div>
                 </div>
             }
-           
-
         </div>
 
         <!-- Cart Summary -->
@@ -60,7 +57,7 @@
                     <hr>
                     <div class="d-flex justify-content-between">
                         <span>Tổng đơn hàng</span>
-                        <span class="fw-bold">@Model.Select(x => x.Total).Sum().ToString("#,##") VNĐ</span>
+                        <span class="fw-bold sumoftotal">@Model.Select(x => x.Total).Sum().ToString("#,##") VNĐ</span>
                     </div>
                     <div class="d-flex justify-content-between">
                         <span>Áp dụng mã</span>
@@ -76,76 +73,101 @@
             </div>
         </div>
     </div>
-</div> 
-<div id="message">
-
 </div>
+<div id="message"></div>
+
 <script>
     // Hàm để đọc cookie
     function getCookie(name) {
         let cookieArr = document.cookie.split(";"); // Tách các cặp cookie
         for (let i = 0; i < cookieArr.length; i++) {
             let cookiePair = cookieArr[i].split("="); // Tách từng cặp tên-giá trị cookie
-
-            // Xóa khoảng trắng ở đầu tên cookie và so sánh với tên cần tìm
             if (name == cookiePair[0].trim()) {
-                // Trả về giá trị của cookie nếu tìm thấy
-                return decodeURIComponent(cookiePair[1]);
+                return decodeURIComponent(cookiePair[1]); // Trả về giá trị của cookie nếu tìm thấy
             }
         }
         return null; // Trả về null nếu không tìm thấy cookie
+    }
+
+    function formatCurrency(amount) {
+        return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' VNĐ';
     }
 
     $(document).ready(function () {
         // Lấy JWT token từ cookie
         var jwtToken = getCookie('JWTToken');
 
-        console.log('jwt token : ' + jwtToken);
+        function updateTotal() {
+            let totalSum = 0;
 
-        // Xử lý sự kiện click vào nút "Tăng số lượng"
-        $("#decreaseQuantity").click(function () {
-            // Lấy productId từ thuộc tính data
+            // Duyệt qua tất cả các sản phẩm để tính tổng
+            $('.total').each(function () {
+                let priceText = $(this).text().replace(/ VNĐ/, "").replace(/,/g, ""); // Lấy giá và chuyển đổi thành số
+                totalSum += parseFloat(priceText);
+            });
+
+            // Cập nhật phần tử hiển thị tổng đơn hàng
+            $('.sumoftotal').text(formatCurrency(totalSum));
+        }
+
+        // Xử lý sự kiện click vào nút "Giảm số lượng"
+        $(".btn#decreaseQuantity").click(function () {
             var productId = $(this).data("product-id");
-            console.log('productId' + productId);
-            // Gửi yêu cầu PUT bằng AJAX với JWT trong header
+            var quantityInput = $(this).closest('.quantity-finder').find('.quantity-input');
+            var totalPriceElement = $(this).closest('.row').find('.total'); // Phần tử hiển thị tổng giá tiền
+
             $.ajax({
-                url: 'https://localhost:7094/api/Cart/UpdateCart/' + productId + '&decrease', // URL của API
-                type: 'PUT', // Phương thức PUT
+                url: 'https://localhost:7094/api/Cart/UpdateCart/' + productId + '&decrease',
+                type: 'PUT',
                 headers: {
                     'Authorization': 'Bearer ' + jwtToken // Thêm JWT vào header
                 },
                 success: function (response) {
-                    var newTotal = response.result.newTotal;
-                    console.log('newTotal ' + newTotal);
-                    $("#quantity").text(newTotal);
-                    $("#message").text(newTotal);
+                    var newQuantity = response.result.quantity;
+                    var newTotalPrice = response.result.total;
+
+                    // Cập nhật giá trị mới vào input số lượng
+                    quantityInput.val(newQuantity);
+
+                    // Cập nhật giá trị mới vào tổng tiền
+                    totalPriceElement.text(formatCurrency(newTotalPrice));
+
+                    // Cập nhật tổng đơn hàng
+                    updateTotal();
                 },
                 error: function (xhr, status, error) {
-                    // Hiển thị thông báo lỗi
-                    console.log('result error' + xhr.responseText)
+                    console.log('result error' + xhr.responseText);
                 }
             });
         });
-        $("#increaseQuantity").click(function () {
-            // Lấy productId từ thuộc tính data
+
+        // Xử lý sự kiện click vào nút "Tăng số lượng"
+        $(".btn#increaseQuantity").click(function () {
             var productId = $(this).data("product-id");
-            console.log('productId' + productId);
-            // Gửi yêu cầu PUT bằng AJAX với JWT trong header
+            var quantityInput = $(this).closest('.quantity-finder').find('.quantity-input');
+            var totalPriceElement = $(this).closest('.row').find('.total'); // Phần tử hiển thị tổng giá tiền
+
             $.ajax({
-                url: 'https://localhost:7094/api/Cart/UpdateCart/' + productId + '&increase', // URL của API
-                type: 'PUT', // Phương thức PUT
+                url: 'https://localhost:7094/api/Cart/UpdateCart/' + productId + '&increase',
+                type: 'PUT',
                 headers: {
                     'Authorization': 'Bearer ' + jwtToken // Thêm JWT vào header
                 },
                 success: function (response) {
-                    var newTotal = response.result.newTotal;
-                    console.log('newTotal ' + newTotal);
-                    $("#quantity").text(newTotal);
-                    $("#message").text(newTotal);
+                    var newQuantity = response.result.quantity;
+                    var newTotalPrice = response.result.total;
+
+                    // Cập nhật giá trị mới vào input số lượng
+                    quantityInput.val(newQuantity);
+
+                    // Cập nhật giá trị mới vào tổng tiền
+                    totalPriceElement.text(formatCurrency(newTotalPrice));
+
+                    // Cập nhật tổng đơn hàng
+                    updateTotal();
                 },
                 error: function (xhr, status, error) {
-                    // Hiển thị thông báo lỗi
-                    console.log('result error' + xhr.responseText)
+                    console.log('result error' + xhr.responseText);
                 }
             });
         });
