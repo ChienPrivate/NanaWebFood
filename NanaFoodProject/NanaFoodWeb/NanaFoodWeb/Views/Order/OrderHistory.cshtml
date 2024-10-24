@@ -1,0 +1,169 @@
+﻿<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+@* <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script> *@
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<style>
+    .info-section {
+        margin-top: 20px;
+    }
+
+        .info-section h3 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .info-section .form-control {
+            display: inline-block;
+            width: auto;
+            margin-right: 10px;
+        }
+
+        .info-section .edit-icon {
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+    .table th {
+        background-color: #eb9809;
+        color: white;
+        text-align: center;
+    }
+
+    .table td {
+        text-align: center;
+    }
+
+    .total-section {
+        font-weight: bold;
+        font-size: 1.1rem;
+    }
+
+    .product-image {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+    }
+
+    .mt-5, .my-5 {
+        margin-top: 1rem !important;
+    }
+
+    .badge-preparing {
+        background-color: #ffc107;
+        color: white;
+    }
+
+    .badge-delivered {
+        background-color: #dc3545;
+        color: white;
+    }
+</style>
+@{
+    Layout = "_Layout";
+
+}
+<div class="container mt-5" style="margin-top: -3rem !important;">
+    <!-- Thông tin khách hàng -->
+    <div class="info-section d-flex justify-content-center">
+        <div>
+            <div class="total-section text-center">
+                <p><span>Lịch Sử Đơn Hàng</span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Đơn hàng -->
+    <div class="order-section mt-5">
+
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">STT</th>
+                    <th scope="col">Mã Đơn Hàng</th>
+                    <th scope="col">Tên</th>
+                    <th scope="col">Số Điện Thoại</th>
+                    <th scope="col">Địa Chỉ</th>
+                    <th scope="col">Phương Thức Thanh Toán</th>
+                    <th scope="col">Trạng Thái Thanh Toán</th>
+                    <th scope="col">Trạng Thái Đơn Hàng</th>
+                    <th scope="col">Ngày Đặt Hàng</th>
+                    <th scope="col">Ngày Nhận</th>
+                    <th scope="col">Mã Người Dùng</th>
+                    <th scope="col">Phí Vận Chuyển</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>DH001</td>
+                    <td>Nguyễn Văn A</td>
+                    <td>0901234567</td>
+                    <td>123 Đường ABC, Quận 1, TP HCM</td>
+                    <td>Thanh toán khi nhận hàng</td>
+                    <td>Đã thanh toán</td>
+                    <td><span class="badge badge-delivered">Đã Giao</span></td>
+                    <td>25/10/2024, 12:30:00</td>
+                    <td>26/10/2024, 14:00:00</td>
+                    <td>ND001</td>
+                    <td>30.000₫</td>
+                </tr>
+                <tr>
+                    <th scope="row">2</th>
+                    <td>DH002</td>
+                    <td>Trần Thị B</td>
+                    <td>0912345678</td>
+                    <td>456 Đường XYZ, Quận 3, TP HCM</td>
+                    <td>Thanh toán khi nhận hàng</td>
+                    <td>Chưa thanh toán</td>
+                    <td><span class="badge badge-preparing">Đang chuẩn bị</span></td>
+                    <td>24/10/2024, 15:45:10</td>
+                    <td>Dự kiến 25/10/2024</td>
+                    <td>ND002</td>
+                    <td>25.000₫</td>
+                </tr>
+                <tr>
+                    <th scope="row">3</th>
+                    <td>DH003</td>
+                    <td>Phạm Văn C</td>
+                    <td>0987654321</td>
+                    <td>789 Đường LMN, Quận 7, TP HCM</td>
+                    <td>Ví MoMo</td>
+                    <td>Đã thanh toán</td>
+                    <td><span class="badge badge-preparing">Đang chuẩn bị</span></td>
+                    <td>23/10/2024, 10:30:00</td>
+                    <td>Dự kiến 24/10/2024</td>
+                    <td>ND003</td>
+                    <td>20.000₫</td>
+                </tr>
+                <tr>
+                    <th scope="row">4</th>
+                    <td>DH004</td>
+                    <td>Ngô Thị D</td>
+                    <td>0971234567</td>
+                    <td>321 Đường PQR, Quận 2, TP HCM</td>
+                    <td>VNPay</td>
+                    <td>Đã thanh toán</td>
+                    <td><span class="badge badge-delivered">Đã Giao</span></td>
+                    <td>22/10/2024, 09:15:45</td>
+                    <td>23/10/2024, 12:00:00</td>
+                    <td>ND004</td>
+                    <td>35.000₫</td>
+                </tr>
+                <tr>
+                    <th scope="row">5</th>
+                    <td>DH005</td>
+                    <td>Lê Văn E</td>
+                    <td>0961239876</td>
+                    <td>654 Đường STU, Quận 9, TP HCM</td>
+                    <td>Ví MoMo</td>
+                    <td>Đã thanh toán</td>
+                    <td><span class="badge badge-delivered">Đã Giao</span></td>
+                    <td>21/10/2024, 16:40:20</td>
+                    <td>22/10/2024, 11:30:00</td>
+                    <td>ND005</td>
+                    <td>28.000₫</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

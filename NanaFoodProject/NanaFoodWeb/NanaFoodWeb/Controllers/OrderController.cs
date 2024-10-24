@@ -42,7 +42,16 @@ namespace NanaFoodWeb.Controllers
             return View();
 
         }
+        public async Task<IActionResult> OrderHistory()
+        {
+            return View();
 
+        }
+        public async Task<IActionResult> OrderHistoryDetail()
+        {
+            return View();
+
+        }
         public async Task<JsonResult> GetDistricts(int provinceId)
         {
             // Gọi API để lấy danh sách quận/huyện dựa trên ProvinceID

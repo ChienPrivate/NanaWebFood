@@ -1,0 +1,129 @@
+﻿<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+@* <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script> *@
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<style>
+    .info-section {
+        margin-top: 20px;
+    }
+
+        .info-section h3 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .info-section .form-control {
+            display: inline-block;
+            width: auto;
+            margin-right: 10px;
+        }
+
+        .info-section .edit-icon {
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+    .table th {
+        background-color: #eb9809;
+        color: white;
+        text-align: center;
+    }
+
+    .table td {
+        text-align: center;
+    }
+
+    .total-section {
+        font-weight: bold;
+        font-size: 1.1rem;
+    }
+
+    .product-image {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+    }
+
+    .mt-5, .my-5 {
+        margin-top: 1rem !important;
+    }
+</style>
+@{
+    Layout = "_Layout";
+
+}
+<div class="container mt-5" style="margin-top: -3rem !important;">
+    <!-- Thông tin khách hàng -->
+    <div class="info-section d-flex justify-content-center">
+        <div>
+            <div class="total-section text-center">
+                <p><span>Lịch Sử Đơn Hàng</span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Đơn hàng -->
+    <div class="order-section mt-5">
+
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">STT</th>
+                    <th scope="col">Mã Đơn Hàng</th>
+                    <th scope="col">Hình Ảnh</th>
+                    <th scope="col">Tên Sản Phẩm</th>
+                    <th scope="col">Giá</th>
+                    <th scope="col">Số lượng</th>
+                    <th scope="col">Thành tiền</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>DH001</td>
+                    <td><img src="https://media.cnn.com/api/v1/images/stellar/prod/220406094936-hamburger-wagon-burger-close-up.jpg?q=w_1160,c_fill/f_webp" alt="Hamburger" class="product-image"></td>
+                    <td>Hamburger</td>
+                    <td>30.000₫</td>
+                    <td>1</td>
+                    <td>30.000₫</td>
+                </tr>
+                <tr>
+                    <th scope="row">2</th>
+                    <td>DH002</td>
+                    <td><img src="https://cokhiviendong.com/wp-content/uploads/2019/01/kinnh-nghi%E1%BB%87m-m%E1%BB%9F-qu%C3%A1n-g%C3%A0-r%C3%A1n-7.jpg" alt="Đùi Gà Rán" class="product-image"></td>
+                    <td>Đùi Gà Rán</td>
+                    <td>30.000₫</td>
+                    <td>1</td>
+                    <td>30.000₫</td>
+                </tr>
+                <tr>
+                    <th scope="row">3</th>
+                    <td>DH003</td>
+                    <td><img src="https://i1-giadinh.vnecdn.net/2022/04/20/Buoc-9-9-3230-1650439557.jpg?w=1020&h=0&q=100&dpr=1&fit=crop&s=6drGKxVUmT9QOznOjOJiuA" alt="Mỳ Ý Bò" class="product-image"></td>
+                    <td>Mỳ Ý Bò</td>
+                    <td>70.000₫</td>
+                    <td>2</td>
+                    <td>140.000₫</td>
+                </tr>
+                <tr>
+                    <th scope="row">4</th>
+                    <td>DH004</td>
+                    <td><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7DNd3LAAp7KOdwKRO6MmQao2WEWfsFBXwVw&s" alt="Pizza Hải Sản" class="product-image"></td>
+                    <td>Pizza Hải Sản</td>
+                    <td>80.000₫</td>
+                    <td>1</td>
+                    <td>80.000₫</td>
+                </tr>
+                <tr>
+                    <th scope="row">5</th>
+                    <td>DH005</td>
+                    <td><img src="https://minhcaumart.vn/media/com_eshop/products/8934588012228%201.jpg" alt="Pepsi" class="product-image"></td>
+                    <td>Pepsi</td>
+                    <td>20.000₫</td>
+                    <td>1</td>
+                    <td>20.000₫</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
