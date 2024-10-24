@@ -12,81 +12,42 @@ namespace NanaFoodWeb.Controllers
     //[Authorize(Roles = "admin")]
     public class CartController : Controller
     {
+        private readonly ICartRepo _cartRepo;
         private readonly CallApiCenter _callAPICenter;
         private readonly ConvertHelper _convertHelper;
         private readonly ITokenProvider _tokenProvider;
-        //private readonly ICartRepo _cartRepo;
 
-        public CartController( ITokenProvider tokenProvider)
+        public CartController( ITokenProvider tokenProvider, ICartRepo cartRepo)
         {
             _callAPICenter = new CallApiCenter();
             _convertHelper = new ConvertHelper();
             _tokenProvider = tokenProvider;
-           // _cartRepo = cartRepo;
+            _cartRepo = cartRepo;
         }
         public async Task<IActionResult> Index()
         {
-            try
+            var response = await _cartRepo.GetCart();
+            if(response.IsSuccess)
             {
-                var token = _tokenProvider.GetToken();
-                var response = await _callAPICenter.GetMethod<ResponseDto>("Cart/GetCart", token);
-                if (response == null || !response.IsSuccess)
-                {
-                    ViewBag.Message = "Không có dữ liệu";
-                    return View(new List<CartDetailsDto>()); // Return empty view with message
-                }
-                if (response.IsSuccess)
-                {
-                    if(response.Result == null)
-                    {
-                        return View(new List<CartDetailsDto>());
-                    }
-                    else
-                    {
-                        var resultData = JsonConvert.DeserializeObject<Result<List<CartDetailsDto>>>(response.Result.ToString());
-                        ViewBag.TotalPages = resultData.TotalPages;
-                        decimal  totalMoney = resultData.Data.Sum(x => x.Quantity * (decimal)x.Price);
-                        decimal feeDeli = resultData.Data.Sum(x => x.Quantity * (decimal)x.Price);
-
-                        ViewBag.TotalMoney = totalMoney;
-                        ViewBag.FeeDeli = feeDeli;
-                        ViewBag.TotalPay = totalMoney + feeDeli;
-                        return View(resultData.Data);// Pass the cart details to the view
-                    }
-                    
-                    
-                                                 //return View(result.Result); 
-                }
-                ViewBag.Message = response.Message;
-                return View(); // Return empty view with message
+                var Data = JsonConvert.DeserializeObject<List<CartResponseDto>>(response.Result.ToString());
+                return View(Data);
             }
-            catch (Exception ex)
-            {
-
-                ViewBag.Message = ex.Message;
-                return View(new List<CartDetailsDto>()); // Return empty view with message
-            }
-            
+            return View(null);
         }
 
-        [HttpGet("AddToCart/{id}")]
-        public async Task<IActionResult> AddToCart(int id)
+        [HttpPost]
+        public async Task<IActionResult> AddToCart(int id, int quantity)
         {
-            var token = _tokenProvider.GetToken();
-            CartDetailsDto cartDetailsDto = new CartDetailsDto();
-            cartDetailsDto.Quantity = 1;
-            cartDetailsDto.UserId = "";
-            cartDetailsDto.Image = "";
-            cartDetailsDto.ProductName = "";
-            cartDetailsDto.ProductId = id;
-            var response = await _callAPICenter.PostMethod<ResponseDto>(cartDetailsDto, "Cart/AddToCart", token);
-            if (response == null || !response.IsSuccess)
+            var cartDetail = new CartDetailsDto()
             {
-                ViewBag.Message = "Lỗi khi thêm mới dữ liệu";
-            }
-            else
+                ProductId = id,
+                Quantity = quantity
+            };
+            var response = await _cartRepo.AddToCart(cartDetail);
+            string message = response.Message?.ToString() ?? "Có lỗi xảy ra";
+            if (response.IsSuccess)
             {
-                ViewBag.Message = response.Message;
+                TempData["success"] = message;
             }
             return RedirectToAction("Index");
         }

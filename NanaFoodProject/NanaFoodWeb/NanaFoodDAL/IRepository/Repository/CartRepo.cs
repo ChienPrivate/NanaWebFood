@@ -21,8 +21,7 @@ namespace NanaFoodDAL.IRepository.Repository
                 response.Message = "Sản phẩm không tồn tại";
                 return response;
             }
-            var user = await _context.Users.FindAsync(cartdetailDto.UserId);
-            if (user == null)
+            if (cartdetailDto.UserId == null)
             {
                 response.IsSuccess = false;
                 response.Message = "Người dùng không tồn tại";
@@ -82,7 +81,6 @@ namespace NanaFoodDAL.IRepository.Repository
         {
             try
             {
-                //var cart = await _context.CartDetails.Where(x => x.UserId == user.Id).ToListAsync();
                 var cart = from a in _context.CartDetails
                                 join b in _context.Products on a.ProductId equals b.ProductId
                                 where a.UserId == user.Id
@@ -100,13 +98,7 @@ namespace NanaFoodDAL.IRepository.Repository
                 if (cartList.Count > 0)
                 {
                     response.IsSuccess = true;
-                    response.Result = new
-                    {
-                        TotalCount = 1,
-                        TotalPages = 1,
-                        Data = cartList
-                    };
-                        
+                    response.Result = cartList;
                     response.Message = "Lấy thông tin giỏ hàng thành công";
                 }
                 else
@@ -123,9 +115,44 @@ namespace NanaFoodDAL.IRepository.Repository
             return response;
         }
 
-        public Task<ResponseDto> UpdateCart(int ProductId, string message)
+        public async Task<ResponseDto> UpdateCart(int ProductId,string UserId, string message)
         {
-            throw new NotImplementedException();
+            var product = await _context.Products.FindAsync(ProductId);
+            if (product == null)
+            {
+                response.IsSuccess = false;
+                response.Message = "Sản phẩm không tồn tại";
+                return response;
+            }
+            var cartItem = await _context.CartDetails
+            .FirstOrDefaultAsync(c => c.UserId == UserId && c.ProductId == ProductId);
+
+            if (cartItem != null)
+            {
+                if(message.ToLower() == "decrease")
+                {
+                    if(cartItem.Quantity == 1)
+                    {
+                        _context.CartDetails.Remove(cartItem);
+                    } else
+                    {
+                        cartItem.Quantity--;
+                        cartItem.Total = cartItem.Quantity * product.Price;
+                    }
+                }
+                else
+                {
+                    cartItem.Quantity++;
+                    cartItem.Total = cartItem.Quantity * product.Price;
+                }
+            }
+
+            // Lưu thay đổi vào cơ sở dữ liệu
+            await _context.SaveChangesAsync();
+            response.IsSuccess = true;
+            response.Message = "Cập nhật số lượng thành công";
+            response.Result = new {newTotal = cartItem.Total};
+            return response;
         }
     }
 }
