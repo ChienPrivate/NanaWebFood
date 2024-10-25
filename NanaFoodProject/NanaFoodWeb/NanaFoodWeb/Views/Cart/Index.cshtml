@@ -6,39 +6,40 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <!-- Cart Section -->
-<div class="container-fluid py-5">
+<div class="container-fluid py-5" style="min-height:300px;">
     <div class="row">
         <h4 class="text-center mb-4">Giỏ Hàng Của Tôi</h4>
+         @if(Model.Count > 0)
+         {
         <div class="col-lg-8 col-md-12">
-            <!-- Product 1 -->
-            @foreach (var item in Model)
-            {
-                <div class="card mb-3 p-3 shadow-sm">
-                    <div class="row g-0 align-items-center">
-                        <div class="col-md-2">
-                            <img src="@item.Image" class="img-fluid rounded-start" alt="@item.ProductName">
-                        </div>
-                        <div class="col-md-5">
-                            <div class="card-body">
-                                <h5 class="card-title">@item.ProductName</h5>
-                                <a href="#" class="text-danger fw-bold">Xóa</a>
+                @foreach (var item in Model)
+                {
+                    <!-- Product -->
+                    <div class="card mb-3 p-3 shadow-sm">
+                        <div class="row g-0 align-items-center">
+                            <div class="col-md-2">
+                                <img src="@item.Image" class="img-fluid rounded-start" alt="@item.ProductName">
                             </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="d-flex quantity-finder">
-                                <button class="btn btn-light btn-circle" id="decreaseQuantity" data-product-id="@item.ProductId" style="height: 31px; position: relative; left: 0px; top: 13px; transition: none;">-</button>
-                                <input type="text" id="quantity" value="@item.Quantity" class="form-control text-center mx-2 quantity-input" />
-                                <button class="btn btn-light btn-circle" id="increaseQuantity" data-product-id="@item.ProductId" style="height: 34px; position: relative; left: -1px; top: 12px; transition: none;">+</button>
+                            <div class="col-md-5">
+                                <div class="card-body">
+                                    <h5 class="card-title">@item.ProductName</h5>
+                                    <a id="removeProduct" data-product-id="@item.ProductId" class="text-danger fw-bold" style="cursor : pointer;">Xóa</a>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-2">
-                            <span class="ms-3 fw-bold total">@((item.Price * item.Quantity).ToString("##,##")) VNĐ</span>
+                            <div class="col-md-3">
+                                <div class="d-flex quantity-finder">
+                                    <button class="btn btn-light btn-circle" id="decreaseQuantity" data-product-id="@item.ProductId" style="height: 31px; position: relative; left: 0px; top: 13px; transition: none;">-</button>
+                                    <input type="text" id="quantity" value="@item.Quantity" class="form-control text-center mx-2 quantity-input" />
+                                    <button class="btn btn-light btn-circle" id="increaseQuantity" data-product-id="@item.ProductId" style="height: 34px; position: relative; left: -1px; top: 12px; transition: none;">+</button>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <span class="ms-3 fw-bold total">@((item.Price * item.Quantity).ToString("##,##")) VNĐ</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-            }
+                }                        
         </div>
-
         <!-- Cart Summary -->
         <div class="col-lg-4 col-md-12">
             <div class="card shadow-sm p-4">
@@ -72,9 +73,13 @@
                 </div>
             </div>
         </div>
+        }
+        else
+        {
+            <h5 class="text-muted" style="position: relative; left: 473px; top: 69px; width: 397.297px;">Không có sản phẩm nào trong giỏ hàng</h5>
+        }
     </div>
 </div>
-<div id="message"></div>
 
 <script>
     // Hàm để đọc cookie
@@ -110,12 +115,31 @@
             $('.sumoftotal').text(formatCurrency(totalSum));
         }
 
+        $("a#removeProduct").click(function () {
+            var productId = $(this).data("product-id");
+            var productCard = $(this).closest('.card');
+            productCard.remove();
+            $.ajax({
+                url: 'https://localhost:7094/api/Cart/deletecart/' + productId,
+                type: 'DELETE',
+                headers: {
+                    'Authorization': 'Bearer ' + jwtToken
+                },
+                success: function () {
+                    updateTotal();
+                },
+                error: function (xhr, status, error) {
+                    console.log('result error' + xhr.responseText);
+                }
+            });
+        });
+
         // Xử lý sự kiện click vào nút "Giảm số lượng"
         $(".btn#decreaseQuantity").click(function () {
             var productId = $(this).data("product-id");
             var quantityInput = $(this).closest('.quantity-finder').find('.quantity-input');
             var totalPriceElement = $(this).closest('.row').find('.total'); // Phần tử hiển thị tổng giá tiền
-
+            var productCard = $(this).closest('.card');
             $.ajax({
                 url: 'https://localhost:7094/api/Cart/UpdateCart/' + productId + '&decrease',
                 type: 'PUT',
@@ -124,13 +148,32 @@
                 },
                 success: function (response) {
                     var newQuantity = response.result.quantity;
-                    var newTotalPrice = response.result.total;
 
-                    // Cập nhật giá trị mới vào input số lượng
-                    quantityInput.val(newQuantity);
+                    if (newQuantity === 0) {
+                        // Remove product from the DOM if quantity is 0
+                        productCard.remove();
 
-                    // Cập nhật giá trị mới vào tổng tiền
-                    totalPriceElement.text(formatCurrency(newTotalPrice));
+                        // Optionally, you can send a DELETE request to the API if you haven't done so already
+                        $.ajax({
+                            url: 'https://localhost:7094/api/Cart/deletecart/' + productId,
+                            type: 'DELETE',
+                            headers: {
+                                'Authorization': 'Bearer ' + jwtToken
+                            },
+                            success: function (deleteResponse) {
+                            },
+                            error: function (xhr, status, error) {
+                            }
+                        });
+                    } else {
+                        var newTotalPrice = response.result.total;
+
+                        // Cập nhật giá trị mới vào input số lượng
+                        quantityInput.val(newQuantity);
+
+                        // Cập nhật giá trị mới vào tổng tiền
+                        totalPriceElement.text(formatCurrency(newTotalPrice));
+                    }
 
                     // Cập nhật tổng đơn hàng
                     updateTotal();
