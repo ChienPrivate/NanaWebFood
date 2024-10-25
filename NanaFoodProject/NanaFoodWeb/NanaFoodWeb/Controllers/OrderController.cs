@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using NanaFoodWeb.IRepository;
 using NanaFoodWeb.IRepository.Repository;
+using NanaFoodWeb.Models;
 using NanaFoodWeb.Models.Dto;
+using NanaFoodWeb.Models.Dto.ViewModels;
 using NanaFoodWeb.Utility;
 using Newtonsoft.Json;
 
@@ -47,15 +49,19 @@ namespace NanaFoodWeb.Controllers
                             Text = p.ProvinceName,   // Tên tỉnh làm Text
                             Value = p.ProvinceID.ToString()  // ID tỉnh làm Value
                         }).ToList();
-
+                        ViewBag.cartdetails = Data;
                         ViewBag.ProvinceList = selectListProvinces;
-
-                        return View(Data);
+                        return View();
                     }
                 }
-                return View(new List<CartResponseDto>());
+                return View();
             }
 
+        }
+        [HttpPost]
+        public async Task<IActionResult> Payment(Order order)
+        {
+            return NotFound();
         }
         public async Task<IActionResult> OrderHistory()
         {

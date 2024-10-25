@@ -11,8 +11,8 @@ namespace NanaFoodWeb.Models
         public string PhoneNumber { get; set; }
         public string Address { get; set; }
         public string PaymentType { get; set; }
-        public string PaymentStatus { get; set; }
-        public string OrderStatus { get; set; }
+        public string PaymentStatus { get; set; } = "Chưa thanh toán";
+        public string OrderStatus { get; set; } = "Đang chuẩn bị";
         public DateTime OrderDate { get; set; } = DateTime.Now;
         public DateTime ReceiveDate { get; set; }
     }
