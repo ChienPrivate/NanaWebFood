@@ -455,6 +455,9 @@ builder.Services.AddScoped<ICartRepo, CartRepo>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
+builder.Services.AddScoped<ICouponRepo, CouponRepo>();
+builder.Services.AddScoped<ICouponTypeRepo, CouponTypeRepo>();
+builder.Services.AddScoped<IUserCouponRepo, UserCouponRepo>();
 // Config các IService và Service ở chỗ này ↑
 
 builder.Services.AddCors(options =>
