@@ -31,6 +31,9 @@ namespace NanaFoodDAL.Helper
                 config.CreateMap<CreateUserRequestDto, User>().ReverseMap();
                 config.CreateMap<UpdateUserRequestDto, User>().ReverseMap();
                 config.CreateMap<ReviewDto, Review>().ReverseMap();
+                config.CreateMap<CouponTypeDto, CouponType>().ReverseMap();
+                config.CreateMap<CouponDto, Coupon>().ReverseMap();
+                config.CreateMap<UserCouponDto, UserCoupon>().ReverseMap();
             });
             return mappingconfig;
         }
