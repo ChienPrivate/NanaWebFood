@@ -9,7 +9,6 @@ using Newtonsoft.Json;
 namespace NanaFoodWeb.Controllers
 {
     [Route("Carts")]
-    //[Authorize(Roles = "admin")]
     public class CartController : Controller
     {
         private readonly ICartRepo _cartRepo;
@@ -26,13 +25,21 @@ namespace NanaFoodWeb.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var response = await _cartRepo.GetCart();
-            if(response.Result != null)
+            var token = _tokenProvider.GetToken();
+            if (token == null)
             {
-                var Data = JsonConvert.DeserializeObject<List<CartResponseDto>>(response.Result.ToString());
-                return View(Data);
-            }
-            return View(new List<CartResponseDto>());
+                TempData["error"] = "Vui lòng đăng nhập trước";
+                return RedirectToAction("Login", "Auth");
+            } else
+            {
+                var response = await _cartRepo.GetCart();
+                if (response.Result != null)
+                {
+                    var Data = JsonConvert.DeserializeObject<List<CartResponseDto>>(response.Result.ToString());
+                    return View(Data);
+                }
+                return View(new List<CartResponseDto>());
+            }           
         }
 
         [HttpPost]

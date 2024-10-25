@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using NanaFoodWeb.IRepository;
+using NanaFoodWeb.IRepository.Repository;
 using NanaFoodWeb.Models.Dto;
 using NanaFoodWeb.Utility;
 using Newtonsoft.Json;
@@ -10,36 +11,50 @@ namespace NanaFoodWeb.Controllers
     public class OrderController : Controller
     {
         private readonly IOrderRepository _orderService;
-
-
-        public OrderController(IOrderRepository orderService)
+        private readonly ITokenProvider _tokenProvider;
+        private readonly ICartRepo _cartRepo;
+        public OrderController(IOrderRepository orderService, ITokenProvider tokenProvider, ICartRepo cartRepo)
         {
             _orderService = orderService;
+            _tokenProvider = tokenProvider;
+            _cartRepo = cartRepo;
         }
 
         public async Task<IActionResult> Index()
         {
-
-            var provinceRequest = await _orderService.GetProvinceAsync();
-
-            var provinceResponse = JsonConvert.DeserializeObject<GHNResponseDto<List<ProvinceDto>>>(provinceRequest.Result.ToString());
-
-            if (provinceResponse.Code == 200)
+            var token = _tokenProvider.GetToken();
+            if (token == null)
             {
-                var provinceList = provinceResponse.Data.ToList();
-
-                var selectListProvinces = provinceList.Select(p => new SelectListItem
-                {
-                    Text = p.ProvinceName,   // Tên tỉnh làm Text
-                    Value = p.ProvinceID.ToString()  // ID tỉnh làm Value
-                }).ToList();
-
-                ViewBag.ProvinceList = selectListProvinces;
-
-                return View();
+                TempData["error"] = "Vui lòng đăng nhập trước";
+                return RedirectToAction("Login", "Auth");
             }
+            else
+            {
+                var response = await _cartRepo.GetCart();
+                if (response.Result != null)
+                {
+                    var Data = JsonConvert.DeserializeObject<List<CartResponseDto>>(response.Result.ToString());
+                    var provinceRequest = await _orderService.GetProvinceAsync();
 
-            return View();
+                    var provinceResponse = JsonConvert.DeserializeObject<GHNResponseDto<List<ProvinceDto>>>(provinceRequest.Result.ToString());
+
+                    if (provinceResponse.Code == 200)
+                    {
+                        var provinceList = provinceResponse.Data.ToList();
+
+                        var selectListProvinces = provinceList.Select(p => new SelectListItem
+                        {
+                            Text = p.ProvinceName,   // Tên tỉnh làm Text
+                            Value = p.ProvinceID.ToString()  // ID tỉnh làm Value
+                        }).ToList();
+
+                        ViewBag.ProvinceList = selectListProvinces;
+
+                        return View(Data);
+                    }
+                }
+                return View(new List<CartResponseDto>());
+            }
 
         }
         public async Task<IActionResult> OrderHistory()
