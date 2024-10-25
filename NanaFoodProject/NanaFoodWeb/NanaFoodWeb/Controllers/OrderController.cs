@@ -52,6 +52,11 @@ namespace NanaFoodWeb.Controllers
             return View();
 
         }
+        public async Task<IActionResult> OrderTracking()
+        {
+            return View();
+
+        }
         public async Task<JsonResult> GetDistricts(int provinceId)
         {
             // Gọi API để lấy danh sách quận/huyện dựa trên ProvinceID

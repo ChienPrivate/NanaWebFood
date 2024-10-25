@@ -1,0 +1,189 @@
+﻿<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+<style>
+    body {
+        letter-spacing: 0.2px;
+        background-repeat: no-repeat;
+    }
+
+    .container-fluid {
+        margin: 80px 0;
+        margin-top: 0rem !important;
+    }
+
+    .card {
+        background-color: #e2efd0;
+        box-shadow: 3px 5px 15px rgba(200, 148, 5, 0.5);
+        border-radius: 10px;
+    }
+
+    .text-muted {
+        color: #6c757d;
+    }
+
+    .card-header {
+        background: #e2efd0;
+        border-bottom: none;
+    }
+
+    .bold {
+        font-weight: 600;
+    }
+
+    .small {
+        font-size: 12px;
+    }
+
+    .Today {
+        color: rgb(83, 83, 83);
+    }
+
+    .timeline {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 90%;
+        margin: 60px auto;
+        position: relative;
+    }
+
+        .timeline:before {
+            content: "";
+            position: absolute;
+            top: 60%;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background-color: #b0d3d3;
+            z-index: 0;
+        }
+
+    .step {
+        position: relative;
+        z-index: 1;
+        text-align: center;
+    }
+
+    .circle {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background-color: #47b7b7;
+        color: white;
+        font-size: 20px;
+        line-height: 60px;
+        margin-bottom: 6px;
+        display: inline-block;
+    }
+
+    .step2 .circle {
+        background-color: #3f5f7f;
+    }
+
+    .step3 .circle {
+        background-color: #47b7b7;
+    }
+
+    .label {
+        color: #333;
+        font-size: 20px;
+        white-space: pre-wrap;
+        text-align: center;
+    }
+
+        .label :hover {
+            color: #eb8b15;
+        }
+
+    .card-footer {
+        background: #eb8b15;
+    }
+
+        .card-footer .row div {
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .card-footer h5 {
+            color: #02040f;
+            font-size: 1.1em;
+            margin: 0;
+            transition: color 0.3s ease;
+        }
+
+            .card-footer h5:hover {
+                color: #6177d0;
+            }
+
+        .card-footer img {
+            opacity: 0.4;
+            transition: opacity 0.3s ease;
+        }
+
+            .card-footer img:hover {
+                opacity: 0.7;
+            }
+
+    .border-line {
+        border-right: 3px solid #066c39;
+    }
+
+</style>
+
+@{
+    Layout = "_Layout";
+
+}
+
+<div class="container-fluid d-flex justify-content-center" style="margin-top: -3rem !important;">
+    <div class="card px-2">
+        <div class="card-header">
+            <div class="row justify-content-between">
+                <div class="col">
+                    <p class="text-muted">Mã Đơn Hàng <span class="font-weight-bold text-dark">1222528743</span></p>
+                    <p class="text-muted">Thời Gian Đặt Hàng <span class="font-weight-bold text-dark">24/10/2024</span></p>
+                </div>
+                <div class="col-auto my-auto">
+                    <h6><a href="#">Xem Chi Tiết</a></h6>
+                </div>
+                <div class="timeline">
+                    <div class="step step1">
+                        <div class="circle">1</div>
+                        <div class="label">Đang Chuẩn Bị Món Ăn</div>
+                    </div>
+
+                    <div class="step step2">
+                        <div class="circle">2</div>
+                        <div class="label"><b>Đang Giao Hàng</b></div>
+                    </div>
+
+                    <div class="step step3">
+                        <div class="circle">3</div>
+                        <div class="label">Đã Giao Hàng</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="media flex-column flex-sm-row">
+                <div class="media-body">
+                    <h5 class="bold">Hamburger</h5>
+                    <p class="text-muted">Số Lượng: 1 Cái</p>
+                    <h4 class="bold"><span>&#8363;</span> 35000 <span class="small text-muted"> (COD)</span></h4>
+                    <p class="text-muted">Trạng Thái Đơn Hàng: <span class="Today">11:30, Hôm Nay</span></p>
+                </div>
+                <img class="img-fluid align-self-center" src="https://www.shakentogetherlife.com/wp-content/uploads/2022/10/hamburger-baked-in-oven.jpg" width="180" height="180" alt="Product Image">
+
+            </div>
+        </div>
+
+        <div class="card-footer">
+            <div class="row text-center">
+                <div class="col border-line"><h5>Theo Dõi</h5></div>
+                <div class="col border-line"><h5>Huỷ</h5></div>
+                <div class="col"><img src="https://img.icons8.com/ios/50/000000/menu-2.png" width="30" height="30" alt="More Options"></div>
+            </div>
+        </div>
+    </div>
+</div>
