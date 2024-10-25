@@ -8,7 +8,7 @@ using NanaFoodDAL.Model;
 
 namespace NanaFoodApi.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "customer")]
     [Route("api/[controller]")]
     [ApiController]
     public class CartController(SignInManager<User> sm, ICartRepo cartrepo) : ControllerBase

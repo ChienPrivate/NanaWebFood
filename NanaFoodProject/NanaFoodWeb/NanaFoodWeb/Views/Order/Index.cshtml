@@ -1,16 +1,14 @@
-﻿@{
+﻿@model IEnumerable<NanaFoodWeb.Models.Dto.CartResponseDto>
+@{
     ViewData["Title"] = "Order Page";
 }
-<div class="container-fluid">
+<div class="container">
     <div class="card shadow rounded-3">
     <div class="card-header">
         <h1 style="font-family: 'Roboto', sans-serif;" >Thông tin đặt hàng</h1>
     </div>
     <div class="card-body">
         <form method="post">
-            <div>
-                <p><strong>Đơn hàng của bạn sẽ được giao từ địa chỉ:</strong> QTSC Building 1, Công viên phần mềm Quang, Trung P, Quận 12, Hồ Chí Minh, Việt Nam</p>
-            </div>
             <div class="row">
                 <div class="col-md-6 p-4 bg-white border-end border-3">
                     <h2 class="text-lg font-semibold mb-4">Thông tin thanh toán</h2>
@@ -99,20 +97,26 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                    @* Hiển thị danh sách giỏ hàng *@
-
-                            </tbody>
+                                    @foreach(var item in Model)
+                                    {
+                                        <tr>
+                                            <td>@item.ProductName</td>
+                                            <td class="text-center">@item.Quantity</td>
+                                            <td class="text-center">@item.Total.ToString("#,##")</td>
+                                        </tr>
+                                    }
+                                </tbody>
                         </table>
                     </div>
-                    <div class="form-group mt-2 mb-2">
-                        <p><strong>Phí Ship:</strong> <span id="shippingFee"></span> </p>
-                    </div>
-                        @*             <div class="border-top pt-2 mb-4">
-                        <div class="d-flex justify-content-between align-items-center fs-4 fw-bold">
-                            <span>Tổng cộng</span>
-                            <span>@ViewBag.TotalAmount.ToString("#,## VND")</span>
+                    <div class="d-flex justify-content-between mt-2 mb-2">
+                            <strong>Tổng đơn hàng:</strong> <span>@Model.Sum(x => x.Total).ToString("#,##") VNĐ</span>
                         </div>
-                    </div> *@
+                    <div class="d-flex justify-content-between mt-2 mb-2">
+                        <strong>Phí Ship:</strong> <span id="shippingFee">0 VNĐ</span>
+                    </div>
+                        <div class="d-flex justify-content-between mt-2 mb-2">
+                            <strong>Tổng thanh toán:</strong> <span id="totalPay">@Model.Sum(x => x.Total).ToString("#,##") VNĐ</span>
+                        </div>
 
                     <button type="submit" class="btn btn-primary w-100">Thanh toán</button>
                 </div>
@@ -137,7 +141,6 @@
                     $('#DistrictList').empty().append('<option value=""> Hãy chọn quận/huyện </option>');
                     $('#WardList').empty().append('<option value=""> Hãy chọn phường/xã </option>');
                     $('#ServiceList').empty().append('<option value=""> Hãy chọn dịch vụ </option>');
-                    $('#shippingFee').text(''); // Reset lại phí ship
 
                     // Gửi yêu cầu AJAX để lấy danh sách quận/huyện
                     $.ajax({
@@ -159,7 +162,6 @@
                     $('#DistrictList').empty().append('<option value=""> Hãy chọn quận/huyện </option>');
                     $('#WardList').empty().append('<option value=""> Hãy chọn phường/xã </option>');
                     $('#ServiceList').empty().append('<option value=""> Hãy chọn dịch vụ </option>');
-                    $('#shippingFee').text(''); // Reset lại phí ship
                 }
             });
 
@@ -273,8 +275,9 @@
                         success: function (response) {
                             // Hiển thị phí ship ở phần tử #shippingFee
                             var shippingFee = response.data;
-                            var formattedFee = shippingFee.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // Thêm dấu phẩy vào các số hàng nghìn
-                            $('#shippingFee').text(formattedFee + ' VND'); // Hiển thị phí ship
+                            var roundedShippingFee = Math.round(shippingFee / 1000) * 1000;
+                            var formattedFee = roundedShippingFee.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // Thêm dấu phẩy vào các số hàng nghìn
+                            $('#shippingFee').text(formattedFee + ' VNĐ'); // Hiển thị phí ship
                         },
                         error: function () {
                             alert("Không thể tính phí ship");
@@ -282,6 +285,19 @@
                     });
                 }
             });
+
+            // Thay đổi tổng tiền mỗi khi phí ship thay đổi
+             const observer = new MutationObserver(() => {
+                var currentTotal = document.getElementById('totalPay').textContent.trim();
+                var ship = document.getElementById('shippingFee').textContent.trim();
+                var totalPayNumber = parseInt(currentTotal.replace(/,| VNĐ/g, ''));
+                var shipInteger =  parseInt(ship.replace(/,| VNĐ/g, ''));
+                currentTotal = totalPayNumber + shipInteger;
+                var formattedFee = currentTotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                $('#totalPay').text(formattedFee + ' VNĐ');
+            });
+
+            observer.observe(document.getElementById('shippingFee'), { childList: true });
         });
     </script>
 }
