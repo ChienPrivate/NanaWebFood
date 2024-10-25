@@ -131,14 +131,8 @@ namespace NanaFoodDAL.IRepository.Repository
             {
                 if(message.ToLower() == "decrease")
                 {
-                    if(cartItem.Quantity == 1)
-                    {
-                        _context.CartDetails.Remove(cartItem);
-                    } else
-                    {
-                        cartItem.Quantity--;
-                        cartItem.Total = cartItem.Quantity * product.Price;
-                    }
+                    cartItem.Quantity--;
+                    cartItem.Total = cartItem.Quantity * product.Price;
                 }
                 else
                 {

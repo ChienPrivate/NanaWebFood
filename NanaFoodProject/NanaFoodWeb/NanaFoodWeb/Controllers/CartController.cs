@@ -27,12 +27,12 @@ namespace NanaFoodWeb.Controllers
         public async Task<IActionResult> Index()
         {
             var response = await _cartRepo.GetCart();
-            if(response.IsSuccess)
+            if(response.Result != null)
             {
                 var Data = JsonConvert.DeserializeObject<List<CartResponseDto>>(response.Result.ToString());
                 return View(Data);
             }
-            return View(null);
+            return View(new List<CartResponseDto>());
         }
 
         [HttpPost]
