@@ -88,7 +88,7 @@ namespace NanaFoodDAL.IRepository.Repository
                 };
                 await _context.UserCoupons.AddAsync(userCoupon);
                 await _context.SaveChangesAsync();
-                response.Result = _mapper.Map<UserCouponDto>(userCoupon);
+                response.Result = ecoupon.Discount;
                 response.IsSuccess = true;
                 response.Message = "Mã giảm giá đã được áp dụng thành công.";
             }

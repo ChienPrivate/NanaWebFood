@@ -122,6 +122,10 @@
                             <button type="button" id="applyCouponbtn" class="btn btn-outline-danger" style="height: 36px; transform: translate(0px, 12px); position: relative; top: -1px;">Áp dụng</button>
                         </div>
                         <hr />
+                            <div class="d-flex justify-content-between mt-2 mb-2">
+                                <strong>Giảm giá:</strong> <span id="discount">0 VNĐ</span>
+
+                            </div>
                     <div class="d-flex justify-content-between mt-2 mb-2">
                                 <strong>Tổng đơn hàng:</strong> <span>@cartDetails.Sum(x => x.Total).ToString("#,##") VNĐ</span>
                                 
@@ -317,8 +321,10 @@
             var jwtToken = getCookie('JWTToken');
             $(".btn#applyCouponbtn").click(function () {
                 var CouponCode = document.getElementById('couponInput').value;
+                var discount = document.getElementById('discount').textContent.trim();
+                var currentTotal = document.getElementById('totalPay').textContent.trim();
+                var totalPayNumber = parseInt(currentTotal.replace(/,| VNĐ/g, ''));
                 // var CouponCode = $(this).closest('.coupon-Finder').find('#couponInput');
-                console.log(CouponCode);
                 $.ajax({
                     url: 'https://localhost:7094/api/Coupon/Check/' + CouponCode,
                     type: 'GET',
@@ -326,8 +332,12 @@
                         'Authorization': 'Bearer ' + jwtToken // Thêm JWT vào header
                     },
                     success: function (response) {
-                        var newQuantity = response.message;
-                        console.log(newQuantity);
+                        var formattedDiscount = response.result.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                        
+                        $('#discount').text('- '+formattedDiscount + ' VNĐ');
+                        currentTotal = totalPayNumber - response.result;
+                        var formatted = currentTotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                        $('#totalPay').text(formatted + ' VNĐ');
                     },
                     error: function (xhr, status, error) {
                         console.log('result error' + xhr.responseText);
