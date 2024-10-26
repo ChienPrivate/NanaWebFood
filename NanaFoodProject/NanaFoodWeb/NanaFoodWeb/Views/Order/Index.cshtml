@@ -117,9 +117,9 @@
                         </table>
                     </div>
                     <hr />
-                        <div class="btn-group w-100">
-                            <input type="text" class="form-control" placeholder="Nhập mã giảm giá" style="width: 379.656px;">
-                            <button type="button" class="btn btn-outline-danger" style="height: 36px; transform: translate(0px, 12px); position: relative; top: -1px;">Áp dụng</button>
+                        <div class="btn-group w-100 coupon-Finder">
+                            <input type="text" id="couponInput" class="form-control"  placeholder="Nhập mã giảm giá" style="width: 379.656px;">
+                            <button type="button" id="applyCouponbtn" class="btn btn-outline-danger" style="height: 36px; transform: translate(0px, 12px); position: relative; top: -1px;">Áp dụng</button>
                         </div>
                         <hr />
                     <div class="d-flex justify-content-between mt-2 mb-2">
@@ -303,6 +303,37 @@
                     });
                 }
             });
+            // Hàm để đọc cookie
+            function getCookie(name) {
+                let cookieArr = document.cookie.split(";"); // Tách các cặp cookie
+                for (let i = 0; i < cookieArr.length; i++) {
+                    let cookiePair = cookieArr[i].split("="); // Tách từng cặp tên-giá trị cookie
+                    if (name == cookiePair[0].trim()) {
+                        return decodeURIComponent(cookiePair[1]); // Trả về giá trị của cookie nếu tìm thấy
+                    }
+                }
+                return null; // Trả về null nếu không tìm thấy cookie
+            }
+            var jwtToken = getCookie('JWTToken');
+            $(".btn#applyCouponbtn").click(function () {
+                var CouponCode = document.getElementById('couponInput').value;
+                // var CouponCode = $(this).closest('.coupon-Finder').find('#couponInput');
+                console.log(CouponCode);
+                $.ajax({
+                    url: 'https://localhost:7094/api/Coupon/Check/' + CouponCode,
+                    type: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + jwtToken // Thêm JWT vào header
+                    },
+                    success: function (response) {
+                        var newQuantity = response.message;
+                        console.log(newQuantity);
+                    },
+                    error: function (xhr, status, error) {
+                        console.log('result error' + xhr.responseText);
+                    }
+                });
+            });
 
             // Thay đổi tổng tiền mỗi khi phí ship thay đổi
              const observer = new MutationObserver(() => {
@@ -320,6 +351,8 @@
             observer.observe(document.getElementById('shippingFee'), { childList: true });
             
         });
+
+
     </script>
 }
 

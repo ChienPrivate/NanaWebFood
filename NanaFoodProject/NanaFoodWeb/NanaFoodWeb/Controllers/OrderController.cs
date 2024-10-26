@@ -64,6 +64,8 @@ namespace NanaFoodWeb.Controllers
         }
 
 
+
+
         [HttpPost]
         public async Task<IActionResult> Payment(Order order,int total)
         {
