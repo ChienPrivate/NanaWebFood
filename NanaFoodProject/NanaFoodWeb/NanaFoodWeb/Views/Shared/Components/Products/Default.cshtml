@@ -1,0 +1,76 @@
+﻿@{
+    var currentPage = ViewData["currentPage"] as int? ?? 1;
+    // var totalPages = ViewData["totalPages"] as int? ?? 1;
+}
+@model NanaFoodWeb.Models.Dto.ViewModels.ProductVM
+
+<div class="container-fluid">
+    <div class="row g-4">
+        @foreach (var product in Model.Products)
+        {
+            <div class="col-md-4 col-lg-3 col-xl-2">
+                <div class="card mb-3 shadow" style="width: 90%; max-width: 250px;">
+                    <a asp-controller="Products" asp-action="CDetails" asp-route-id="@product.ProductId">
+                        <img src="@product.ImageUrl" style="width: 100%; height: 150px; object-fit: cover;" />
+                    </a>
+                    <div class="card-body">
+                        <a asp-controller="Products" asp-action="CDetails" asp-route-id="@product.ProductId" class="text-decoration-none">
+                            <h5 class="card-title text-dark fw-bold" style="font-size: 1rem;">@product.ProductName</h5>
+                        </a>
+                    </div>
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <p class="text-dark fs-6 fw-bold" style="position: relative; left: 3px; top: 5px;">@product.Price.ToString("#,##")đ</p>
+                            <a asp-controller="Products" asp-action="CDetails" asp-route-id="@product.ProductId" class="btn btn-sm btn-warning rounded-2" style="padding: 0.2rem 0.5rem;">Xem chi tiết</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="custom-pagination">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                @if (currentPage > 1)
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-action="CDetails" asp-route-id="@ViewData["productId"]" asp-route-currentPage="@(currentPage - 1)" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                }
+
+                @for (var i = 1; i <= Model.TotalPages; i++)
+                {
+                    <li class="page-item @(i == currentPage ? "active" : "")">
+                        <a class="page-link" asp-action="CDetails" asp-route-id="@ViewData["productId"]" asp-route-currentPage="@i">
+                            @i
+                        </a>
+                    </li>
+                }
+
+                @if (currentPage < Model.TotalPages)
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-action="CDetails" asp-route-id="@ViewData["productId"]" asp-route-currentPage="@(currentPage + 1)" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    </div>
+</div>
+@* <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).on("click", ".pagination .page-link", function (e) {
+        e.preventDefault();
+        var page = $(this).data("page");
+        var productId = "@ViewData["productId"]"; // Lấy productId từ ViewData
+
+        // Gọi đến ViewComponent
+        $.get(`/Products/Products?productId=${productId}&page=${page}`, function (data) {
+            $("#product-pagination").html(data);
+        });
+    });
+</script> *@

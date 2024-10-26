@@ -11,6 +11,7 @@ namespace NanaFoodDAL.Model
     [Table("Order")]
     public class Order
     {
+        [Key]
         public int OrderId { get; set; }
         public string FullName { get; set; }
         public string PhoneNumber { get; set; }
@@ -19,6 +20,7 @@ namespace NanaFoodDAL.Model
         public string PaymentStatus { get; set; }
         public string OrderStatus { get; set; }
         public int ShipmentFee { get; set; }
+        public string? Note { get; set; }
         public DateTime OrderDate { get; set; } = DateTime.Now;
         public DateTime ReceiveDate { get; set; }
         [ForeignKey(nameof(User))]

@@ -20,56 +20,18 @@ namespace NanaFoodDAL.IRepository.Repository
             _response = new ResponseDto();
         }
 
-        public async Task<ResponseDto> AddOrderAsync(OrderDto orderDto)
+        public async Task<Order> AddOrder(Order order)
         {
-            try
-            {
-                var order = _mapper.Map<Order>(orderDto);
-                await _context.Orders.AddAsync(order);
-                await _context.SaveChangesAsync();
+            await _context.Orders.AddAsync(order);
+            await _context.SaveChangesAsync();
 
-                _response.IsSuccess = true;
-                _response.Message = "Tạo đơn hàng thành công";
-                _response.Result = orderDto;
-            }
-            catch (Exception ex)
-            {
-                _response.IsSuccess = false;
-                _response.Message = ex.Message;
-                _response.Result = orderDto;
-            }
-
-            return _response;
+            return order;
         }
 
-        public async Task<ResponseDto> AddOrderDetailAsync(IEnumerable<OrderDetailsDto> listOrderdetailsDto)
+        public void AddOrderDetails(IEnumerable<OrderDetails> listOrderdetails)
         {
-            try
-            {
-                var listOrderDetails = _mapper.Map<IEnumerable<OrderDetails>>(listOrderdetailsDto);
-
-                foreach (var item in listOrderDetails)
-                {
-                    var product = await _context.Products.FirstOrDefaultAsync(x => x.ProductId == item.ProductId);
-                    item.UnitPrice = product.Price;
-                    item.Total = item.UnitPrice * item.Quantity;
-                }
-
-                await _context.OrderDetails.AddRangeAsync(listOrderDetails);
-                await _context.SaveChangesAsync();
-
-                _response.IsSuccess = true;
-                _response.Message = "Tạo đơn hàng thành công";
-                _response.Result = listOrderdetailsDto;
-            }
-            catch (Exception ex)
-            {
-                _response.IsSuccess = false;
-                _response.Message = ex.Message;
-                _response.Result = listOrderdetailsDto;
-            }
-
-            return _response;
+            _context.OrderDetails.AddRange(listOrderdetails);
+            _context.SaveChanges();
         }
 
         public async Task<ResponseDto> CalculateProfitAsync()
@@ -148,9 +110,10 @@ namespace NanaFoodDAL.IRepository.Repository
             {
                 Product? food = _context.Products.Find(detail.ProductId);
                 OrderDetailsDto detailDTO = new OrderDetailsDto();
+                detailDTO.OrderId = detail.OrderId;
                 detailDTO.ProductId = food.ProductId;
                 detailDTO.ProductName = food.ProductName;
-                detailDTO.UnitPrice = detail.UnitPrice;
+                /*detailDTO.UnitPrice = detail.UnitPrice;*/
                 detailDTO.Quantity = detail.Quantity;
                 detailDTO.Total = detail.Total;
                 ListDetail.Add(detailDTO);
