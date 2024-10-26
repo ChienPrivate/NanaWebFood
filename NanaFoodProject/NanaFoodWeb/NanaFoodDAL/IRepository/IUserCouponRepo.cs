@@ -10,6 +10,6 @@ namespace NanaFoodDAL.IRepository
 {
     public interface IUserCouponRepo
     {
-        Task<ResponseDto> ApplyCoupon(UserCoupon userCoupon);
+        Task<ResponseDto> ApplyCoupon(string userID, string codeCoupon);
     }
 }

@@ -20,6 +20,42 @@ namespace NanaFoodDAL.IRepository.Repository
         readonly IMapper mapper = _mapper; 
         ResponseDto response = new ResponseDto();
 
+        public async Task<ResponseDto> CheckUserCoupon(string userId, string codeCoupon)
+        {
+            var eCart = context.CartDetails.Where(e => e.UserId == userId);
+            var totalPay = eCart.Sum(x => x.Total);
+            var eCoupon = context.Coupons.Find(codeCoupon);
+            var eUsed = context.UserCoupons.FirstOrDefault(e=>e.UserId == userId && e.CouponCode == codeCoupon);
+            if(eCoupon == null)
+            {
+                response.IsSuccess = false;
+                response.Message = "Mã giảm giá không đúng.";
+                return response;
+            }
+            if(eCoupon.MinAmount > totalPay)
+            {
+                response.IsSuccess = false;
+                response.Message = "Bạn chưa đủ điều kiện để sử dụng mã giảm giá.";
+                return response;
+            }
+            if(eCoupon.MaxUsage == 0)
+            {
+                response.IsSuccess = false;
+                response.Message = "Mã giảm giá đã hết lượt sử dụng.";
+                return response;
+            }
+            if ( eUsed is not null)
+            {
+                response.IsSuccess = false;
+                response.Message = "Bạn đã sử dụng mã giảm giá này rồi.";
+                return response;
+            }
+            response.IsSuccess = true;
+            response.Message = "OK";
+            return response;
+
+        }
+
         public async Task<ResponseDto> Create(Coupon coupon)
         {
             try
