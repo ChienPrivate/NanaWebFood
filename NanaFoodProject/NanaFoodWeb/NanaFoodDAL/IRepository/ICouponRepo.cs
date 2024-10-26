@@ -15,5 +15,6 @@ namespace NanaFoodDAL.IRepository
         Task<ResponseDto> GetById(string id, int page, int pageSize);
         Task<ResponseDto> Update(Coupon coupon);
         Task<ResponseDto> DeleteById(string id);
+        Task<ResponseDto> CheckUserCoupon(string userId, string codeCoupon);
     }
 }

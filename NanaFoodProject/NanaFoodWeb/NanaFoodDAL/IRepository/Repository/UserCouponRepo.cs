@@ -16,25 +16,33 @@ namespace NanaFoodDAL.IRepository.Repository
         ApplicationDbContext _context = context;
         IMapper _mapper = mapper;
         ResponseDto response = new ResponseDto();
-        public async Task<ResponseDto> ApplyCoupon(UserCoupon userCoupon)
+        public async Task<ResponseDto> ApplyCoupon(string userId, string codeCoupon)
         {
             try
             {
-                var euser = await _context.Users.FirstOrDefaultAsync(e => e.Id == userCoupon.UserId);
+                var eCart = _context.CartDetails.Where(e => e.UserId == userId);
+                var totalPay = eCart.Sum(x => x.Total);
+                var euser = await _context.Users.FirstOrDefaultAsync(e => e.Id == userId);
+                var ecoupon = await _context.Coupons.FirstOrDefaultAsync(e => e.CouponCode == codeCoupon);
+                var existingUserCoupon = await _context.UserCoupons.FirstOrDefaultAsync(uc => uc.UserId == userId && uc.CouponCode == codeCoupon);
                 if (euser == null)
                 {
                     response.IsSuccess = false;
                     response.Message = "Người dùng không tồn tại.";
                     return response;
                 }
-                var ecoupon = await _context.Coupons.FirstOrDefaultAsync(e => e.CouponCode == userCoupon.CouponCode);
+                if (ecoupon.MinAmount > totalPay)
+                {
+                    response.IsSuccess = false;
+                    response.Message = "Bạn chưa đủ điều kiện để sử dụng mã giảm giá.";
+                    return response;
+                }
                 if (ecoupon == null)
                 {
                     response.IsSuccess = false;
                     response.Message = "Mã giảm giá không tồn tại.";
                     return response;
                 }
-                var existingUserCoupon = await _context.UserCoupons.FirstOrDefaultAsync(uc => uc.UserId == userCoupon.UserId && uc.CouponCode == userCoupon.CouponCode);
 
                 if (existingUserCoupon != null)
                 {
@@ -59,7 +67,7 @@ namespace NanaFoodDAL.IRepository.Repository
                     response.Message = "Mã giảm giá không còn lượt sử dụng.";
                     return response;
                 }
-                if (DateTime.Now < ecoupon.CouponStartDate || DateTime.Now > ecoupon.EndStart)
+                if(ecoupon.Status == CouponStatus.Expired || ecoupon.Status == CouponStatus.Inactive)
                 {
                     response.IsSuccess = false;
                     response.Message = "Mã giảm giá đã hết hạn hoặc chưa có hiệu lực.";
@@ -72,14 +80,23 @@ namespace NanaFoodDAL.IRepository.Repository
                     return response;
                 }
 
-                userCoupon.AppliedAt = DateTime.Now;
+                var userCoupon = new UserCoupon
+                {
+                    UserId = userId,
+                    CouponCode = codeCoupon,
+                    AppliedAt = DateTime.Now
+                };
                 await _context.UserCoupons.AddAsync(userCoupon);
                 await _context.SaveChangesAsync();
                 response.Result = _mapper.Map<UserCouponDto>(userCoupon);
                 response.IsSuccess = true;
                 response.Message = "Mã giảm giá đã được áp dụng thành công.";
             }
-            catch (Exception ex) { }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = ex.Message; 
+            }
             return response;
         }
     }
