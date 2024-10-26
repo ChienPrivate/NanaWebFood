@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NanaFoodDAL.Dto;
 using NanaFoodDAL.IRepository;
+using NanaFoodDAL.Model;
 
 namespace NanaFoodApi.Controllers
 {
@@ -9,10 +12,19 @@ namespace NanaFoodApi.Controllers
     [ApiController]
     public class OrderController : ControllerBase
     {
+        private readonly SignInManager<User> _signInManager;
         private readonly IOrderRepository _orderRepository;
-        public OrderController(IOrderRepository orderRepository)
+        private readonly ICartRepo _cartRepo;
+        private readonly IMapper _mapper;
+        public OrderController(IOrderRepository orderRepository,
+            SignInManager<User> signInManager,
+            ICartRepo cartRepo,
+            IMapper mapper)
         {
+            _signInManager = signInManager;
             _orderRepository = orderRepository;
+            _cartRepo = cartRepo;
+            _mapper = mapper;
         }
 
         [HttpGet("orders")]
@@ -24,19 +36,43 @@ namespace NanaFoodApi.Controllers
         }
 
         [HttpPost("orders")]
-        public async Task<IActionResult> AddOrderAsync(OrderDto orderDto)
+        public async Task<IActionResult> AddOrderAsync([FromBody] OrderDto orderDto)
         {
-            var addOrderResponse = await _orderRepository.AddOrderAsync(orderDto);
+            var user = await _signInManager.UserManager.GetUserAsync(User);
 
-            return Ok(addOrderResponse);
-        }
+            var cart = await _cartRepo.GetCart(user);
 
-        [HttpPost("orderdetails")]
-        public async Task<IActionResult> AddOrderDetailAsync(IEnumerable<OrderDetailsDto> lisOrderdetailsDto)
-        {
-            var addOrderDetailresponse = await _orderRepository.AddOrderDetailAsync(lisOrderdetailsDto);
+            if(ModelState.IsValid)
+            {
+                List<CartResponseDto> cartItem = (List<CartResponseDto>)cart.Result;
 
-            return Ok(addOrderDetailresponse);
+                var order = _mapper.Map<Order>(orderDto);
+
+                order.UserId = user.Id;
+
+                var createdOrder = await _orderRepository.AddOrder(order);
+
+                var orderDetails = cartItem.Select(item => new OrderDetails
+                {
+                    OrderId = createdOrder.OrderId,
+                    ProductId = item.ProductId,
+                    Quantity = item.Quantity,
+                    Total = item.Total,
+                });
+
+                _orderRepository.AddOrderDetails(orderDetails);
+
+                var removeCartItem = await _cartRepo.RemoveAllCartItem(user.Id);
+
+                return Ok(new ResponseDto
+                {
+                    IsSuccess = true,
+                    Message = "Tạo hóa đơn thành công",
+                    Result = null
+                });
+            }
+
+            return BadRequest(ModelState);
         }
 
         [HttpGet("orders/{id:int}")]

@@ -1,4 +1,5 @@
-﻿using NanaFoodDAL.Dto;
+﻿using Microsoft.AspNetCore.Mvc;
+using NanaFoodDAL.Dto;
 using NanaFoodDAL.Model;
 
 namespace NanaFoodDAL.IRepository
@@ -16,6 +17,7 @@ namespace NanaFoodDAL.IRepository
         ResponseDto TopViewed(int page, int pageSize);
         ResponseDto Sorting(string sort, int page, int pageSize);
         ResponseDto ModifyStatus(int id, bool status);
+        Task<ResponseDto> GetByCategoryIdExcludeSameProduct(int productId, int categoryid, int page, int pageSize);
 
     }
 }

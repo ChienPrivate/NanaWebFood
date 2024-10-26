@@ -14,5 +14,6 @@ namespace NanaFoodDAL.IRepository
         public Task<ResponseDto> GetCart(User user);
         public Task<ResponseDto> DeleteCart(int ProductId, string UserID);
         public Task<ResponseDto> UpdateCart(int ProductId,string UserId, string message);
+        public Task<ResponseDto> RemoveAllCartItem(string userId);
     }
 }

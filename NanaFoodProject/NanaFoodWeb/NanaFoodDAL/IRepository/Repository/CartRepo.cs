@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Azure;
 using Microsoft.EntityFrameworkCore;
 using NanaFoodDAL.Context;
 using NanaFoodDAL.Dto;
@@ -84,7 +85,7 @@ namespace NanaFoodDAL.IRepository.Repository
                 var cart = from a in _context.CartDetails
                                 join b in _context.Products on a.ProductId equals b.ProductId
                                 where a.UserId == user.Id
-                                select new
+                                select new CartResponseDto
                                 {
                                     UserId = a.UserId,
                                     ProductId = a.ProductId,
@@ -95,6 +96,9 @@ namespace NanaFoodDAL.IRepository.Repository
                                     Image = b.ImageUrl,
                                 };
                 var cartList = await cart.ToListAsync();
+
+
+
                 if (cartList.Count > 0)
                 {
                     response.IsSuccess = true;
@@ -146,6 +150,28 @@ namespace NanaFoodDAL.IRepository.Repository
             response.IsSuccess = true;
             response.Message = "Cập nhật số lượng thành công";
             response.Result = new {Total = cartItem.Total, Quantity = cartItem.Quantity};
+            return response;
+        }
+
+        public async Task<ResponseDto> RemoveAllCartItem(string userId)
+        {
+            try
+            {
+                var listCart = await _context.CartDetails.Where(c => c.UserId == userId).ToListAsync();
+
+                _context.CartDetails.RemoveRange(listCart);
+                await _context.SaveChangesAsync();
+
+                response.IsSuccess= true;
+                response.Message = "Xóa danh sách thành công";
+                response.Result = listCart;
+            }
+            catch(Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = ex.Message;
+            }
+
             return response;
         }
     }

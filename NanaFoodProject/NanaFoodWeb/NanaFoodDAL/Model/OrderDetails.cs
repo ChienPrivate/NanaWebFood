@@ -17,7 +17,6 @@ namespace NanaFoodDAL.Model
         public int OrderId { get; set; }
         [ForeignKey(nameof(Product))]
         public int ProductId { get; set; }
-        public double UnitPrice { get; set; }
         public int Quantity { get; set; }
         public double Total { get; set; }
         public Order Order { get; set; }

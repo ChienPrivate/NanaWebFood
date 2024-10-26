@@ -115,5 +115,16 @@ namespace NanaFoodApi.Controllers
             }
             return Ok(response);
         }
+
+        [HttpGet("ExcludeSameProduct/{productId}")]
+        public async Task<IActionResult> GetByCategoryIdExcludeSameProduct(int productId, int categoryid, int page, int pageSize)
+        {
+            var response = await _foodService.GetByCategoryIdExcludeSameProduct(productId, categoryid, page, pageSize);
+            if (!response.IsSuccess)
+            {
+                return BadRequest(response);
+            }
+            return Ok(response);
+        }
     }
 }
