@@ -44,13 +44,26 @@ namespace NanaFoodDAL.IRepository.Repository
                     return response;
                 }
 
-                if (existingUserCoupon != null)
+                //if (existingUserCoupon != null)
+                //{
+                //    response.IsSuccess = false;
+                //    response.Message = "Bạn đã sử dụng mã giảm giá này rồi!";
+                //    return response;
+                //}
+
+                
+                if(ecoupon.Status == CouponStatus.Expired || ecoupon.Status == CouponStatus.Inactive)
                 {
                     response.IsSuccess = false;
-                    response.Message = "Bạn đã sử dụng mã giảm giá này rồi!";
+                    response.Message = "Mã giảm giá đã hết hạn hoặc chưa có hiệu lực.";
                     return response;
                 }
-
+                if (ecoupon.Status != CouponStatus.Active)
+                {
+                    response.IsSuccess = false;
+                    response.Message = "Mã giảm giá hiện không khả dụng.";
+                    return response;
+                }
                 if (ecoupon.MaxUsage > 0)
                 {
                     ecoupon.TimesUsed++;
@@ -67,19 +80,6 @@ namespace NanaFoodDAL.IRepository.Repository
                     response.Message = "Mã giảm giá không còn lượt sử dụng.";
                     return response;
                 }
-                if(ecoupon.Status == CouponStatus.Expired || ecoupon.Status == CouponStatus.Inactive)
-                {
-                    response.IsSuccess = false;
-                    response.Message = "Mã giảm giá đã hết hạn hoặc chưa có hiệu lực.";
-                    return response;
-                }
-                if (ecoupon.Status != CouponStatus.Active)
-                {
-                    response.IsSuccess = false;
-                    response.Message = "Mã giảm giá hiện không khả dụng.";
-                    return response;
-                }
-
                 var userCoupon = new UserCoupon
                 {
                     UserId = userId,
