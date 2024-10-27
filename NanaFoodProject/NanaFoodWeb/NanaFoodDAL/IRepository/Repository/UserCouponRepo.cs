@@ -43,14 +43,12 @@ namespace NanaFoodDAL.IRepository.Repository
                     response.Message = "Mã giảm giá không tồn tại.";
                     return response;
                 }
-
                 //if (existingUserCoupon != null)
                 //{
                 //    response.IsSuccess = false;
                 //    response.Message = "Bạn đã sử dụng mã giảm giá này rồi!";
                 //    return response;
                 //}
-
                 
                 if(ecoupon.Status == CouponStatus.Expired || ecoupon.Status == CouponStatus.Inactive)
                 {

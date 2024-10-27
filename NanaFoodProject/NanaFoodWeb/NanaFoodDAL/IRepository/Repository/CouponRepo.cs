@@ -74,10 +74,28 @@ namespace NanaFoodDAL.IRepository.Repository
                 if ((coupon.EndStart - coupon.CouponStartDate).TotalDays > 7)
                 {
                     response.IsSuccess = false;
+                    response.Message = "Ngày kết thúc không thể trước ngày bắt đầu.";
+                    return response;
+                }
+                if ((coupon.EndStart - coupon.CouponStartDate).TotalDays > 7)
+                {
+                    response.IsSuccess = false;
                     response.Message = "Ngày kết thúc không được lớn hơn 7 ngày so với ngày bắt đầu.";
                     return response;
                 }
 
+                if (coupon.MinAmount <= 0)
+                {
+                    response.IsSuccess = false;
+                    response.Message = "Giá trị đơn hàng tối thiểu không hợp lệ. Phải lớn hơn 0.";
+                    return response;
+                }
+                if (coupon.MaxUsage <= 0)
+                {
+                    response.IsSuccess = false;
+                    response.Message = "Số lần sử dụng tối đa phải lớn hơn 0.";
+                    return response;
+                }
                 var existingCoupon = await context.Coupons.AsNoTracking()
                     .FirstOrDefaultAsync(e => e.CouponCode == coupon.CouponCode);
                 if (existingCoupon != null)
@@ -221,13 +239,58 @@ namespace NanaFoodDAL.IRepository.Repository
         {
             try
             {
-                var existingCoupon = await _context.Coupons.FirstOrDefaultAsync(c => c.CouponCode == coupon.CouponCode);
-                if (existingCoupon == null)
+                coupon.CouponCode = coupon.CouponCode.ToLower();
+
+                var couponType = await context.CouponTypes.AsNoTracking()
+                    .FirstOrDefaultAsync(e => e.CouponTypeId == coupon.CouponTypeId);
+                if (couponType == null)
                 {
                     response.IsSuccess = false;
-                    response.Message = "Mã giảm giá không tồn tại.";
+                    response.Message = "Loại mã giảm giá không tồn tại.";
                     return response;
                 }
+
+                if ((coupon.EndStart - coupon.CouponStartDate).TotalDays > 7)
+                {
+                    response.IsSuccess = false;
+                    response.Message = "Ngày kết thúc không thể trước ngày bắt đầu.";
+                    return response;
+                }
+                if ((coupon.EndStart - coupon.CouponStartDate).TotalDays > 7)
+                {
+                    response.IsSuccess = false;
+                    response.Message = "Ngày kết thúc không được lớn hơn 7 ngày so với ngày bắt đầu.";
+                    return response;
+                }
+
+                if (coupon.MinAmount <= 0)
+                {
+                    response.IsSuccess = false;
+                    response.Message = "Giá trị đơn hàng tối thiểu không hợp lệ. Phải lớn hơn 0.";
+                    return response;
+                }
+                if (coupon.MaxUsage <= 0)
+                {
+                    response.IsSuccess = false;
+                    response.Message = "Số lần sử dụng tối đa phải lớn hơn 0.";
+                    return response;
+                }
+                var existingCoupon = await context.Coupons.AsNoTracking()
+                    .FirstOrDefaultAsync(e => e.CouponCode == coupon.CouponCode);
+                if (existingCoupon != null)
+                {
+                    if (existingCoupon.Status == CouponStatus.Block)
+                    {
+                        response.IsSuccess = false;
+                        response.Message = "Mã giảm giá này đang bị khoá. Vui lòng tạo lại!";
+                        return response;
+                    }
+                    response.IsSuccess = false;
+                    response.Message = "Mã giảm giá này đã sử dụng.";
+                    return response;
+                }
+
+                // Thiết lập trạng thái mã giảm giá
                 CouponStatus couponStatus;
                 var currentDate = DateTime.Now;
 
