@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NanaFoodDAL.Context;
 
@@ -11,9 +12,11 @@ using NanaFoodDAL.Context;
 namespace NanaFoodApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241027064612_add Total Column to Orders")]
+    partial class addTotalColumntoOrders
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -173,7 +176,7 @@ namespace NanaFoodApi.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("CartDetails", (string)null);
+                    b.ToTable("CartDetails");
                 });
 
             modelBuilder.Entity("NanaFoodDAL.Model.Category", b =>
@@ -199,7 +202,7 @@ namespace NanaFoodApi.Migrations
 
                     b.HasKey("CategoryId");
 
-                    b.ToTable("Category", (string)null);
+                    b.ToTable("Category");
                 });
 
             modelBuilder.Entity("NanaFoodDAL.Model.Coupon", b =>
@@ -263,7 +266,7 @@ namespace NanaFoodApi.Migrations
 
                     b.HasKey("CouponTypeId");
 
-                    b.ToTable("CouponType", (string)null);
+                    b.ToTable("CouponType");
                 });
 
             modelBuilder.Entity("NanaFoodDAL.Model.Order", b =>
@@ -321,7 +324,7 @@ namespace NanaFoodApi.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Order", (string)null);
+                    b.ToTable("Order");
                 });
 
             modelBuilder.Entity("NanaFoodDAL.Model.OrderDetails", b =>
@@ -342,7 +345,7 @@ namespace NanaFoodApi.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderDetails", (string)null);
+                    b.ToTable("OrderDetails");
                 });
 
             modelBuilder.Entity("NanaFoodDAL.Model.Product", b =>
@@ -381,7 +384,7 @@ namespace NanaFoodApi.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Product", (string)null);
+                    b.ToTable("Product");
                 });
 
             modelBuilder.Entity("NanaFoodDAL.Model.ProductChangeLog", b =>
@@ -428,7 +431,7 @@ namespace NanaFoodApi.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductChangeLog", (string)null);
+                    b.ToTable("ProductChangeLog");
                 });
 
             modelBuilder.Entity("NanaFoodDAL.Model.Review", b =>
@@ -457,7 +460,7 @@ namespace NanaFoodApi.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Review", (string)null);
+                    b.ToTable("Review");
                 });
 
             modelBuilder.Entity("NanaFoodDAL.Model.SearchHistory", b =>
@@ -480,7 +483,7 @@ namespace NanaFoodApi.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("SearchHistory", (string)null);
+                    b.ToTable("SearchHistory");
                 });
 
             modelBuilder.Entity("NanaFoodDAL.Model.User", b =>
@@ -586,7 +589,7 @@ namespace NanaFoodApi.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserCoupons", (string)null);
+                    b.ToTable("UserCoupons");
                 });
 
             modelBuilder.Entity("NanaFoodDAL.Model.WishList", b =>
@@ -601,7 +604,7 @@ namespace NanaFoodApi.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("WishList", (string)null);
+                    b.ToTable("WishList");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

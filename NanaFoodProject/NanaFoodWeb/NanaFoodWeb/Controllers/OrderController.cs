@@ -1,29 +1,28 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using NanaFoodWeb.IRepository;
 using NanaFoodWeb.Models;
 using NanaFoodWeb.Models.Dto;
 using NanaFoodWeb.Models.Momo;
-using NanaFoodWeb.Models.VNPay;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
 
 namespace NanaFoodWeb.Controllers
 {
+    [Authorize(Roles = "customer")]
     public class OrderController : Controller
     {
         private readonly IOrderRepository _orderRepository;
         private readonly ITokenProvider _tokenProvider;
         private readonly ICartRepo _cartRepo;
-        private readonly HttpClient _client;
-        public OrderController(IOrderRepository orderService, ITokenProvider tokenProvider, ICartRepo cartRepo, HttpClient client)
+        public OrderController(IOrderRepository orderService, ITokenProvider tokenProvider, ICartRepo cartRepo)
         {
             _orderRepository = orderService;
             _tokenProvider = tokenProvider;
             _cartRepo = cartRepo;
-            _client = client;
         }
 
         public async Task<IActionResult> Index()
@@ -67,8 +66,9 @@ namespace NanaFoodWeb.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Payment(Order order,int total)
+        public async Task<IActionResult> Payment(Order order, int total)
         {
+            order.Total = total;
             HttpContext.Session.Set<Order>("order", order);
             HttpContext.Session.Set<int>("total", total);
             if (ModelState.IsValid)
@@ -103,29 +103,35 @@ namespace NanaFoodWeb.Controllers
                 return View();
             }
 
-            return RedirectToAction("Index","Order");
-        }
-
-        private async Task getCartDetails()
-        {
-            var resquest = new HttpRequestMessage(HttpMethod.Get, _client.BaseAddress + "/Cart/cart-details");
-            resquest.Headers.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("Token"));
-            var response = await _client.SendAsync(resquest);
-            if (response.IsSuccessStatusCode)
-            {
-                var data = await response.Content.ReadAsStringAsync();
-                ViewBag.cartdetails = JsonConvert.DeserializeObject<List<CartDetails>>(data);
-            }
+            return RedirectToAction("Index", "Home");
         }
 
         public async Task<IActionResult> OrderHistory()
         {
-            return View();
+            var token = _tokenProvider.GetToken();
 
+            var userId = _tokenProvider.ReadToken("nameid", token);
+
+            var response = await _orderRepository.GetUserOrderIdAsync(userId);
+
+            var orders = JsonConvert.DeserializeObject<List<Order>>(response.Result.ToString());
+
+            return View(orders);
         }
-        public async Task<IActionResult> OrderHistoryDetail()
+
+
+        public async Task<IActionResult> OrderHistoryDetail(int id)
         {
-            return View();
+            var response = await _orderRepository.GetOrderByIdAsync(id);
+
+            if (response.IsSuccess)
+            {
+                var order = JsonConvert.DeserializeObject<Order>(response.Result.ToString());
+
+                return View(order);
+            }
+
+            return View(new Order());
 
         }
         public async Task<IActionResult> OrderTracking()
@@ -138,28 +144,36 @@ namespace NanaFoodWeb.Controllers
         {
             var response = await _orderRepository.AddOrderAsync(order);
 
-
-
             if (response.IsSuccess)
             {
                 TempData["success"] = response.Message;
                 return RedirectToAction("PaymentSuccess", "Order");
             }
+
             TempData["error"] = "Phát sinh lỗi trong quá trình đặt đơn";
-            return RedirectToAction("Payment", "Order");
+            return RedirectToAction("PaymentError", "Order");
         }
 
         [HttpGet]
         public IActionResult PaymentSuccess()
         {
             var order = HttpContext.Session.Get<Order>("order");
-            ViewBag.total =  HttpContext.Session.Get<int>("total");
+            ViewBag.total = HttpContext.Session.Get<int>("total");
 
 
             return View(order);
         }
 
-        
+        [HttpGet]
+        public IActionResult PaymentError()
+        {
+            var order = HttpContext.Session.Get<Order>("order");
+            ViewBag.total = HttpContext.Session.Get<int>("total");
+
+            return View(order);
+        }
+
+
 
         #region Momo
         public async Task<IActionResult> MomoReturn()
@@ -172,7 +186,7 @@ namespace NanaFoodWeb.Controllers
                 return await COD(order);
             }
             TempData["error"] = "Phát sinh lỗi trong quá trình đặt đơn";
-            return RedirectToAction("Payment", "Order");
+            return RedirectToAction("PaymentError", "Order");
         }
         #endregion
 
@@ -187,7 +201,7 @@ namespace NanaFoodWeb.Controllers
                 return await COD(order);
             }
             TempData["error"] = "Phát sinh lỗi trong quá trình đặt đơn";
-            return RedirectToAction("Payment", "Order");
+            return RedirectToAction("PaymentFailure", "Order");
         }
         #endregion
 

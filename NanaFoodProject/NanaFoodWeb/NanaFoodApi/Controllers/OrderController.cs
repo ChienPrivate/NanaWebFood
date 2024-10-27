@@ -68,7 +68,7 @@ namespace NanaFoodApi.Controllers
                 {
                     IsSuccess = true,
                     Message = "Tạo hóa đơn thành công",
-                    Result = null
+                    Result = createdOrder.OrderId
                 });
             }
 
