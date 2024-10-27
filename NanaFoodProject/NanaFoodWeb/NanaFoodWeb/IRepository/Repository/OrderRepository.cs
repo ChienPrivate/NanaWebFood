@@ -1,5 +1,6 @@
 ﻿using NanaFoodWeb.Models;
 using NanaFoodWeb.Models.Dto;
+using NanaFoodWeb.Models.Dto.ViewModels;
 using NanaFoodWeb.Models.Momo;
 using NanaFoodWeb.Models.VNPay;
 using NanaFoodWeb.Utility;
@@ -24,6 +25,17 @@ namespace NanaFoodWeb.IRepository.Repository
                 Url = StaticDetails.APIBase + "/api/Order/orders"
             });
         }
+
+        public async Task<ResponseDto> CancelOrderAsync(int orderId)
+        {
+            return await _baseService.SendAsync(new RequestDto
+            {
+                ApiType = ApiType.POST,
+                Url = StaticDetails.APIBase + $"/api/Order/orders/{orderId}",
+            });
+        }
+
+
 
         public async Task<ResponseDto> CalculateShippingFees(CalculateShippingFeeRequestDto requestDto)
         {
@@ -180,6 +192,51 @@ namespace NanaFoodWeb.IRepository.Repository
             string paymentUrl = vnpay.CreateRequestUrl(vnp_Url, vnp_HashSecret);
 
             return paymentUrl;
+        }
+
+        public async Task<ResponseDto> GetOrderByIdAsync(int id)
+        {
+            return await _baseService.SendAsync(new RequestDto
+            {
+                ApiType = ApiType.GET,
+                Url = APIBase + $"/api/Order/orders/{id}"
+            });
+        }
+
+        public async Task<ResponseDto> GetUserOrderIdAsync(string UserId)
+        {
+            return await _baseService.SendAsync(new RequestDto
+            {
+                ApiType = ApiType.GET,
+                Url = APIBase + $"/api/Order/orders/{UserId}"
+            });
+        }
+
+        public async Task<ResponseDto> GetOrderDetailsAsync(int OrderId)
+        {
+            return await _baseService.SendAsync(new RequestDto
+            {
+                ApiType = ApiType.GET,
+                Url = APIBase + $"/api/Order/ordersdetails/{OrderId}"
+            });
+        }
+
+        public async Task<ResponseDto> CalculateProfitAsync()
+        {
+            return await _baseService.SendAsync(new RequestDto
+            {
+                ApiType = ApiType.GET,
+                Url = APIBase + $"/api/Order/profit"
+            });
+        }
+
+        public async Task<ResponseDto> UpdateOrderStatus(int OrderId, string message)
+        {
+            return await _baseService.SendAsync(new RequestDto
+            {
+                ApiType = ApiType.PUT,
+                Url = APIBase + $"/api/Order/profit/orders/{OrderId}&{message}"
+            });
         }
     }
 }

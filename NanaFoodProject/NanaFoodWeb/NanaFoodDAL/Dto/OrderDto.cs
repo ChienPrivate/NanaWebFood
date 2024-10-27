@@ -24,8 +24,11 @@ namespace NanaFoodDAL.Dto
         public string OrderStatus { get; set; }
         [Required(ErrorMessage = "Phí ship không được để trống")]
         public int ShipmentFee { get; set; }
+        public string? Note { get; set; }
         [Required(ErrorMessage = "Mã người dùng không được để trống")]
         public string UserId { get; set; }
+        [Required(ErrorMessage = "KHông được để trống hóa đơn")]
+        public double Total { get; set; }
         [Required(ErrorMessage = "Ngày đặt hàng không được trống")]
         public DateTime OrderDate { get; set; } = DateTime.Now;
         public DateTime ReceiveDate { get; set; }

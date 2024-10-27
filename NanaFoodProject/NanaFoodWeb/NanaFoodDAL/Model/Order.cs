@@ -21,6 +21,7 @@ namespace NanaFoodDAL.Model
         public string OrderStatus { get; set; }
         public int ShipmentFee { get; set; }
         public string? Note { get; set; }
+        public double Total { get; set; }
         public DateTime OrderDate { get; set; } = DateTime.Now;
         public DateTime ReceiveDate { get; set; }
         [ForeignKey(nameof(User))]
