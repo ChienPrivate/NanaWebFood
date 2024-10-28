@@ -202,5 +202,77 @@
         <member name="M:NanaFoodApi.Migrations.UpdatecouponUser.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
+        <member name="T:NanaFoodApi.Migrations.addcolunmNotetoOrder">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.addcolunmNotetoOrder.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.addcolunmNotetoOrder.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.addcolunmNotetoOrder.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:NanaFoodApi.Migrations.addTotalColumntoOrders">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.addTotalColumntoOrders.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.addTotalColumntoOrders.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.addTotalColumntoOrders.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:NanaFoodApi.Migrations.RemoveProductIdFromReview">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.RemoveProductIdFromReview.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.RemoveProductIdFromReview.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.RemoveProductIdFromReview.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:NanaFoodApi.Migrations.RemoveReviewsFromProduct">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.RemoveReviewsFromProduct.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.RemoveReviewsFromProduct.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.RemoveReviewsFromProduct.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:NanaFoodApi.Migrations.AddOrderDetailToReview">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.AddOrderDetailToReview.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.AddOrderDetailToReview.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.AddOrderDetailToReview.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:NanaFoodApi.Migrations.addcolIsReviewedtoOrderDetails">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.addcolIsReviewedtoOrderDetails.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.addcolIsReviewedtoOrderDetails.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.addcolIsReviewedtoOrderDetails.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
     </members>
 </doc>

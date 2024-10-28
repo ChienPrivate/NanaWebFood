@@ -134,7 +134,7 @@ namespace NanaFoodWeb.Controllers
 
             return View();
         }
-        public async Task <IActionResult>FilterCategory(int categoryid, int page, int pageSize)
+        public async Task<IActionResult>FilterCategory(int categoryid, int page, int pageSize)
         {
             ViewData["Action"] = "FilterCategory";
 
@@ -164,7 +164,7 @@ namespace NanaFoodWeb.Controllers
                     ModelState.AddModelError("", $"Error deserializing JSON: {ex.Message}");
                 }
             }
-            var reponse = _productRepo.GetByCategoryId(categoryid, page, pageSize);
+            var reponse = await _productRepo.GetByCategoryId(categoryid, page, pageSize);
             if (reponse.IsSuccess)
             {
                 var productList = JsonConvert.DeserializeObject<ProductVM>(reponse.Result.ToString());

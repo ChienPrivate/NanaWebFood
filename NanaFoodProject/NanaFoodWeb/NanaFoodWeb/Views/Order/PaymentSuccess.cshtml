@@ -1,0 +1,49 @@
+﻿@model Order
+@{
+    int total = ViewBag.total;
+}
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header text-center bg-success text-white">
+            <h4>Thông tin đơn hàng</h4>
+        </div>
+        <div class="card-body text-center">
+            <div class="mb-4">
+                <img src="https://img.icons8.com/color/96/000000/checkmark.png" alt="Success">
+                <h5 class="mt-3">Thanh toán thành công</h5>
+                <p>Đơn hàng của quý khách đã được thanh toán thành công</p>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <td><strong>Họ và tên</strong></td>
+                            <td>@Model.FullName</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Thanh toán</strong></td>
+                            <td>@total.ToString("#,##") VNĐ</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Địa chỉ nhận hàng</strong></td>
+                            <td>@Model.Address</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Số điện thoại</strong></td>
+                            <td>@Model.PhoneNumber</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Phương thức thanh toán</strong></td>
+                            <td>@Model.PaymentType</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- Thêm các nút điều hướng dưới bảng thông tin -->
+            <div class="mt-4">
+                <a asp-controller="Home" asp-action="Index" class="btn btn-primary mr-2">Trở về trang chủ</a>
+                <a asp-controller="Order" asp-action="OrderHistory" class="btn btn-secondary">Xem lịch sử đơn hàng</a>
+            </div>
+        </div>
+    </div>
+</div>

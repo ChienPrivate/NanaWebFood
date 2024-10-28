@@ -245,13 +245,14 @@ namespace NanaFoodWeb.Controllers
 
 
         [HttpGet("CDetails/{id}")]
-        public IActionResult CDetails(int id)
+        public IActionResult CDetails(int id, int currentPage = 1)
         {
             var response = _productRepo.GetById(id);
 
             if (response?.IsSuccess == true && response.Result != null)
             {
                 var productDto = JsonConvert.DeserializeObject<ProductDto>(response.Result.ToString());
+                ViewData["CurrentPage"] = currentPage;
                 return View(productDto);
             }
 

@@ -87,6 +87,8 @@ namespace NanaFoodWeb.IRepository.Repository
                         return new() { IsSuccess = false, Message = "401: Unauthorized" };
                     case HttpStatusCode.InternalServerError:
                         return new() { IsSuccess = false, Message = "500: Internal Sever Error" };
+                    case HttpStatusCode.BadRequest:
+                        return new() { IsSuccess = false, Message = "400: Bad Request" };
                     default:
                         var apiContent = await apiResponse.Content.ReadAsStringAsync();
 
@@ -94,7 +96,7 @@ namespace NanaFoodWeb.IRepository.Repository
 
                         apiResponseDTO = JsonConvert.DeserializeObject<ResponseDto>(apiContent);
 
-                        if (!string.IsNullOrEmpty(apiContent) && apiResponseDTO.Result == null && apiResponseDTO.Message == "Success")
+                        if (!string.IsNullOrEmpty(apiContent) && apiResponseDTO.Result == null && apiResponseDTO.Message == "Success" || apiResponseDTO.Message == "Successful.")
                         {
                             apiResponseDTO = new ResponseDto
                             {

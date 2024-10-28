@@ -78,7 +78,23 @@ namespace NanaFoodDAL.IRepository.Repository
         {
             try
             {
-                
+                if (isSelectAll == false)
+                {
+                    var ActiveProducts = _context.Products.Where(p => p.IsActive == true).ToList();
+                    var totalCountActiveProducts = ActiveProducts.Count;
+                    var totalPagesActiveProducts = (int)Math.Ceiling((decimal)totalCountActiveProducts / pageSize);
+
+                    response.Result = new
+                    {
+                        TotalCount = totalCountActiveProducts,
+                        TotalPages = totalPagesActiveProducts,
+                        Products = _mapper.Map<List<ProductDto>>(ActiveProducts)
+                    };
+                    response.IsSuccess = true;
+                    response.Message = "Lấy danh sách món ăn thành công.";
+
+                    return response;
+                }
                 var products = _context.Products.ToList();
                 var totalCount = products.Count;
                 var totalPages = (int)Math.Ceiling((decimal)totalCount / pageSize);
@@ -307,6 +323,33 @@ namespace NanaFoodDAL.IRepository.Repository
             {
                 response.IsSuccess = false;
                 response.Message = "Loại món này không tồn tại";
+            }
+            return response;
+        }
+
+        public async Task<ResponseDto> GetByCategoryIdExcludeSameProduct(int productId,int categoryid, int page, int pageSize)
+        {
+            try
+            {
+                var products = await _context.Products.Where(p => p.CategoryId == categoryid && p.ProductId != productId).ToListAsync();
+                var totalCount = products.Count;
+                var totalPages = (int)Math.Ceiling((decimal)totalCount / pageSize);
+                var productsPerPage = products
+                    .Skip((page - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToList();
+                response.Result = new
+                {
+                    TotalCount = totalCount,
+                    TotalPages = totalPages,
+                    Products = _mapper.Map<List<ProductDto>>(productsPerPage)
+                };
+                response.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = ex.Message;
             }
             return response;
         }

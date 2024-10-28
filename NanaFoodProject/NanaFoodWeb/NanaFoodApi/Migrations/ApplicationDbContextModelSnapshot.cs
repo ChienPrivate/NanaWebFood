@@ -282,6 +282,9 @@ namespace NanaFoodApi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Note")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
@@ -307,6 +310,9 @@ namespace NanaFoodApi.Migrations
                     b.Property<int>("ShipmentFee")
                         .HasColumnType("int");
 
+                    b.Property<double>("Total")
+                        .HasColumnType("float");
+
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -326,13 +332,13 @@ namespace NanaFoodApi.Migrations
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsReviewed")
+                        .HasColumnType("bit");
+
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
                     b.Property<double>("Total")
-                        .HasColumnType("float");
-
-                    b.Property<double>("UnitPrice")
                         .HasColumnType("float");
 
                     b.HasKey("ProductId", "OrderId");
@@ -438,11 +444,17 @@ namespace NanaFoodApi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<double>("Rating")
                         .HasColumnType("float");
+
+                    b.Property<DateTime>("ReviewedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -450,9 +462,10 @@ namespace NanaFoodApi.Migrations
 
                     b.HasKey("ReviewId");
 
-                    b.HasIndex("ProductId");
-
                     b.HasIndex("UserId");
+
+                    b.HasIndex("OrderId", "ProductId")
+                        .IsUnique();
 
                     b.ToTable("Review");
                 });
@@ -736,19 +749,19 @@ namespace NanaFoodApi.Migrations
 
             modelBuilder.Entity("NanaFoodDAL.Model.Review", b =>
                 {
-                    b.HasOne("NanaFoodDAL.Model.Product", "Product")
-                        .WithMany("Reviews")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("NanaFoodDAL.Model.User", "User")
                         .WithMany("Reviews")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Product");
+                    b.HasOne("NanaFoodDAL.Model.OrderDetails", "OrderDetails")
+                        .WithOne("Review")
+                        .HasForeignKey("NanaFoodDAL.Model.Review", "OrderId", "ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("OrderDetails");
 
                     b.Navigation("User");
                 });
@@ -817,6 +830,12 @@ namespace NanaFoodApi.Migrations
                     b.Navigation("OrderDetails");
                 });
 
+            modelBuilder.Entity("NanaFoodDAL.Model.OrderDetails", b =>
+                {
+                    b.Navigation("Review")
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("NanaFoodDAL.Model.Product", b =>
                 {
                     b.Navigation("CartDetails");
@@ -824,8 +843,6 @@ namespace NanaFoodApi.Migrations
                     b.Navigation("OrderDetails");
 
                     b.Navigation("ProductChangeLogs");
-
-                    b.Navigation("Reviews");
 
                     b.Navigation("WishLists");
                 });

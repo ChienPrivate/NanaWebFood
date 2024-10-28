@@ -13,7 +13,7 @@ namespace NanaFoodDAL.Dto
         public int OrderId { get; set; }
         public int ProductId { get; set; }
         public string ProductName { get; set; }
-        public double UnitPrice { get; set; }
+        public bool IsReviewed { get; set; }
         public int Quantity { get; set; }
         public double Total { get; set; }
     }

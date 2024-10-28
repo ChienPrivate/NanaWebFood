@@ -11,13 +11,15 @@ namespace NanaFoodDAL.IRepository
     public interface IOrderRepository
     {
         Task<ResponseDto> GetAllOrderAync();
-        Task<ResponseDto> AddOrderAsync(OrderDto orderDto);
-        Task<ResponseDto> AddOrderDetailAsync(IEnumerable<OrderDetailsDto> lisOrderdetailsDto);
+        Task<Order> AddOrder(Order order);
+        void AddOrderDetails(IEnumerable<OrderDetails> lisOrderdetails);
         Task<ResponseDto> GetOrderByIdAsync(int id);
         Task<ResponseDto> GetUserOrderIdAsync(string UserId);
         Task<ResponseDto> GetOrderDetailsAsync(int OrderId);
         Task<ResponseDto> CalculateProfitAsync();
         Task<ResponseDto> UpdateOrderStatus(int OrderId, string message);
         Task<ResponseDto> CancelOrderAsync(int OrderId);
+
+
     }
 }

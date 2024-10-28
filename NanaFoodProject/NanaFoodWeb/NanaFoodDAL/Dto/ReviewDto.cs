@@ -20,5 +20,8 @@ namespace NanaFoodDAL.Dto
         public string UserId { get; set; }
         [Required(ErrorMessage = "Mã sản phẩm không thể trống")]
         public int ProductId { get; set; }
+        [Required(ErrorMessage = "Mã đơn hàng không thể trống")]
+        public int OrderId { get; set; }
+        public DateTime ReviewedDate { get; set; } = DateTime.Now;
     }
 }

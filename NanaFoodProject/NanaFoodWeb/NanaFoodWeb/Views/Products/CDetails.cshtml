@@ -6,8 +6,12 @@
         </div>
         <div class="col-6" style="position: relative; top: 0px; left: 57px;">
             <div class="h2 fw-bold text-warning">@Model.ProductName.ToUpper()</div>
+            <div class="h6 py-1">Lượt xem : @Model.View <i class="bi bi-eye-fill"></i> | Đánh giá sản phẩm : </div>
             <div class="h5">Giá : @Model.Price.ToString("#,##") vnđ</div>
-            <div class="h6 py-1">Lượt xem : @Model.View</div>
+            <div class="h6 py-1">Mô tả:</div>
+            <div class="fs-6">
+                @Model.Description
+            </div>
             <div class="h6 py-1">Số lượng :</div>
             <form asp-action="AddToCart" asp-controller="Cart" asp-route-id="@Model.ProductId" method="post" enctype="multipart/form-data">
                 <div class="btn-group w-50 py-1">
@@ -21,6 +25,10 @@
             </form>
         </div>
     </div>
+    <div class="container-fluid">
+
+    </div>
+</div>
     <script>
         function increase() {
             document.getElementById('quantity').value++;

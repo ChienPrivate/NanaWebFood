@@ -37,13 +37,13 @@ namespace NanaFoodWeb.IRepository.Repository
             }).Result;
         }
 
-        public ResponseDto GetByCategoryId(int categoryid, int page, int pageSize)
+        public async Task<ResponseDto> GetByCategoryId(int categoryid, int page, int pageSize)
         {
-            return _baseService.SendAsync(new RequestDto()
+            return await _baseService.SendAsync(new RequestDto()
             {
                 ApiType = StaticDetails.ApiType.GET,
                 Url = StaticDetails.APIBase + $"/api/Product/FilterCategoryID/{categoryid}?page={page}&pageSize={pageSize}"
-            }).Result;
+            });
         }
         public ResponseDto Update(ProductDto product)
         {
@@ -100,6 +100,13 @@ namespace NanaFoodWeb.IRepository.Repository
             throw new NotImplementedException();
         }
 
-       
+        public async Task<ResponseDto> GetByCategoryIdExcludeSameProduct(int productId, int categoryid, int page, int pageSize)
+        {
+            return await _baseService.SendAsync(new RequestDto()
+            {
+                ApiType = StaticDetails.ApiType.GET,
+                Url = StaticDetails.APIBase + $"/api/Product/ExcludeSameProduct/{productId}?categoryid={categoryid}&page={page}&pageSize={pageSize}"
+            });
+        }
     }
 }
