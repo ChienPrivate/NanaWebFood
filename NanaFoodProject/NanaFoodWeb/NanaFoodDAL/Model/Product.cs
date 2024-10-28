@@ -21,7 +21,6 @@ namespace NanaFoodDAL.Model
         public int CategoryId { get; set; }
         public Category Category { get; set; }
         public List<ProductChangeLog> ProductChangeLogs { get; set; } 
-        public List<Review> Reviews { get; set; }
         public List<CartDetails> CartDetails { get; set; }
         public List<OrderDetails> OrderDetails { get; set; }
         public List<WishList> WishLists { get; set; }

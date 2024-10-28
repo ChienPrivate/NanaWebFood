@@ -3,18 +3,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace NanaFoodWeb.Models
 {
-    [Table("Review")]
     public class Review
     {
-        [Key]
         public Guid ReviewId { get; set; } = Guid.NewGuid();
         public string Comment { get; set; }
         public double Rating { get; set; }
-        [ForeignKey(nameof(User))]
-        public string UserId { get; set; }
-        [ForeignKey(nameof(Product))]
+        public string? UserId { get; set; }
         public int ProductId { get; set; }
-        public User User { get; set; }
-        public Product Product { get; set; }
+        public int OrderId { get; set; }
+        public DateTime ReviewedDate { get; set; } = DateTime.Now;
     }
 }

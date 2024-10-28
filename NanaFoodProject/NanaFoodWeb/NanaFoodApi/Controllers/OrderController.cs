@@ -66,8 +66,8 @@ namespace NanaFoodApi.Controllers
 
                 return Ok(new ResponseDto
                 {
+                    Message = "Tạo đơn hàng thành công",
                     IsSuccess = true,
-                    Message = "Tạo hóa đơn thành công",
                     Result = createdOrder.OrderId
                 });
             }
