@@ -89,6 +89,7 @@ namespace NanaFoodDAL.IRepository.Repository
             try
             {
                 await _context.Reviews.AddAsync(_mapper.Map<Review>(reviewDto));
+
                 await _context.SaveChangesAsync();
 
                 _response.IsSuccess = true;
@@ -102,7 +103,6 @@ namespace NanaFoodDAL.IRepository.Repository
                 _response.Result = reviewDto;
             }
 
-
             return _response;
         }
 
@@ -110,7 +110,7 @@ namespace NanaFoodDAL.IRepository.Repository
         {
             var productReview = await _context.Reviews.Where(r => r.ProductId == productId).ToListAsync();
 
-            if(productReview != null)
+            if (productReview != null)
             {
                 _response.IsSuccess = true;
                 _response.Message = $"Lấy thành công danh sách đánh giá của sản phẩm";
@@ -131,5 +131,66 @@ namespace NanaFoodDAL.IRepository.Repository
             throw new NotImplementedException();
         }
 
+        public async Task<ResponseDto> GetOrderDetailsByOrderId(int orderId)
+        {
+            try
+            {
+                var orderDetails = await _context.OrderDetails
+                .Where(o => o.OrderId == orderId && o.IsReviewed == false)
+                .Include(o => o.Product)
+                .ToListAsync();
+
+                var productReview = orderDetails.Select(o => new ReviewProductDto
+                {
+                    ProductId = o.ProductId,
+                    ProductImage = o.Product.ImageUrl,
+                    ProductName = o.Product.ProductName,
+                    OrderId = orderId,
+                });
+
+                _response.IsSuccess = true;
+                _response.Message = "Lấy danh sách sản phẩm cần đánh giá thành công";
+                _response.Result = productReview;
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message += ex.Message;
+            }
+            return _response;
+
+        }
+
+        public Task<double> CalculateAvgRating(int productId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<ResponseDto> UpdateOrderDetailsReviewState(int orderId, int productId, bool IsReviewState)
+        {
+            var orderDetails = await _context.OrderDetails.FirstOrDefaultAsync(o => o.OrderId == orderId && o.ProductId == productId);
+
+            if (orderDetails != null)
+            {
+                orderDetails.IsReviewed = IsReviewState;
+
+                var result =  await _context.SaveChangesAsync();
+                if (result > 0)
+                {
+                    _response.IsSuccess = true;
+                    _response.Message = "Cập nhật trạng thái thành công";
+                    _response.Result = orderDetails;
+                }
+            }
+            else
+            {
+                _response.IsSuccess = false;
+                _response.Message = "Xảy ra lỗi trong quá trình cập nhật trạng thái";
+                _response.Result = orderDetails;
+            }
+
+            return _response;
+
+        }
     }
 }

@@ -12,9 +12,11 @@ namespace NanaFoodDAL.Model
         public double Rating { get; set; }
         [ForeignKey(nameof(User))]
         public string UserId { get; set; }
-        [ForeignKey(nameof(Product))]
         public int ProductId { get; set; }
+        public int OrderId { get; set; }
+        public DateTime ReviewedDate { get; set; } = DateTime.Now;
         public User User { get; set; }
-        public Product Product { get; set; }
+        [ForeignKey("OrderId,ProductId")]
+        public OrderDetails OrderDetails { get; set; }
     }
 }
