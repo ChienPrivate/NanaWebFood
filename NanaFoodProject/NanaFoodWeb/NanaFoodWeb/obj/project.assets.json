@@ -12209,19 +12209,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Admin\\.nuget\\packages\\": {}
+    "C:\\Users\\Admin01\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Admin\\Desktop\\New folder (5)\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodWeb\\NanaFoodWeb.csproj",
+      "projectUniqueName": "D:\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodWeb\\NanaFoodWeb.csproj",
       "projectName": "NanaFoodWeb",
-      "projectPath": "C:\\Users\\Admin\\Desktop\\New folder (5)\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodWeb\\NanaFoodWeb.csproj",
-      "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Admin\\Desktop\\New folder (5)\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodWeb\\obj\\",
+      "projectPath": "D:\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodWeb\\NanaFoodWeb.csproj",
+      "packagesPath": "C:\\Users\\Admin01\\.nuget\\packages\\",
+      "outputPath": "D:\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodWeb\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Admin01\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -12236,8 +12241,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\Admin\\Desktop\\New folder (5)\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\NanaFoodDAL.csproj": {
-              "projectPath": "C:\\Users\\Admin\\Desktop\\New folder (5)\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\NanaFoodDAL.csproj"
+            "D:\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\NanaFoodDAL.csproj": {
+              "projectPath": "D:\\DATN\\NanaWebFood\\NanaFoodProject\\NanaFoodWeb\\NanaFoodDAL\\NanaFoodDAL.csproj"
             }
           }
         }
@@ -12305,7 +12310,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.302/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
