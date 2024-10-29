@@ -12,7 +12,7 @@
             <th>Trạng thái đơn hàng</th>
             <th>Phí ship</th>
             <th>Tổng đơn hàng</th>
-            <th></th>
+            <th>Thao tác</th>
         </tr>
     </thead>
     <tbody>
@@ -56,7 +56,14 @@
                     </td>
                     <th>@item.ShipmentFee.ToString("#,##") VNĐ</th>
                     <th>@item.Total.ToString("#,##") VNĐ</th>
-                    <td> <a asp-action="OrderHistoryDetail" asp-controller="Order" asp-route-id="@item.OrderId" class="btn btn-sm btn-outline-dark">Xem chi tiết</a></td>
+                    <td> 
+                        <a asp-action="OrderHistoryDetail" asp-controller="Order" asp-route-id="@item.OrderId" class="btn btn-sm btn-outline-dark">Xem chi tiết</a>
+                        @if (item.PaymentStatus == "Đã thanh toán")
+                        {
+                            <a asp-action="ReviewOrder" asp-controller="Order" asp-route-orderId="@item.OrderId" class="btn btn-sm btn-outline-dark">Đánh giá</a>
+                        }
+                    </td>
+                    
                 </tr>
             }
         }

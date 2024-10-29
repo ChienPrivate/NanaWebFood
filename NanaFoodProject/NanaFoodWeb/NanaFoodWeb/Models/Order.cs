@@ -16,7 +16,7 @@ namespace NanaFoodWeb.Models
         [Required(ErrorMessage = "Hãy Chọn phương thức thanh Toán")]
         public string PaymentType { get; set; }
         [Required(ErrorMessage = "Trạng thái thanh toán không được để trống")]
-        public string PaymentStatus { get; set; } = "Đã thanh toán";
+        public string PaymentStatus { get; set; } = "Chưa thanh toán";
         [Required(ErrorMessage = "Trạng thái giao hàng không được để trống")]
         public string OrderStatus { get; set; } = "Đang chuẩn bị";
         public string? Note { get; set; }

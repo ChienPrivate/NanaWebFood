@@ -17,12 +17,15 @@ namespace NanaFoodWeb.Controllers
     {
         private readonly IOrderRepository _orderRepository;
         private readonly ITokenProvider _tokenProvider;
+        private readonly IReviewRepository _reviewRepository;
         private readonly ICartRepo _cartRepo;
-        public OrderController(IOrderRepository orderService, ITokenProvider tokenProvider, ICartRepo cartRepo)
+
+        public OrderController(IOrderRepository orderService, ITokenProvider tokenProvider, ICartRepo cartRepo, IReviewRepository reviewRepository)
         {
             _orderRepository = orderService;
             _tokenProvider = tokenProvider;
             _cartRepo = cartRepo;
+            _reviewRepository = reviewRepository;
         }
 
         public async Task<IActionResult> Index()
@@ -59,11 +62,7 @@ namespace NanaFoodWeb.Controllers
                 }
                 return View();
             }
-
         }
-
-
-
 
         [HttpPost]
         public async Task<IActionResult> Payment(Order order, int total)
@@ -127,7 +126,6 @@ namespace NanaFoodWeb.Controllers
             if (response.IsSuccess)
             {
                 var order = JsonConvert.DeserializeObject<Order>(response.Result.ToString());
-
                 return View(order);
             }
 
@@ -173,7 +171,46 @@ namespace NanaFoodWeb.Controllers
             return View(order);
         }
 
+        public async Task<IActionResult> ReviewOrder(int orderId)
+        {
+            var response = await _reviewRepository.GetOrderDetailsByOrderId(orderId);
 
+            if (response.IsSuccess)
+            {
+                var listproductNeedToBeReview = JsonConvert.DeserializeObject<List<ReviewProductDto>>(response.Result.ToString());
+                ViewBag.ReviewList = listproductNeedToBeReview;
+
+                return View();
+            }
+
+            TempData["error"] = "Đơn hàng không tồn tại";
+            return RedirectToAction("OrderHistory", "Order");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> PostReview([FromBody] Review review)
+        {
+            var token = _tokenProvider.GetToken();
+
+            var userId = _tokenProvider.ReadToken("nameid", token);
+
+            review.UserId = userId;
+
+            if (ModelState.IsValid)
+            {
+                var response = await _reviewRepository.PostReviewAsync(review);
+
+                if (response.IsSuccess)
+                {
+                    /*var listproductNeedToBeReview = JsonConvert.DeserializeObject<List<ReviewProductDto>>(response.Result.ToString());*/
+                    ViewBag.ReviewList = response.Result;
+                    return RedirectToAction("ReviewOrder", "Order", new { orderId = review.OrderId });
+                }
+            }
+
+            TempData["error"] = "xảy ra lỗi trong quá trình gửi đánh giá";
+            return RedirectToAction("ReviewOrder", "Order", new { orderId = review.OrderId });
+        }
 
         #region Momo
         public async Task<IActionResult> MomoReturn()
@@ -204,7 +241,6 @@ namespace NanaFoodWeb.Controllers
             return RedirectToAction("PaymentFailure", "Order");
         }
         #endregion
-
 
         #region CaculatingShippingFee
         public async Task<JsonResult> GetDistricts(int provinceId)

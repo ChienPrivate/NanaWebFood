@@ -278,19 +278,6 @@ namespace NanaFoodWeb.Controllers
             return View(viewmodel);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> ChangePassword(ChangePassAndUserDto viewmodel)
-        {
-            var response = await _authRepo.ChangePasswordAsync(viewmodel.changepass);
-            if (response != null && response.IsSuccess)
-            {
-                TempData["success"] = response.Message;
-                return RedirectToAction("GetInfo");
-            }
-            TempData["error"] = response.Message;
-            return RedirectToAction("GetInfo");
-        }
-
         private async Task SignInUser(string token)
         {
             var handler = new JwtSecurityTokenHandler();

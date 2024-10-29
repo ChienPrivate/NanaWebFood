@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NanaFoodDAL.Context;
 
@@ -11,9 +12,11 @@ using NanaFoodDAL.Context;
 namespace NanaFoodApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241027105032_Remove Reviews From Product")]
+    partial class RemoveReviewsFromProduct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -332,9 +335,6 @@ namespace NanaFoodApi.Migrations
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsReviewed")
-                        .HasColumnType("bit");
-
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
@@ -444,17 +444,8 @@ namespace NanaFoodApi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
                     b.Property<double>("Rating")
                         .HasColumnType("float");
-
-                    b.Property<DateTime>("ReviewedDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -463,9 +454,6 @@ namespace NanaFoodApi.Migrations
                     b.HasKey("ReviewId");
 
                     b.HasIndex("UserId");
-
-                    b.HasIndex("OrderId", "ProductId")
-                        .IsUnique();
 
                     b.ToTable("Review");
                 });
@@ -755,14 +743,6 @@ namespace NanaFoodApi.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("NanaFoodDAL.Model.OrderDetails", "OrderDetails")
-                        .WithOne("Review")
-                        .HasForeignKey("NanaFoodDAL.Model.Review", "OrderId", "ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("OrderDetails");
-
                     b.Navigation("User");
                 });
 
@@ -828,12 +808,6 @@ namespace NanaFoodApi.Migrations
             modelBuilder.Entity("NanaFoodDAL.Model.Order", b =>
                 {
                     b.Navigation("OrderDetails");
-                });
-
-            modelBuilder.Entity("NanaFoodDAL.Model.OrderDetails", b =>
-                {
-                    b.Navigation("Review")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("NanaFoodDAL.Model.Product", b =>

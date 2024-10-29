@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NanaFoodDAL.Dto;
@@ -21,6 +22,15 @@ namespace NanaFoodApi.Controllers
         public async Task<IActionResult> PostReviewAsync(ReviewDto reviewDto)
         {
             var response = await _reviewRepository.PostReviewAsync(reviewDto);
+            
+            if (response.IsSuccess)
+            {
+                var modifyState = await _reviewRepository.UpdateOrderDetailsReviewState(reviewDto.OrderId,reviewDto.ProductId,true);
+                if (modifyState.IsSuccess)
+                {
+                    return Ok(modifyState);
+                }
+            }
 
             return Ok(response);
         }
@@ -53,6 +63,14 @@ namespace NanaFoodApi.Controllers
         public async Task<IActionResult> GetReviewByProductId(int productId)
         {
             var response = await _reviewRepository.GetReviewByProductId(productId);
+
+            return Ok(response);
+        }
+
+        [HttpGet("orderdetailsreview/{orderId}")]
+        public async Task<IActionResult> GetOrderDetailsByOrderId(int orderId)
+        {
+            var response = await _reviewRepository.GetOrderDetailsByOrderId(orderId);
 
             return Ok(response);
         }
