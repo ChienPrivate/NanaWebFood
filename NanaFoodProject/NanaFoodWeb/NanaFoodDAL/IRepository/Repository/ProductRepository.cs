@@ -84,11 +84,15 @@ namespace NanaFoodDAL.IRepository.Repository
                     var totalCountActiveProducts = ActiveProducts.Count;
                     var totalPagesActiveProducts = (int)Math.Ceiling((decimal)totalCountActiveProducts / pageSize);
 
+                    var productsPerPage2 = ActiveProducts
+                        .Skip((page - 1) * pageSize)
+                        .Take(pageSize)
+                        .ToList();
                     response.Result = new
                     {
                         TotalCount = totalCountActiveProducts,
                         TotalPages = totalPagesActiveProducts,
-                        Products = _mapper.Map<List<ProductDto>>(ActiveProducts)
+                        Products = _mapper.Map<List<ProductDto>>(productsPerPage2)
                     };
                     response.IsSuccess = true;
                     response.Message = "Lấy danh sách món ăn thành công.";
