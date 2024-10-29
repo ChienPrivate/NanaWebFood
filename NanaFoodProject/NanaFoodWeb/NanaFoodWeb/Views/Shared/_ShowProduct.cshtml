@@ -1,0 +1,25 @@
+﻿@model NanaFoodWeb.Models.Dto.ViewModels.ProductVM
+@if (Model?.Products != null && Model.Products.Any(e => e.IsActive))
+{
+    @foreach (var product in Model.Products.Where(e => e.IsActive))
+    {
+        <div class="col-4">
+            <div class="card mb-3 shadow">
+                <a asp-controller="Products" asp-action="CDetails" asp-route-id="@product.ProductId">
+                    <img src="@product.ImageUrl" width="100%" height="100%" />
+                </a>
+                <div class="card-body">
+                    <a asp-controller="Products" asp-action="CDetails" asp-route-id="@product.ProductId" class="text-decoration-none">
+                        <h5 class="card-title text-dark fw-bold">@product.ProductName</h5>
+                    </a>
+                </div>
+                <div class="card-footer">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <p class="text-dark fs-5 fw-bold" style="position: relative; left: 3px; top: 8px;">@product.Price.ToString("#,##")đ</p>
+                        <a asp-controller="Products" asp-action="CDetails" asp-route-id="@product.ProductId" class="btn btn-sm btn-warning rounded-2">Xem chi tiết</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}

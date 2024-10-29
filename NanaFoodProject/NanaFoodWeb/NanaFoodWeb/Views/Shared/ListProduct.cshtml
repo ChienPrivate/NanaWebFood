@@ -1,0 +1,65 @@
+﻿﻿@{
+    Layout = "_Layout";
+    ViewData["title"] = "Menu";
+}
+<style>
+    .card-title {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>
+<div class="container">
+    <!-- Filter -->
+    <div class="row mb-4">
+        <div class="col">
+            <form asp-controller="Home" asp-action="Sort">
+                <div class="d-flex">
+                    <select class="form-select me-3 text-center" style="width:200px;" name="sort">
+                        <option value="0">Price Sort</option>
+                        <option value="asc"> Ascending</option>
+                        <option value="desc"> Descending</option>
+                    </select>
+                    <button class="btn btn-primary" type="submit">Sort</button>
+                </div>
+            </form>
+        </div>
+        <div class="col">
+            <form asp-controller="Food" asp-action="Filter">
+                <div class="d-flex">
+                    <select class="form-select me-3 text-center" style="width:200px;" name="value">
+                        <option value="0">Price</option>
+                        <option value="1"> Dưới 16.000</option>
+                        <option value="2"> 16.000 - 30.000</option>
+                        <option value="3"> 30.000 - 60.000</option>
+                        <option value="4"> 60.000 - 100.000</option>
+                        <option value="5"> Trên 100.000</option>
+                    </select>
+                    <button class="btn btn-primary" type="submit">Filter</button>
+                </div>
+            </form>
+        </div>
+        <div class="col">
+            <form asp-controller="Food" asp-action="SearchName">
+                <div class="d-flex">
+                    <input type="text" name="query" placeholder="Search by name" class="form-control me-3" />
+                    <button class="btn btn-primary" type="submit">Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Category Menu -->
+        @await Component.InvokeAsync("CategoryCount")
+        <!-- Product List -->
+        <div class="col-9">
+            <div class="row">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+</div>

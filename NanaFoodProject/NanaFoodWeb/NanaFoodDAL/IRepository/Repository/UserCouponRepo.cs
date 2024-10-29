@@ -25,22 +25,23 @@ namespace NanaFoodDAL.IRepository.Repository
                 var euser = await _context.Users.FirstOrDefaultAsync(e => e.Id == userId);
                 var ecoupon = await _context.Coupons.FirstOrDefaultAsync(e => e.CouponCode == codeCoupon);
                 var existingUserCoupon = await _context.UserCoupons.FirstOrDefaultAsync(uc => uc.UserId == userId && uc.CouponCode == codeCoupon);
+
                 if (euser == null)
                 {
                     response.IsSuccess = false;
                     response.Message = "Người dùng không tồn tại.";
                     return response;
                 }
-                if (ecoupon.MinAmount > totalPay)
-                {
-                    response.IsSuccess = false;
-                    response.Message = "Bạn chưa đủ điều kiện để sử dụng mã giảm giá.";
-                    return response;
-                }
                 if (ecoupon == null)
                 {
                     response.IsSuccess = false;
                     response.Message = "Mã giảm giá không tồn tại.";
+                    return response;
+                }
+                if (ecoupon.MinAmount > totalPay)
+                {
+                    response.IsSuccess = false;
+                    response.Message = "Bạn chưa đủ điều kiện để sử dụng mã giảm giá.";
                     return response;
                 }
                 //if (existingUserCoupon != null)

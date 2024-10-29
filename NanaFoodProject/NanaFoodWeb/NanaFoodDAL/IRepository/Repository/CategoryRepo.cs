@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using NanaFoodDAL.Context;
 using NanaFoodDAL.Dto;
 using NanaFoodDAL.Model;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace NanaFoodDAL.IRepository.Repository
 {
@@ -119,12 +120,7 @@ namespace NanaFoodDAL.IRepository.Repository
                 }
                 else
                 {
-                    response.Result = new
-                    {
-                        TotalCount = 1,
-                        TotalPages = 1,
-                        Data = _mapper.Map<CategoryDto>(category)
-                    };
+                    response.Result = _mapper.Map<CategoryDto>(category);
                 }
             }
             catch (Exception ex)

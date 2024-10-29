@@ -6,8 +6,10 @@ using NanaFoodDAL.Model;
 using NanaFoodWeb.Extensions;
 using NanaFoodWeb.IRepository;
 using NanaFoodWeb.Models;
+using NanaFoodWeb.Models.Dto;
 using NanaFoodWeb.Models.Dto.ViewModels;
 using Newtonsoft.Json;
+using Sprache;
 using System.Diagnostics;
 
 namespace NanaFoodWeb.Controllers
@@ -82,7 +84,55 @@ namespace NanaFoodWeb.Controllers
         {
             return View();
         }
-        public async Task <IActionResult> Menu(string searchQuery, int? page = 1, int pageSize = 12)
+
+        public IActionResult Sort(string sort, int page, int pageSize = 9)
+        {
+            if(page == 0)
+            {
+                page = 1;
+            }
+            TempData["sort"] = sort;
+            var response = _productRepo.Sorting(sort, page, 9);
+            if (response.IsSuccess)
+            {
+                var result = JsonConvert.DeserializeObject<ProductVM>(response.Result.ToString());
+                int totalItems = result.TotalCount;
+                int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+                ViewData["totalPages"] = totalPages;
+                ViewData["currentPage"] = page;
+
+                if (result == null)
+                {
+                    result = new ProductVM();
+                }
+
+                return View(result);
+            }
+            return NotFound();
+        }
+
+        public async Task<IActionResult> FilterLoai(int id, int page , int pageSize = 9)
+        {
+            var response = await _productRepo.GetByCategoryId(id, 1, 9);
+            if (response.IsSuccess)
+            {
+                var result = JsonConvert.DeserializeObject<ProductVM>(response.Result.ToString());
+                int totalItems = result.TotalCount;
+                int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+                ViewData["totalPages"] = totalPages;
+                ViewData["currentPage"] = page;
+
+                if (result == null)
+                {
+                    result = new ProductVM();
+                }
+
+                return View(result);
+            }
+            return NotFound();
+        }
+
+        public async Task <IActionResult> Menu(string searchQuery, int? page = 1, int pageSize = 9)
         {
             ViewData["Action"] = "Menu";
             var result = await _categoryRepository.GetAllCategoriesAsync(1, pageSize, true); 

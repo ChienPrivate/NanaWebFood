@@ -11,6 +11,9 @@ namespace NanaFoodDAL.IRepository.Repository
         ApplicationDbContext _context = context;
         IMapper _mapper = mapper;
         ResponseDto response = new ResponseDto();
+
+        public IEnumerable<Product> Products => _context.Products.ToList();
+
         public ResponseDto Create(Product product)
         {
             try
@@ -73,6 +76,8 @@ namespace NanaFoodDAL.IRepository.Repository
             }
             return response;
         }
+
+
 
         public ResponseDto GetAll(int page = 1, int pageSize = 10, bool isSelectAll = true)
         {
@@ -260,7 +265,7 @@ namespace NanaFoodDAL.IRepository.Repository
                 List<Product> products;
                 if (sort == "desc")
                 {
-                    products = _context.Products.OrderByDescending(x => x.Price).ToList();
+                    products = _context.Products.Where(p => p.IsActive).OrderByDescending(x => x.Price).ToList();
                 }
                 else
                 {

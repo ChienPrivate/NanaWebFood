@@ -334,7 +334,7 @@
                     success: function (response) {
                         var formattedDiscount = response.result.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                         
-                        $('#discount').text('- '+formattedDiscount + ' VNĐ');
+                        $('#discount').text('- '+ formattedDiscount + ' VNĐ');
                         currentTotal = totalPayNumber - response.result;
                         var formatted = currentTotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                         $('#totalPay').text(formatted + ' VNĐ');

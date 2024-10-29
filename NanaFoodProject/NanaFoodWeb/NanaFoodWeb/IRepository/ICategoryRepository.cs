@@ -8,5 +8,6 @@ namespace NanaFoodWeb.IRepository
         Task<ResponseDto> DeactivateAsync(int id);
         Task<ResponseDto> GetAllCategoriesAsync(int page, int pageSize, bool isSelectAll);
         Task<ResponseDto> GetCategoryById(int id);
+        Task<ResponseDto> CategoryCount();
     }
 }
