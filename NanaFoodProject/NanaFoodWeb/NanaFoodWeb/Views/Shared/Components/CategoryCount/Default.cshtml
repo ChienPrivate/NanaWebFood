@@ -1,0 +1,31 @@
+﻿@model IEnumerable<NanaFoodWeb.Models.CategoryCount>
+ <!-- Category Menu -->
+ <div class="col-3">
+     <div class="card shadow">
+         <div class="card-header bg-primary h4 text-center text-white">
+             <div class="p-1">
+                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-list" viewBox="0 2 16 16">
+                     <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5" />
+                 </svg>
+                 Category
+             </div>
+         </div>
+         @foreach(var item in Model)
+         {
+             <div class="card-body">
+                 <a class="text-decoration-none" asp-controller="Home" asp-action="FilterLoai" asp-route-id="@item.CategoryId">
+                     <div class="row py-2">
+                         <div class="col-10">
+                            @item.Name 
+                         </div>
+                         <div class="col-2 text-end">
+                             <span class="badge bg-primary badge-pill">
+                                 @item.Quantity
+                             </span>
+                         </div>
+                     </div>
+                 </a>
+             </div>
+         }
+     </div>
+ </div>

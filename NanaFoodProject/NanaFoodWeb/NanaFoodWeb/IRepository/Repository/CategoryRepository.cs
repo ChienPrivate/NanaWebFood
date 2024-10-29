@@ -10,6 +10,17 @@ namespace NanaFoodWeb.IRepository.Repository
         {
             _baseService = baseService;
         }
+
+        public async Task<ResponseDto> CategoryCount()
+        {
+            return await _baseService.SendAsync(new RequestDto
+            {
+                ApiType = StaticDetails.ApiType.GET,
+                Url = StaticDetails.APIBase + $"/api/Category/CategoryMenu"
+            });
+            
+        }
+
         public async Task<ResponseDto> DeactivateAsync(int id)
         {
             return await _baseService.SendAsync(new RequestDto

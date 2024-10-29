@@ -1,6 +1,7 @@
 ﻿using NanaFoodWeb.Models.Dto;
 using NanaFoodWeb.Models;
 using NanaFoodWeb.Utility;
+using Humanizer;
 
 namespace NanaFoodWeb.IRepository.Repository
 {
@@ -64,7 +65,11 @@ namespace NanaFoodWeb.IRepository.Repository
         }
         public ResponseDto GetByFilter(double? minrange, double? maxrange, int page, int pageSize)
         {
-            throw new NotImplementedException();
+            return _baseService.SendAsync(new RequestDto()
+            {
+                ApiType = StaticDetails.ApiType.GET,
+                Url = StaticDetails.APIBase + $"/api/Product/Filter?minrange={minrange}&maxrange={maxrange}&page={page}&pageSize={pageSize}"
+            }).Result;
         }
 
         
@@ -92,12 +97,20 @@ namespace NanaFoodWeb.IRepository.Repository
 
         public ResponseDto Sorting(string sort, int page, int pageSize)
         {
-            throw new NotImplementedException();
+            return _baseService.SendAsync(new RequestDto()
+            {
+                ApiType = StaticDetails.ApiType.GET,
+                Url = StaticDetails.APIBase + $"/api/Product/Sorting?sort={sort}&page={page}&pageSize={pageSize}"
+            }).Result;
         }
 
         public ResponseDto TopViewed(int page, int pageSize)
         {
-            throw new NotImplementedException();
+            return _baseService.SendAsync(new RequestDto()
+            {
+                ApiType = StaticDetails.ApiType.GET,
+                Url = StaticDetails.APIBase + $"/api/Product/Get-top-view?page={page}&pageSize={pageSize}"
+            }).Result;
         }
 
         public async Task<ResponseDto> GetByCategoryIdExcludeSameProduct(int productId, int categoryid, int page, int pageSize)
