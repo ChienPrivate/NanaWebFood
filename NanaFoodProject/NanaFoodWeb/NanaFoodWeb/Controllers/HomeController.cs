@@ -114,7 +114,7 @@ namespace NanaFoodWeb.Controllers
             // Lấy danh sách sản phẩm
             ViewData["page"] = page;
             ViewData["searchQuery"] = searchQuery;
-            var response = _productRepo.GetAll(page ?? 1, pageSize, true);
+            var response = _productRepo.GetAll(page ?? 1, pageSize, false);
            
             if (response.IsSuccess)
             {
