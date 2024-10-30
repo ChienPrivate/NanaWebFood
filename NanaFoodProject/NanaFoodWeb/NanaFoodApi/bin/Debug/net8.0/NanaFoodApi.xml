@@ -430,10 +430,15 @@
             **Sample Request**:
             ```json
             {
-                "code": "DISCOUNT10",
-                "discountPercentage": 10,
-                "expiryDate": "2024-12-31T23:59:59",
-                "description": "Giảm giá 10% cho đơn hàng đầu tiên"
+                "couponTypeId": 1,
+                "couponCode": "SALE25",
+                "description": "Giảm giá 25.000 cho đơn hàng trên 100.000",
+                "discount": 25000,
+                "minAmount": 100000,
+                "couponStartDate": "2024-10-30T04:14:13.237Z",
+                "endStart": "2024-11-30T04:14:13.237Z",
+                "maxUsage": 100,
+                "timesUsed": 0
             }
             ```
             </remarks>
@@ -444,6 +449,529 @@
             </returns>
             <response code="200">Mã giảm giá được tạo thành công.</response>
             <response code="400">Yêu cầu không hợp lệ hoặc xảy ra lỗi khi tạo mã giảm giá.</response>
+        </member>
+        <member name="M:NanaFoodApi.Controllers.CouponController.GetAll(System.Int32,System.Int32)">
+            <summary>
+            Lấy danh sách tất cả mã giảm giá
+            </summary>
+            <remarks>
+            API này trả về danh sách tất cả mã giảm giá, hỗ trợ phân trang.
+            </remarks>
+            <param name="page">Số trang hiện tại.</param>
+            <param name="pageSize">Số lượng coupon mục trên mỗi trang.</param>
+            <returns>
+            - 200 OK nếu lấy danh sách mã giảm giá thành công.
+            - 400 BadRequest nếu có lỗi xảy ra.
+            </returns>
+            <response code="200">Trả về danh sách mã giảm giá.</response>
+            <response code="400">Yêu cầu không hợp lệ hoặc xảy ra lỗi khi lấy danh sách mã giảm giá.</response>
+        </member>
+        <member name="M:NanaFoodApi.Controllers.CouponController.Update(NanaFoodDAL.Dto.CouponDto)">
+            <summary>
+            Cập nhật mã giảm giá
+            </summary>
+            <remarks>
+            API này cho phép cập nhật thông tin của một mã giảm giá.
+            
+            **Sample Request**:
+            ```json
+            {
+                "couponTypeId": 1,
+                "couponCode": "SALE25",
+                "description": "Giảm giá 25.000 cho đơn hàng trên 100.000",
+                "discount": 25000,
+                "minAmount": 100000,
+                "couponStartDate": "2024-10-30T04:14:13.237Z",
+                "endStart": "2024-11-30T04:14:13.237Z",
+                "maxUsage": 100,
+                "timesUsed": 0
+            }
+            ```
+            </remarks>
+            <param name="dto">Thông tin mã giảm giá cần cập nhật.</param>
+            <returns>
+            - 200 OK nếu cập nhật mã giảm giá thành công.
+            - 400 BadRequest nếu có lỗi trong dữ liệu đầu vào.
+            </returns>
+            <response code="200">Mã giảm giá được cập nhật thành công.</response>
+            <response code="400">Yêu cầu không hợp lệ hoặc xảy ra lỗi khi cập nhật mã giảm giá.</response>
+            <response code="404">Mã giảm giá không tồn tại.</response>
+        </member>
+        <member name="M:NanaFoodApi.Controllers.CouponController.DeleteCoupon(System.String)">
+            <summary>
+            Xóa mã giảm giá
+            </summary>
+            <remarks>
+            API này cho phép xóa một mã giảm giá bằng cách cung cấp mã (code) của nó.
+            </remarks>
+            <param name="code">Mã của mã giảm giá cần xóa.</param>
+            <returns>
+            - 200 OK nếu xóa mã giảm giá thành công.
+            - 400 BadRequest nếu có lỗi xảy ra.
+            </returns>
+            <response code="200">Mã giảm giá đã được xóa thành công.</response>
+            <response code="400">Yêu cầu không hợp lệ hoặc xảy ra lỗi khi xóa mã giảm giá.</response>
+            <response code="404">Mã giảm giá không tồn tại.</response>
+        </member>
+        <member name="M:NanaFoodApi.Controllers.CouponController.Check(System.String)">
+            <summary>
+            Kiểm tra và áp dụng mã giảm giá cho người dùng
+            </summary>
+            <remarks>
+            API này kiểm tra xem mã giảm giá có hợp lệ và có thể áp dụng cho người dùng hiện tại hay không.
+            </remarks>
+            <param name="code">Mã giảm giá cần kiểm tra.</param>
+            <returns>
+            - 200 OK nếu mã giảm giá hợp lệ và được áp dụng.
+            - 400 BadRequest nếu mã giảm giá không hợp lệ hoặc không thể áp dụng.
+            </returns>
+            <response code="200">Mã giảm giá hợp lệ và được áp dụng cho người dùng.</response>
+            <response code="400">Mã giảm giá không hợp lệ hoặc không thể áp dụng.</response>
+            <response code="404">Mã giảm giá không tồn tại.</response>
+        </member>
+        <member name="M:NanaFoodApi.Controllers.OrderController.GetAllOrderAync">
+            <summary>
+            Lấy danh sách tất cả các đơn hàng
+            </summary>
+            <remarks>
+            API này trả về danh sách tất cả các đơn hàng.
+            </remarks>
+            <returns>
+            - 200 OK nếu lấy danh sách đơn hàng thành công.
+            </returns>
+            <response code="200">Trả về danh sách đơn hàng.</response>
+        </member>
+        <member name="M:NanaFoodApi.Controllers.OrderController.AddOrderAsync(NanaFoodDAL.Dto.OrderDto)">
+            <summary>
+            Thêm đơn hàng mới
+            </summary>
+            <remarks>
+            API này cho phép tạo một đơn hàng mới cho người dùng hiện tại. Sau khi tạo đơn hàng thành công, các sản phẩm trong giỏ hàng sẽ bị xóa.
+            
+            **Sample Request**:
+            ```json
+            {
+                "fullName": "Nguyễn Văn An",
+                "phoneNumber": "0123456789",
+                "address": "123 Đường ABC, TP. HCM",
+                "paymentType": "MOMO",
+                "paymentStatus": "Đã thanh toán",
+                "orderStatus": "Đang chuẩn bị",
+                "shipmentFee": 30000,
+                "note": "Giao hàng vào buổi sáng",
+                "userId": "user-id-example",
+                "total": 500000,
+                "orderDate": "2024-10-30T14:30:00",
+                "receiveDate": "2024-11-05T14:30:00"
+            }
+            ```
+            </remarks>
+            <param name="orderDto">Thông tin đơn hàng mới.</param>
+            <returns>
+            - 200 OK nếu tạo đơn hàng thành công.
+            - 400 BadRequest nếu có lỗi trong dữ liệu đầu vào.
+            </returns>
+            <response code="200">Đơn hàng được tạo thành công.</response>
+            <response code="400">Yêu cầu không hợp lệ hoặc xảy ra lỗi khi tạo đơn hàng.</response>
+        </member>
+        <member name="M:NanaFoodApi.Controllers.OrderController.GetOrderByIdAsync(System.Int32)">
+            <summary>
+            Lấy thông tin chi tiết của đơn hàng theo ID
+            </summary>
+            <remarks>
+            API này trả về thông tin chi tiết của một đơn hàng dựa trên ID của đơn hàng.
+            </remarks>
+            <param name="id">ID của đơn hàng.</param>
+            <returns>
+            - 200 OK nếu lấy thông tin đơn hàng thành công.
+            - 404 NotFound nếu không tìm thấy đơn hàng với ID này.
+            </returns>
+            <response code="200">Trả về thông tin đơn hàng.</response>
+            <response code="404">Không tìm thấy đơn hàng.</response>
+        </member>
+        <member name="M:NanaFoodApi.Controllers.OrderController.GetUserOrderIdAsync(System.String)">
+            <summary>
+            Lấy danh sách đơn hàng của người dùng
+            </summary>
+            <remarks>
+            API này trả về danh sách tất cả các đơn hàng của một người dùng cụ thể dựa trên UserID.
+            </remarks>
+            <param name="UserId">ID của người dùng.</param>
+            <returns>
+            - 200 OK nếu lấy danh sách đơn hàng thành công.
+            </returns>
+            <response code="200">Trả về danh sách đơn hàng của người dùng.</response>
+        </member>
+        <member name="M:NanaFoodApi.Controllers.OrderController.GetOrderDetailsAsync(System.Int32)">
+            <summary>
+            Lấy chi tiết các sản phẩm trong đơn hàng
+            </summary>
+            <remarks>
+            API này trả về danh sách chi tiết các sản phẩm trong một đơn hàng dựa trên OrderID.
+            </remarks>
+            <param name="OrderId">ID của đơn hàng.</param>
+            <returns>
+            - 200 OK nếu lấy chi tiết đơn hàng thành công.
+            </returns>
+            <response code="200">Trả về danh sách chi tiết sản phẩm trong đơn hàng.</response>
+        </member>
+        <member name="M:NanaFoodApi.Controllers.OrderController.CalculateProfitAsync">
+            <summary>
+            Tính toán lợi nhuận từ các đơn hàng
+            </summary>
+            <remarks>
+            API này tính toán tổng lợi nhuận từ các đơn hàng.
+            </remarks>
+            <returns>
+            - 200 OK nếu tính toán lợi nhuận thành công.
+            </returns>
+            <response code="200">Trả về tổng lợi nhuận từ các đơn hàng.</response>
+        </member>
+        <member name="M:NanaFoodApi.Controllers.OrderController.UpdateOrderStatus(System.Int32,System.String)">
+            <summary>
+            Cập nhật trạng thái của đơn hàng
+            </summary>
+            <remarks>
+            API này cho phép cập nhật trạng thái của một đơn hàng dựa trên OrderID và thông báo trạng thái.
+            </remarks>
+            <param name="OrderId">ID của đơn hàng.</param>
+            <param name="message">Thông báo trạng thái mới của đơn hàng.</param>
+            <returns>
+            - 200 OK nếu cập nhật trạng thái đơn hàng thành công.
+            </returns>
+            <response code="200">Trạng thái đơn hàng được cập nhật thành công.</response>
+        </member>
+        <member name="M:NanaFoodApi.Controllers.OrderController.CancelOrderAsync(System.Int32)">
+            <summary>
+            Hủy đơn hàng
+            </summary>
+            <remarks>
+            API này cho phép hủy một đơn hàng dựa trên OrderID.
+            </remarks>
+            <param name="OrderId">ID của đơn hàng cần hủy.</param>
+            <returns>
+            - 200 OK nếu hủy đơn hàng thành công.
+            </returns>
+            <response code="200">Đơn hàng đã được hủy thành công.</response>
+        </member>
+        <member name="M:NanaFoodApi.Controllers.ProductController.GetAll(System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Lấy danh sách tất cả sản phẩm
+            </summary>
+            <remarks>
+            API này trả về danh sách tất cả các sản phẩm, hỗ trợ phân trang và lựa chọn lấy tất cả.
+            </remarks>
+            <param name="page">Trang hiện tại.</param>
+            <param name="pageSize">Số lượng sản phẩm trên mỗi trang.</param>
+            <param name="isSelectAll">Nếu là true, trả về tất cả các sản phẩm.</param>
+            <returns>
+            - 200 OK nếu lấy danh sách sản phẩm thành công.
+            </returns>
+            <response code="200">Trả về danh sách sản phẩm.</response>
+            <response code="404">Không tìm thấy sản phẩm nào.</response>
+        </member>
+        <member name="M:NanaFoodApi.Controllers.ProductController.GetById(System.Int32)">
+            <summary>
+            Lấy thông tin sản phẩm theo ID
+            </summary>
+            <remarks>
+            API này trả về thông tin chi tiết của một sản phẩm dựa trên ID của sản phẩm.
+            </remarks>
+            <param name="id">ID của sản phẩm.</param>
+            <returns>
+            - 200 OK nếu lấy thông tin sản phẩm thành công.
+            - 404 NotFound nếu không tìm thấy sản phẩm với ID này.
+            </returns>
+            <response code="200">Trả về thông tin sản phẩm.</response>
+            <response code="404">Không tìm thấy sản phẩm.</response>
+        </member>
+        <member name="M:NanaFoodApi.Controllers.ProductController.Create(NanaFoodDAL.Dto.ProductDto)">
+            <summary>
+            Tạo sản phẩm mới
+            </summary>
+            <remarks>
+            API này cho phép tạo một sản phẩm mới.
+            
+            **Sample Request**:
+            ```json
+            {
+                "productName": "Product Name",
+                "imageUrl": "https://example.com/image.jpg",
+                "price": 100000,
+                "view": 0,
+                "description": "Product description",
+                "isActive": true,
+                "categoryId": 1
+            }
+            ```
+            </remarks>
+            <param name="productDto">Thông tin sản phẩm mới.</param>
+            <returns>
+            - 200 OK nếu tạo sản phẩm thành công.
+            - 400 BadRequest nếu có lỗi trong dữ liệu đầu vào.
+            </returns>
+            <response code="200">Sản phẩm được tạo thành công.</response>
+            <response code="400">Yêu cầu không hợp lệ hoặc xảy ra lỗi khi tạo sản phẩm.</response>
+        </member>
+        <member name="M:NanaFoodApi.Controllers.ProductController.Delete(System.Int32)">
+            <summary>
+            Xóa sản phẩm
+            </summary>
+            <remarks>
+            API này cho phép xóa một sản phẩm dựa trên ID của sản phẩm.
+            </remarks>
+            <param name="id">ID của sản phẩm cần xóa.</param>
+            <returns>
+            - 200 OK nếu xóa sản phẩm thành công.
+            </returns>
+            <response code="200">Sản phẩm đã được xóa thành công.</response>
+        </member>
+        <member name="M:NanaFoodApi.Controllers.ProductController.GetByCategoryId(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Lấy danh sách sản phẩm theo ID danh mục
+            </summary>
+            <remarks>
+            API này trả về danh sách các sản phẩm trong một danh mục cụ thể, hỗ trợ phân trang.
+            </remarks>
+            <param name="categoryId">ID của danh mục.</param>
+            <param name="page">Số trang.</param>
+            <param name="pageSize">Số lượng sản phẩm trên mỗi trang.</param>
+            <returns>
+            - 200 OK nếu lấy danh sách sản phẩm theo danh mục thành công.
+            </returns>
+            <response code="200">Trả về danh sách sản phẩm theo danh mục.</response>
+        </member>
+        <member name="M:NanaFoodApi.Controllers.ProductController.GetByFilter(System.Nullable{System.Double},System.Nullable{System.Double},System.Int32,System.Int32)">
+            <summary>
+            Lọc sản phẩm theo giá
+            </summary>
+            <remarks>
+            API này cho phép lọc danh sách sản phẩm theo khoảng giá, hỗ trợ phân trang.
+            </remarks>
+            <param name="minrange">Giá thấp nhất.</param>
+            <param name="maxrange">Giá cao nhất.</param>
+            <param name="page">Trang hiện tại.</param>
+            <param name="pageSize">Số lượng sản phẩm trên mỗi trang.</param>
+            <returns>
+            - 200 OK nếu lọc sản phẩm thành công.
+            </returns>
+            <response code="200">Trả về danh sách sản phẩm theo khoảng giá.</response>
+        </member>
+        <member name="M:NanaFoodApi.Controllers.ProductController.GetBySearch(System.String,System.Int32,System.Int32)">
+            <summary>
+            Tìm kiếm sản phẩm theo tên
+            </summary>
+            <remarks>
+            API này cho phép tìm kiếm các sản phẩm dựa trên tên sản phẩm, hỗ trợ phân trang.
+            </remarks>
+            <param name="query">Tên sản phẩm cần tìm kiếm.</param>
+            <param name="page">Trang hiện tại.</param>
+            <param name="pageSize">Số lượng sản phẩm trên mỗi trang.</param>
+            <returns>
+            - 200 OK nếu tìm kiếm sản phẩm thành công.
+            </returns>
+            <response code="200">Trả về danh sách sản phẩm theo tên.</response>
+        </member>
+        <member name="M:NanaFoodApi.Controllers.ProductController.Sorting(System.String,System.Int32,System.Int32)">
+            <summary>
+            Sắp xếp danh sách sản phẩm
+            </summary>
+            <remarks>
+            API này cho phép sắp xếp danh sách sản phẩm theo tiêu chí, hỗ trợ phân trang.
+            </remarks>
+            <param name="sort">Tiêu chí sắp xếp, ví dụ "price" hoặc "view".</param>
+            <param name="page">Trang hiện tại.</param>
+            <param name="pageSize">Số lượng sản phẩm trên mỗi trang.</param>
+            <returns>
+            - 200 OK nếu sắp xếp sản phẩm thành công.
+            </returns>
+            <response code="200">Trả về danh sách sản phẩm đã sắp xếp.</response>
+        </member>
+        <member name="M:NanaFoodApi.Controllers.ProductController.TopViewed(System.Int32,System.Int32)">
+            <summary>
+            Lấy sản phẩm được xem nhiều nhất
+            </summary>
+            <remarks>
+            API này trả về danh sách các sản phẩm có lượt xem cao nhất, hỗ trợ phân trang.
+            </remarks>
+            <param name="page">Trang hiện tại.</param>
+            <param name="pageSize">Số lượng sản phẩm trên mỗi trang.</param>
+            <returns>
+            - 200 OK nếu lấy danh sách sản phẩm có lượt xem cao nhất thành công.
+            </returns>
+            <response code="200">Trả về danh sách sản phẩm có lượt xem cao nhất.</response>
+        </member>
+        <member name="M:NanaFoodApi.Controllers.ProductController.Update(NanaFoodDAL.Dto.ProductDto)">
+            <summary>
+            Cập nhật thông tin sản phẩm
+            </summary>
+            <remarks>
+            API này cho phép cập nhật thông tin của một sản phẩm.
+            
+            **Sample Request**:
+            ```json
+            {
+                "productId": 1,
+                "productName": "Updated Product Name",
+                "imageUrl": "https://example.com/image.jpg",
+                "price": 120.0,
+                "view": 10,
+                "description": "Updated product description",
+                "isActive": true,
+                "categoryId": 1
+            }
+            ```
+            </remarks>
+            <param name="productDto">Thông tin sản phẩm cần cập nhật.</param>
+            <returns>
+            - 200 OK nếu cập nhật sản phẩm thành công.
+            - 400 BadRequest nếu có lỗi trong dữ liệu đầu vào.
+            </returns>
+            <response code="200">Sản phẩm được cập nhật thành công.</response>
+            <response code="400">Yêu cầu không hợp lệ hoặc xảy ra lỗi khi cập nhật sản phẩm.</response>
+        </member>
+        <member name="M:NanaFoodApi.Controllers.ProductController.ActiveProduct(System.Int32)">
+            <summary>
+            Kích hoạt sản phẩm
+            </summary>
+            <remarks>
+            API này cho phép kích hoạt trạng thái của một sản phẩm dựa trên ID.
+            
+            **Sample Request**:
+            PUT /api/Product/active/1
+            </remarks>
+            <param name="id">ID của sản phẩm cần kích hoạt.</param>
+            <returns>
+            - 200 OK nếu kích hoạt sản phẩm thành công.
+            </returns>
+            <response code="200">Trạng thái sản phẩm được kích hoạt thành công.</response>
+            <response code="400">Không thể kích hoạt sản phẩm.</response>
+        </member>
+        <member name="M:NanaFoodApi.Controllers.ProductController.UnActiveProduct(System.Int32)">
+            <summary>
+            Hủy kích hoạt sản phẩm
+            </summary>
+            <remarks>
+            API này cho phép hủy kích hoạt trạng thái của một sản phẩm dựa trên ID.
+            
+            **Sample Request**:
+            PUT /api/Product/Unactive/1
+            </remarks>
+            <param name="id">ID của sản phẩm cần hủy kích hoạt.</param>
+            <returns>
+            - 200 OK nếu hủy kích hoạt sản phẩm thành công.
+            </returns>
+            <response code="200">Trạng thái sản phẩm được hủy kích hoạt thành công.</response>
+            <response code="400">Không thể hủy kích hoạt sản phẩm.</response>
+        </member>
+        <member name="M:NanaFoodApi.Controllers.ProductController.GetByCategoryIdExcludeSameProduct(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Lấy danh sách sản phẩm theo danh mục nhưng không bao gồm sản phẩm hiện tại
+            </summary>
+            <remarks>
+            API này trả về danh sách các sản phẩm cùng danh mục nhưng không bao gồm sản phẩm hiện tại, hỗ trợ phân trang.
+            </remarks>
+            <param name="productId">ID của sản phẩm hiện tại.</param>
+            <param name="categoryid">ID của danh mục sản phẩm.</param>
+            <param name="page">Số trang.</param>
+            <param name="pageSize">Số lượng sản phẩm trên mỗi trang.</param>
+            <returns>
+            - 200 OK nếu lấy danh sách sản phẩm thành công.
+            </returns>
+            <response code="200">Trả về danh sách sản phẩm cùng danh mục trừ sản phẩm hiện tại.</response>
+            <response code="400">Yêu cầu không hợp lệ hoặc có lỗi khi lấy sản phẩm.</response>
+        </member>
+        <member name="M:NanaFoodApi.Controllers.ReviewController.PostReviewAsync(NanaFoodDAL.Dto.ReviewDto)">
+            <summary>
+            Tạo đánh giá cho sản phẩm
+            </summary>
+            <remarks>
+            API này cho phép người dùng đăng đánh giá cho sản phẩm đã mua.
+            
+            **Sample Request**:
+            ```json
+            {
+                "comment": "Rất ngon!",
+                "rating": 5,
+                "userId": "user-id-example",
+                "productId": 1,
+                "orderId": 123
+            }
+            ```
+            </remarks>
+            <param name="reviewDto">Thông tin đánh giá của người dùng.</param>
+            <returns>
+            - 200 OK nếu đăng đánh giá thành công.
+            - 400 BadRequest nếu có lỗi trong dữ liệu đầu vào.
+            </returns>
+            <response code="200">Đánh giá được đăng thành công.</response>
+            <response code="400">Yêu cầu không hợp lệ hoặc xảy ra lỗi khi đăng đánh giá.</response>
+        </member>
+        <member name="M:NanaFoodApi.Controllers.ReviewController.GetAllReview">
+            <summary>
+            Lấy tất cả đánh giá
+            </summary>
+            <remarks>
+            API này trả về danh sách tất cả các đánh giá.
+            </remarks>
+            <returns>
+            - 200 OK nếu lấy danh sách đánh giá thành công.
+            </returns>
+            <response code="200">Trả về danh sách tất cả đánh giá.</response>
+        </member>
+        <member name="M:NanaFoodApi.Controllers.ReviewController.GetReviewByIdAsync(System.String)">
+            <summary>
+            Lấy đánh giá theo ID
+            </summary>
+            <remarks>
+            API này trả về thông tin chi tiết của một đánh giá dựa trên ID của đánh giá.
+            </remarks>
+            <param name="id">ID của đánh giá.</param>
+            <returns>
+            - 200 OK nếu lấy thông tin đánh giá thành công.
+            - 404 NotFound nếu không tìm thấy đánh giá với ID này.
+            </returns>
+            <response code="200">Trả về thông tin đánh giá.</response>
+            <response code="404">Không tìm thấy đánh giá.</response>
+        </member>
+        <member name="M:NanaFoodApi.Controllers.ReviewController.GetReviewByUserId(System.String)">
+            <summary>
+            Lấy đánh giá theo ID người dùng
+            </summary>
+            <remarks>
+            API này trả về danh sách các đánh giá của một người dùng cụ thể dựa trên UserID.
+            </remarks>
+            <param name="userId">ID của người dùng.</param>
+            <returns>
+            - 200 OK nếu lấy danh sách đánh giá thành công.
+            </returns>
+            <response code="200">Trả về danh sách đánh giá của người dùng.</response>
+        </member>
+        <member name="M:NanaFoodApi.Controllers.ReviewController.GetReviewByProductId(System.Int32)">
+            <summary>
+            Lấy đánh giá theo ID sản phẩm
+            </summary>
+            <remarks>
+            API này trả về danh sách các đánh giá cho một sản phẩm dựa trên ProductID.
+            </remarks>
+            <param name="productId">ID của sản phẩm.</param>
+            <returns>
+            - 200 OK nếu lấy danh sách đánh giá thành công.
+            </returns>
+            <response code="200">Trả về danh sách đánh giá cho sản phẩm.</response>
+        </member>
+        <member name="M:NanaFoodApi.Controllers.ReviewController.GetOrderDetailsByOrderId(System.Int32)">
+            <summary>
+            Lấy chi tiết đánh giá theo ID đơn hàng
+            </summary>
+            <remarks>
+            API này trả về chi tiết các đánh giá trong một đơn hàng dựa trên OrderID.
+            </remarks>
+            <param name="orderId">ID của đơn hàng.</param>
+            <returns>
+            - 200 OK nếu lấy chi tiết đánh giá trong đơn hàng thành công.
+            </returns>
+            <response code="200">Trả về chi tiết đánh giá trong đơn hàng.</response>
         </member>
         <member name="T:NanaFoodApi.Migrations.init">
             <inheritdoc />
