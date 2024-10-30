@@ -283,29 +283,22 @@ namespace NanaFoodWeb.Controllers
 
         [HttpGet]
         [Route("SearchByName")]
-        public async Task <IActionResult> SearchByName(string? query, int? page= 1 , int pageSize = 10)
+        public async Task <IActionResult> SearchByName(string? query, int? page= 1 , int pageSize = 9)
         {
             ViewData["Action"] = "SearchByName";
             var response =  _productRepo.GetBySearch(query, 1 , pageSize);
             if (response?.IsSuccess == true && response.Result != null)
             {
-                try
-                {
-                    var productList = JsonConvert.DeserializeObject<ProductVM>(response.Result.ToString());
+                var productList = JsonConvert.DeserializeObject<ProductVM>(response.Result.ToString());
 
-                    if (productList != null)
-                    {
-                        int totalItems = productList.TotalCount;
-                        int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
-                        ViewData["totalPages"] = totalPages;
-                        ViewData["currentPage"] = page;
-
-                        return View("~/Views/Home/Menu.cshtml", productList);
-                    }
-                }
-                catch (JsonSerializationException ex)
+                if (productList != null)
                 {
-                    ModelState.AddModelError("", $"Error deserializing JSON: {ex.Message}");
+                    int totalItems = productList.TotalCount;
+                    int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+                    ViewData["totalPages"] = totalPages;
+                    ViewData["currentPage"] = page;
+
+                    return View("~/Views/Home/Menu.cshtml", productList);
                 }
             }
 
@@ -313,5 +306,7 @@ namespace NanaFoodWeb.Controllers
             return View("Menu", new ProductVM());
 
         }
+
+
     }
 }

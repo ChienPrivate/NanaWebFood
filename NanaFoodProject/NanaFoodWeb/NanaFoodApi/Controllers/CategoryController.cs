@@ -15,11 +15,21 @@ namespace NanaFoodApi.Controllers
     public class CategoryController : ControllerBase
     {
         private readonly ICategoryRepo _categoryRepo;
-        public CategoryController(ICategoryRepo repo)
+        private readonly IProductRepository _productRepo;
+        public CategoryController(ICategoryRepo repo, IProductRepository productRepo)
         {
             _categoryRepo = repo;
+            _productRepo = productRepo;
         }
 
+        private T GetResult<T>(ResponseDto response)
+        {
+            if (response.IsSuccess && response.Result is T typedResult)
+            {
+                return typedResult;
+            }
+            throw new InvalidCastException("Không thể chuyển đổi kết quả sang kiểu dữ liệu mong muốn.");
+        }
 
         // GET: api/category
         [HttpGet]
@@ -144,6 +154,24 @@ namespace NanaFoodApi.Controllers
                 return BadRequest(response);
             }
             return Ok(response);
+        }
+
+        // Số lượng sản phẩm của mỗi category
+        [AllowAnonymous]
+        [HttpGet("CategoryMenu")]
+        public IActionResult GetFoods()
+        {
+            var foods = _productRepo.Products.GroupBy(x => x.CategoryId).Select(c => new
+            {
+                CategoryId = c.Key,
+                Name = GetResult<CategoryDto>(_categoryRepo.GetById(c.Key)).CategoryName,
+                Quantity = c.Count()
+            });
+            return Ok(new ResponseDto {
+                IsSuccess = true,
+                Message = "Lấy số lượng mỗi category thành công",
+                Result = foods
+            });
         }
     }
 }
