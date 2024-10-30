@@ -27,7 +27,6 @@
     <link href="~/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
     <link href="~/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
     <link href="~/css/Login.css" />
-    <link href="template/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="~/css/bootstrap.min.css" rel="stylesheet">
@@ -86,7 +85,7 @@
                         <button class="btn-search btn border border-warning btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-warning "></i></button>
                         <a asp-controller="Cart" asp-action="Index" class="position-relative me-4 my-auto">
                             <i class="fa fa-shopping-bag fa-2x"></i>
-                            <span class="position-absolute bg-warning rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span>
+                            <span class="position-absolute bg-warning rounded-circle d-flex align-items-center justify-content-center text-dark px-1" id="cartCount" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">@(Context.Session.GetString("CartCount") == null ? "0" : Context.Session.GetString("CartCount"))</span>
                         </a>
                         @if (User.Identity.IsAuthenticated)
                         {
@@ -148,6 +147,7 @@
 <script src="~/lib/waypoints/waypoints.min.js"></script>
 <script src="~/lib/lightbox/js/lightbox.min.js"></script>
 <script src="~/lib/owlcarousel/owl.carousel.min.js"></script>
+
 <script>
     !function (w, d, s, ...args) {
         var div = d.createElement('div');
@@ -163,6 +163,31 @@
     }(window, document, 'script', '942E7139-658C-4C3A-A905-1CF10C580A83', 'onboarding_bot', {
         apiHost: 'https://api-cf-ap-5.sendbird.com',
     });
+
+    function getCookie(name) {
+        let cookieArr = document.cookie.split(";"); // Tách các cặp cookie
+        for (let i = 0; i < cookieArr.length; i++) {
+            let cookiePair = cookieArr[i].split("="); // Tách từng cặp tên-giá trị cookie
+            if (name == cookiePair[0].trim()) {
+                return decodeURIComponent(cookiePair[1]); // Trả về giá trị của cookie nếu tìm thấy
+            }
+        }
+        return null; // Trả về null nếu không tìm thấy cookie
+    }
+
+    window.onload = function () {
+        // Lấy giá trị của cookie 'CartCount'
+        const cartCount = getCookie('CartCount');
+
+        // Kiểm tra nếu có giá trị của CartCount
+        if (cartCount !== null) {
+            // Gán giá trị cookie vào phần tử HTML có id="cartCount"
+            document.getElementById("cartCount").innerText = cartCount;
+        } else {
+            // Nếu không có giá trị trong cookie, đặt về 0 hoặc giá trị mặc định khác
+            document.getElementById("cartCount").innerText = "0";
+        }
+    };
 </script>
 
 <!-- Template Javascript -->

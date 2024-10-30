@@ -21,19 +21,25 @@ namespace NanaFoodWeb.Controllers
         private readonly ITokenProvider _tokenProvider;
         private readonly IProductRepo _productRepo;
         private readonly ICategoryRepository _categoryRepository;
-        public HomeController(ILogger<HomeController> logger, ITokenProvider tokenProvider, IProductRepo productRepo, ICategoryRepository categoryRepository)
+        private readonly ICartRepo _cartRepo;
+        public HomeController(ILogger<HomeController> logger, ITokenProvider tokenProvider, IProductRepo productRepo, ICategoryRepository categoryRepository, ICartRepo cartRepo)
         {
             _logger = logger;
             _tokenProvider = tokenProvider;
             _productRepo = productRepo;
             _categoryRepository = categoryRepository;
+            _cartRepo = cartRepo;
         }
 
-        [AllowAnonymous]
         public async Task <IActionResult> Index(string searchQuery, int? page = 1, int pageSize = 100)
         {
             var token = _tokenProvider.GetToken(); // Lấy token nếu có
-
+            var responseCart = await _cartRepo.GetCart();
+            if (responseCart.Result != null)
+            {
+                var Data = JsonConvert.DeserializeObject<List<CartResponseDto>>(responseCart.Result.ToString());
+                _tokenProvider.SetCartCount(Data.Count.ToString());
+            }
             // Nếu có token và vai trò là admin, chuyển hướng đến Dashboard
             if (token != null)
             {

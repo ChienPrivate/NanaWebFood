@@ -1,211 +1,24 @@
 ﻿@{
-    ViewData["Title"] = "About";
     Layout = "_Layout";
 }
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f7f7f7;
-        }
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 20px;
-            text-align: center;
-        }
-
-        /* Slideshow Container */
-        .slideshow-container {
-            max-width: 100%;
-            position: relative;
-            margin: auto;
-        }
-
-        /* Images in Slideshow */
-        .slide {
-            display: none;
-            width: 100%;
-        }
-
-        /* Caption Text */
-        .text {
-            color: #fff;
-            font-size: 24px;
-            font-weight: bold;
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-            background-color: rgba(0, 0, 0, 0.5);
-            padding: 10px;
-            border-radius: 5px;
-        }
-
-        /* Fading Animation */
-        .fade {
-            animation-name: fade;
-            animation-duration: 1.5s;
-        }
-
-        /* Team and other content styles */
-        .section-title {
-            font-size: 2em;
-            color: #333;
-            margin: 20px 0;
-        }
-        .about-content {
-            color: #666;
-            font-size: 1em;
-            line-height: 1.6;
-            margin: 20px 0;
-        }
-        .team {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-        .team-member {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            width: 300px;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-        .team-member img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-        }
-        .team-member h3 {
-            font-size: 1.2em;
-            color: #333;
-            margin: 10px 0 5px 0;
-        }
-        .team-member p {
-            color: #999;
-            font-style: italic;
-            margin: 5px 0;
-        }
-        .social-icons {
-            margin-top: 10px;
-        }
-        .social-icons a {
-            margin: 0 10px;
-            color: #333;
-            text-decoration: none;
-            font-size: 1.5em;
-        }
-    </style>
-
 <div class="container">
-    <div class="about-header">
-        <img src="~/images/about-1.jpg" alt="About Us">
-    </div>
-
-    <!-- About content -->
-    <div class="about-content">
-        <p>Trong những năm gần đây, ngành công nghiệp thức ăn nhanh đã chứng kiến sự phát triển mạnh mẽ và sự thay đổi lớn trong cách thức quản lý và phân phối sản phẩm. Các cửa hàng fast food nhỏ lẻ đã có cơ hội mới để cải thiện hiệu quả kinh doanh và gia tăng lợi nhuận. Với nhu cầu tiêu thụ thức ăn nhanh ngày càng tăng, việc quản lý hiệu quả các sản phẩm như thực phẩm tươi sống, đồ uống, và nguyên liệu chế biến trở nên vô cùng quan trọng.</p>
-        <p>Cùng với sự phát triển mạnh mẽ của công nghệ thông tin và Internet, các doanh nghiệp có thể tận dụng công nghệ để cải thiện quy trình quản lý và phân phối sản phẩm. Đối với một cửa hàng fast food, việc quản lý sản phẩm, đơn hàng, và hóa đơn theo phương pháp thủ công dễ dẫn đến sai sót và giảm hiệu suất làm việc. Do đó, việc xây dựng một website quản lý cửa hàng fast food sẽ là giải pháp tối ưu và hiệu quả.</p>
-    </div>
-
-    <!-- Team members -->
-    <div class="team">
-        <div class="team-member">
-            <img src="~/images/User.jpg" alt="Jennifer">
-            <h3>Jennifer</h3>
-            <p>Chủ Cửa Hàng</p>
-            <div class="social-icons">
-                <a href="#"><i class="fab fa-facebook"></i></a>
-                <a href="#"><i class="fab fa-google"></i></a>
-            </div>
+    <h1 class="text-center mb-4" style="position: relative; left: 0px; top: -23px;">Chào mừng bạn đến với <strong class="text-warning">NanaFood</strong></h1>
+     <div class="row">
+         <div class="col-4">
+            <img src="https://samangroups.com/wp-content/uploads/2023/01/Training-Software-min.png" class="img-fluid" style="position: relative; left: 0px; top: -41px;">
+         </div>
+        <div class="col-8">
+            <p><strong class="text-warning">NanaFood</strong> là một trang web chuyên cung cấp dịch vụ bán thức ăn nhanh trực tuyến, mang đến sự tiện lợi tối đa cho khách hàng trong việc lựa chọn và thưởng thức các món ăn yêu thích chỉ qua vài cú nhấp chuột. Với sự đa dạng trong thực đơn và cam kết chất lượng, <strong class="text-warning">NanaFood</strong> phục vụ mọi nhu cầu ăn uống từ những món ăn phổ biến hàng ngày như cơm, bún, phở đến các món ăn quốc tế như pizza, hamburger, sushi, và các món tráng miệng hấp dẫn. Được thiết kế thân thiện, dễ sử dụng, trang web của <strong class="text-warning">NanaFood</strong> giúp khách hàng dễ dàng tìm kiếm, chọn món, và đặt hàng với trải nghiệm mượt mà và đơn giản.</p>
         </div>
-        <div class="team-member">
-            <img src="~/images/User.jpg" alt="John Doe">
-            <h3>John</h3>
-            <p>Đầu Bếp</p>
-            <div class="social-icons">
-                <a href="#"><i class="fab fa-facebook"></i></a>
-                <a href="#"><i class="fab fa-google"></i></a>
-            </div>
-        </div>
-    </div>
+     </div>
+     <div class="row">
+         <div class="col-8">
+            <p>Điểm nổi bật của <strong class="text-warning">NanaFood</strong> nằm ở chất lượng món ăn và dịch vụ. Mọi món ăn đều được chế biến bởi các đầu bếp chuyên nghiệp, từ các nguyên liệu tươi ngon và được kiểm tra cẩn thận trước khi đưa vào quy trình chế biến. Thêm vào đó, với hệ thống đối tác là các nhà hàng và chuỗi cửa hàng ăn uống uy tín, <strong class="text-warning">NanaFood</strong> có thể đảm bảo rằng mỗi món ăn khi đến tay khách hàng đều đạt tiêu chuẩn về hương vị và chất lượng.</p>
+            <p>Không chỉ dừng lại ở chất lượng, <strong class="text-warning">NanaFood</strong> còn mang đến sự đa dạng trong lựa chọn. Khách hàng có thể dễ dàng tìm thấy các món ăn phù hợp với khẩu vị của mình, từ món ăn truyền thống Việt Nam đến ẩm thực nước ngoài. Đặc biệt, <strong class="text-warning">NanaFood</strong> còn cung cấp các combo tiết kiệm và chương trình khuyến mãi thường xuyên, giúp khách hàng vừa được thưởng thức các món ngon vừa tiết kiệm chi phí. Những món ăn nhanh như gà rán, khoai tây chiên, xúc xích nướng, hay các món ăn truyền thống như phở, bánh mì, bún chả luôn sẵn sàng phục vụ nhu cầu ăn uống của mọi người, mọi lứa tuổi.</p>
+         </div>
+        <div class="col-4">
+            <img src="https://cdni.iconscout.com/illustration/premium/thumb/business-woman-introduction-about-investment-graphic-illustration-download-in-svg-png-gif-file-formats--analytics-logo-presentation-board-people-conference-meeting-company-startup-pack-illustrations-4315482.png" class="img-fluid">
+        </div>"
+     </div>
 </div>
-
-<!-- Link Font Awesome for Social Icons -->
-<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-
-
-
-@* <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-<link href="~/css/aboutus.css" />
-
-    <div class="container">
-        <!-- Slideshow Header -->
-        <div class="slideshow-container">
-            <div class="slide fade">
-                <img src="https://via.placeholder.com/1000x300/ff7f7f/333333?text=Welcome+to+Fast+Food" style="width:100%">
-                <div class="text">Welcome to Fast Food Heaven!</div>
-            </div>
-            <div class="slide fade">
-                <img src="https://via.placeholder.com/1000x300/7f7fff/333333?text=Fresh+and+Tasty" style="width:100%">
-                <div class="text">Fresh and Tasty Meals</div>
-            </div>
-            <div class="slide fade">
-                <img src="https://via.placeholder.com/1000x300/7fff7f/333333?text=Quick+Delivery" style="width:100%">
-                <div class="text">Quick and Reliable Delivery</div>
-            </div>
-        </div>
-
-        <!-- About content -->
-        <div class="about-content">
-            <p>Trong những năm gần đây, ngành công nghiệp thức ăn nhanh đã chứng kiến sự phát triển mạnh mẽ và sự thay đổi lớn trong cách thức quản lý và phân phối sản phẩm. Các cửa hàng fast food nhỏ lẻ đã có cơ hội mới để cải thiện hiệu quả kinh doanh và gia tăng lợi nhuận. Với nhu cầu tiêu thụ thức ăn nhanh ngày càng tăng, việc quản lý hiệu quả các sản phẩm như thực phẩm tươi sống, đồ uống, và nguyên liệu chế biến trở nên vô cùng quan trọng.</p>
-            <p>Cùng với sự phát triển mạnh mẽ của công nghệ thông tin và Internet, các doanh nghiệp có thể tận dụng công nghệ để cải thiện quy trình quản lý và phân phối sản phẩm. Đối với một cửa hàng fast food, việc quản lý sản phẩm, đơn hàng, và hóa đơn theo phương pháp thủ công dễ dẫn đến sai sót và giảm hiệu suất làm việc. Do đó, việc xây dựng một website quản lý cửa hàng fast food sẽ là giải pháp tối ưu và hiệu quả.</p>
-        </div>
-
-        <!-- Team members -->
-        <div class="team">
-            <div class="team-member">
-                <img src="https://via.placeholder.com/100" alt="Jennifer Lawrence">
-                <h3>Jennifer Lawrence</h3>
-                <p>Co Founder</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer condimentum.</p>
-                <div class="social-icons">
-                    <a href="#"><i class="fab fa-facebook"></i></a>
-                    <a href="#"><i class="fab fa-google"></i></a>
-                </div>
-            </div>
-            <div class="team-member">
-                <img src="https://via.placeholder.com/100" alt="John Doe">
-                <h3>John Doe</h3>
-                <p>Founder</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer condimentum.</p>
-                <div class="social-icons">
-                    <a href="#"><i class="fab fa-facebook"></i></a>
-                    <a href="#"><i class="fab fa-google"></i></a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-<!-- Slideshow Script -->
-    <script>
-        let slideIndex = 0;
-        showSlides();
-
-        function showSlides() {
-            let slides = document.getElementsByClassName("slide");
-            for (let i = 0; i < slides.length; i++) {
-                slides[i].style.display = "none";  
-            }
-            slideIndex++;
-            if (slideIndex > slides.length) {slideIndex = 1}    
-            slides[slideIndex-1].style.display = "block";  
-            setTimeout(showSlides, 3000); // Change image every 3 seconds
-        }
-    </script>
- *@
-    
