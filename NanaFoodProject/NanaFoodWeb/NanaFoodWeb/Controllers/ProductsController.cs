@@ -9,6 +9,7 @@ using NanaFoodWeb.Models;
 using NanaFoodWeb.Models.Dto;
 using NanaFoodWeb.Models.Dto.ViewModels;
 using Newtonsoft.Json;
+using Sprache;
 
 namespace NanaFoodWeb.Controllers
 {
@@ -21,19 +22,19 @@ namespace NanaFoodWeb.Controllers
         private readonly ITokenProvider _tokenProvider = tokenProvider;
         readonly IProductRepo _productRepo = productRepo;
         readonly ICategoryRepository _categoryRepository = categoryRepository;
-        public async Task <IActionResult> Index(string searchQuery, int? page = 1, int pageSize = 10 )
+        public async Task<IActionResult> Index()
         {
-            var response = _productRepo.GetAll(page ?? 1, pageSize, true);
+            var response = await _productRepo.GetProduct();
             if (response.IsSuccess)
             {
-                var resultData = JsonConvert.DeserializeObject<ProductVM>(response.Result.ToString());
+                var resultData = JsonConvert.DeserializeObject<List<Product>>(response.Result.ToString());
+            
 
-                ViewBag.lazyLoadData = resultData.Products;
-
+                ViewBag.lazyLoadData = resultData;
                 return View();
             }
-
-            return View(new List<ProductDto>());
+            // Nếu không thành công, trả về View với danh sách rỗng
+            return View(new List<ProductVM>());
         }
 
         [HttpGet("Create")]
@@ -206,27 +207,21 @@ namespace NanaFoodWeb.Controllers
             ModelState.AddModelError("", response?.Message ?? "Có lỗi xảy ra khi cập nhật sản phẩm");
             return View(productDto);
         }
-        [HttpPost("Delete")]
-        public IActionResult Delete(int id, string searchQuery, int? page)
+        [HttpGet("Delete/{id}")]
+        public async Task <IActionResult> Delete(int id)
         {
-            var response = _productRepo.Delete(id);
-            if (response == null)
+            var response = _productRepo.GetById(id);
+
+            if (response?.IsSuccess == true && response.Result != null)
             {
-                TempData["ErrorMessage"] = "Xoá thất bại vui lòng kiểm tra lại thông tin.";
-                return RedirectToAction("Index");
+                var productDto = JsonConvert.DeserializeObject<ProductDto>(response.Result.ToString());
+                return View(productDto);
             }
 
-            if (response.IsSuccess)
-            {
-                TempData["SuccessMessage"] = "Xoá thành công.";
-
-            }
-            else
-            {
-                TempData["ErrorMessage"] = response.Message ?? "Failed to delete the product.";
-            }
-            return RedirectToAction("Index", new { searchQuery = searchQuery, page = page });
+            TempData["ErrorMessage"] = "Không tìm thấy sản phẩm.";
+            return RedirectToAction("Index");
         }
+
 
         [HttpGet("Details/{id}")]
         public IActionResult Details(int id)
@@ -242,7 +237,21 @@ namespace NanaFoodWeb.Controllers
             TempData["ErrorMessage"] = "Không tìm thấy sản phẩm.";
             return RedirectToAction("Index");
         }
-
+        [HttpPost("DeleteConfirm")]
+        public IActionResult DeleteConfirm(int id)
+        {
+            var response = _productRepo.Delete(id);
+            if (response.IsSuccess)
+            {
+                TempData["success"] = "Xóa danh mục thành công";
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                string message = response.Message;
+                return NotFound(message);
+            }
+        }
 
         [HttpGet("CDetails/{id}")]
         public IActionResult CDetails(int id, int currentPage = 1)

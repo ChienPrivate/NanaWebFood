@@ -326,5 +326,16 @@ namespace NanaFoodApi.Controllers
             }
             return Ok(response);
         }
+
+        [HttpGet("get_product")]
+        public async Task<IActionResult> GetProduct()
+        {
+            var response = _foodService.GetProduct();
+            if(!response.IsSuccess)
+            {
+                return BadRequest(response);
+            }
+            return Ok(response);
+        }
     }
 }

@@ -121,5 +121,15 @@ namespace NanaFoodWeb.IRepository.Repository
                 Url = StaticDetails.APIBase + $"/api/Product/ExcludeSameProduct/{productId}?categoryid={categoryid}&page={page}&pageSize={pageSize}"
             });
         }
+
+        public async Task<ResponseDto> GetProduct()
+        {
+            // Thực hiện gọi bất đồng bộ
+            return await _baseService.SendAsync(new RequestDto()
+            {
+                ApiType = StaticDetails.ApiType.GET,
+                Url = StaticDetails.APIBase + "/api/Product/get_product"
+            });
+        }
     }
 }

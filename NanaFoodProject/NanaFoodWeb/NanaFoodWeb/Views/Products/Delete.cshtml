@@ -10,13 +10,13 @@
                 <h1 class="h3 mb-4 text-gray-800">Bạn có chắn chắn muốn xóa danh mục này ?</h1>
                 <div class="card shadow">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary" id="category-name">@Html.DisplayFor(model => model.ProductName)</h6>
+                        <h6 class="m-0 font-weight-bold text-primary" id="category-name">@Model.ProductName</h6>
                     </div>
                     <div class="card-body">
-                        <p><strong>Tên sản phẩm:</strong> <span id="category-name">@Html.DisplayFor(model => model.ProductName)</span></p>
-                        <p><strong>Giá sản phẩm:</strong> <span id="category-name">@Html.DisplayFor(model => model.Price)</span></p>
-                        <p><strong>Mô tả:</strong> <span id="description">@Html.DisplayFor(model => model.Description)</span></p>
-                        <p><strong>Lượt xem:</strong> <span id="description">@Html.DisplayFor(model => model.View)</span></p>
+                        <p><strong>Tên sản phẩm:</strong> <span id="category-name" @Model.ProductName</span></p>
+                        <p><strong>Giá sản phẩm:</strong><span id="category-name">@Model.Price</span></p>
+                        <p><strong>Mô tả:</strong> <span id="description">@Model.Description</span></p>
+                        <p><strong>Lượt xem:</strong> <span id="description">@Model.View</span></p>
                         <div class="mb-2 mt-2">
                             <label>Trạng thái:</label>
                             <div class="d-flex align-items-center">
