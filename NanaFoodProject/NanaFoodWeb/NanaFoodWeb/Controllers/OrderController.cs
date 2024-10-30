@@ -115,17 +115,23 @@ namespace NanaFoodWeb.Controllers
 
             var orders = JsonConvert.DeserializeObject<List<Order>>(response.Result.ToString());
 
-            return View(orders);
+            return View(orders.OrderByDescending(o => o.OrderDate));
         }
 
 
         public async Task<IActionResult> OrderHistoryDetail(int id)
         {
             var response = await _orderRepository.GetOrderByIdAsync(id);
+            var responseProductFromOrderDetails = await _reviewRepository.GetOrderDetailsFromOrder(id);
 
             if (response.IsSuccess)
             {
                 var order = JsonConvert.DeserializeObject<Order>(response.Result.ToString());
+                if (responseProductFromOrderDetails.IsSuccess)
+                {
+                    var listproductFromOrderDetails = JsonConvert.DeserializeObject<List<ReviewProductDto>>(responseProductFromOrderDetails.Result.ToString());
+                    ViewBag.ReviewList = listproductFromOrderDetails;
+                }
                 return View(order);
             }
 
@@ -171,15 +177,28 @@ namespace NanaFoodWeb.Controllers
             return View(order);
         }
 
+        public async Task<IActionResult> CancelOrder(int orderId)
+        {
+            var response = await _orderRepository.CancelOrderAsync(orderId);
+            if (response.IsSuccess)
+            {
+                TempData["success"] = "Hủy đơn thành công";
+                return RedirectToAction("OrderHistory","Order");
+            }
+
+            TempData["error"] = "Bạn không thể Hủy đơn hàng này";
+            return RedirectToAction("OrderHistory", "Order");
+
+        }
+
         public async Task<IActionResult> ReviewOrder(int orderId)
         {
-            var response = await _reviewRepository.GetOrderDetailsByOrderId(orderId);
+            var response = await _reviewRepository.GetOrderDetailsFromOrder(orderId);
 
             if (response.IsSuccess)
             {
                 var listproductNeedToBeReview = JsonConvert.DeserializeObject<List<ReviewProductDto>>(response.Result.ToString());
                 ViewBag.ReviewList = listproductNeedToBeReview;
-
                 return View();
             }
 
@@ -238,7 +257,7 @@ namespace NanaFoodWeb.Controllers
                 return await COD(order);
             }
             TempData["error"] = "Phát sinh lỗi trong quá trình đặt đơn";
-            return RedirectToAction("PaymentFailure", "Order");
+            return RedirectToAction("PaymentError", "Order");
         }
         #endregion
 

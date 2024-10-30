@@ -126,11 +126,6 @@ namespace NanaFoodDAL.IRepository.Repository
             return _response;
         }
 
-        public async Task<ResponseDto> GetProductRating()
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<ResponseDto> GetOrderDetailsByOrderId(int orderId)
         {
             try
@@ -138,6 +133,7 @@ namespace NanaFoodDAL.IRepository.Repository
                 var orderDetails = await _context.OrderDetails
                 .Where(o => o.OrderId == orderId && o.IsReviewed == false)
                 .Include(o => o.Product)
+                .Include (o => o.Review)
                 .ToListAsync();
 
                 var productReview = orderDetails.Select(o => new ReviewProductDto
@@ -145,6 +141,12 @@ namespace NanaFoodDAL.IRepository.Repository
                     ProductId = o.ProductId,
                     ProductImage = o.Product.ImageUrl,
                     ProductName = o.Product.ProductName,
+                    Price = o.Product.Price,
+                    Quantity = o.Quantity,
+                    Total = o.Total,
+                    Comment = o.Review.Comment,
+                    Rating = o.Review.Rating,
+                    IsReviewed = o.IsReviewed,
                     OrderId = orderId,
                 });
 
@@ -191,6 +193,73 @@ namespace NanaFoodDAL.IRepository.Repository
 
             return _response;
 
+        }
+
+        public async Task<ResponseDto> GetOrderDetailsFromOrder(int orderId)
+        {
+            try
+            {
+                var productList = await (from p in _context.Products
+                                         join od in _context.OrderDetails on p.ProductId equals od.ProductId
+                                         join r in _context.Reviews on new { od.OrderId, od.ProductId } equals new { r.OrderId, r.ProductId } into reviewGroup
+                                         from review in reviewGroup.DefaultIfEmpty()
+                                         where od.OrderId == orderId// Left join to include products without reviews
+                                         select new ReviewProductDto
+                                         {
+                                             ProductId = p.ProductId,
+                                             ProductImage = p.ImageUrl,
+                                             ProductName = p.ProductName,
+                                             Price = p.Price,
+                                             Quantity = od.Quantity,
+                                             Total = od.Total,
+                                             Comment = review.Comment ?? "No comment",
+                                             Rating = review.Rating ?? 0,
+                                             IsReviewed = od.IsReviewed,
+                                             OrderId = od.OrderId
+                                         }).ToListAsync();
+
+                /* var orderDetails = await _context.OrderDetails
+                 .Where(o => o.OrderId == orderId)
+                 .Include(o => o.Product)
+ *//*                .Include(o => o.Review)*//*
+                 .Select(o => new ReviewProductDto
+                 {
+                     ProductId = o.ProductId,
+                     ProductImage = o.Product.ImageUrl,
+                     ProductName = o.Product.ProductName,
+                     Price = o.Product.Price,
+                     Quantity = o.Quantity,
+                     Total = o.Total,
+                     Comment = o.Review.Comment,
+                     Rating = o.Review.Rating,
+                     IsReviewed = o.IsReviewed,
+                     OrderId = orderId,
+                 }).ToListAsync();*/
+
+                /*var productReview = orderDetails.Select(o => new ReviewProductDto
+                {
+                    ProductId = o.ProductId,
+                    ProductImage = o.Product.ImageUrl,
+                    ProductName = o.Product.ProductName,
+                    Price = o.Product.Price,
+                    Quantity = o.Quantity,
+                    Total = o.Total,
+                    Comment = o.Review.Comment,
+                    Rating = o.Review.Rating,
+                    IsReviewed = o.IsReviewed,
+                    OrderId = orderId,
+                });*/
+
+                _response.IsSuccess = true;
+                _response.Message = "Lấy danh sách sản phẩm từ đơn hàng thành công";
+                _response.Result = productList;
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message += ex.Message;
+            }
+            return _response;
         }
     }
 }

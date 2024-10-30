@@ -74,5 +74,13 @@ namespace NanaFoodApi.Controllers
 
             return Ok(response);
         }
+
+        [HttpGet("orderdetailsInOrder/{orderId}")]
+        public async Task<IActionResult> GetOrderDetailsFromOrder(int orderId)
+        {
+            var response = await _reviewRepository.GetOrderDetailsFromOrder(orderId);
+
+            return Ok(response);
+        }
     }
 }

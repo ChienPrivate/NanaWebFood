@@ -57,10 +57,10 @@ namespace NanaFoodApi.Controllers
             }
 
             var response = await _auth.Login(login);
-            if (!response.IsSuccess)
+            /*if (!response.IsSuccess)
             {
                 return BadRequest(response);
-            }
+            }*/
             return Ok(response);
         }
 
