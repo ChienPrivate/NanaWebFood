@@ -11,11 +11,21 @@
             <remarks>
             API này cho phép người dùng đăng nhập bằng cách cung cấp tên đăng nhập và mật khẩu.
             Nếu thông tin đăng nhập chính xác, trả về JWT token cho phép xác thực các API khác.
+            
+            **Sample Request**:
+            ```json
+            {
+                "UserName": "testaccount",
+                "Password": "Asdzxc1!",
+                "keepLogined": true
+            }
+            ```
             </remarks>
             <param name="login">Thông tin đăng nhập.</param>
             <returns>
-            - Nếu thành công, trả về mã trạng thái 200 OK và JWT token.
-            - Nếu thất bại, trả về mã lỗi 400 BadRequest với mô tả lỗi cụ thể.
+            - 200 OK nếu đăng nhập thành công và trả về JWT token.
+            - 400 BadRequest nếu thông tin đăng nhập không hợp lệ.
+            - 500 Internal Server Error nếu xảy ra lỗi từ phía server.
             </returns>
             <response code="200">Đăng nhập thành công, trả về JWT token.</response>
             <response code="400">Thông tin đăng nhập không hợp lệ.</response>
@@ -23,16 +33,26 @@
         </member>
         <member name="M:NanaFoodApi.Controllers.AuthController.RegisterAsync(NanaFoodDAL.Dto.UserDTO.RegisterDto)">
             <summary>
-            Đăng ký người dùng mới.
+            Đăng ký người dùng mới
             </summary>
             <remarks>
-            API này cho phép người dùng mới đăng ký tài khoản bằng cách cung cấp tên đăng nhập và mật khẩu.
+            API này cho phép người dùng mới đăng ký tài khoản bằng cách cung cấp thông tin như tên đăng nhập, mật khẩu, email và tên đầy đủ.
+            
+            **Sample Request**:
+            ```json
+            {
+                "UserName": "testaccount",
+                "Password": "Asdzxc1!",
+                "Email": "abcxyc@gmail.com",
+                "FullName" : "Nguyễn Văn An"
+            }
+            ```
             </remarks>
-            <param name="model">Thông tin đăng ký.</param>
+            <param name="regis">Thông tin đăng ký.</param>
             <returns>
-            Trả về đối tượng <see cref="T:NanaFoodDAL.Dto.ResponseDto"/> với thông tin về trạng thái thực hiện yêu cầu.
-            - Nếu thành công, trả về mã trạng thái 201 Created và thông tin người dùng.
-            - Nếu thất bại, trả về mã lỗi 400 BadRequest với mô tả lỗi.
+            - 201 Created nếu đăng ký thành công và trả về thông tin người dùng.
+            - 400 BadRequest nếu thông tin không hợp lệ hoặc email đã tồn tại.
+            - 500 Internal Server Error nếu xảy ra lỗi từ phía server.
             </returns>
             <response code="201">Đăng ký thành công, trả về thông tin người dùng đã tạo.</response>
             <response code="400">Thông tin đăng ký không hợp lệ hoặc email đã tồn tại.</response>
@@ -42,57 +62,388 @@
             <summary>
             Đăng xuất
             </summary>
-            <returns>Đăng xuất thành công</returns>
+            <remarks>
+            API này cho phép người dùng đăng xuất tài khoản hiện tại.
+            </remarks>
+            <returns>200 OK nếu đăng xuất thành công.</returns>
+            <response code="200">Đăng xuất thành công.</response>
+            <response code="400">Có lỗi xảy ra.</response>
         </member>
         <member name="M:NanaFoodApi.Controllers.AuthController.ChangePass(NanaFoodDAL.Dto.UserDTO.ChangePassDto)">
             <summary>
-            Đổi mật khẩu của người dùng đã đăng nhập.
+            Đổi mật khẩu của người dùng đã đăng nhập
             </summary>
             <remarks>
-            API này cho phép người dùng thay đổi mật khẩu hiện tại của họ. Người dùng cần cung cấp mật khẩu cũ và mật khẩu mới.
+            API này cho phép người dùng thay đổi mật khẩu hiện tại của họ.
+            Người dùng cần cung cấp mật khẩu cũ và mật khẩu mới.
+            
+            **Sample Request**:
+            ```json
+            {
+                "OldPassword": "Asdzxc1!",
+                "NewPassword": "newPassword123!",
+                "ConfirmPassword" : "newPassword123!"
+            }
+            ```
             </remarks>
             <param name="changepass">Thông tin mật khẩu cần thay đổi</param>
             <returns>
-            - Nếu thành công, trả về mã trạng thái 200 OK và thông báo "Mật khẩu đã được cập nhật"
-            - Nếu thất bại, trả về mã lỗi 400 BadRequest với mô tả lỗi cụ thể thể.
+            - 200 OK nếu đổi mật khẩu thành công.
+            - 400 BadRequest nếu mật khẩu cũ không chính xác hoặc yêu cầu không hợp lệ.
+            - 401 Unauthorized nếu người dùng chưa xác thực.
+            - 500 Internal Server Error nếu xảy ra lỗi từ phía server.
             </returns>
             <response code="200">Đổi mật khẩu thành công.</response>
             <response code="400">Yêu cầu không hợp lệ hoặc mật khẩu cũ không chính xác.</response>
-            <response code="401">Người dùng chưa xác thực hoặc token không hợp lệ.</response>
+            <response code="401">Người dùng chưa đăng nhập hoặc token không hợp lệ.</response>
+            <response code="500">Có lỗi xảy ra từ phía server.</response>
+        </member>
+        <member name="M:NanaFoodApi.Controllers.AuthController.ConfirmEmail(System.String)">
+            <summary>
+            Xác nhận email
+            </summary>
+            <remarks>
+            API này cho phép người dùng xác nhận email để kích hoạt tài khoản.
+            </remarks>
+            <param name="email">Email của tài khoản cần xác nhận</param>
+            <returns>200 OK nếu xác nhận thành công.</returns>
+            <response code="200">Xác nhận thành công.</response>
+            <response code="400">Xác nhận thất bại.</response>
+            <response code="500">Có lỗi xảy ra từ phía server.</response>
+        </member>
+        <member name="M:NanaFoodApi.Controllers.AuthController.CheckEmailConfirm(System.String)">
+            <summary>
+            Kiểm tra xác nhận email
+            </summary>
+            <remarks>
+            API này kiểm tra trạng thái xác nhận email của tài khoản.
+            </remarks>
+            <param name="email">Email cần kiểm tra</param>
+            <returns>200 OK nếu email đã xác nhận.</returns>
+            <response code="200">Email đã xác nhận.</response>
+            <response code="400">Kiểm tra thất bại.</response>
             <response code="500">Có lỗi xảy ra từ phía server.</response>
         </member>
         <member name="M:NanaFoodApi.Controllers.AuthController.GitHubLogin">
             <summary>
-            Đăng nhập bằng tài khoản Github
+            Đăng nhập bằng GitHub
             </summary>
             <remarks>
-            API này cho phép người dùng thay đổi mật khẩu hiện tại của họ. Người dùng cần cung cấp mật khẩu cũ và mật khẩu mới.
+            Chuyển hướng người dùng đến GitHub để đăng nhập.
             </remarks>
-            <param></param>
-            <returns>
-            - Nếu thành công, trả về mã trạng thái 200 OK và thông báo "Mật khẩu đã được cập nhật"
-            - Nếu thất bại, trả về mã lỗi 400 BadRequest với mô tả lỗi cụ thể thể.
-            </returns>
-            <response code="200">Điều hướng đến trang của github</response>
-            <response code="400">Sai url hoặc cấu hình credential bị sai</response>
-            <response code="401">Không được ủy quyền bởi tài khoản GitHub</response>
+            <returns>200 OK nếu chuyển hướng thành công.</returns>
+            <response code="200">Điều hướng thành công.</response>
+            <response code="400">Sai URL hoặc cấu hình credential không đúng.</response>
+            <response code="500">Có lỗi xảy ra từ phía server.</response>
+        </member>
+        <member name="M:NanaFoodApi.Controllers.AuthController.GoogleLogin">
+            <summary>
+            Đăng nhập bằng Google
+            </summary>
+            <remarks>
+            Chuyển hướng người dùng đến Google để đăng nhập.
+            </remarks>
+            <returns>200 OK nếu chuyển hướng thành công.</returns>
+            <response code="200">Điều hướng thành công.</response>
+            <response code="400">Sai URL hoặc cấu hình credential không đúng.</response>
+            <response code="500">Có lỗi xảy ra từ phía server.</response>
+        </member>
+        <member name="M:NanaFoodApi.Controllers.AuthController.FacebookLogin">
+            <summary>
+            Đăng nhập bằng Facebook
+            </summary>
+            <remarks>
+            Chuyển hướng người dùng đến Facebook để đăng nhập.
+            </remarks>
+            <returns>200 OK nếu chuyển hướng thành công.</returns>
+            <response code="200">Điều hướng thành công.</response>
+            <response code="400">Sai URL hoặc cấu hình credential không đúng.</response>
             <response code="500">Có lỗi xảy ra từ phía server.</response>
         </member>
         <member name="M:NanaFoodApi.Controllers.AuthController.ForgotPassword(System.String)">
             <summary>
-            Người dùng lấy lại mật khẩu
+            Quên mật khẩu
             </summary>
             <remarks>
-            API này cho phép người dùng yêu cầu cung cấp 1 mật khẩu mới tới email
+            API này gửi mật khẩu mới về email của người dùng.
             </remarks>
             <param name="email">Email của tài khoản cần lấy lại mật khẩu</param>
-            <returns>
-            - Nếu thành công, trả về mã trạng thái 200 OK và thông báo "Mật khẩu mới đã được gửi về email của bạn"
-            - Nếu thất bại, trả về mã lỗi 400 BadRequest với mô tả lỗi cụ thể.
-            </returns>
-            <response code="200">Gửi mật khẩu mới vào email</response>
+            <returns>200 OK nếu mật khẩu mới đã gửi.</returns>
+            <response code="200">Gửi mật khẩu mới vào email.</response>
             <response code="400">Yêu cầu không hợp lệ hoặc không gửi được email.</response>
             <response code="500">Có lỗi xảy ra từ phía server.</response>
+        </member>
+        <member name="M:NanaFoodApi.Controllers.AuthController.GetInfo">
+            <summary>
+            Lấy thông tin người dùng
+            </summary>
+            <remarks>
+            API này trả về thông tin của người dùng hiện tại.
+            </remarks>
+            <returns>200 OK nếu lấy thông tin thành công.</returns>
+            <response code="200">Lấy thông tin thành công.</response>
+            <response code="400">Lấy thông tin thất bại.</response>
+            <response code="500">Có lỗi xảy ra từ phía server.</response>
+        </member>
+        <member name="M:NanaFoodApi.Controllers.AuthController.UpdateUser(NanaFoodDAL.Dto.UserDTO.UserDto)">
+             <summary>
+             Cập nhật thông tin người dùng
+             </summary>
+             <remarks>
+             API này cho phép cập nhật thông tin của người dùng hiện tại.
+            
+             **Sample Request**:
+             ```json
+             {
+                 "FullName": "Nguyễn Văn An",
+                 "Address": "123 Đường ABC, Quận 1, TP. Hồ Chí Minh",
+                 "Email": "abcxyc@gmail.com",
+                 "AvatarUrl": "https://example.com/avatar.jpg",
+                 "UserName": "testaccount",
+                 "PhoneNumber": "0987654321",
+                 "Status": "Active"
+             }
+             ```
+             </remarks>
+             <param name="userdto">Thông tin cần cập nhật của người dùng.</param>
+             <returns>
+             - 200 OK nếu cập nhật thành công.
+             - 400 BadRequest nếu yêu cầu không hợp lệ.
+             - 500 Internal Server Error nếu xảy ra lỗi từ phía server.
+             </returns>
+             <response code="200">Cập nhật thông tin thành công.</response>
+             <response code="400">Yêu cầu không hợp lệ, ví dụ: thiếu thông tin bắt buộc hoặc định dạng email sai.</response>
+             <response code="500">Có lỗi xảy ra từ phía server.</response>
+        </member>
+        <member name="M:NanaFoodApi.Controllers.CartController.AddToCart(NanaFoodDAL.Dto.CartDetailsDto)">
+            <summary>
+            Thêm sản phẩm vào giỏ hàng
+            </summary>
+            <remarks>
+            API này cho phép người dùng thêm một sản phẩm vào giỏ hàng.
+            
+            **Sample Request**:
+            ```json
+            {
+                "userId": "user-id-example"
+                "productId": 1,
+                "quantity": 2,
+            }
+            ```
+            </remarks>
+            <param name="cartDetails">Thông tin chi tiết của sản phẩm cần thêm vào giỏ hàng.</param>
+            <returns>
+            - 200 OK nếu thêm sản phẩm vào giỏ hàng thành công.
+            - 400 BadRequest nếu có lỗi xảy ra.
+            </returns>
+            <response code="200">Sản phẩm được thêm vào giỏ hàng thành công.</response>
+            <response code="400">Yêu cầu không hợp lệ hoặc xảy ra lỗi khi thêm sản phẩm.</response>
+        </member>
+        <member name="M:NanaFoodApi.Controllers.CartController.GetCart">
+            <summary>
+            Lấy thông tin giỏ hàng của người dùng
+            </summary>
+            <remarks>
+            API này trả về thông tin giỏ hàng của người dùng hiện tại.
+            </remarks>
+            <returns>
+            - 200 OK nếu lấy thông tin giỏ hàng thành công.
+            - 400 BadRequest nếu có lỗi xảy ra.
+            </returns>
+            <response code="200">Trả về thông tin giỏ hàng của người dùng.</response>
+            <response code="400">Yêu cầu không hợp lệ hoặc xảy ra lỗi khi lấy thông tin giỏ hàng.</response>
+        </member>
+        <member name="M:NanaFoodApi.Controllers.CartController.DeleteProductFromCart(System.Int32)">
+            <summary>
+            Xóa sản phẩm khỏi giỏ hàng
+            </summary>
+            <remarks>
+            API này cho phép người dùng xóa một sản phẩm khỏi giỏ hàng bằng cách cung cấp ID của sản phẩm.
+            </remarks>
+            <param name="productId">ID của sản phẩm cần xóa.</param>
+            <returns>
+            - 200 OK nếu xóa sản phẩm thành công.
+            - 400 BadRequest nếu có lỗi xảy ra.
+            </returns>
+            <response code="200">Sản phẩm đã được xóa khỏi giỏ hàng thành công.</response>
+            <response code="400">Yêu cầu không hợp lệ hoặc xảy ra lỗi khi xóa sản phẩm.</response>
+        </member>
+        <member name="M:NanaFoodApi.Controllers.CartController.UpdateCart(System.Int32,System.String)">
+            <summary>
+            Cập nhật số lượng sản phẩm trong giỏ hàng
+            </summary>
+            <remarks>
+            API này cho phép người dùng cập nhật số lượng của một sản phẩm trong giỏ hàng. Người dùng có thể chỉ định tăng hoặc giảm số lượng.
+            </remarks>
+            <param name="productId">ID của sản phẩm cần cập nhật.</param>
+            <param name="message">Thông báo hành động, có thể là "increase" hoặc "decrease" để tăng hoặc giảm số lượng.</param>
+            <returns>
+            - 200 OK nếu cập nhật số lượng sản phẩm thành công.
+            - 400 BadRequest nếu có lỗi xảy ra.
+            </returns>
+            <response code="200">Cập nhật số lượng sản phẩm thành công.</response>
+            <response code="400">Yêu cầu không hợp lệ hoặc xảy ra lỗi khi cập nhật số lượng sản phẩm.</response>
+        </member>
+        <member name="M:NanaFoodApi.Controllers.CategoryController.GetAllCategories(System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Lấy danh sách tất cả danh mục.
+            </summary>
+            <remarks>
+            API này cho phép lấy danh sách tất cả các danh mục. Có thể sử dụng phân trang hoặc lấy toàn bộ danh sách.
+            </remarks>
+            <param name="page">Trang hiện tại.</param>
+            <param name="pageSize">Số lượng danh mục trên mỗi trang.</param>
+            <param name="isSelectAll">Nếu là true, trả về tất cả các mục.</param>
+            <returns>Danh sách các danh mục.</returns>
+            <response code="200">Trả về danh sách danh mục.</response>
+            <response code="400">Yêu cầu không hợp lệ.</response>
+        </member>
+        <member name="M:NanaFoodApi.Controllers.CategoryController.GetCategoryById(System.Int32)">
+            <summary>
+            Lấy danh mục theo ID.
+            </summary>
+            <remarks>
+            API này cho phép lấy thông tin chi tiết của một danh mục dựa vào ID.
+            </remarks>
+            <param name="id">ID của danh mục.</param>
+            <returns>Thông tin chi tiết của danh mục.</returns>
+            <response code="200">Trả về thông tin danh mục.</response>
+            <response code="404">Không tìm thấy danh mục với ID này.</response>
+        </member>
+        <member name="M:NanaFoodApi.Controllers.CategoryController.GetCategoryByName(System.String,System.Int32,System.Int32)">
+            <summary>
+            Tìm kiếm danh mục theo tên.
+            </summary>
+            <remarks>
+            API này cho phép tìm kiếm danh mục theo tên và hỗ trợ phân trang.
+            </remarks>
+            <param name="name">Tên danh mục cần tìm kiếm.</param>
+            <param name="page">Trang hiện tại.</param>
+            <param name="pageSize">Số lượng danh mục trên mỗi trang.</param>
+            <returns>Danh sách các danh mục phù hợp.</returns>
+            <response code="200">Trả về danh sách các danh mục phù hợp.</response>
+            <response code="404">Không tìm thấy danh mục nào phù hợp.</response>
+        </member>
+        <member name="M:NanaFoodApi.Controllers.CategoryController.CreateCategory(NanaFoodDAL.Dto.CategoryDto)">
+            <summary>
+            Tạo danh mục mới.
+            </summary>
+            <remarks>
+            API này cho phép tạo một danh mục mới.
+            
+            **Sample Request**:
+            ```json
+            {
+                "CategoryName": "Thực phẩm",
+                "Description": "Danh mục các sản phẩm thực phẩm",
+                "CategoryImage": "https://example.com/image.jpg",
+                "IsActive": true
+            }
+            ```
+            </remarks>
+            <param name="categoryDto">Thông tin danh mục mới.</param>
+            <returns>Thông tin danh mục vừa tạo.</returns>
+            <response code="201">Tạo danh mục thành công.</response>
+            <response code="400">Thông tin danh mục không hợp lệ.</response>
+        </member>
+        <member name="M:NanaFoodApi.Controllers.CategoryController.UpdateCategory(System.Int32,NanaFoodDAL.Dto.CategoryDto)">
+            <summary>
+            Cập nhật thông tin danh mục.
+            </summary>
+            <remarks>
+            API này cho phép cập nhật thông tin của một danh mục dựa vào ID.
+            
+            **Sample Request**:
+            ```json
+            {
+                "CategoryId": 1,
+                "CategoryName": "Thực phẩm đã chỉnh sửa",
+                "Description": "Danh mục các sản phẩm thực phẩm đã cập nhật",
+                "CategoryImage": "https://example.com/new-image.jpg",
+                "IsActive": true
+            }
+            ```
+            </remarks>
+            <param name="id">ID của danh mục cần cập nhật.</param>
+            <param name="categoryDto">Thông tin danh mục cần cập nhật.</param>
+            <returns>Thông tin danh mục sau khi cập nhật.</returns>
+            <response code="200">Cập nhật danh mục thành công.</response>
+            <response code="400">Thông tin không hợp lệ.</response>
+            <response code="404">Danh mục không tồn tại.</response>
+        </member>
+        <member name="M:NanaFoodApi.Controllers.CategoryController.DeleteCategory(System.Int32)">
+            <summary>
+            Xóa danh mục.
+            </summary>
+            <remarks>
+            API này cho phép xóa một danh mục dựa vào ID.
+            </remarks>
+            <param name="id">ID của danh mục cần xóa.</param>
+            <returns>Kết quả xóa danh mục.</returns>
+            <response code="200">Xóa danh mục thành công.</response>
+            <response code="404">Không tìm thấy danh mục với ID này.</response>
+        </member>
+        <member name="M:NanaFoodApi.Controllers.CategoryController.ActiveCategory(System.Int32)">
+            <summary>
+            Kích hoạt danh mục.
+            </summary>
+            <remarks>
+            API này cho phép kích hoạt một danh mục dựa vào ID.
+            </remarks>
+            <param name="id">ID của danh mục cần kích hoạt.</param>
+            <returns>Kết quả kích hoạt danh mục.</returns>
+            <response code="200">Kích hoạt danh mục thành công.</response>
+            <response code="404">Danh mục không tồn tại.</response>
+        </member>
+        <member name="M:NanaFoodApi.Controllers.CategoryController.UnActiveCategory(System.Int32)">
+            <summary>
+            Hủy kích hoạt danh mục.
+            </summary>
+            <remarks>
+            API này cho phép hủy kích hoạt một danh mục dựa vào ID.
+            
+            **Sample Request**:
+            PUT /api/category/Unactive/{id}
+            </remarks>
+            <param name="id">ID của danh mục cần hủy kích hoạt.</param>
+            <returns>Kết quả hủy kích hoạt danh mục.</returns>
+            <response code="200">Hủy kích hoạt danh mục thành công.</response>
+            <response code="404">Danh mục không tồn tại</response>
+        </member>
+        <member name="M:NanaFoodApi.Controllers.CategoryController.GetFoods">
+            <summary>
+            Lấy số lượng sản phẩm của mỗi danh mục.
+            </summary>
+            <remarks>
+            API này trả về danh sách các danh mục cùng với số lượng sản phẩm của từng danh mục.
+            </remarks>
+            <returns>Danh sách các danh mục với số lượng sản phẩm.</returns>
+            <response code="200">Trả về danh sách số lượng sản phẩm của mỗi danh mục.</response>
+        </member>
+        <member name="M:NanaFoodApi.Controllers.CouponController.CreatCoupon(NanaFoodDAL.Dto.CouponDto)">
+            <summary>
+            Tạo mã giảm giá mới
+            </summary>
+            <remarks>
+            API này cho phép tạo một mã giảm giá mới.
+            
+            **Sample Request**:
+            ```json
+            {
+                "code": "DISCOUNT10",
+                "discountPercentage": 10,
+                "expiryDate": "2024-12-31T23:59:59",
+                "description": "Giảm giá 10% cho đơn hàng đầu tiên"
+            }
+            ```
+            </remarks>
+            <param name="dto">Thông tin chi tiết của mã giảm giá.</param>
+            <returns>
+            - 200 OK nếu tạo mã giảm giá thành công.
+            - 400 BadRequest nếu có lỗi trong dữ liệu đầu vào.
+            </returns>
+            <response code="200">Mã giảm giá được tạo thành công.</response>
+            <response code="400">Yêu cầu không hợp lệ hoặc xảy ra lỗi khi tạo mã giảm giá.</response>
         </member>
         <member name="T:NanaFoodApi.Migrations.init">
             <inheritdoc />
