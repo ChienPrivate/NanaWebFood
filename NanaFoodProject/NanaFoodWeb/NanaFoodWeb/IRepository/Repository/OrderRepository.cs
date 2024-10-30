@@ -30,7 +30,7 @@ namespace NanaFoodWeb.IRepository.Repository
         {
             return await _baseService.SendAsync(new RequestDto
             {
-                ApiType = ApiType.POST,
+                ApiType = ApiType.PUT,
                 Url = StaticDetails.APIBase + $"/api/Order/orders/{orderId}",
             });
         }

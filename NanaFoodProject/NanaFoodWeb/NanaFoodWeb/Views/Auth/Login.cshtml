@@ -29,6 +29,14 @@
                                     <div class="forgot-password">
                                         <a asp-controller="Auth" asp-action="ForgotPassword">Quên mật khẩu?</a>
                                     </div>
+                                    
+                                </div>
+                                <style>
+                                    .text-danger ul {
+                                        list-style: none;
+                                    }
+                                </style>
+                                <div asp-validation-summary="All" class=" text-decoration-none text-danger">
                                 </div>
                                 <button type="submit" class="btn btn-success w-100 mb-3">Đăng Nhập</button>
                                 <div class="text-center mb-3">Hoặc tiếp tục với</div>                              

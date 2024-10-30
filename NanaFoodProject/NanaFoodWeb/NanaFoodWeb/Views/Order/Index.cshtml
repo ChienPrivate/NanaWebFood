@@ -361,8 +361,28 @@
             observer.observe(document.getElementById('shippingFee'), { childList: true });
             
         });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('button[type="submit"]').click(function (e) {
+                e.preventDefault(); // Ngăn form gửi ngay lập tức
 
+                // Lấy giá trị từ các trường input và dropdown
+                var address = $('input[name="Address"]').val(); // Giá trị số nhà nhập vào
+                var wardText = $('#WardList option:selected').text(); // Text của ward
+                var districtText = $('#DistrictList option:selected').text(); // Text của district
+                var provinceText = $('#ProvinceList option:selected').text(); // Text của province
 
+                // Tạo chuỗi mới cho Address
+                var fullAddress = `${address}, ${wardText}, ${districtText}, ${provinceText}`;
+
+                // Gán lại giá trị mới cho ô input Address
+                $('input[name="Address"]').val(fullAddress);
+
+                // Sau khi cập nhật giá trị, submit form
+                $(this).closest('form').submit();
+            });
+        });
     </script>
 }
 
