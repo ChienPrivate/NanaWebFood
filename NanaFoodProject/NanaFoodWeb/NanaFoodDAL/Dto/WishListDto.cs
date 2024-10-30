@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NanaFoodDAL.Dto
 {
-    internal class WishListDto
+    public class WishListDto
     {
         public string UserId { get; set; }
         public int ProductId { get; set; }

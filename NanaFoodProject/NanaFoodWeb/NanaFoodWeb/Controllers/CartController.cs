@@ -5,6 +5,7 @@ using NanaFoodWeb.Convert;
 using NanaFoodWeb.IRepository;
 using NanaFoodWeb.Models.Dto;
 using Newtonsoft.Json;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace NanaFoodWeb.Controllers
 {
@@ -36,8 +37,10 @@ namespace NanaFoodWeb.Controllers
                 if (response.Result != null)
                 {
                     var Data = JsonConvert.DeserializeObject<List<CartResponseDto>>(response.Result.ToString());
+                    _tokenProvider.SetCartCount(Data.Count.ToString());
                     return View(Data);
                 }
+                _tokenProvider.SetCartCount("0");
                 return View(new List<CartResponseDto>());
             }           
         }
@@ -52,29 +55,18 @@ namespace NanaFoodWeb.Controllers
             };
             var response = await _cartRepo.AddToCart(cartDetail);
             string message = response.Message?.ToString() ?? "Có lỗi xảy ra";
+
             if (response.IsSuccess)
             {
+                var responseCart = await _cartRepo.GetCart();
+                if (responseCart.Result != null)
+                {
+                    var Data = JsonConvert.DeserializeObject<List<CartResponseDto>>(responseCart.Result.ToString());
+                    _tokenProvider.SetCartCount(Data.Count.ToString());
+                }
                 TempData["success"] = message;
             }
             return RedirectToAction("Index");
-        }
-
-        // GET: Cart/DeleteCart (Remove Item from Cart)
-        [HttpGet("DeleteCart/{id}")]
-        public async Task<IActionResult> DeleteCart(int id)
-        {
-            var token = _tokenProvider.GetToken();
-            var response = await _callAPICenter.DeleteMethod<ResponseDto>("Cart/deletecart/"+ id, token);
-            if (response == null || !response.IsSuccess)
-            {
-                ViewBag.Message = "Lỗi khi xoá dữ liệu"; 
-            }
-            else
-            {
-                ViewBag.Message = response.Message;
-            }
-            return RedirectToAction("Index");
-            
         }
     }
 }

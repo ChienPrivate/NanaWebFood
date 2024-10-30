@@ -65,6 +65,7 @@ namespace NanaFoodApi.Controllers
         /// </returns>
         /// <response code="200">Trả về thông tin giỏ hàng của người dùng.</response>
         /// <response code="400">Yêu cầu không hợp lệ hoặc xảy ra lỗi khi lấy thông tin giỏ hàng.</response>
+        [AllowAnonymous]
         [HttpGet("GetCart")]
         public async Task<IActionResult> GetCart()
         {

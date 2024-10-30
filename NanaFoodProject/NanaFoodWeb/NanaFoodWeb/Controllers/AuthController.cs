@@ -23,6 +23,7 @@ namespace NanaFoodWeb.Controllers
 
         public AuthController(IAuthRepository authRepo, ITokenProvider tokenProvider, IHelperRepository helperRepository)
         {
+
             _authRepo = authRepo;
             _tokenProvider = tokenProvider;
             _helperRepository = helperRepository;
@@ -99,12 +100,13 @@ namespace NanaFoodWeb.Controllers
             return View(login);
         }
 
+
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync();
             HttpContext.Session.SetString("Token", string.Empty);
             _tokenProvider.ClearToken();
-
+            _tokenProvider.ClearCartCount();
             return RedirectToAction("Index", "Home");
         }
 
