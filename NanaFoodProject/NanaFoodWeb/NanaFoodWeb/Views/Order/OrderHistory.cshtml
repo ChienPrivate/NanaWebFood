@@ -2,6 +2,9 @@
     ViewData["title"] = "View Order";
 }
 @model IEnumerable<NanaFoodWeb.Models.Order>;
+<div class="text-center">
+    <h2>Đơn hàng của tôi</h2>
+</div>
 <table class="table table-hover table-bordered text-center my-4">
     <thead class="table-warning">
         <tr>
@@ -31,34 +34,42 @@
                     <td>@item.PaymentType</td>
                     <td>@item.OrderDate.ToString("dd-MM-yyyy HH:mm:ss")</td>
                     <td>
-                        @if (item.PaymentStatus == "Chưa thanh toán")
+                        @if (item.PaymentStatus == "Chưa thanh toán")
                         {
                             <div class="p-2 badge bg-primary text-white">@item.PaymentStatus</div>
                         }
-                        else
+                        @if(item.PaymentStatus == "Đã thanh toán")
                         {
                             <div class="p-2 badge bg-success text-white">@item.PaymentStatus</div>
                         }
+                        @if (item.PaymentStatus == "Đã huỷ")
+                        {
+                            <div class="p-2 badge bg-danger text-white">@item.PaymentStatus</div>
+                        }
                     </td>
                     <td>
-                        @if (@item.OrderStatus == "Đang chuẩn bị")
+                        @if (@item.OrderStatus == "Đang chuẩn bị")
                         {
                             <div class="p-2 badge bg-warning text-white">@item.OrderStatus</div>
                         }
-                        else if (item.OrderStatus == "Đã giao")
+                        @if (item.OrderStatus == "Đã huỷ")
                         {
-                            <div class="p-2 badge bg-success text-white">@item.OrderStatus</div>
+                            <div class="p-2 badge bg-danger text-white">@item.OrderStatus</div>
                         }
-                        else
+                        @if (item.OrderStatus == "Đang giao")
                         {
                             <div class="p-2 badge bg-primary text-white">@item.OrderStatus</div>
+                        }
+                        @if (item.OrderStatus == "Đã giao")
+                        {
+                            <div class="p-2 badge bg-success text-white">@item.OrderStatus</div>
                         }
                     </td>
                     <th>@item.ShipmentFee.ToString("#,##") VNĐ</th>
                     <th>@item.Total.ToString("#,##") VNĐ</th>
                     <td> 
                         <a asp-action="OrderHistoryDetail" asp-controller="Order" asp-route-id="@item.OrderId" class="btn btn-sm btn-outline-dark">Xem chi tiết</a>
-                        @if (item.PaymentStatus == "Đã thanh toán")
+                        @if (item.PaymentStatus == "Đã thanh toán" && item.OrderStatus == "Đã giao")
                         {
                             <a asp-action="ReviewOrder" asp-controller="Order" asp-route-orderId="@item.OrderId" class="btn btn-sm btn-outline-dark">Đánh giá</a>
                         }
@@ -69,3 +80,6 @@
         }
     </tbody>
 </table>
+<div class="text-right">
+    <a asp-action="Index" asp-controller="Home" class="btn btn-outline-secondary">Trở về trang chủ</a>
+</div>

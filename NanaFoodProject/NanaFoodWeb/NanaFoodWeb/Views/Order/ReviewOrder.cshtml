@@ -3,6 +3,8 @@
     var reviewList = ViewBag.ReviewList as List<NanaFoodWeb.Models.Dto.ReviewProductDto>;
 }
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <div class="container">
     <div class="card shadow rounded-2">
         <div class="card-header">
@@ -11,14 +13,21 @@
             </h2>
         </div>
         <div class="card-body">
-            @if (reviewList.Count != 0)
+            <div id="no-more-reviews" class="text-center mt-4" style="display: none;">Không còn sản phẩm nào để đánh giá</div>
+@*             @if (reviewList.Count != 0)
             {
-                @foreach (var product in reviewList)
+                
+            }
+            else
+            {
+                <h2>Không còn sản phẩm để đánh giá</h2>
+            } *@
+            @foreach (var product in reviewList)
                 {
                     <div class="container">
                         <div class="card">
                             <form method="post" class="container review-form" data-product-id="@product.ProductId">
-                                <input id="orderId-@product.ProductId" value="@product.OrderId" hidden /> <!-- Thay Model.OrderId với giá trị thực của OrderId -->
+                                <input id="orderId-@product.ProductId" value="@product.OrderId" hidden />
                                 <div class="row mt-2 mb-2">
                                     <div class="col-md-1">
                                         <img src="@product.ProductImage" class="img-fluid rounded-2" width="100" height="100" />
@@ -29,24 +38,19 @@
                                 </div>
                                 <div class="mt-2 mb-2">
                                     <label>Đánh giá</label><br />
-                                    <ejs-rating id="rating-@product.ProductId" value=5 cssClass="custom-font"></ejs-rating>
+                                    <ejs-rating id="rating-@product.ProductId" value=@(product.Rating ?? 0) cssClass="custom-font" readOnly=@(product.IsReviewed) ></ejs-rating>
                                 </div>
                                 <div class="mt-2 mb-2">
                                     <label>Bình luận</label>
-                                    <textarea id="comment-@product.ProductId" class="form-control comment"></textarea>
+                                    <textarea id="comment-@product.ProductId" class="form-control comment text-start" @(product.IsReviewed ? "disabled" : "")>@product.Comment</textarea>
                                 </div>
                                 <div class="text-right">
-                                    <button type="button" class="btn btn-primary submit-review" data-product-id="@product.ProductId">Gửi đánh giá</button>
+                                    <button type="button" class="btn btn-primary submit-review" data-product-id="@product.ProductId" @(product.IsReviewed ? "hidden" : "")>Gửi đánh giá</button>
                                 </div>
                             </form>
                         </div>
                     </div>
                 }
-            }
-            else
-            {
-                <h2>Không còn sản phẩm để đánh giá</h2>
-            }
         </div>
         <div class="card-footer">
             <div class="text-right ">
@@ -68,11 +72,10 @@
 </style>
 <script>
 $(document).ready(function () {
-    $(".submit-review").on("click", function () {
+    $(".submit-review").click(function () {
         var productId = $(this).data("product-id");
         var rating = $(`#rating-${productId}`).val();
         var comment = $(`#comment-${productId}`).val();
-        @* var userId = $(`#userId-${productId}`).val(); // Lấy giá trị UserId từ input ẩn *@
         var orderId = $(`#orderId-${productId}`).val(); // Lấy giá trị OrderId từ input ẩn
 
         // Gửi dữ liệu qua AJAX
@@ -82,11 +85,20 @@ $(document).ready(function () {
             data: JSON.stringify({ ProductId: productId, Rating: rating, Comment: comment, OrderId: orderId }),
             contentType: 'application/json; charset=utf-8',
             success: function (response) {
-                alert("Đánh giá của bạn đã được gửi thành công!");
+                toastr.success("Đánh giá của bạn đã được gửi thành công!");
+                
+                // Disable textarea và xóa nút submit sau khi gửi thành công
+                $(`#comment-${productId}`).prop("disabled", true);
+                $(`button[data-product-id="${productId}"]`).remove();
+
+                // Hiển thị thông báo nếu không còn sản phẩm nào để đánh giá
+                if ($(".product-review").length === 0) {
+                    $("#no-more-reviews").show();
+                }
             },
             error: function (xhr) {
                 console.log(xhr);
-                alert(xhr.responseJSON);
+                toastr.error(xhr.responseJSON || "Có lỗi xảy ra, vui lòng thử lại.");
             }
         });
     });

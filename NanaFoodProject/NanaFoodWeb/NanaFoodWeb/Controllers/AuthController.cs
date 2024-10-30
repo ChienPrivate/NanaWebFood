@@ -92,7 +92,10 @@ namespace NanaFoodWeb.Controllers
                 
             }
 
-            TempData["error"] = message;
+            /*TempData["error"] = message;*/
+
+            ModelState.AddModelError("", message);
+
             return View(login);
         }
 
