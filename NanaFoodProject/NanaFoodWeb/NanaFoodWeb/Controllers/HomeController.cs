@@ -190,9 +190,92 @@ namespace NanaFoodWeb.Controllers
 
             return View();
         }
+
+        public IActionResult GetTopView(int page, int pageSize)
+        {
+            ViewData["Action"] = "TopViewed";
+            if (page == 0)
+            {
+                page = 1;
+            }
+            var response = _productRepo.TopViewed(page, 9);
+            if (response.IsSuccess)
+            {
+                var result = JsonConvert.DeserializeObject<ProductVM>(response.Result.ToString());
+                int totalItems = result.TotalCount;
+                int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+                ViewData["totalPages"] = totalPages;
+                ViewData["currentPage"] = page;
+
+                if (result == null)
+                {
+                    result = new ProductVM();
+                }
+
+                return View(result);
+            }
+            return NotFound();
+        }
+
+        public async Task<IActionResult> Filter(int? value, int page, int pageSize)
+        {
+            ViewData["Action"] = "Filter";
+            double minrange = 0;
+            double maxrange = 0;
+            if (value == 0)
+            {
+                return RedirectToAction("Index");
+            }
+            else if (value == 1)
+            {
+                minrange = 0;
+                maxrange = 16000;
+            }
+            else if (value == 2)
+            {
+                minrange = 16000;
+                maxrange = 31000;
+            }
+            else if (value == 3)
+            {
+                minrange = 32000;
+                maxrange = 61000;
+            }
+            else if (value == 4)
+            {
+                minrange = 61000;
+                maxrange = 100000;
+            }
+            else if (value == 5)
+            {
+                minrange = 100000;
+                maxrange = 900000;
+            }
+            if (page == 0)
+            {
+                page = 1;
+            }
+            var response = _productRepo.GetByFilter(minrange, maxrange, page, 9);
+            if (response.IsSuccess)
+            {
+                var result = JsonConvert.DeserializeObject<ProductVM>(response.Result.ToString());
+                int totalItems = result.TotalCount;
+                int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+                ViewData["totalPages"] = totalPages;
+                ViewData["currentPage"] = page;
+
+                if (result == null)
+                {
+                    result = new ProductVM();
+                }
+
+                return View(result);
+            }
+            return NotFound();
+        }
+
         public async Task<IActionResult>FilterCategory(int categoryid, int page, int pageSize)
         {
-            ViewData["Action"] = "FilterCategory";
 
             var result = await _categoryRepository.GetAllCategoriesAsync(1, pageSize, true);
             if (result != null && result.IsSuccess)
