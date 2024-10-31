@@ -117,21 +117,29 @@ namespace NanaFoodApi.Controllers
             return Ok(response);
         }
 
-        /// <summary>
-        /// Lấy đánh giá theo ID sản phẩm
-        /// </summary>
-        /// <remarks>
-        /// API này trả về danh sách các đánh giá cho một sản phẩm dựa trên ProductID.
-        /// </remarks>
-        /// <param name="productId">ID của sản phẩm.</param>
-        /// <returns>
-        /// - 200 OK nếu lấy danh sách đánh giá thành công.
-        /// </returns>
-        /// <response code="200">Trả về danh sách đánh giá cho sản phẩm.</response>
-        [HttpGet("productreviews/{productId}")]
-        public async Task<IActionResult> GetReviewByProductId(int productId)
+        ///// <summary>
+        ///// Lấy đánh giá theo ID sản phẩm
+        ///// </summary>
+        ///// <remarks>
+        ///// API này trả về danh sách các đánh giá cho một sản phẩm dựa trên ProductID.
+        ///// </remarks>
+        ///// <param name="productId">ID của sản phẩm.</param>
+        ///// <returns>
+        ///// - 200 OK nếu lấy danh sách đánh giá thành công.
+        ///// </returns>
+        ///// <response code="200">Trả về danh sách đánh giá cho sản phẩm.</response>
+        //[HttpGet("productreviews/{productId}")]
+        //public async Task<IActionResult> GetReviewByProductId(int productId)
+        //{
+        //    var response = await _reviewRepository.GetReviewByProductId(productId);
+
+        //    return Ok(response);
+        //}
+        [HttpGet("productreviews/{productId}/{page}/{pageSize}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetReviewByProductId(int productId, int page, int pageSize)
         {
-            var response = await _reviewRepository.GetReviewByProductId(productId);
+            var response = await _reviewRepository.GetReviewByProductId(productId, page, pageSize);
 
             return Ok(response);
         }
@@ -161,6 +169,20 @@ namespace NanaFoodApi.Controllers
             var response = await _reviewRepository.GetOrderDetailsFromOrder(orderId);
 
             return Ok(response);
+        }
+
+        [HttpGet("GetRating/{productId}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> CalculateAvgRating(int productId)
+        {
+            var result = await _reviewRepository.CalculateAvgRating(productId);
+
+            return Ok(new ResponseDto
+            {
+                IsSuccess = true,
+                Result = result,
+                Message = result.ToString()
+            });
         }
     }
 }
