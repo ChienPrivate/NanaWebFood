@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using NanaFoodDAL.Model;
 using NanaFoodWeb.CallAPICenter;
 using NanaFoodWeb.IRepository;
 using NanaFoodWeb.IRepository.Repository;
@@ -15,10 +14,10 @@ using Sprache;
 namespace NanaFoodWeb.Controllers
 {
     [Route("Products")]
-    public class ProductsController(IProductRepo productRepo, IHelperRepository helperRepository, ITokenProvider tokenProvider,ICategoryRepository categoryRepository) : Controller
+    public class ProductsController(IProductRepo productRepo, IHelperRepository helperRepository, ITokenProvider tokenProvider,ICategoryRepository categoryRepository, IReviewRepository reviewRepository) : Controller
     {
         private CallApiCenter _callApiCenter = new CallApiCenter();
-
+        private readonly IReviewRepository _reviewRepository = reviewRepository;
         private readonly IHelperRepository _helperRepository = helperRepository;
         private readonly ITokenProvider _tokenProvider = tokenProvider;
         readonly IProductRepo _productRepo = productRepo;
