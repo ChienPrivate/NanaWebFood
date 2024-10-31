@@ -19,35 +19,32 @@
             <form asp-controller="Home" asp-action="Sort">
                 <div class="d-flex">
                     <select class="form-select me-3 text-center" style="width:200px;" name="sort">
-                        <option value="0">Price Sort</option>
-                        <option value="asc"> Ascending</option>
-                        <option value="desc"> Descending</option>
+                        <option value="0">Sắp xếp</option>
+                        <option value="asc"> Tăng dần</option>
+                        <option value="desc"> Giảm dần</option>
                     </select>
-                    <button class="btn btn-primary" type="submit">Sort</button>
+                    <button class="btn btn-primary" type="submit">Sắp xếp</button>
                 </div>
             </form>
         </div>
         <div class="col">
-            <form asp-controller="Food" asp-action="Filter">
+            <form asp-controller="Home" asp-action="Filter">
                 <div class="d-flex">
                     <select class="form-select me-3 text-center" style="width:200px;" name="value">
-                        <option value="0">Price</option>
+                        <option value="0">Lọc giá</option>
                         <option value="1"> Dưới 16.000</option>
                         <option value="2"> 16.000 - 30.000</option>
                         <option value="3"> 30.000 - 60.000</option>
                         <option value="4"> 60.000 - 100.000</option>
                         <option value="5"> Trên 100.000</option>
                     </select>
-                    <button class="btn btn-primary" type="submit">Filter</button>
+                    <button class="btn btn-primary" type="submit">Lọc</button>
                 </div>
             </form>
         </div>
         <div class="col">
-            <form asp-controller="Food" asp-action="SearchName">
-                <div class="d-flex">
-                    <input type="text" name="query" placeholder="Search by name" class="form-control me-3" />
-                    <button class="btn btn-primary" type="submit">Search</button>
-                </div>
+            <form asp-controller="Home" asp-action="GetTopView">
+                <button class="btn btn-primary" type="submit">Sản phẩm xem nhiều nhất</button>
             </form>
         </div>
     </div>
