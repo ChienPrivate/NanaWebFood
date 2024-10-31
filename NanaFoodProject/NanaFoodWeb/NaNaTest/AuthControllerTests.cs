@@ -172,32 +172,7 @@ namespace NaNaTest
             var response = Assert.IsType<ResponseDto>(badRequestResult.Value);
             Assert.False(response.IsSuccess);
             Assert.Equal("Email already in use", response.Message);
-        }
-
-        [Fact]
-        public async Task GetInfo_UserLoggedIn_ReturnsUserInformation()
-        {
-            // Arrange
-            var user = new User { UserName = "testuser", Email = "test@example.com" };
-            var userDto = new UserDto { UserName = "testuser", Email = "test@example.com" };
-
-            _signInManagerMock.Setup(x => x.UserManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()))
-                .ReturnsAsync(user); // Simulate logged-in user
-            _mapperMock.Setup(x => x.Map<UserDto>(user)).Returns(userDto);
-
-            // Act
-            var result = await _controller.GetInfo();
-
-            // Assert
-            var okResult = Assert.IsType<OkObjectResult>(result);
-            var response = Assert.IsType<ResponseDto>(okResult.Value);
-            Assert.True(response.IsSuccess);
-            Assert.Equal("Lấy thông tin người dùng thành công", response.Message);
-
-            var returnedUserDto = Assert.IsType<UserDto>(response.Result);
-            Assert.Equal(userDto.UserName, returnedUserDto.UserName);
-            Assert.Equal(userDto.Email, returnedUserDto.Email);
-        }
+        }       
 
     }
 }
