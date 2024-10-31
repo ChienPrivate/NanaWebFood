@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using NanaFoodDAL.Model;
 using NanaFoodWeb.CallAPICenter;
 using NanaFoodWeb.IRepository;
 using NanaFoodWeb.IRepository.Repository;
@@ -254,14 +255,29 @@ namespace NanaFoodWeb.Controllers
         }
 
         [HttpGet("CDetails/{id}")]
-        public IActionResult CDetails(int id, int currentPage = 1)
+        public async Task<IActionResult> CDetails(int id, int page = 1)
         {
             var response = _productRepo.GetById(id);
+            var ratingResponse = await _reviewRepository.GetProductRating(id);
+            var reviewListResponse = await _reviewRepository.GetProducReview(id, page, 5);
+
+            var reviewVM = JsonConvert.DeserializeObject<ReviewVM>(reviewListResponse.Result.ToString());
+
+            ViewData["totalPages"] = reviewVM.TotalPages;
+            ViewData["currentPage"] = page;
+            ViewBag.ReviewList = reviewVM.Reviews;
+
+
+            ViewData["rating"] = double.Parse(ratingResponse.Result.ToString());
+
+            if ((double)ViewData["rating"] == 0)
+            {
+                ViewData["rating"] = 5.0;
+            }
 
             if (response?.IsSuccess == true && response.Result != null)
             {
                 var productDto = JsonConvert.DeserializeObject<ProductDto>(response.Result.ToString());
-                ViewData["CurrentPage"] = currentPage;
                 return View(productDto);
             }
 
