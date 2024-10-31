@@ -19,6 +19,7 @@ namespace NanaFoodDAL.IRepository
         ResponseDto Sorting(string sort, int page, int pageSize);
         ResponseDto ModifyStatus(int id, bool status);
         Task<ResponseDto> GetByCategoryIdExcludeSameProduct(int productId, int categoryid, int page, int pageSize);
+        ResponseDto GetProduct();
 
     }
 }

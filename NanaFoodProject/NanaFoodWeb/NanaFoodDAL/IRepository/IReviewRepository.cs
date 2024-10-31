@@ -13,7 +13,7 @@ namespace NanaFoodDAL.IRepository
         Task<ResponseDto> GetAllReview();
         Task<ResponseDto> GetReviewByIdAsync(string id);
         Task<ResponseDto> GetReviewByUserId(string userId);
-        Task<ResponseDto> GetReviewByProductId(int productId);
+        Task<ResponseDto> GetReviewByProductId(int productId, int page, int pageSize);
         Task<ResponseDto> GetOrderDetailsByOrderId(int orderId);
         Task<ResponseDto> GetOrderDetailsFromOrder(int orderId);
         Task<double> CalculateAvgRating(int productId);

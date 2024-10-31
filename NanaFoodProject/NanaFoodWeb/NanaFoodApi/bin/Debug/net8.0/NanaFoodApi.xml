@@ -947,19 +947,6 @@
             </returns>
             <response code="200">Trả về danh sách đánh giá của người dùng.</response>
         </member>
-        <member name="M:NanaFoodApi.Controllers.ReviewController.GetReviewByProductId(System.Int32)">
-            <summary>
-            Lấy đánh giá theo ID sản phẩm
-            </summary>
-            <remarks>
-            API này trả về danh sách các đánh giá cho một sản phẩm dựa trên ProductID.
-            </remarks>
-            <param name="productId">ID của sản phẩm.</param>
-            <returns>
-            - 200 OK nếu lấy danh sách đánh giá thành công.
-            </returns>
-            <response code="200">Trả về danh sách đánh giá cho sản phẩm.</response>
-        </member>
         <member name="M:NanaFoodApi.Controllers.ReviewController.GetOrderDetailsByOrderId(System.Int32)">
             <summary>
             Lấy chi tiết đánh giá theo ID đơn hàng

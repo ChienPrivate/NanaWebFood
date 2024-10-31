@@ -106,21 +106,52 @@ namespace NanaFoodDAL.IRepository.Repository
             return _response;
         }
 
-        public async Task<ResponseDto> GetReviewByProductId(int productId)
+        public async Task<ResponseDto> GetReviewByProductId(int productId, int page, int pageSize)
         {
-            var productReview = await _context.Reviews.Where(r => r.ProductId == productId).ToListAsync();
+            var productReview = await _context.Reviews
+                .Where(r => r.ProductId == productId)
+                .Include(r => r.User)
+                .Select(ur => new UserReviewDto
+                {
+                    ReviewId = ur.ReviewId.ToString(),
+                    UserId = ur.UserId,
+                    UserName = ur.User.UserName ?? "Khách",
+                    FullName = ur.User.FullName ?? "Khách",
+                    AvatarUrl = ur.User.AvatarUrl ?? "https://placehold.co/300x300",
+                    Comment = ur.Comment,
+                    Rating = ur.Rating,
+                    ReviewedDate = ur.ReviewedDate,
+                }).ToListAsync();
 
-            if (productReview != null)
+            var Reviewpage = productReview
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            var totalCount = productReview.Count;
+            var totalPagesReviewPage = (int)Math.Ceiling((decimal)totalCount / pageSize);
+
+            if (productReview.Any())
             {
                 _response.IsSuccess = true;
                 _response.Message = $"Lấy thành công danh sách đánh giá của sản phẩm";
-                _response.Result = _mapper.Map<List<ReviewDto>>(productReview);
+                _response.Result = new
+                {
+                    TotalCount = totalCount,
+                    TotalPages = totalPagesReviewPage,
+                    Reviews = Reviewpage
+                };
             }
             else
             {
-                _response.IsSuccess = false;
-                _response.Message = $"Không có đánh giá này";
-                _response.Result = null;
+                _response.IsSuccess = true;
+                _response.Message = $"Không có đánh giá nào";
+                _response.Result = new
+                {
+                    TotalCount = totalCount,
+                    TotalPages = totalPagesReviewPage,
+                    Reviews = new List<UserReviewDto>()
+                };
             }
 
             return _response;
@@ -163,9 +194,15 @@ namespace NanaFoodDAL.IRepository.Repository
 
         }
 
-        public Task<double> CalculateAvgRating(int productId)
+        public async Task<double> CalculateAvgRating(int productId)
         {
-            throw new NotImplementedException();
+            var confirmedReviews = _context.Reviews
+                .Where(o => o.ProductId == productId && o.IsConfirm);
+
+            var totalRating = confirmedReviews.Sum(o => o.Rating);
+            var reviewCount = confirmedReviews.Count();
+
+            return reviewCount > 0 ? (double)totalRating / reviewCount : 0.0;
         }
 
         public async Task<ResponseDto> UpdateOrderDetailsReviewState(int orderId, int productId, bool IsReviewState)
@@ -218,41 +255,36 @@ namespace NanaFoodDAL.IRepository.Repository
                                              OrderId = od.OrderId
                                          }).ToListAsync();
 
-                /* var orderDetails = await _context.OrderDetails
-                 .Where(o => o.OrderId == orderId)
-                 .Include(o => o.Product)
- *//*                .Include(o => o.Review)*//*
-                 .Select(o => new ReviewProductDto
-                 {
-                     ProductId = o.ProductId,
-                     ProductImage = o.Product.ImageUrl,
-                     ProductName = o.Product.ProductName,
-                     Price = o.Product.Price,
-                     Quantity = o.Quantity,
-                     Total = o.Total,
-                     Comment = o.Review.Comment,
-                     Rating = o.Review.Rating,
-                     IsReviewed = o.IsReviewed,
-                     OrderId = orderId,
-                 }).ToListAsync();*/
-
-                /*var productReview = orderDetails.Select(o => new ReviewProductDto
-                {
-                    ProductId = o.ProductId,
-                    ProductImage = o.Product.ImageUrl,
-                    ProductName = o.Product.ProductName,
-                    Price = o.Product.Price,
-                    Quantity = o.Quantity,
-                    Total = o.Total,
-                    Comment = o.Review.Comment,
-                    Rating = o.Review.Rating,
-                    IsReviewed = o.IsReviewed,
-                    OrderId = orderId,
-                });*/
-
                 _response.IsSuccess = true;
                 _response.Message = "Lấy danh sách sản phẩm từ đơn hàng thành công";
                 _response.Result = productList;
+                /*                var productList = await (from p in _context.Products
+                                                         join od in _context.OrderDetails on p.ProductId equals od.ProductId
+                                                         join r in _context.Reviews on new { od.OrderId, od.ProductId } equals new { r.OrderId, r.ProductId } into reviewGroup
+                                                         from review in reviewGroup.DefaultIfEmpty()
+                                                         join u in _context.Users on review.UserId equals u.Id into userGroup
+                                                         from user in userGroup.DefaultIfEmpty() // Left join to include reviews without users
+                                                         where od.OrderId == orderId
+                                                         select new ReviewProductDto
+                                                         {
+                                                             ProductId = p.ProductId,
+                                                             ProductImage = p.ImageUrl,
+                                                             ProductName = p.ProductName,
+                                                             Price = p.Price,
+                                                             Quantity = od.Quantity,
+                                                             Total = od.Total,
+                                                             Comment = review.Comment ?? "",
+                                                             Rating = review.Rating ?? 0,
+                                                             IsReviewed = od.IsReviewed,
+                                                             OrderId = od.OrderId,
+                                                             UserImageUrl = user.AvatarUrl ?? "Chưa có hình ảnh", // Substitute a default image if user is null
+                                                             UserFullName = user.FullName ?? "Khách" // Substitute a default name if user is null
+                                                         }).ToListAsync();
+
+                                _response.IsSuccess = true;
+                                _response.Message = "Lấy danh sách sản phẩm từ đơn hàng thành công";
+                                _response.Result = productList;*/
+
             }
             catch (Exception ex)
             {

@@ -362,5 +362,24 @@ namespace NanaFoodDAL.IRepository.Repository
             }
             return response;
         }
+
+        public  ResponseDto GetProduct()
+        {
+            var product = _context.Products.ToList(); 
+            if(product == null)
+            {
+                response.IsSuccess= false;
+                response.Message = "Không có sản phẩm để hiển  thị.";
+                return response;
+            }
+            else
+            {
+                response.IsSuccess = true;
+                response.Message = "Đã hiển thị tất cả sản phẩm.";
+                response.Result = product;
+            }
+           
+            return response;
+        }
     }
 }

@@ -6,7 +6,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <!-- Cart Section -->
-<div class="container-fluid py-5" style="min-height:300px;">
+<div class="container-fluid py-5" style="min-height:60vh;">
     <div class="row">
         <h4 class="text-center mb-4">Giỏ Hàng Của Tôi</h4>
          @if(Model.Count > 0)
@@ -58,7 +58,8 @@
         }
         else
         {
-            <h5 class="text-muted" style="position: relative; left: 473px; top: 69px; width: 397.297px;">Không có sản phẩm nào trong giỏ hàng</h5>
+            <img src="https://niceillustrations.com/wp-content/uploads/2020/09/Person-With-Shopping-Cart-768x767.png" style="width: 236.006px; height: 207.847px; transform: translate(800px, 1234.45px); position: relative; left: 116px; top: -1261px; transition: none;">
+            <h5 class="text-muted" style="position: relative; left: 281px; top: 82px; width: 397.297px; height: 27.6388px; transition: none;">Không có sản phẩm nào trong giỏ hàng</h5>
         }
     </div>
 </div>
@@ -74,6 +75,16 @@
             }
         }
         return null; // Trả về null nếu không tìm thấy cookie
+    }
+
+    function setCookie(name, value, days) {
+        let expires = "";
+        if (days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + (value || "") + expires + "; path=/";
     }
 
     function formatCurrency(amount) {
@@ -98,6 +109,7 @@
         }
 
         $("a#removeProduct").click(function () {
+            const cartCount = getCookie('CartCount');
             var productId = $(this).data("product-id");
             var productCard = $(this).closest('.card');
             productCard.remove();
@@ -108,6 +120,14 @@
                     'Authorization': 'Bearer ' + jwtToken
                 },
                 success: function () {
+                    if (cartCount !== null) {
+                        const updatedCartCount = (Number(cartCount) - 1).toString();
+                        setCookie('CartCount', updatedCartCount, 7);
+                        document.getElementById("cartCount").innerText = updatedCartCount;
+                    } else {
+                        // Nếu không có giá trị trong cookie, đặt về 0 hoặc giá trị mặc định khác
+                        document.getElementById("cartCount").innerText = "0";
+                    }
                     updateTotal();
                 },
                 error: function (xhr, status, error) {
@@ -118,6 +138,7 @@
 
         // Xử lý sự kiện click vào nút "Giảm số lượng"
         $(".btn#decreaseQuantity").click(function () {
+            const cartCount = getCookie('CartCount');
             var productId = $(this).data("product-id");
             var quantityInput = $(this).closest('.quantity-finder').find('.quantity-input');
             var totalPriceElement = $(this).closest('.row').find('.total'); // Phần tử hiển thị tổng giá tiền
@@ -143,6 +164,14 @@
                                 'Authorization': 'Bearer ' + jwtToken
                             },
                             success: function (deleteResponse) {
+                                if (cartCount !== null) {
+                                    const updatedCartCount = (Number(cartCount) - 1).toString();
+                                    setCookie('CartCount', updatedCartCount, 7);
+                                    document.getElementById("cartCount").innerText = updatedCartCount;
+                                } else {
+                                    // Nếu không có giá trị trong cookie, đặt về 0 hoặc giá trị mặc định khác
+                                    document.getElementById("cartCount").innerText = "0";
+                                }
                             },
                             error: function (xhr, status, error) {
                             }
