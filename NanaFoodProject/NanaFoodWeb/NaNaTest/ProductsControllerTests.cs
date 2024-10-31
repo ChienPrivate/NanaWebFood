@@ -30,7 +30,6 @@ namespace NaNaTest
 
             var result = _controller.GetAll(1, 10, true);
 
-            // Assert
             var okResult = result.Result as OkObjectResult;
             Assert.NotNull(okResult);
             Assert.Equal(200, okResult.StatusCode);
@@ -45,7 +44,6 @@ namespace NaNaTest
 
             var result = _controller.GetAll(1, 10, true);
 
-            // Assert
             var notFoundResult = result.Result as NotFoundObjectResult;
             Assert.NotNull(notFoundResult);
             Assert.Equal(404, notFoundResult.StatusCode);
@@ -60,7 +58,6 @@ namespace NaNaTest
 
             var result = _controller.GetById(1);
 
-            // Assert
             Assert.Equal(responseDto, result);
         }
 
@@ -76,7 +73,6 @@ namespace NaNaTest
 
             var result = _controller.Create(productDto);
 
-            // Assert
             Assert.Equal(responseDto, result);
         }
 
@@ -89,7 +85,6 @@ namespace NaNaTest
 
             var result = await _controller.GetByCategoryIdExcludeSameProduct(1, 1, 1, 10) as OkObjectResult;
 
-            // Assert
             Assert.NotNull(result);
             Assert.Equal(200, result.StatusCode);
             Assert.Equal(responseDto, result.Value);
@@ -143,6 +138,43 @@ namespace NaNaTest
             var badRequestResult = result.Result as BadRequestObjectResult;
             Assert.NotNull(badRequestResult);
             Assert.Equal(400, badRequestResult.StatusCode);
+        }
+
+        [Fact]
+        public void Update_ReturnsBadRequest_WhenModelStateIsInvalid()
+        {
+            var productDto = new ProductDto();
+            _controller.ModelState.AddModelError("Name", "Name is required");
+
+            var result = _controller.Update(productDto);
+
+            var badRequestResult = result.Result as BadRequestObjectResult;
+            Assert.NotNull(badRequestResult);
+            Assert.Equal(400, badRequestResult.StatusCode);
+            Assert.IsType<SerializableError>(badRequestResult.Value); 
+        }
+
+        [Fact]
+        public void Sorting_ReturnsOkResult_WhenSortingSuccessfully()
+        {
+            var products = new List<ProductDto>
+            {
+                new ProductDto { ProductName = "Product A" },
+                new ProductDto { ProductName = "Product B" }
+            };
+
+            _mockFoodService.Setup(svc => svc.Sorting("price", 1, 10)).Returns(new ResponseDto
+            {
+                IsSuccess = true,
+                Result = products
+            });
+
+            var result = _controller.Sorting("price", 1, 10);
+
+            var okResult = result.Result as OkObjectResult;
+            Assert.NotNull(okResult);
+            Assert.Equal(200, okResult.StatusCode);
+            Assert.Equal(products, okResult.Value); 
         }
 
     }
