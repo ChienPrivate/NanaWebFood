@@ -1,12 +1,60 @@
-﻿@model NanaFoodWeb.Models.Dto.ProductDto
+﻿@{
+    List<NanaFoodWeb.Models.Dto.UserReviewDto> listReview = ViewBag.ReviewList as List<NanaFoodWeb.Models.Dto.UserReviewDto>;
+    var currentPage = ViewData["currentPage"] as int? ?? 1;
+    var totalPages = ViewData["totalPages"] as int? ?? 1;
+    double rating = ViewData["rating"] is double value ? value : 5;
+}
+@using Syncfusion.EJ2.Inputs
+@model NanaFoodWeb.Models.Dto.ProductDto
+@* <style>
+    .e-rating-container.custom-font .e-rating-item-list:hover .e-rating-item-container .e-rating-icon,
+    .e-rating-container.custom-font .e-rating-item-container .e-rating-icon {
+        background: linear-gradient(to right, #ffe814 var(--rating-value), #d8d7d4 var(--rating-value));
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent; /* Ẩn màu viền */
+        -webkit-text-fill-color: transparent; /* Ẩn viền trong trình duyệt Webkit */
+        -webkit-text-stroke: 1px #ffe814; /* Tạo viền màu vàng */
+        text-stroke: 1px #ffe814; /* Tạo viền màu vàng cho các trình duyệt hỗ trợ */
+    }
+</style> *@
+@* <style>
+    .e-rating-container.custom-font .e-rating-item-list:hover .e-rating-item-container .e-rating-icon,
+    .e-rating-container.custom-font .e-rating-item-container .e-rating-icon {
+        /* To change rated symbol fill color and un-rated symbol fill color */
+        background: linear-gradient(to right, #ffe814 var(--rating-value), #d8d7d4 var(--rating-value));
+        background-clip: text;
+        -webkit-background-clip: text;
+    }
+</style> *@
+<style>
+    .e-rating-container .e-rating-item-container.e-rating-selected .e-rating-icon, .e-rating-container .e-rating-item-container.e-rating-intermediate .e-rating-icon {
+        background: linear-gradient(to right, rgb(236 249 67) var(--rating-value), transparent var(--rating-value));
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-stroke: 1px rgb(223 219 73);
+    }
+</style>
 <div class="container" style="min-height:50vh;">
     <div class="mb-3 row box-shadow-edit py-3 rounded-2">
+        
         <div class="offset-1 col-4">
             <img src="@Model.ImageUrl" width="400px" height="400px" />
         </div>
         <div class="col-6" style="position: relative; top: 0px; left: 57px;">
             <div class="h2 fw-bold text-warning">@Model.ProductName.ToUpper()</div>
-            <div class="h6 py-1">Lượt xem : @Model.View <i class="bi bi-eye-fill"></i> | Đánh giá sản phẩm : </div>
+            <div class="h6 py-1">
+                <span>Lượt xem : @Model.View <i class="bi bi-eye-fill"></i></span>
+            </div>
+            <div class="h6">
+                <span class="d-flex align-items-center">
+                    Đánh giá sản phẩm : 
+                    <ejs-rating id="productRating-@Model.ProductId"
+                                value=@rating
+                                readOnly=true
+                                precision=Exact></ejs-rating>@* aria-valuenow="2.5" *@
+                </span>
+            </div>
             <div class="h5">Giá : @Model.Price.ToString("#,##") vnđ</div>
             <div class="h6 py-1">Mô tả:</div>
             <div class="fs-6">
@@ -25,17 +73,29 @@
             </form>
         </div>
     </div>
-    <div class="container-fluid">
 
-    </div>
+    @if (listReview.Count > 0 && listReview != null)
+    {
+        <div class="card shadow rounded-2">
+            <div class="card-header">
+                <h2>Bình luận sản phẩm </h2>
+                <hr />
+                @(await Html.PartialAsync("_PartialCDetail"))
+            </div>
+        </div>
+    }
+    
+    @* <div class="container-fluid">
+        @await Html.PartialAsync("ListReview")
+    </div> *@
 </div>
-    <script>
-        function increase() {
-            document.getElementById('quantity').value++;
+<script>
+    function increase() {
+        document.getElementById('quantity').value++;
+    }
+    function decrease() {
+        if (document.getElementById('quantity').value > 1) {
+            document.getElementById('quantity').value--;
         }
-        function decrease() {
-            if (document.getElementById('quantity').value > 1) {
-                document.getElementById('quantity').value--;
-            }
-        }
-    </script>
+    }
+</script>

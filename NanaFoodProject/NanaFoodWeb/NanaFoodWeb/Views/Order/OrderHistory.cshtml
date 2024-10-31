@@ -2,84 +2,90 @@
     ViewData["title"] = "View Order";
 }
 @model IEnumerable<NanaFoodWeb.Models.Order>;
-<div class="text-center">
-    <h2>Đơn hàng của tôi</h2>
-</div>
-<table class="table table-hover table-bordered text-center my-4">
-    <thead class="table-warning">
-        <tr>
-            <th>Mã hóa đơn</th>
-            <th>Phương thức thanh toán</th>
-            <th>Ngày đặt hàng</th>
-            <th>Trạng thái thanh toán</th>
-            <th>Trạng thái đơn hàng</th>
-            <th>Phí ship</th>
-            <th>Tổng đơn hàng</th>
-            <th>Thao tác</th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model == null)
-        {
-            <tr>
-                <td colspan="5">@ViewBag.none</td>
-            </tr>
-        }
-        else
-        {
-            @foreach (var item in Model)
-            {
-                <tr class="align-middle">
-                    <td>@item.OrderId</td>
-                    <td>@item.PaymentType</td>
-                    <td>@item.OrderDate.ToString("dd-MM-yyyy HH:mm:ss")</td>
-                    <td>
-                        @if (item.PaymentStatus == "Chưa thanh toán")
-                        {
-                            <div class="p-2 badge bg-primary text-white">@item.PaymentStatus</div>
-                        }
-                        @if(item.PaymentStatus == "Đã thanh toán")
-                        {
-                            <div class="p-2 badge bg-success text-white">@item.PaymentStatus</div>
-                        }
-                        @if (item.PaymentStatus == "Đã huỷ")
-                        {
-                            <div class="p-2 badge bg-danger text-white">@item.PaymentStatus</div>
-                        }
-                    </td>
-                    <td>
-                        @if (@item.OrderStatus == "Đang chuẩn bị")
-                        {
-                            <div class="p-2 badge bg-warning text-white">@item.OrderStatus</div>
-                        }
-                        @if (item.OrderStatus == "Đã huỷ")
-                        {
-                            <div class="p-2 badge bg-danger text-white">@item.OrderStatus</div>
-                        }
-                        @if (item.OrderStatus == "Đang giao")
-                        {
-                            <div class="p-2 badge bg-primary text-white">@item.OrderStatus</div>
-                        }
-                        @if (item.OrderStatus == "Đã giao")
-                        {
-                            <div class="p-2 badge bg-success text-white">@item.OrderStatus</div>
-                        }
-                    </td>
-                    <th>@item.ShipmentFee.ToString("#,##") VNĐ</th>
-                    <th>@item.Total.ToString("#,##") VNĐ</th>
-                    <td> 
-                        <a asp-action="OrderHistoryDetail" asp-controller="Order" asp-route-id="@item.OrderId" class="btn btn-sm btn-outline-dark">Xem chi tiết</a>
-                        @if (item.PaymentStatus == "Đã thanh toán" && item.OrderStatus == "Đã giao")
-                        {
-                            <a asp-action="ReviewOrder" asp-controller="Order" asp-route-orderId="@item.OrderId" class="btn btn-sm btn-outline-dark">Đánh giá</a>
-                        }
-                    </td>
-                    
+<div class="card">
+    <div class="card-header">
+        <div class="text-center">
+            <h2>Đơn hàng của tôi</h2>
+        </div>
+    </div>
+    <div class="card-body">
+        <table class="table table-hover table-bordered text-center my-4">
+            <thead class="table-warning">
+                <tr>
+                    <th>Mã hóa đơn</th>
+                    <th>Phương thức thanh toán</th>
+                    <th>Ngày đặt hàng</th>
+                    <th>Trạng thái thanh toán</th>
+                    <th>Trạng thái đơn hàng</th>
+                    <th>Phí ship</th>
+                    <th>Tổng đơn hàng</th>
+                    <th>Thao tác</th>
                 </tr>
-            }
-        }
-    </tbody>
-</table>
-<div class="text-right">
-    <a asp-action="Index" asp-controller="Home" class="btn btn-outline-secondary">Trở về trang chủ</a>
+            </thead>
+            <tbody>
+                @if (Model == null)
+                {
+                    <tr>
+                        <td colspan="5">@ViewBag.none</td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var item in Model)
+                    {
+                        <tr class="align-middle">
+                            <td>@item.OrderId</td>
+                            <td>@item.PaymentType</td>
+                            <td>@item.OrderDate.ToString("dd-MM-yyyy HH:mm:ss")</td>
+                            <td>
+                                @if (item.PaymentStatus == "Chưa thanh toán")
+                                {
+                                    <div class="p-2 badge bg-primary text-white">@item.PaymentStatus</div>
+                                }
+                                @if (item.PaymentStatus == "Đã thanh toán")
+                                {
+                                    <div class="p-2 badge bg-success text-white">@item.PaymentStatus</div>
+                                }
+                                @if (item.PaymentStatus == "Đã huỷ")
+                                {
+                                    <div class="p-2 badge bg-danger text-white">@item.PaymentStatus</div>
+                                }
+                            </td>
+                            <td>
+                                @if (@item.OrderStatus == "Đang chuẩn bị")
+                                {
+                                    <div class="p-2 badge bg-warning text-white">@item.OrderStatus</div>
+                                }
+                                @if (item.OrderStatus == "Đã huỷ")
+                                {
+                                    <div class="p-2 badge bg-danger text-white">@item.OrderStatus</div>
+                                }
+                                @if (item.OrderStatus == "Đang giao")
+                                {
+                                    <div class="p-2 badge bg-primary text-white">@item.OrderStatus</div>
+                                }
+                                @if (item.OrderStatus == "Đã giao")
+                                {
+                                    <div class="p-2 badge bg-success text-white">@item.OrderStatus</div>
+                                }
+                            </td>
+                            <th>@item.ShipmentFee.ToString("#,##") VNĐ</th>
+                            <th>@item.Total.ToString("#,##") VNĐ</th>
+                            <td>
+                                <a asp-action="OrderHistoryDetail" asp-controller="Order" asp-route-id="@item.OrderId" class="btn btn-sm btn-outline-dark">Xem chi tiết</a>
+                                @if (item.PaymentStatus == "Đã thanh toán" && item.OrderStatus == "Đã giao")
+                                {
+                                    <a asp-action="ReviewOrder" asp-controller="Order" asp-route-orderId="@item.OrderId" class="btn btn-sm btn-outline-dark">Đánh giá</a>
+                                }
+                            </td>
+
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+        <div class="text-right">
+            <a asp-action="Index" asp-controller="Home" class="btn btn-outline-secondary">Trở về trang chủ</a>
+        </div>
+    </div>
 </div>

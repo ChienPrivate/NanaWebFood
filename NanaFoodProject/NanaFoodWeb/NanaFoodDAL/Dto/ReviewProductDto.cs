@@ -17,6 +17,8 @@ namespace NanaFoodDAL.Dto
         public double Total { get; set; }
         public string? Comment { get; set; }
         public double? Rating { get; set; }
+        public string UserImageUrl { get; set; }
+        public string UserFullName { get; set; }
         public bool IsReviewed { get; set; }
     }
 }
