@@ -430,7 +430,6 @@
             **Sample Request**:
             ```json
             {
-                "couponTypeId": 1,
                 "couponCode": "SALE25",
                 "description": "Giảm giá 25.000 cho đơn hàng trên 100.000",
                 "discount": 25000,
@@ -450,7 +449,7 @@
             <response code="200">Mã giảm giá được tạo thành công.</response>
             <response code="400">Yêu cầu không hợp lệ hoặc xảy ra lỗi khi tạo mã giảm giá.</response>
         </member>
-        <member name="M:NanaFoodApi.Controllers.CouponController.GetAll(System.Int32,System.Int32)">
+        <member name="M:NanaFoodApi.Controllers.CouponController.GetAll">
             <summary>
             Lấy danh sách tất cả mã giảm giá
             </summary>
@@ -1150,6 +1149,42 @@
             <inheritdoc />
         </member>
         <member name="M:NanaFoodApi.Migrations.AddisConfirmtoReview.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:NanaFoodApi.Migrations.UpdateCouponType">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.UpdateCouponType.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.UpdateCouponType.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.UpdateCouponType.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:NanaFoodApi.Migrations.RemoveCouponType">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.RemoveCouponType.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.RemoveCouponType.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.RemoveCouponType.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:NanaFoodApi.Migrations.RemoveCouponTypes">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.RemoveCouponTypes.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.RemoveCouponTypes.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.RemoveCouponTypes.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
     </members>

@@ -25,7 +25,6 @@ namespace NanaFoodDAL.Context
         public DbSet<OrderDetails> OrderDetails { get; set; }
         public DbSet<SearchHistory> SearchHistories { get; set; }
         public DbSet<Coupon> Coupons { get; set; }
-        public DbSet<CouponType> CouponTypes { get; set; }
         public DbSet<UserCoupon> UserCoupons { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -47,7 +46,6 @@ namespace NanaFoodDAL.Context
             /*builder.Entity<IdentityRole>().HasData(roles);*/
             // Cấu hình cho khóa chính
             builder.Entity<Coupon>().ToTable("Coupon");
-            builder.Entity<CouponType>().HasKey(e => e.CouponTypeId);
             builder.Entity<UserCoupon>().HasKey(e => e.Id);
 
 
@@ -106,11 +104,6 @@ namespace NanaFoodDAL.Context
                 .WithMany(e => e.OrderDetails)
                 .HasForeignKey(e => e.ProductId)
                 .OnDelete(DeleteBehavior.Cascade);
-
-            builder.Entity<Coupon>()
-                .HasOne(e => e.CouponType)
-                .WithMany(e => e.Coupons)
-                .HasForeignKey(e => e.CouponTypeId);
 
             builder.Entity<UserCoupon>()
                 .HasOne(e => e.Coupon)
