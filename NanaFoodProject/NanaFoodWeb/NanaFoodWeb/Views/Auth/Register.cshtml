@@ -11,27 +11,27 @@
                             <h4 class="fw-bold mb-4 text-center">Đăng Ký</h4>
                             <form asp-controller="auth" asp-action="register" enctype="multipart/form-data">
                                 <div class="mb-3">
-                                    <label for="fullname" class="form-label">Họ và tên</label>
+                                    <label for="fullname" class="form-label">Họ và tên <span class="text-danger">*</span></label>
                                     <input asp-for=FullName type="text" class="form-control" id="email" placeholder="Nhập họ và tên">
                                     <span asp-validation-for="FullName" class="text-danger"></span>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="fullname" class="form-label">Tên đăng nhập</label>
+                                <label for="fullname" class="form-label">Tên đăng nhập <span class="text-danger">*</span></label>
                                     <input asp-for=UserName type="text" class="form-control" id="email" placeholder="Nhập tên tài khoản">
                                     <span asp-validation-for="UserName" class="text-danger"></span>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="email" class="form-label">Địa chỉ email của bạn</label>
+                                <label for="email" class="form-label">Địa chỉ email của bạn <span class="text-danger">*</span></label>
                                     <input asp-for=Email type="email" class="form-control" id="email" placeholder="Nhập email">
                                     <span asp-validation-for="Email" class="text-danger"></span>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="password" class="form-label">Mật khẩu</label>
+                                <label for="password" class="form-label">Mật khẩu <span class="text-danger">*</span></label>
                                     <input asp-for=Password type="password" class="form-control" id="password" placeholder="Nhập mật khẩu">
                                     <span asp-validation-for="Password" class="text-danger"></span>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="confirm-password" class="form-label">Xác nhận mật khẩu</label>
+                                <label for="confirm-password" class="form-label">Xác nhận mật khẩu <span class="text-danger">*</span></label>
                                     <input asp-for=ConfirmPassword type="password" class="form-control" id="confirm-password" placeholder="Nhập lại mật khẩu">
                                     <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                                 </div>

@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
-using NanaFoodDAL.Model;
-using NanaFoodWeb.CallAPICenter;
 using NanaFoodWeb.IRepository;
 using NanaFoodWeb.IRepository.Repository;
 using NanaFoodWeb.Models;
@@ -64,7 +61,7 @@ namespace NanaFoodWeb.Controllers
 
                 try
                 {
-                    await SignInUser(userReturn.Token); // phương thức dùng để đổi trạng thái người dùng sang IsAuthenticated
+                    await SignInUser(userReturn.Token,login.keepLogined); // phương thức dùng để đổi trạng thái người dùng sang IsAuthenticated
                     _tokenProvider.SetToken(userReturn.Token); // lưu token vào cookie
                 }
                 catch (Exception ex)
@@ -304,6 +301,35 @@ namespace NanaFoodWeb.Controllers
 
             var principal = new ClaimsPrincipal(identity);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+        }
+
+        private async Task SignInUser(string token, bool KeepLogined)
+        {
+            var handler = new JwtSecurityTokenHandler();
+
+            var jwt = handler.ReadJwtToken(token);
+
+            var authProperties = new AuthenticationProperties
+            {
+                IsPersistent = KeepLogined,
+                ExpiresUtc = KeepLogined ? DateTimeOffset.UtcNow.AddDays(30) : DateTimeOffset.UtcNow.AddHours(1)
+            };
+
+            var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
+            identity.AddClaim(new Claim(JwtRegisteredClaimNames.Email,
+
+                jwt.Claims.FirstOrDefault(u => u.Type == JwtRegisteredClaimNames.Email).Value));
+            identity.AddClaim(new Claim(JwtRegisteredClaimNames.Sub,
+                jwt.Claims.FirstOrDefault(u => u.Type == "nameid").Value));
+            identity.AddClaim(new Claim(JwtRegisteredClaimNames.GivenName,
+                jwt.Claims.FirstOrDefault(u => u.Type == "given_name").Value));
+            identity.AddClaim(new Claim(ClaimTypes.Role,
+                jwt.Claims.FirstOrDefault(u => u.Type == "role").Value));
+            identity.AddClaim(new Claim(JwtRegisteredClaimNames.Name,
+                jwt.Claims.FirstOrDefault(u => u.Type == "name").Value));
+
+            var principal = new ClaimsPrincipal(identity);
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, authProperties);
         }
     }
 }
