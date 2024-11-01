@@ -28,6 +28,38 @@ namespace NanaFoodDAL.IRepository.Repository
             _userManager = userManager;
         }
 
+        public string CreateToken(User user, IList<string> roles, bool keepLogined)
+        {
+            var claims = new List<Claim>()
+            {
+                new Claim(JwtRegisteredClaimNames.Email,user.Email),
+                new Claim(JwtRegisteredClaimNames.GivenName, user.UserName),
+                new Claim(JwtRegisteredClaimNames.Name, user.FullName),
+                new Claim(ClaimTypes.NameIdentifier,user.Id)
+            };
+
+            foreach (var role in roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
+
+            var credentials = new SigningCredentials(_key, SecurityAlgorithms.HmacSha256Signature);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(claims),
+                Expires = keepLogined ? DateTime.Now.AddDays(30) : DateTime.Now.AddHours(1),
+                SigningCredentials = credentials,
+                Issuer = _config["ApiSettings:JwtOptions:Issuer"],
+                Audience = _config["ApiSettings:JwtOptions:Audience"]
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+
+            return tokenHandler.WriteToken(token);
+        }
+
         public string CreateToken(User user, IList<string> roles)
         {
             var claims = new List<Claim>()

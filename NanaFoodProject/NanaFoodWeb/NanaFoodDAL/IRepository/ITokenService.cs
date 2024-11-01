@@ -9,6 +9,7 @@ namespace NanaFoodDAL.IRepository
 {
     public interface ITokenService
     {
+        public string CreateToken(User user, IList<string> roles, bool keepLogined);
         public string CreateToken(User user, IList<string> roles);
     }
 }

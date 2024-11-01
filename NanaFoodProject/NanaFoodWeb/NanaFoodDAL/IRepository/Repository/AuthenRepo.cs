@@ -78,7 +78,7 @@ namespace NanaFoodDAL.IRepository.Repository
                 UserName = user.UserName,
                 Email = user.Email,
                 FullName = user.FullName,
-                Token = _tokenService.CreateToken(user, roles)
+                Token = _tokenService.CreateToken(user, roles,login.keepLogined)
             };
             response.Message = "Đăng nhập thành công";
             return response;

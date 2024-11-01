@@ -21,10 +21,12 @@ builder.Services.AddDistributedMemoryCache();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        options.Cookie.SameSite = SameSiteMode.Strict;
         options.LoginPath = "/Auth/Login"; // Đường dẫn để chuyển hướng khi chưa đăng nhập
         options.LogoutPath = "/Auth/Logout"; // Đường dẫn khi đăng xuất
         options.AccessDeniedPath = "/Auth/AccessDenied"; // đường dẫn khi từ chối truy cập
-        options.ExpireTimeSpan = TimeSpan.FromMinutes(60); // Thời gian hết hạn của cookie
+        options.ExpireTimeSpan = TimeSpan.FromDays(30);
         options.SlidingExpiration = true; // Kéo dài thời gian hết hạn nếu người dùng tiếp tục hoạt động
         options.Cookie.HttpOnly = true; // Chỉ truy cập cookie qua HTTP (bảo mật hơn)
         options.Cookie.IsEssential = true; // Cookie này là cần thiết cho chức năng ứng dụng
