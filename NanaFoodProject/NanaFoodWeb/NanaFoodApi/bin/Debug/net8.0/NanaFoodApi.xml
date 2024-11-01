@@ -430,7 +430,6 @@
             **Sample Request**:
             ```json
             {
-                "couponTypeId": 1,
                 "couponCode": "SALE25",
                 "description": "Giảm giá 25.000 cho đơn hàng trên 100.000",
                 "discount": 25000,
