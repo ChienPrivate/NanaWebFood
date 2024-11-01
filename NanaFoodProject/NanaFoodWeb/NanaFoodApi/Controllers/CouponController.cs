@@ -80,9 +80,9 @@ namespace NanaFoodApi.Controllers
         /// <response code="200">Trả về danh sách mã giảm giá.</response>
         /// <response code="400">Yêu cầu không hợp lệ hoặc xảy ra lỗi khi lấy danh sách mã giảm giá.</response>
         [HttpGet("GetAllCoupon")]
-        public async Task<ActionResult<ResponseDto>>GetAll(int page =1, int pageSize=10)
+        public async Task<ActionResult<ResponseDto>>GetAll()
         {
-            var result = await _couponRepo.GetAll(page, pageSize);
+            var result = await _couponRepo.GetAll();
             if (!result.IsSuccess)
             {
                 return BadRequest(result);
@@ -152,6 +152,16 @@ namespace NanaFoodApi.Controllers
             if (!result.IsSuccess)
             {
                 return BadRequest(result);
+            }
+            return Ok(result);
+        }
+        [HttpGet("getbyId/{code}")]
+        public async Task<IActionResult>GetById([FromRoute] string code)
+        {
+            var result = await _couponRepo.GetById(code);
+            if (!result.IsSuccess)
+            {
+                return NotFound(result);
             }
             return Ok(result);
         }

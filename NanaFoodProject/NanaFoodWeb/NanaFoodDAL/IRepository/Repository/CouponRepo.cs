@@ -1,16 +1,8 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 using NanaFoodDAL.Context;
 using NanaFoodDAL.Dto;
 using NanaFoodDAL.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.WebSockets;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NanaFoodDAL.IRepository.Repository
 {
@@ -60,7 +52,7 @@ namespace NanaFoodDAL.IRepository.Repository
         {
             try
             {
-                coupon.CouponCode = coupon.CouponCode.ToLower();
+               /* coupon.CouponCode = coupon.CouponCode.ToLower();
 
                 var couponType = await context.CouponTypes.AsNoTracking()
                     .FirstOrDefaultAsync(e => e.CouponTypeId == coupon.CouponTypeId);
@@ -69,7 +61,7 @@ namespace NanaFoodDAL.IRepository.Repository
                     response.IsSuccess = false;
                     response.Message = "Loại mã giảm giá không tồn tại.";
                     return response;
-                }
+                }*/
 
                 if ((coupon.EndStart - coupon.CouponStartDate).TotalDays > 7)
                 {
@@ -139,7 +131,7 @@ namespace NanaFoodDAL.IRepository.Repository
                     MaxUsage = coupon.MaxUsage, // Số lần sử dụng tối đa
                     Description = coupon.Description, // Mô tả mã giảm giá
                     Status = couponStatus,
-                    CouponTypeId = coupon.CouponTypeId,
+                    /*CouponTypeId = coupon.CouponTypeId,*/
                 };
 
                 await context.Coupons.AddAsync(newCoupon);
@@ -180,58 +172,45 @@ namespace NanaFoodDAL.IRepository.Repository
             
         }
 
-        public async Task<ResponseDto> GetAll(int page, int pageSize)
+        public async Task<ResponseDto> GetAll()
         {
-            try
+            try 
             {
-                var Cp = await _context.Coupons.ToListAsync();
-                var totalCount = Cp.Count;
-                var totalPages = (int)Math.Ceiling((decimal)totalCount / pageSize);
-                var CouponPerPage = Cp
-                   .Skip((page - 1) * pageSize)
-                   .Take(pageSize)
-                   .ToList();
-
-                response.Result = new
+                var Cp = await context.Coupons.ToListAsync();
+                if(Cp != null)
                 {
-                    TotalCount = totalCount,
-                    TotalPages = totalPages,
-                    CouponType = _mapper.Map<List<CouponDto>>(CouponPerPage)
-
-                };
-                response.IsSuccess = true;
-                response.Message = "Lấy sản phẩm thành công.";
-
-
+                    response.IsSuccess = true;
+                    response.Message = "Lấy sản phẩm thành công.";
+                    response.Result = Cp; 
+                }
             }
             catch (Exception e) { response.IsSuccess = false; response.Message = e.Message; }
             return response;
         }
 
-        public async Task<ResponseDto> GetById(string id, int page , int pageSize)
+        public async Task<ResponseDto> GetById(string code)
         {
             try
             {
-                var Cp = _context.Coupons.Where(p => p.CouponCode == id).ToList();
-                var totalCount = Cp.Count;
-                var totalPages = (int)Math.Ceiling((decimal)totalCount / pageSize);
-                var CouponTypePerPage = Cp
-                    .Skip((page - 1) * pageSize)
-                    .Take(pageSize)
-                    .ToList();
-                response.Result = new
+                var coupon = await context.Coupons.FirstOrDefaultAsync(e => e.CouponCode == code); 
+
+                if (coupon == null)
                 {
-                    TotalCount = totalCount,
-                    TotalPages = totalPages,
-                    Products = _mapper.Map<List<CouponTypeDto>>(CouponTypePerPage)
-                };
+                    response.IsSuccess = false;
+                    response.Message = "Mã giảm giá không tồn tại.";
+                    return response;
+                }
+
                 response.IsSuccess = true;
+                response.Message = "Lấy mã giảm giá thành công.";
+                response.Result = coupon;
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
                 response.IsSuccess = false;
-                response.Message = ex.Message;
+                response.Message = e.Message;
             }
+
             return response;
         }
 
@@ -240,7 +219,7 @@ namespace NanaFoodDAL.IRepository.Repository
             try
             {
                 coupon.CouponCode = coupon.CouponCode.ToLower();
-
+/*
                 var couponType = await context.CouponTypes.AsNoTracking()
                     .FirstOrDefaultAsync(e => e.CouponTypeId == coupon.CouponTypeId);
                 if (couponType == null)
@@ -248,7 +227,7 @@ namespace NanaFoodDAL.IRepository.Repository
                     response.IsSuccess = false;
                     response.Message = "Loại mã giảm giá không tồn tại.";
                     return response;
-                }
+                }*/
 
                 if ((coupon.EndStart - coupon.CouponStartDate).TotalDays > 7)
                 {
@@ -317,7 +296,7 @@ namespace NanaFoodDAL.IRepository.Repository
                 existingCoupon.MaxUsage = coupon.MaxUsage;
                 existingCoupon.TimesUsed = coupon.TimesUsed;
                 existingCoupon.Status = couponStatus; 
-                existingCoupon.CouponTypeId = coupon.CouponTypeId;
+              /*  existingCoupon.CouponTypeId = coupon.CouponTypeId;*/
 
                 await _context.SaveChangesAsync();
                 response.Result = mapper.Map<CouponDto>(coupon);

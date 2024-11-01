@@ -118,7 +118,7 @@ namespace NaNaTest
             Assert.NotNull(categories);
             Assert.Single(categories);
             Assert.Equal("Test Category", categories.First().Text);
-        }       
+        }
 
         [Fact]
         public async Task Create_Post_ReturnsRedirectToAction_WhenProductIsValidAndCreated()
