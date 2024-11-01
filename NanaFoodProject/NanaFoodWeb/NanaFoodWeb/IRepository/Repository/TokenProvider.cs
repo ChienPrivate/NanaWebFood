@@ -1,4 +1,5 @@
-﻿using NanaFoodWeb.Utility;
+﻿using Microsoft.Extensions.Options;
+using NanaFoodWeb.Utility;
 using NuGet.Common;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -56,11 +57,14 @@ namespace NanaFoodWeb.IRepository.Repository
             _contextAccessor.HttpContext?.Response.Cookies.Append("CartCount", cartCount);
         }
 
+        public void SetToken(string token, CookieOptions options)
+        {
+            _contextAccessor.HttpContext?.Response.Cookies.Append(StaticDetails.TokenCookie, token, options);
+        }
+
         public void SetToken(string token)
         {
             _contextAccessor.HttpContext?.Response.Cookies.Append(StaticDetails.TokenCookie, token);
         }
-
-
     }
 }
