@@ -30,22 +30,34 @@ namespace NanaFoodWeb.IRepository.Repository
             return await _baseService.SendAsync(new RequestDto
             {
                 ApiType = StaticDetails.ApiType.POST,
-                Url = StaticDetails.APIBase + $"/api/Coupon/createCP"
+                Url = StaticDetails.APIBase + $"/api/Coupon/create"
             });
         }
-        public Task<ResponseDto> GetAll()
+        public async Task<ResponseDto> GetAll()
         {
-            throw new NotImplementedException();
+            return await _baseService.SendAsync(new RequestDto
+            {
+                ApiType = StaticDetails.ApiType.GET,
+                Url = StaticDetails.APIBase + $"/api/Coupon/GetAll"
+            });
         }
 
-        public Task<ResponseDto> GetById(string id)
+        public async Task<ResponseDto> GetById(string id)
         {
-            throw new NotImplementedException();
+            return await _baseService.SendAsync(new RequestDto
+            {
+                ApiType = StaticDetails.ApiType.GET,
+                Url = StaticDetails.APIBase + $"/api/Coupon/getbyId/{id}"
+            });
         }
 
-        public Task<ResponseDto> Update(Coupon coupon)
+        public async Task<ResponseDto> Update(Coupon coupon)
         {
-            throw new NotImplementedException();
+            return await _baseService.SendAsync(new RequestDto
+            {
+                ApiType = StaticDetails.ApiType.PUT,
+                Url = StaticDetails.APIBase + $"/api/Coupon/update"
+            });
         }
 
     }

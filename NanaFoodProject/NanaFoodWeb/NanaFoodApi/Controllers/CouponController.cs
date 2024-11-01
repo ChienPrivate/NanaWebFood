@@ -34,7 +34,6 @@ namespace NanaFoodApi.Controllers
         /// **Sample Request**:
         /// ```json
         /// {
-        ///     "couponTypeId": 1,
         ///     "couponCode": "SALE25",
         ///     "description": "Giảm giá 25.000 cho đơn hàng trên 100.000",
         ///     "discount": 25000,
@@ -53,7 +52,7 @@ namespace NanaFoodApi.Controllers
         /// </returns>
         /// <response code="200">Mã giảm giá được tạo thành công.</response>
         /// <response code="400">Yêu cầu không hợp lệ hoặc xảy ra lỗi khi tạo mã giảm giá.</response>
-        [HttpPost("createCP")]
+        [HttpPost("create")]
         public async Task<IActionResult> CreatCoupon([FromBody] CouponDto dto)
         {
             if(ModelState.IsValid)
@@ -79,8 +78,8 @@ namespace NanaFoodApi.Controllers
         /// </returns>
         /// <response code="200">Trả về danh sách mã giảm giá.</response>
         /// <response code="400">Yêu cầu không hợp lệ hoặc xảy ra lỗi khi lấy danh sách mã giảm giá.</response>
-        [HttpGet("GetAllCoupon")]
-        public async Task<ActionResult<ResponseDto>>GetAll()
+        [HttpGet("GetAll")]
+        public async Task<IActionResult>GetAll()
         {
             var result = await _couponRepo.GetAll();
             if (!result.IsSuccess)
@@ -119,7 +118,7 @@ namespace NanaFoodApi.Controllers
         /// <response code="200">Mã giảm giá được cập nhật thành công.</response>
         /// <response code="400">Yêu cầu không hợp lệ hoặc xảy ra lỗi khi cập nhật mã giảm giá.</response>
         /// <response code="404">Mã giảm giá không tồn tại.</response>
-        [HttpPut("updateCoupon")]
+        [HttpPut("update")]
         public async Task<IActionResult> Update([FromBody] CouponDto dto)
         {
             if( ModelState.IsValid )
@@ -145,7 +144,7 @@ namespace NanaFoodApi.Controllers
         /// <response code="200">Mã giảm giá đã được xóa thành công.</response>
         /// <response code="400">Yêu cầu không hợp lệ hoặc xảy ra lỗi khi xóa mã giảm giá.</response>
         /// <response code="404">Mã giảm giá không tồn tại.</response>
-        [HttpDelete("DeleteCoupon")]
+        [HttpDelete("Delete")]
         public async Task<ActionResult<ResponseDto>> DeleteCoupon(string code)
         {
             var result = await _couponRepo.DeleteById(code);
@@ -155,7 +154,7 @@ namespace NanaFoodApi.Controllers
             }
             return Ok(result);
         }
-        [HttpGet("getbyId/{code}")]
+        [HttpGet("getbyId")]
         public async Task<IActionResult>GetById([FromRoute] string code)
         {
             var result = await _couponRepo.GetById(code);

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using NanaFoodDAL.Context;
 using NanaFoodDAL.Dto;
 using NanaFoodDAL.Model;
+using System.Text.RegularExpressions;
 
 namespace NanaFoodDAL.IRepository.Repository
 {
@@ -52,57 +53,49 @@ namespace NanaFoodDAL.IRepository.Repository
         {
             try
             {
-               /* coupon.CouponCode = coupon.CouponCode.ToLower();
-
-                var couponType = await context.CouponTypes.AsNoTracking()
-                    .FirstOrDefaultAsync(e => e.CouponTypeId == coupon.CouponTypeId);
-                if (couponType == null)
+                coupon.CouponCode = coupon.CouponCode.ToLower();
+                var existingCoupon = await context.Coupons.AsNoTracking()
+                    .FirstOrDefaultAsync(e => e.CouponCode == coupon.CouponCode);
+                if (existingCoupon != null)
                 {
+                    if (existingCoupon.Status == CouponStatus.Delete)
+                    {
+                        response.IsSuccess = false;
+                        response.Message = "Mã giảm giá này đang bị hiệu hoá. Vui lòng tạo lại!";
+                        return response;
+                    }
                     response.IsSuccess = false;
-                    response.Message = "Loại mã giảm giá không tồn tại.";
+                    response.Message = "Mã giảm giá này đã được tạo.";
                     return response;
-                }*/
+                }
 
-                if ((coupon.EndStart - coupon.CouponStartDate).TotalDays > 7)
+                if (coupon.EndStart <= coupon.CouponStartDate)
                 {
                     response.IsSuccess = false;
                     response.Message = "Ngày kết thúc không thể trước ngày bắt đầu.";
                     return response;
                 }
+
                 if ((coupon.EndStart - coupon.CouponStartDate).TotalDays > 7)
                 {
                     response.IsSuccess = false;
-                    response.Message = "Ngày kết thúc không được lớn hơn 7 ngày so với ngày bắt đầu.";
+                    response.Message = "Ngày kết thúc không được cách ngày bắt đầu quá 7 ngày.";
                     return response;
                 }
-
+               
                 if (coupon.MinAmount <= 0)
                 {
                     response.IsSuccess = false;
                     response.Message = "Giá trị đơn hàng tối thiểu không hợp lệ. Phải lớn hơn 0.";
                     return response;
                 }
+
                 if (coupon.MaxUsage <= 0)
                 {
                     response.IsSuccess = false;
                     response.Message = "Số lần sử dụng tối đa phải lớn hơn 0.";
                     return response;
                 }
-                var existingCoupon = await context.Coupons.AsNoTracking()
-                    .FirstOrDefaultAsync(e => e.CouponCode == coupon.CouponCode);
-                if (existingCoupon != null)
-                {
-                    if (existingCoupon.Status ==  CouponStatus.Block)
-                    {
-                        response.IsSuccess = false;
-                        response.Message = "Mã giảm giá này đang bị khoá. Vui lòng tạo lại!";
-                        return response;
-                    }
-                    response.IsSuccess = false;
-                    response.Message = "Mã giảm giá này đã sử dụng.";
-                    return response;
-                }
-
                 // Thiết lập trạng thái mã giảm giá
                 CouponStatus couponStatus;
                 var currentDate = DateTime.Now;
@@ -131,7 +124,6 @@ namespace NanaFoodDAL.IRepository.Repository
                     MaxUsage = coupon.MaxUsage, // Số lần sử dụng tối đa
                     Description = coupon.Description, // Mô tả mã giảm giá
                     Status = couponStatus,
-                    /*CouponTypeId = coupon.CouponTypeId,*/
                 };
 
                 await context.Coupons.AddAsync(newCoupon);
@@ -183,6 +175,12 @@ namespace NanaFoodDAL.IRepository.Repository
                     response.Message = "Lấy sản phẩm thành công.";
                     response.Result = Cp; 
                 }
+                else
+                {
+                    response.IsSuccess = false;
+                    response.Message = "Không có mã giảm giá.";
+                    return response;
+                }
             }
             catch (Exception e) { response.IsSuccess = false; response.Message = e.Message; }
             return response;
@@ -219,26 +217,32 @@ namespace NanaFoodDAL.IRepository.Repository
             try
             {
                 coupon.CouponCode = coupon.CouponCode.ToLower();
-/*
-                var couponType = await context.CouponTypes.AsNoTracking()
-                    .FirstOrDefaultAsync(e => e.CouponTypeId == coupon.CouponTypeId);
-                if (couponType == null)
+                var existingCoupon = await context.Coupons.AsNoTracking()
+                    .FirstOrDefaultAsync(e => e.CouponCode == coupon.CouponCode);
+                if (existingCoupon != null)
                 {
+                    if (existingCoupon.Status == CouponStatus.Delete)
+                    {
+                        response.IsSuccess = false;
+                        response.Message = "Mã giảm giá này đang bị hiệu hoá. Vui lòng tạo lại!";
+                        return response;
+                    }
                     response.IsSuccess = false;
-                    response.Message = "Loại mã giảm giá không tồn tại.";
+                    response.Message = "Mã giảm giá này đã được tạo.";
                     return response;
-                }*/
+                }
 
-                if ((coupon.EndStart - coupon.CouponStartDate).TotalDays > 7)
+                if (coupon.EndStart <= coupon.CouponStartDate)
                 {
                     response.IsSuccess = false;
                     response.Message = "Ngày kết thúc không thể trước ngày bắt đầu.";
                     return response;
                 }
+
                 if ((coupon.EndStart - coupon.CouponStartDate).TotalDays > 7)
                 {
                     response.IsSuccess = false;
-                    response.Message = "Ngày kết thúc không được lớn hơn 7 ngày so với ngày bắt đầu.";
+                    response.Message = "Ngày kết thúc không được cách ngày bắt đầu quá 7 ngày.";
                     return response;
                 }
 
@@ -248,24 +252,11 @@ namespace NanaFoodDAL.IRepository.Repository
                     response.Message = "Giá trị đơn hàng tối thiểu không hợp lệ. Phải lớn hơn 0.";
                     return response;
                 }
+
                 if (coupon.MaxUsage <= 0)
                 {
                     response.IsSuccess = false;
                     response.Message = "Số lần sử dụng tối đa phải lớn hơn 0.";
-                    return response;
-                }
-                var existingCoupon = await context.Coupons.AsNoTracking()
-                    .FirstOrDefaultAsync(e => e.CouponCode == coupon.CouponCode);
-                if (existingCoupon != null)
-                {
-                    if (existingCoupon.Status == CouponStatus.Block)
-                    {
-                        response.IsSuccess = false;
-                        response.Message = "Mã giảm giá này đang bị khoá. Vui lòng tạo lại!";
-                        return response;
-                    }
-                    response.IsSuccess = false;
-                    response.Message = "Mã giảm giá này đã sử dụng.";
                     return response;
                 }
 
@@ -296,7 +287,6 @@ namespace NanaFoodDAL.IRepository.Repository
                 existingCoupon.MaxUsage = coupon.MaxUsage;
                 existingCoupon.TimesUsed = coupon.TimesUsed;
                 existingCoupon.Status = couponStatus; 
-              /*  existingCoupon.CouponTypeId = coupon.CouponTypeId;*/
 
                 await _context.SaveChangesAsync();
                 response.Result = mapper.Map<CouponDto>(coupon);
