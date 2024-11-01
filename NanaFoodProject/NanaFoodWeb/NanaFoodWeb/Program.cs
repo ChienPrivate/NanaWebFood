@@ -21,15 +21,14 @@ builder.Services.AddDistributedMemoryCache();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-        options.Cookie.SameSite = SameSiteMode.Strict;
-        options.LoginPath = "/Auth/Login"; // Đường dẫn để chuyển hướng khi chưa đăng nhập
+        options.Cookie.HttpOnly = true;
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Sử dụng HTTPS cho cookie
+        options.Cookie.SameSite = SameSiteMode.None; // Để cookie có thể được gửi trong yêu cầu cross-origin
+        options.LoginPath = "/Auth/Login"; // Đường dẫn khi chưa đăng nhập
         options.LogoutPath = "/Auth/Logout"; // Đường dẫn khi đăng xuất
-        options.AccessDeniedPath = "/Auth/AccessDenied"; // đường dẫn khi từ chối truy cập
+        options.AccessDeniedPath = "/Auth/AccessDenied"; // Đường dẫn khi từ chối truy cập
         options.ExpireTimeSpan = TimeSpan.FromDays(30);
-        options.SlidingExpiration = true; // Kéo dài thời gian hết hạn nếu người dùng tiếp tục hoạt động
-        options.Cookie.HttpOnly = true; // Chỉ truy cập cookie qua HTTP (bảo mật hơn)
-        options.Cookie.IsEssential = true; // Cookie này là cần thiết cho chức năng ứng dụng
+        options.SlidingExpiration = true;
     });
 
 builder.Services.AddSession(options =>
