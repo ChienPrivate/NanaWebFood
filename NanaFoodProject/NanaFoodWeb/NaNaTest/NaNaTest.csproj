@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\NanaFoodApi\NanaFoodApi.csproj" />
+    <ProjectReference Include="..\NanaFoodWeb\NanaFoodWeb.csproj" />
   </ItemGroup>
 
   <ItemGroup>
