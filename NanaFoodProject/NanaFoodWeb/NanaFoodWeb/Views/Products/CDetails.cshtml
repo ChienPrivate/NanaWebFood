@@ -6,27 +6,7 @@
 }
 @using Syncfusion.EJ2.Inputs
 @model NanaFoodWeb.Models.Dto.ProductDto
-@* <style>
-    .e-rating-container.custom-font .e-rating-item-list:hover .e-rating-item-container .e-rating-icon,
-    .e-rating-container.custom-font .e-rating-item-container .e-rating-icon {
-        background: linear-gradient(to right, #ffe814 var(--rating-value), #d8d7d4 var(--rating-value));
-        background-clip: text;
-        -webkit-background-clip: text;
-        color: transparent; /* Ẩn màu viền */
-        -webkit-text-fill-color: transparent; /* Ẩn viền trong trình duyệt Webkit */
-        -webkit-text-stroke: 1px #ffe814; /* Tạo viền màu vàng */
-        text-stroke: 1px #ffe814; /* Tạo viền màu vàng cho các trình duyệt hỗ trợ */
-    }
-</style> *@
-@* <style>
-    .e-rating-container.custom-font .e-rating-item-list:hover .e-rating-item-container .e-rating-icon,
-    .e-rating-container.custom-font .e-rating-item-container .e-rating-icon {
-        /* To change rated symbol fill color and un-rated symbol fill color */
-        background: linear-gradient(to right, #ffe814 var(--rating-value), #d8d7d4 var(--rating-value));
-        background-clip: text;
-        -webkit-background-clip: text;
-    }
-</style> *@
+
 <style>
     .e-rating-container .e-rating-item-container.e-rating-selected .e-rating-icon, .e-rating-container .e-rating-item-container.e-rating-intermediate .e-rating-icon {
         background: linear-gradient(to right, rgb(236 249 67) var(--rating-value), transparent var(--rating-value));
@@ -85,13 +65,37 @@
         </div>
     }
     
+
+    <!-- Modal -->
+    <div class="modal fade" id="quantityLimitModal" tabindex="-1" aria-labelledby="quantityLimitModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-center" id="quantityLimitModalLabel">Thông báo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Số lượng quá lớn, vui lòng liên hệ : <strong>08588xxxxx</strong> để mua với giá tốt nhất
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     @* <div class="container-fluid">
         @await Html.PartialAsync("ListReview")
     </div> *@
 </div>
 <script>
     function increase() {
-        document.getElementById('quantity').value++;
+        if (document.getElementById('quantity').value < 10) {
+            document.getElementById('quantity').value++;
+        } else {
+            var quantityLimitModal = new bootstrap.Modal(document.getElementById('quantityLimitModal'));
+            quantityLimitModal.show();
+        }
     }
     function decrease() {
         if (document.getElementById('quantity').value > 1) {

@@ -30,7 +30,7 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="~/css/bootstrap.min.css" rel="stylesheet">
-    <link href="~/template/css/sb-admin-2.min.css" rel="stylesheet asp-append-version=" true"">
+     <link href="~/template/css/sb-admin-2.min.css" rel="stylesheet asp-append-version=" true"">
     <link href="~/css/ejs2.css" rel="stylesheet" asp-append-version="true" />
     <!-- Template Stylesheet -->
     <link href="~/css/style.css" rel="stylesheet">
@@ -85,7 +85,9 @@
                         <button class="btn-search btn border border-warning btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-warning "></i></button>
                         <a asp-controller="Cart" asp-action="Index" class="position-relative me-4 my-auto">
                             <i class="fa fa-shopping-bag fa-2x"></i>
-                            <span class="position-absolute bg-warning rounded-circle d-flex align-items-center justify-content-center text-dark px-1" id="cartCount" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">@(Context.Session.GetString("CartCount") == null ? "0" : Context.Session.GetString("CartCount"))</span>
+                            <span class="position-absolute bg-warning rounded-circle d-flex align-items-center justify-content-center text-dark px-1" id="cartCount" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">)
+                                @Context.Session.GetString("CartCount") == null ? "0" : Context.Session.GetString("CartCount"))
+                                </span>
                         </a>
                         @if (User.Identity.IsAuthenticated)
                         {

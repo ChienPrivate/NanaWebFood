@@ -1,181 +1,214 @@
-using Xunit;
-using Moq;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using NanaFoodApi.Controllers;
-using NanaFoodDAL.Dto;
-using NanaFoodDAL.IRepository;
-using NanaFoodDAL.Model;
-using AutoMapper;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.AspNetCore.Routing;
+using Moq;
+using NanaFoodWeb.Controllers;
+using NanaFoodWeb.IRepository;
+using NanaFoodWeb.Models;
+using NanaFoodWeb.Models.Dto;
+using NanaFoodWeb.Models.Dto.ViewModels;
+using Newtonsoft.Json;
 
 namespace NaNaTest
 {
     public class ProductsControllerTests
     {
-        private readonly Mock<IProductRepository> _mockFoodService;
-        private readonly Mock<IMapper> _mockMapper;
-        private readonly ProductController _controller;
+        private readonly Mock<IProductRepo> _mockProductRepo;
+        private readonly Mock<IHelperRepository> _mockHelperRepository;
+        private readonly Mock<ITokenProvider> _mockTokenProvider;
+        private readonly Mock<ICategoryRepository> _mockCategoryRepository;
+        private readonly ProductsController _controller;
 
         public ProductsControllerTests()
         {
-            _mockFoodService = new Mock<IProductRepository>();
-            _mockMapper = new Mock<IMapper>();
-            _controller = new ProductController(_mockFoodService.Object, _mockMapper.Object);
+            _mockProductRepo = new Mock<IProductRepo>();
+            _mockHelperRepository = new Mock<IHelperRepository>();
+            _mockTokenProvider = new Mock<ITokenProvider>();
+            _mockCategoryRepository = new Mock<ICategoryRepository>();
+
+            _controller = new ProductsController(
+                _mockProductRepo.Object,
+                _mockHelperRepository.Object,
+                _mockTokenProvider.Object,
+                _mockCategoryRepository.Object
+            );
+            _controller.TempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>());
         }
 
         [Fact]
-        public void GetAll_ReturnsOkResult_WhenProductsExist()
+        public async Task Index_WithValidInput_ReturnsViewWithProducts()
         {
-            var responseDto = new ResponseDto { IsSuccess = true };
-            _mockFoodService.Setup(svc => svc.GetAll(1, 10, true)).Returns(responseDto);
+            var mockProducts = new List<Product> { new Product { ProductId = 1, ProductName = "Test Product" } };
+            var mockProductVM = new ProductVM { Products = mockProducts };
+            var mockResponse = new ResponseDto { IsSuccess = true, Result = JsonConvert.SerializeObject(mockProductVM) };
 
-            var result = _controller.GetAll(1, 10, true);
+            _mockProductRepo.Setup(repo => repo.GetAll(1, 10, true)).Returns(mockResponse);
 
-            var okResult = result.Result as OkObjectResult;
-            Assert.NotNull(okResult);
-            Assert.Equal(200, okResult.StatusCode);
-            Assert.Equal(responseDto, okResult.Value);
+            var result = await _controller.Index(null, 1);
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(result);
+            var model = viewResult.ViewData["lazyLoadData"] as List<Product>;
+
+            Assert.NotNull(model);
+            Assert.Equal(mockProducts.Count, model.Count);
+            Assert.Equal(mockProducts[0].ProductName, model.First().ProductName);
         }
 
         [Fact]
-        public void GetAll_ReturnsNotFound_WhenNoProductsExist()
+        public async Task Index_WithInvalidInput_ReturnsEmptyProductList()
         {
-            var responseDto = new ResponseDto { IsSuccess = false };
-            _mockFoodService.Setup(svc => svc.GetAll(1, 10, true)).Returns(responseDto);
+            _mockProductRepo.Setup(repo => repo.GetAll(1, 10, true)).Returns(new ResponseDto { IsSuccess = false });
 
-            var result = _controller.GetAll(1, 10, true);
+            var result = await _controller.Index(null, 1);
 
-            var notFoundResult = result.Result as NotFoundObjectResult;
-            Assert.NotNull(notFoundResult);
-            Assert.Equal(404, notFoundResult.StatusCode);
-            Assert.Equal(responseDto, notFoundResult.Value);
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(result);
+            var model = viewResult.Model as List<ProductDto>;
+
+            Assert.NotNull(model);
+            Assert.Empty(model);
         }
 
         [Fact]
-        public void GetById_ReturnsProduct_WhenProductExists()
+        public async Task Index_WithSearchQuery_ReturnsFilteredProducts()
         {
-            var responseDto = new ResponseDto { IsSuccess = true };
-            _mockFoodService.Setup(svc => svc.GetById(1)).Returns(responseDto);
+            var mockProducts = new List<Product> { new Product { ProductName = "Test Product 1" }, new Product { ProductName = "Test Product 2" } };
+            var mockProductVM = new ProductVM { Products = mockProducts };
+            var mockResponse = new ResponseDto { IsSuccess = true, Result = JsonConvert.SerializeObject(mockProductVM) };
 
-            var result = _controller.GetById(1);
+            _mockProductRepo.Setup(repo => repo.GetAll(1, 10, true)).Returns(mockResponse);
 
-            Assert.Equal(responseDto, result);
+            var result = await _controller.Index("Test", 1);
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(result);
+            var model = viewResult.ViewData["lazyLoadData"] as List<Product>; // Accessing ViewData instead of ViewBag
+
+            Assert.NotNull(model);
+            Assert.All(model, p => Assert.Contains("Test", p.ProductName));
         }
 
         [Fact]
-        public void Create_ReturnsResponseDto_WhenModelIsValid()
+        public async Task Create_Get_ReturnsViewResult_WithProductDto()
         {
-            var productDto = new ProductDto();
-            var product = new Product();
-            var responseDto = new ResponseDto { IsSuccess = true };
+            _mockTokenProvider.Setup(provider => provider.GetToken()).Returns("mockToken");
 
-            _mockMapper.Setup(mapper => mapper.Map<Product>(productDto)).Returns(product);
-            _mockFoodService.Setup(svc => svc.Create(product)).Returns(responseDto);
-
-            var result = _controller.Create(productDto);
-
-            Assert.Equal(responseDto, result);
-        }
-
-        [Fact]
-        public async Task GetByCategoryIdExcludeSameProduct_ReturnsOk_WhenSuccess()
-        {
-            var responseDto = new ResponseDto { IsSuccess = true };
-            _mockFoodService.Setup(svc => svc.GetByCategoryIdExcludeSameProduct(1, 1, 1, 10))
-                .ReturnsAsync(responseDto);
-
-            var result = await _controller.GetByCategoryIdExcludeSameProduct(1, 1, 1, 10) as OkObjectResult;
-
-            Assert.NotNull(result);
-            Assert.Equal(200, result.StatusCode);
-            Assert.Equal(responseDto, result.Value);
-        }       
-
-        [Fact]
-        public void ActiveProduct_ReturnsOkResult_WhenProductActivatedSuccessfully()
-        {
-            var response = new ResponseDto { IsSuccess = true };
-            _mockFoodService.Setup(svc => svc.ModifyStatus(1, true)).Returns(response);
-
-            var result = _controller.ActiveProduct(1);
-            var okResult = result.Result as OkObjectResult;
-            Assert.NotNull(okResult);
-            Assert.Equal(200, okResult.StatusCode);
-            Assert.Equal(response, okResult.Value);
-        }
-
-        [Fact]
-        public void ActiveProduct_ReturnsBadRequest_WhenProductActivationFails()
-        {
-            var response = new ResponseDto { IsSuccess = false };
-            _mockFoodService.Setup(svc => svc.ModifyStatus(1, true)).Returns(response);
-
-            var result = _controller.ActiveProduct(1);
-            var badRequestResult = result.Result as BadRequestObjectResult;
-            Assert.NotNull(badRequestResult);
-            Assert.Equal(400, badRequestResult.StatusCode);
-        }
-
-        [Fact]
-        public void UnActiveProduct_ReturnsOkResult_WhenProductDeactivatedSuccessfully()
-        {
-            var response = new ResponseDto { IsSuccess = true };
-            _mockFoodService.Setup(svc => svc.ModifyStatus(1, false)).Returns(response);
-
-            var result = _controller.UnActiveProduct(1);
-            var okResult = result.Result as OkObjectResult;
-            Assert.NotNull(okResult);
-            Assert.Equal(200, okResult.StatusCode);
-            Assert.Equal(response, okResult.Value);
-        }
-
-        [Fact]
-        public void UnActiveProduct_ReturnsBadRequest_WhenProductDeactivationFails()
-        {
-            var response = new ResponseDto { IsSuccess = false };
-            _mockFoodService.Setup(svc => svc.ModifyStatus(1, false)).Returns(response);
-
-            var result = _controller.UnActiveProduct(1);
-            var badRequestResult = result.Result as BadRequestObjectResult;
-            Assert.NotNull(badRequestResult);
-            Assert.Equal(400, badRequestResult.StatusCode);
-        }
-
-        [Fact]
-        public void Update_ReturnsBadRequest_WhenModelStateIsInvalid()
-        {
-            var productDto = new ProductDto();
-            _controller.ModelState.AddModelError("Name", "Name is required");
-
-            var result = _controller.Update(productDto);
-
-            var badRequestResult = result.Result as BadRequestObjectResult;
-            Assert.NotNull(badRequestResult);
-            Assert.Equal(400, badRequestResult.StatusCode);
-            Assert.IsType<SerializableError>(badRequestResult.Value); 
-        }
-
-        [Fact]
-        public void Sorting_ReturnsOkResult_WhenSortingSuccessfully()
-        {
-            var products = new List<ProductDto>
-            {
-                new ProductDto { ProductName = "Product A" },
-                new ProductDto { ProductName = "Product B" }
-            };
-
-            _mockFoodService.Setup(svc => svc.Sorting("price", 1, 10)).Returns(new ResponseDto
+            var mockResponse = new ResponseDto
             {
                 IsSuccess = true,
-                Result = products
-            });
+                Result = JsonConvert.SerializeObject(new List<CategoryDto>
+        {
+            new CategoryDto { CategoryId = 1, CategoryName = "Test Category" }
+        })
+            };
 
-            var result = _controller.Sorting("price", 1, 10);
+            _mockCategoryRepository.Setup(repo => repo.GetAllCategoriesAsync(1, 100, true)).ReturnsAsync(mockResponse);
 
-            var okResult = result.Result as OkObjectResult;
-            Assert.NotNull(okResult);
-            Assert.Equal(200, okResult.StatusCode);
-            Assert.Equal(products, okResult.Value); 
+            var result = await _controller.Create(1);
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(result);
+            var model = Assert.IsType<ProductDto>(viewResult.Model);
+
+            var categories = viewResult.ViewData["ListCategory"] as List<SelectListItem>;
+
+            Assert.NotNull(categories);
+            Assert.Single(categories);
+            Assert.Equal("Test Category", categories.First().Text);
         }
 
+        [Fact]
+        public async Task Create_Post_ReturnsRedirectToAction_WhenProductIsValidAndCreated()
+        {
+            var mockFile = new Mock<IFormFile>();
+            var productDto = new ProductDto { ProductName = "Test Product", CategoryId = 1, Price = 100 };
+            var product = new Product { ProductName = "Test Product", CategoryId = 1, Price = 100 };
+
+            _mockHelperRepository.Setup(repo => repo.UploadImageAsync(mockFile.Object)).ReturnsAsync(new ResponseDto { Result = "mockImageUrl.jpg" });
+            _mockProductRepo.Setup(repo => repo.Create(It.IsAny<Product>())).Returns(new ResponseDto { IsSuccess = true });
+
+            var result = await _controller.Create(productDto, mockFile.Object);
+
+            // Assert
+            var redirectResult = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("Index", redirectResult.ActionName);
+        }
+
+        [Fact]
+        public async Task Edit_Get_ReturnsViewResult_WithCorrectProduct()
+        {
+            var mockProductDto = new ProductDto { ProductId = 1, ProductName = "Test Product" };
+            var mockCategoryDtoList = new List<CategoryDto> { new CategoryDto { CategoryId = 1, CategoryName = "Test Category" } };
+            var mockCategoryResponse = new ResponseDto { IsSuccess = true, Result = JsonConvert.SerializeObject(mockCategoryDtoList) };
+            var mockResponse = new ResponseDto { IsSuccess = true, Result = JsonConvert.SerializeObject(mockProductDto) };
+
+            _mockCategoryRepository.Setup(repo => repo.GetAllCategoriesAsync(It.IsAny<int>(), It.IsAny<int>(), true))
+                             .ReturnsAsync(mockCategoryResponse);
+            _mockProductRepo.Setup(repo => repo.GetById(1)).Returns(mockResponse);
+
+            var result = await _controller.Edit(1, 1, 10);
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(result);
+            var model = Assert.IsType<ProductDto>(viewResult.Model);
+
+            Assert.True(viewResult.ViewData.ContainsKey("ListCategory"), "ListCategory was not found in ViewData.");
+            var listCategory = viewResult.ViewData["ListCategory"] as List<SelectListItem>;
+
+            Assert.NotNull(listCategory);
+            Assert.Single(listCategory);
+            Assert.Equal("Test Category", listCategory[0].Text);
+            Assert.Equal(1, model.ProductId);
+            Assert.Equal("Test Product", model.ProductName);
+        }
+
+        [Fact]
+        public async Task Edit_Post_ReturnsRedirectToAction_WhenProductIsUpdated()
+        {
+            var productDto = new ProductDto { ProductId = 1, ProductName = "Updated Product", CategoryId = 1, Price = 100 };
+
+            _mockProductRepo.Setup(repo => repo.Update(productDto)).Returns(new ResponseDto { IsSuccess = true });
+
+            var result = await _controller.Edit(productDto, productDto.ProductId, null);
+
+            // Assert
+            var redirectResult = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("Index", redirectResult.ActionName);
+        }
+
+        [Fact]
+        public void Delete_ReturnsRedirectToAction_WhenProductIsDeleted()
+        {
+            var mockResponse = new ResponseDto { IsSuccess = true };
+
+            _mockProductRepo.Setup(repo => repo.Delete(1)).Returns(mockResponse);
+
+            var result = _controller.Delete(1, null, 1);
+
+            // Assert
+            var redirectResult = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("Index", redirectResult.ActionName);
+        }
+
+        [Fact]
+        public void Details_ReturnsViewResult_WithProductDto()
+        {
+            var mockProductDto = new ProductDto { ProductId = 1, ProductName = "Test Product" };
+            var mockResponse = new ResponseDto { IsSuccess = true, Result = JsonConvert.SerializeObject(mockProductDto) };
+
+            _mockProductRepo.Setup(repo => repo.GetById(1)).Returns(mockResponse);
+
+            var result = _controller.Details(1);
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(result);
+            var model = Assert.IsType<ProductDto>(viewResult.Model);
+
+            Assert.Equal(1, model.ProductId);
+            Assert.Equal("Test Product", model.ProductName);
+        }
     }
 }

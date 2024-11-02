@@ -12,19 +12,19 @@
                             <h4 class="fw-bold mb-4 text-center">Đăng Nhập</h4>
                             <form asp-controller="auth" asp-action="login" enctype="multipart/form-data">
                                 <div class="mb-3">
-                                    <label for="fullname" class="form-label">Tên đăng nhập</label>
+                                    <label for="fullname" class="form-label">Tên đăng nhập <span class="text-danger">*</span></label>
                                     <input asp-for=UserName type="text" class="form-control" id="username" placeholder="Nhập tên tài khoản">
                                     <span asp-validation-for="UserName" class="text-danger"></span>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="password" class="form-label">Mật khẩu</label>
+                                    <label for="password" class="form-label">Mật khẩu <span class="text-danger">*</span></label>
                                     <input asp-for=Password type="password" class="form-control" id="password" placeholder="Nhập mật khẩu">
                                     <span asp-validation-for="Password" class="text-danger"></span>
                                 </div>
                                 <div class="d-flex justify-content-between">
                                     <div class="mb-3 form-check">
                                         <input asp-for=keepLogined type="checkbox" class="form-check-input" id="rememberMe">
-                                        <label class="form-check-label" for="rememberMe">Ghi nhớ mật khẩu</label>
+                                        <label class="form-check-label" for="rememberMe">Ghi nhớ đăng nhập</label>
                                     </div>
                                     <div class="forgot-password">
                                         <a asp-controller="Auth" asp-action="ForgotPassword">Quên mật khẩu?</a>

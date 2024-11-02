@@ -164,7 +164,6 @@ namespace NanaFoodApi.Controllers
         /// <response code="401">Người dùng chưa đăng nhập hoặc token không hợp lệ.</response>
         /// <response code="500">Có lỗi xảy ra từ phía server.</response>
         [Authorize]
-        [Authorize]
         [HttpPost("ChangePassword")]
         public async Task<IActionResult> ChangePass(ChangePassDto changepass)
         {
@@ -333,11 +332,12 @@ namespace NanaFoodApi.Controllers
         /// <response code="200">Lấy thông tin thành công.</response>
         /// <response code="400">Lấy thông tin thất bại.</response>
         /// <response code="500">Có lỗi xảy ra từ phía server.</response>
+        [Authorize]
         [HttpGet("GetInformation")]
         public async Task<IActionResult> GetInfo()
         {
             var user = await _signInManager.UserManager.GetUserAsync(User);
-            if(user != null)
+            if (user != null)
             {
                 return Ok(new ResponseDto()
                 {
@@ -346,13 +346,8 @@ namespace NanaFoodApi.Controllers
                     Message = "Lấy thông tin người dùng thành công"
                 });
             }
-            return BadRequest(new ResponseDto()
-            {
-                IsSuccess = false,
-                Message = "Lấy thông tin người dùng thất bại"
-            });
-        }
-
+            return Unauthorized();
+                }
 
         /// <summary>
         /// Cập nhật thông tin người dùng
@@ -382,6 +377,7 @@ namespace NanaFoodApi.Controllers
         /// <response code="200">Cập nhật thông tin thành công.</response>
         /// <response code="400">Yêu cầu không hợp lệ, ví dụ: thiếu thông tin bắt buộc hoặc định dạng email sai.</response>
         /// <response code="500">Có lỗi xảy ra từ phía server.</response>
+        [Authorize]
         [HttpPut("UpdateUser")]
         public async Task<IActionResult> UpdateUser(UserDto userdto)
         {

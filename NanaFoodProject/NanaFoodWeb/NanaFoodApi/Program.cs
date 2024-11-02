@@ -43,19 +43,24 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 });
 builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 
-builder.Services.AddAuthentication(options =>
+builder.Services.AddAuthentication(x =>
 {
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-
-    // Scheme mặc định khi thách thức (Challenge) là JWT
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-
-    // Scheme mặc định cho việc đăng nhập (SignIn) là Cookie
-    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-}).AddJwtBearer(options =>
+    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+    .AddCookie(options =>
+    {
+        options.Cookie.HttpOnly = true;
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Đảm bảo cookie chỉ hoạt động trên HTTPS
+        options.Cookie.SameSite = SameSiteMode.None; // Để cookie có thể được gửi qua yêu cầu cross-origin
+        options.ExpireTimeSpan = TimeSpan.FromDays(30);
+        options.SlidingExpiration = true;
+    })
+    .AddJwtBearer(options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters
     {
+        ValidateLifetime = true,
         ValidIssuer = builder.Configuration["ApiSettings:JwtOptions:Issuer"],
         ValidAudience = builder.Configuration["ApiSettings:JwtOptions:Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(
@@ -456,7 +461,6 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 builder.Services.AddScoped<ICouponRepo, CouponRepo>();
-builder.Services.AddScoped<ICouponTypeRepo, CouponTypeRepo>();
 builder.Services.AddScoped<IUserCouponRepo, UserCouponRepo>();
 // Config các IService và Service ở chỗ này ↑
 
@@ -465,7 +469,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowAllOrigins",
         builder =>
         {
-            builder.AllowAnyOrigin()
+            builder.WithOrigins("https://localhost:51326")
                    .AllowAnyMethod()
                    .AllowAnyHeader();
         });

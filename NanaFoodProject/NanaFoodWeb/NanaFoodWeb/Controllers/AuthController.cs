@@ -1,14 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
-using NanaFoodDAL.Model;
-using NanaFoodWeb.CallAPICenter;
+using Microsoft.Extensions.Options;
 using NanaFoodWeb.IRepository;
 using NanaFoodWeb.IRepository.Repository;
 using NanaFoodWeb.Models;
 using NanaFoodWeb.Models.Dto;
 using NanaFoodWeb.Models.Dto.ViewModels;
+using NanaFoodWeb.Utility;
 using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -64,8 +63,7 @@ namespace NanaFoodWeb.Controllers
 
                 try
                 {
-                    await SignInUser(userReturn.Token); // phương thức dùng để đổi trạng thái người dùng sang IsAuthenticated
-                    _tokenProvider.SetToken(userReturn.Token); // lưu token vào cookie
+                    await SignInUser(userReturn.Token,login.keepLogined); // phương thức dùng để đổi trạng thái người dùng sang IsAuthenticated
                 }
                 catch (Exception ex)
                 {
@@ -103,7 +101,7 @@ namespace NanaFoodWeb.Controllers
 
         public async Task<IActionResult> Logout()
         {
-            await HttpContext.SignOutAsync();
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             HttpContext.Session.SetString("Token", string.Empty);
             _tokenProvider.ClearToken();
             _tokenProvider.ClearCartCount();
@@ -304,6 +302,65 @@ namespace NanaFoodWeb.Controllers
 
             var principal = new ClaimsPrincipal(identity);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+        }
+
+        private async Task SignInUser(string token, bool KeepLogined)
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var jwt = handler.ReadJwtToken(token);
+
+            var authProperties = new AuthenticationProperties
+            {
+                IsPersistent = KeepLogined,
+                ExpiresUtc = KeepLogined ? DateTimeOffset.UtcNow.AddDays(30) : DateTimeOffset.UtcNow.AddHours(1)
+            };
+
+            var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            // Thêm các claims từ token JWT vào ClaimsIdentity
+            if (jwt.Claims.Any(c => c.Type == JwtRegisteredClaimNames.Email))
+            {
+                identity.AddClaim(new Claim(JwtRegisteredClaimNames.Email,
+                    jwt.Claims.First(c => c.Type == JwtRegisteredClaimNames.Email).Value));
+            }
+
+            if (jwt.Claims.Any(c => c.Type == JwtRegisteredClaimNames.Sub))
+            {
+                identity.AddClaim(new Claim(JwtRegisteredClaimNames.Sub,
+                    jwt.Claims.First(c => c.Type == JwtRegisteredClaimNames.Sub).Value));
+            }
+
+            if (jwt.Claims.Any(c => c.Type == JwtRegisteredClaimNames.GivenName))
+            {
+                identity.AddClaim(new Claim(JwtRegisteredClaimNames.GivenName,
+                    jwt.Claims.First(c => c.Type == JwtRegisteredClaimNames.GivenName).Value));
+            }
+
+            if (jwt.Claims.Any(c => c.Type == "role"))
+            {
+                identity.AddClaim(new Claim(ClaimTypes.Role,
+                    jwt.Claims.First(c => c.Type == "role").Value));
+            }
+
+            if (jwt.Claims.Any(c => c.Type == JwtRegisteredClaimNames.Name))
+            {
+                identity.AddClaim(new Claim(JwtRegisteredClaimNames.Name,
+                    jwt.Claims.First(c => c.Type == JwtRegisteredClaimNames.Name).Value));
+            }
+
+            var principal = new ClaimsPrincipal(identity);
+
+            // Thực hiện đăng nhập với Claims và thuộc tính xác thực
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, authProperties);
+            var tokenCookieOptions = new CookieOptions
+            {
+                HttpOnly = true,               // Bảo mật cookie, không thể truy cập qua JavaScript
+                Secure = true,                 // Chỉ gửi cookie qua HTTPS
+                IsEssential = true,            // Đánh dấu cookie là cần thiết cho ứng dụng
+                SameSite = SameSiteMode.None,  // Cho phép cookie được gửi trong các yêu cầu cross-origin
+                Expires = authProperties.ExpiresUtc // Đồng bộ thời hạn với authProperties
+            };
+            _tokenProvider.SetToken(token, tokenCookieOptions);
         }
     }
 }
