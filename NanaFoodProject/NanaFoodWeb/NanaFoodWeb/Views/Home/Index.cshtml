@@ -96,6 +96,29 @@
 </div>
 <!-- Featurs Section End -->
 
+<!-- Filter -->
+<div class="container">
+    <div class="row mb-4">
+        <div class="col text-end">
+            <form asp-controller="Home" asp-action="Filter">
+                <div class="d-flex">
+                    <select class="form-select me-3 text-center" style="width:200px;" name="value">
+                        <option value="0">Lọc theo giá</option>
+                        <option value="1"> Dưới 16.000</option>
+                        <option value="2"> 16.000 - 30.000</option>
+                        <option value="3"> 30.000 - 60.000</option>
+                        <option value="4"> 60.000 - 100.000</option>
+                        <option value="5"> Trên 100.000</option>
+                    </select>
+                    <button class="btn btn-primary" type="submit">Lọc theo giá</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Filter End -->
+
+
 <!-- Fruits Shop Start-->
 <div class="container-fluid fruite">
     <div class="container">

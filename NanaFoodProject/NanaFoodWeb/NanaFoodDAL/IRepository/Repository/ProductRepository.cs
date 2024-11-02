@@ -386,5 +386,21 @@ namespace NanaFoodDAL.IRepository.Repository
            
             return response;
         }
+
+        public async Task<List<string>> GetImages(int ProductId)
+        {
+            var images = await _context.ProductImages
+            .Where(pi => pi.ProductId == ProductId)
+            .Select(pi => pi.ImageUrl)
+            .ToListAsync();
+
+            // Kiểm tra nếu không có ảnh nào
+            if (!images.Any())
+            {
+                return null;
+            }
+
+            return images;
+        }
     }
 }

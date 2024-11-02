@@ -337,5 +337,16 @@ namespace NanaFoodApi.Controllers
             }
             return Ok(response);
         }
+
+        [HttpGet("get_product_images/{ProductId}")]
+        public async Task<IActionResult> GetImages([FromRoute] int ProductId)
+        {
+            var response = await _foodService.GetImages(ProductId);
+            if(response != null)
+            {
+                return Ok(response);
+            }
+            return NotFound();
+        }
     }
 }
