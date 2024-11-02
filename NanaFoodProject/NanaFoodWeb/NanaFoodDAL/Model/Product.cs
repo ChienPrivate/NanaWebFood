@@ -15,6 +15,8 @@ namespace NanaFoodDAL.Model
         public int View { get; set; }
         [StringLength(200)]
         public string? Description { get; set; }
+        [Range(0, 100)]
+        public int Quantity { get; set; }
         [Required]
         public bool IsActive { get; set; }
         [ForeignKey(nameof(Category))]
@@ -24,5 +26,6 @@ namespace NanaFoodDAL.Model
         public List<CartDetails> CartDetails { get; set; }
         public List<OrderDetails> OrderDetails { get; set; }
         public List<WishList> WishLists { get; set; }
+        public List<ProductImages> ProductImages { get; set; }
     }
 }
