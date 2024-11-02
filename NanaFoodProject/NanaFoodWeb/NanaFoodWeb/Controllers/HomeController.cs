@@ -33,20 +33,27 @@ namespace NanaFoodWeb.Controllers
 
         public async Task <IActionResult> Index(string searchQuery, int? page = 1, int pageSize = 100)
         {
-            var token = _tokenProvider.GetToken(); // Lấy token nếu có
-            var responseCart = await _cartRepo.GetCart();
-            if (responseCart.Result != null)
+            if (!User.Identity.IsAuthenticated)
             {
-                var Data = JsonConvert.DeserializeObject<List<CartResponseDto>>(responseCart.Result.ToString());
-                _tokenProvider.SetCartCount(Data.Count.ToString());
-            }
-            // Nếu có token và vai trò là admin, chuyển hướng đến Dashboard
-            if (token != null)
+                _tokenProvider.ClearToken();
+                _tokenProvider.ClearCartCount();
+            }else
             {
-                var role = _tokenProvider.ReadToken("role", token);
-                if (role == "admin")
+                var token = _tokenProvider.GetToken(); // Lấy token nếu có
+                var responseCart = await _cartRepo.GetCart();
+                if (responseCart.Result != null)
                 {
-                    return RedirectToAction("Index", "DashBoard");
+                    var Data = JsonConvert.DeserializeObject<List<CartResponseDto>>(responseCart.Result.ToString());
+                    _tokenProvider.SetCartCount(Data.Count.ToString());
+                }
+                // Nếu có token và vai trò là admin, chuyển hướng đến Dashboard
+                if (token != null)
+                {
+                    var role = _tokenProvider.ReadToken("role", token);
+                    if (role == "admin")
+                    {
+                        return RedirectToAction("Index", "DashBoard");
+                    }
                 }
             }
 
