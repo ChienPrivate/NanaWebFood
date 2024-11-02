@@ -3,14 +3,14 @@
 {
     @foreach (var product in Model.Products.Where(e => e.IsActive))
     {
-        <div class="col-4">
-            <div class="card mb-3 shadow">
+        <div class="col-4 mb-3">
+            <div class="card shadow">
                 <a asp-controller="Products" asp-action="CDetails" asp-route-id="@product.ProductId">
                     <img src="@product.ImageUrl" width="100%" height="100%" />
                 </a>
-                <div class="card-body">
+                <div class="card-body" style="height: 48px; transform: translate(0px, 4px); transition: none;">
                     <a asp-controller="Products" asp-action="CDetails" asp-route-id="@product.ProductId" class="text-decoration-none">
-                        <h5 class="card-title text-dark fw-bold">@product.ProductName</h5>
+                        <h5 class="card-title text-dark fw-bold" style="position: relative; left: -3px; top: -11px; height: 23px; transition: none;">@product.ProductName</h5>
                     </a>
                 </div>
                 <div class="card-footer">
@@ -22,4 +22,9 @@
             </div>
         </div>
     }
+} else
+{
+    <div class="d-flex justify-content-center align-item-center">
+        <h5 style="position: relative; left: 7px; top: 203px;">Không có sản phẩm bạn cần tìm</h5>
+    </div>
 }

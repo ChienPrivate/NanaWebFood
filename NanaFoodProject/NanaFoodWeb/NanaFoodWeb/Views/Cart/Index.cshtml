@@ -29,7 +29,7 @@
                             <div class="col-md-3">
                                 <div class="d-flex quantity-finder">
                                     <button class="btn btn-light btn-circle" id="decreaseQuantity" data-product-id="@item.ProductId" style="height: 31px; position: relative; left: 0px; top: 13px; transition: none;">-</button>
-                                    <input type="text" id="quantity" value="@item.Quantity" max="20" class="form-control text-center mx-2 quantity-input" />
+                                    <input type="text" id="quantity" value="@item.Quantity" max="20" class="form-control text-center mx-2 quantity-input" readonly/>
                                     <button class="btn btn-light btn-circle" id="increaseQuantity" data-product-id="@item.ProductId" style="height: 34px; position: relative; left: -1px; top: 12px; transition: none;">+</button>
                                 </div>
                             </div>
@@ -51,7 +51,11 @@
                         <span class="fw-bold sumoftotal">@Model.Select(x => x.Total).Sum().ToString("#,##") VNĐ</span>
                     </div>
                     <hr>
-                    <a class="btn btn-danger w-100 mt-3" asp-action="Index" asp-controller="Order" class="btn btn-primary">Thanh toán</a>
+                    <div class="row mt-3">
+                            <a class="btn btn-outline-warning col-6 me-4" asp-action="Menu" asp-controller="Home">Tiếp tục mua <i class="bi bi-basket-fill"></i></a>
+                            <a class="btn btn-danger col-5" asp-action="Index" asp-controller="Order" class="btn btn-primary">Thanh toán</a>
+                    </div>
+                    
                 </div>
             </div>
         </div>
@@ -93,8 +97,7 @@
 
     $(document).ready(function () {
         // Lấy JWT token từ cookie
-        var jwtToken = getCookie('JWTToken');
-
+        const jwtToken = getCookie('JWTToken');
         function updateTotal() {
             let totalSum = 0;
 
@@ -200,7 +203,7 @@
             var productId = $(this).data("product-id");
             var quantityInput = $(this).closest('.quantity-finder').find('.quantity-input');
             var totalPriceElement = $(this).closest('.row').find('.total'); // Phần tử hiển thị tổng giá tiền
-
+            console.log(jwtToken);
             $.ajax({
                 url: 'https://localhost:7094/api/Cart/UpdateCart/' + productId + '&increase',
                 type: 'PUT',

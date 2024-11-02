@@ -5,42 +5,45 @@
 }
 @model NanaFoodWeb.Models.Dto.ViewModels.ProductVM
 @await Html.PartialAsync("_ShowProduct")
-<div class="custom-pagination">
-    <nav aria-label="Page navigation example">
-        <ul class="pagination">
-            @if (currentPage > 1)
-            {
-                <li class="page-item">
-                    <a class="page-link" href="@Url.Action("Menu", new { page = currentPage - 1 })" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-            }
+@if(totalPages > 1)
+{
+    <div class="custom-pagination">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                @if (currentPage > 1)
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="@Url.Action("Menu", new { page = currentPage - 1 })" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                }
 
-            @for (var i = 1; i <= totalPages; i++)
-            {
-                <li class="page-item @(i == currentPage ? "active" : "")">
-                    <a class="page-link" href="@Url.Action("Menu", new { page = i})">
-                        @i
-                    </a>
-                </li>
-            }
+                @for (var i = 1; i <= totalPages; i++)
+                {
+                    <li class="page-item @(i == currentPage ? "active" : "")">
+                        <a class="page-link" href="@Url.Action("Menu", new { page = i})">
+                            @i
+                        </a>
+                    </li>
+                }
 
-            @if (currentPage < totalPages)
-            {
-                <li class="page-item">
-                    <a class="page-link" href="@Url.Action("Menu", new { page = currentPage + 1})" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            }
-        </ul>
-    </nav>
-</div>
-<style>
-    .custom-pagination .pagination {
-        display: flex;
-        justify-content: center;
-    }
+                @if (currentPage < totalPages)
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="@Url.Action("Menu", new { page = currentPage + 1})" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    </div>
+    <style>
+        .custom-pagination .pagination {
+            display: flex;
+            justify-content: center;
+        }
 
-</style>
+    </style>
+}
