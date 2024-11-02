@@ -28,5 +28,23 @@ namespace NanaFoodWeb.IRepository.Repository
                 Url = StaticDetails.APIBase + $"/api/Cart/GetCart"
             });
         }
+
+        public async Task<ResponseDto> ModifyCartQuantity(int productId, string message)
+        {
+            return await _baseService.SendAsync(new RequestDto
+            {
+                ApiType = StaticDetails.ApiType.PUT,
+                Url = StaticDetails.APIBase + $"/api/Cart/UpdateCart/{productId}&{message}"
+            });
+        }
+
+        public async Task<ResponseDto> DeleteCartItem(int productId)
+        {
+            return await _baseService.SendAsync(new RequestDto
+            {
+                ApiType = StaticDetails.ApiType.DELETE,
+                Url = StaticDetails.APIBase + $"/api/Cart/deletecart/{productId}"
+            });
+        }
     }
 }

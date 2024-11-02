@@ -68,5 +68,51 @@ namespace NanaFoodWeb.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        [HttpPost]
+        [Route("Cart/ModifyCartItemQuantity")]
+        public async Task<IActionResult> ModifyCartItemQuantity(int productId, string message)
+        {
+            var response = await _cartRepo.ModifyCartQuantity(productId, message);
+
+            if (response.IsSuccess)
+            {
+                // Chuyển đổi response.Result thành đối tượng JSON để lấy quantity và total
+                var resultData = JsonConvert.DeserializeObject<dynamic>(response.Result.ToString());
+                int quantity = resultData.quantity;
+                int total = resultData.total;
+
+                return Json(new
+                {
+                    success = true,
+                    quantity = quantity,
+                    total = total
+                });
+            }
+
+            return Json(new { success = false, message = "không tìm thấy sản phẩm" });
+        }
+
+        [HttpPost]
+        [Route("Cart/RemoveCartItem")]
+        public async Task<IActionResult> RemoveCartItem(int productId)
+        {
+            var response = await _cartRepo.DeleteCartItem(productId);
+
+            if (response.IsSuccess)
+            {
+                var cartCountResponse = await _cartRepo.GetCart();
+                int cartcount = 0;
+                if (cartCountResponse.Result == null)
+                {
+                    cartcount = 0;
+                }
+
+                HttpContext.Session.SetString("CartCount", cartcount.ToString());
+                return Json(new { success = true, cartCount = cartcount });
+            }
+
+            return Json(new { success = false, message = "Không tìm thấy sản phẩm" });
+        }
     }
 }

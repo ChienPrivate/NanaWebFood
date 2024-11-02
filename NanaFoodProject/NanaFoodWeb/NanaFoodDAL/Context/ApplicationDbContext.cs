@@ -17,6 +17,7 @@ namespace NanaFoodDAL.Context
 
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<ProductImages> ProductImages { get; set; }
         public DbSet<ProductChangeLog> ProductChangeLogs { get; set; }
         public DbSet<CartDetails> CartDetails { get; set; }
         public DbSet<Review> Reviews { get; set; }
@@ -47,7 +48,6 @@ namespace NanaFoodDAL.Context
             // Cấu hình cho khóa chính
             builder.Entity<Coupon>().ToTable("Coupon");
             builder.Entity<UserCoupon>().HasKey(e => e.Id);
-
 
             builder.Entity<Category>().HasKey(e => e.CategoryId);
 
