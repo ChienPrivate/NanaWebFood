@@ -103,9 +103,16 @@ namespace NanaFoodWeb.Controllers
             {
                 var cartCountResponse = await _cartRepo.GetCart();
                 int cartcount = 0;
-                if (cartCountResponse.Result == null)
+                if (cartCountResponse.Result == null && cartCountResponse.IsSuccess)
                 {
                     cartcount = 0;
+                    _tokenProvider.SetCartCount(cartcount.ToString());
+                }
+                else
+                {
+                    var Data = JsonConvert.DeserializeObject<List<CartResponseDto>>(cartCountResponse.Result.ToString());
+                    cartcount = Data.Count();
+                    _tokenProvider.SetCartCount(Data.Count.ToString());
                 }
 
                 HttpContext.Session.SetString("CartCount", cartcount.ToString());
