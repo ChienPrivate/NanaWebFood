@@ -102,12 +102,12 @@
         <div class="row g-4">
             <div class="col-lg-12">
                 <div class="row g-4">
-                    <h3 class="text-center fw-bold">Sản phẩm tìm kiếm hàng đầu</h3>
+                    <h3 class="text-center fw-bold">Sản phẩm được xem nhiều nhất </h3>
                     <div class="owl-carousel owl-theme">
 
-                        @if (Model?.Products != null && Model.Products.Any(e => e.IsActive && (e.CategoryId == 37 || e.CategoryId == 38 || e.CategoryId == 54)))
+                        @if (Model?.Products != null)
                         {
-                            @foreach (var item in Model.Products.Where(e => e.IsActive && (e.CategoryId == 37 || e.CategoryId == 38 || e.CategoryId == 47)))
+                                @foreach (var item in Model.Products.Where(e => e.IsActive).OrderByDescending(x => x.View))
                             {
                                 <div class="item">
                                     <div class="card mb-3 shadow">
@@ -186,6 +186,8 @@
                                             </a>
                                         </div>
                                         <div class="card-footer">
+                                            <div class="text-dark fs-5"><s>@((item.Price + 10000).ToString("#,##"))</s></div>
+
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <p class="text-dark fs-5 fw-bold" style="position: relative; left: 3px; top: 8px;">@item.Price.ToString("#,##")đ</p>
                                                 <a asp-controller="Products" asp-action="CDetails" asp-route-id="@item.ProductId" class="btn btn-sm btn-warning rounded-2">Xem chi tiết</a>
@@ -233,144 +235,6 @@
     </div>
 </div>
 <!-- Banner Section End -->
-<!-- Bestsaler Product Start -->
-<div class="container-fluid py-5">
-    <div class="container py-5">
-        <div class="text-center mx-auto mb-5" style="max-width: 700px;">
-            <h1 class="display-4">bét seo lơ</h1>
-            <p>Các món ăn bán chạy nhất cửa hàng</p>
-        </div>
-        <div class="row g-4">
-            <div class="col-lg-6 col-xl-4">
-                <div class="p-4 rounded bg-light">
-                    <div class="row align-items-center">
-                        <div class="col-6">
-                            <img src="images/burger.jpg" class="img-fluid rounded-circle w-100" alt="">
-                        </div>
-                        <div class="col-6">
-                            <a href="#" class="h5">Hamburger cá</a>
-                            <div class="d-flex my-3">
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star"></i>
-                            </div>
-                            <h4 class="mb-3">40,000VND</h4>
-                            <a href="#" class="btn border border-secondary rounded-pill px-3 text-warning"><i class="fa fa-shopping-bag me-2 text-warning"></i>Giỏ hàng</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 col-xl-4">
-                <div class="p-4 rounded bg-light">
-                    <div class="row align-items-center">
-                        <div class="col-6">
-                            <img src="images/burger.jpg" class="img-fluid rounded-circle w-100" alt="">
-                        </div>
-                        <div class="col-6">
-                            <a href="#" class="h5">Hamburger cá</a>
-                            <div class="d-flex my-3">
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star"></i>
-                            </div>
-                            <h4 class="mb-3">40,000VND</h4>
-                            <a href="#" class="btn border border-secondary rounded-pill px-3 text-warning"><i class="fa fa-shopping-bag me-2 text-warning"></i>Giỏ hàng</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 col-xl-4">
-                <div class="p-4 rounded bg-light">
-                    <div class="row align-items-center">
-                        <div class="col-6">
-                            <img src="images/burger.jpg" class="img-fluid rounded-circle w-100" alt="">
-                        </div>
-                        <div class="col-6">
-                            <a href="#" class="h5">Hamburger cá</a>
-                            <div class="d-flex my-3">
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star"></i>
-                            </div>
-                            <h4 class="mb-3">40,000VND</h4>
-                            <a href="#" class="btn border border-secondary rounded-pill px-3 text-warning"><i class="fa fa-shopping-bag me-2 text-warning"></i>Giỏ hàng</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 col-xl-4">
-                <div class="p-4 rounded bg-light">
-                    <div class="row align-items-center">
-                        <div class="col-6">
-                            <img src="images/burger.jpg" class="img-fluid rounded-circle w-100" alt="">
-                        </div>
-                        <div class="col-6">
-                            <a href="#" class="h5">Hamburger cá</a>
-                            <div class="d-flex my-3">
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star"></i>
-                            </div>
-                            <h4 class="mb-3">40,000VND</h4>
-                            <a href="#" class="btn border border-secondary rounded-pill px-3 text-warning"><i class="fa fa-shopping-bag me-2 text-warning"></i>Giỏ hàng</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 col-xl-4">
-                <div class="p-4 rounded bg-light">
-                    <div class="row align-items-center">
-                        <div class="col-6">
-                            <img src="images/burger.jpg" class="img-fluid rounded-circle w-100" alt="">
-                        </div>
-                        <div class="col-6">
-                            <a href="#" class="h5">Hamburger cá</a>
-                            <div class="d-flex my-3">
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star"></i>
-                            </div>
-                            <h4 class="mb-3">40,000VND</h4>
-                            <a href="#" class="btn border border-secondary rounded-pill px-3 text-warning"><i class="fa fa-shopping-bag me-2 text-warning"></i>Giỏ hàng</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 col-xl-4">
-                <div class="p-4 rounded bg-light">
-                    <div class="row align-items-center">
-                        <div class="col-6">
-                            <img src="images/burger.jpg" class="img-fluid rounded-circle w-100" alt="">
-                        </div>
-                        <div class="col-6">
-                            <a href="#" class="h5">Hamburger cá</a>
-                            <div class="d-flex my-3">
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star text-warning"></i>
-                                <i class="fas fa-star"></i>
-                            </div>
-                            <h4 class="mb-3">40,000VND</h4>
-                            <a href="#" class="btn border border-secondary rounded-pill px-3 text-warning"><i class="fa fa-shopping-bag me-2 text-warning"></i>Giỏ hàng</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Bestsaler Product End -->
 <!-- Tastimonial Start -->
 <div class="container-fluid testimonial py-5">
     <div class="container py-5">

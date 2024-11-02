@@ -472,7 +472,6 @@ builder.Services.AddCors(options =>
             builder.WithOrigins("https://localhost:51326")
                    .AllowAnyMethod()
                    .AllowAnyHeader();
-//                   .AllowCredentials();
         });
 });
 
