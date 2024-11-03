@@ -12,6 +12,7 @@
         public const string WardEndPoint = "https://online-gateway.ghn.vn/shiip/public-api/master-data/ward";
         public const string AvailableServiceEndPoint = "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/available-services";
         public const string ShipppingFeeCaculateEndPoint = "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee";
+        public const string ExpectedDeliveryDateEndPoint = "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/leadtime";
         public enum ApiType
         {
             GET,

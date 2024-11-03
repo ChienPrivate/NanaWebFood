@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace NanaFoodWeb.Models.Dto
+namespace NanaFoodWeb.Models.Dto.GHNDto
 {
     public class CalculateShippingFeeRequestDto
     {

@@ -1199,5 +1199,29 @@
         <member name="M:NanaFoodApi.Migrations.AddProductImage.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
+        <member name="T:NanaFoodApi.Migrations.OrderNewColunmToOrder">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.OrderNewColunmToOrder.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.OrderNewColunmToOrder.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.OrderNewColunmToOrder.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:NanaFoodApi.Migrations.modifycontraintbetweenProductandOrderDetails">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.modifycontraintbetweenProductandOrderDetails.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.modifycontraintbetweenProductandOrderDetails.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.modifycontraintbetweenProductandOrderDetails.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
     </members>
 </doc>
