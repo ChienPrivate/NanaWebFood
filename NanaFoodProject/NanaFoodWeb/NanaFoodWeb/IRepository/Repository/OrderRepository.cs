@@ -1,5 +1,6 @@
 ﻿using NanaFoodWeb.Models;
 using NanaFoodWeb.Models.Dto;
+using NanaFoodWeb.Models.Dto.GHNDto;
 using NanaFoodWeb.Models.Dto.ViewModels;
 using NanaFoodWeb.Models.Momo;
 using NanaFoodWeb.Models.VNPay;
@@ -112,6 +113,17 @@ namespace NanaFoodWeb.IRepository.Repository
                 AccessToken = GHNApiKey,
                 Url = WardEndPoint,
                 Data = requestBody
+            }, false, "token");
+        }
+
+        public async Task<ResponseDto> CalculateShippingTime(CalculateShippingTimeRequestDto requestDto)
+        {
+            return await _baseService.SendAsync(new RequestDto
+            {
+                ApiType = ApiType.GET,
+                AccessToken = GHNApiKey,
+                Url = ExpectedDeliveryDateEndPoint,
+                Data = requestDto
             }, false, "token");
         }
 
@@ -238,5 +250,7 @@ namespace NanaFoodWeb.IRepository.Repository
                 Url = APIBase + $"/api/Order/profit/orders/{OrderId}&{message}"
             });
         }
+
+        
     }
 }

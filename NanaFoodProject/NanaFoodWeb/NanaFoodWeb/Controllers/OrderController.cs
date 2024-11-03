@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using NanaFoodWeb.IRepository;
 using NanaFoodWeb.Models;
 using NanaFoodWeb.Models.Dto;
+using NanaFoodWeb.Models.Dto.GHNDto;
 using NanaFoodWeb.Models.Momo;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
@@ -19,13 +20,15 @@ namespace NanaFoodWeb.Controllers
         private readonly ITokenProvider _tokenProvider;
         private readonly IReviewRepository _reviewRepository;
         private readonly ICartRepo _cartRepo;
+        private readonly IAuthRepository _authRepo;
 
-        public OrderController(IOrderRepository orderService, ITokenProvider tokenProvider, ICartRepo cartRepo, IReviewRepository reviewRepository)
+        public OrderController(IOrderRepository orderService, ITokenProvider tokenProvider, ICartRepo cartRepo, IReviewRepository reviewRepository, IAuthRepository authRepo)
         {
             _orderRepository = orderService;
             _tokenProvider = tokenProvider;
             _cartRepo = cartRepo;
             _reviewRepository = reviewRepository;
+            _authRepo = authRepo;
         }
 
         public async Task<IActionResult> Index()
@@ -38,10 +41,18 @@ namespace NanaFoodWeb.Controllers
             }
             else
             {
+                var userInfoResponse = await _authRepo.GetInfo();
                 var response = await _cartRepo.GetCart();
                 if (response.Result != null)
                 {
                     var Data = JsonConvert.DeserializeObject<List<CartResponseDto>>(response.Result.ToString());
+                    
+                    if (userInfoResponse.IsSuccess)
+                    {
+                        var userInfo = JsonConvert.DeserializeObject<UserDto>(userInfoResponse.Result.ToString());
+                        ViewBag.UserInfo = userInfo;
+                    }
+
                     var provinceRequest = await _orderRepository.GetProvinceAsync();
 
                     var provinceResponse = JsonConvert.DeserializeObject<GHNResponseDto<List<ProvinceDto>>>(provinceRequest.Result.ToString());
@@ -50,10 +61,10 @@ namespace NanaFoodWeb.Controllers
                     {
                         var provinceList = provinceResponse.Data.ToList();
 
-                        var selectListProvinces = provinceList.Select(p => new SelectListItem
+                        var selectListProvinces = provinceList.Where(p => p.ProvinceID == 202).Select(p => new SelectListItem
                         {
                             Text = p.ProvinceName,   // Tên tỉnh làm Text
-                            Value = p.ProvinceID.ToString()  // ID tỉnh làm Value
+                            Value = p.ProvinceID.ToString(),  // ID tỉnh làm Value
                         }).ToList();
                         ViewBag.cartdetails = Data;
                         ViewBag.ProvinceList = selectListProvinces;
@@ -261,7 +272,7 @@ namespace NanaFoodWeb.Controllers
         }
         #endregion
 
-        #region CaculatingShippingFee
+        #region GHN Service
         public async Task<JsonResult> GetDistricts(int provinceId)
         {
             // Gọi API để lấy danh sách quận/huyện dựa trên ProvinceID
@@ -363,6 +374,130 @@ namespace NanaFoodWeb.Controllers
             }
 
             return Json(new { message = "Lỗi không thể tính phí" });
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> CalculateShippingTime(int toDistrict, string toWardCode, int serviceId)
+        {
+            CalculateShippingTimeRequestDto requestDto = new CalculateShippingTimeRequestDto()
+            {
+                FromDistrictId = 1454,
+                FromWardCode = "21204",
+                ToDistrictId = toDistrict,
+                ToWardCode = toWardCode,
+                ServiceId = serviceId,
+            };
+            var response = await _orderRepository.CalculateShippingTime(requestDto);
+
+            var serviceResponse = JsonConvert.DeserializeObject<GHNResponseDto<ExpetedShippingTimeDto>>(response.Result.ToString());
+
+
+            if (serviceResponse.Code == 200)
+            {
+                // Lấy đối tượng đầu tiên từ danh sách dữ liệu
+                var expectedShippingTime = serviceResponse.Data;
+
+                var dat = DateTime.Now;
+
+                var expectedShippingTimeGG = CalculateAdjustedDeliveryTime(toDistrict);
+
+                expectedShippingTime.LeadTimeUnix = ((DateTimeOffset)expectedShippingTimeGG).ToUnixTimeSeconds();
+
+                // Trả về đối tượng `ExpetedShippingTimeDto` dưới dạng JSON
+                return Json(expectedShippingTime);
+            }
+
+            // Trường hợp không thành công, trả về JSON rỗng hoặc đối tượng null
+            return Json(null);
+        }
+
+        private DateTime CalculateAdjustedDeliveryTime(int toDistrictId)
+        {
+            // Biến lưu số phút sẽ cộng thêm, dựa trên quận
+            double additionalMinutes;
+
+            // Xét quận đích và đặt số phút bổ sung dựa trên khoảng cách từ Quận 12
+            switch (toDistrictId)
+            {
+                case 1442: // Quận 1
+                    additionalMinutes = 41;
+                    break;
+                case 1443: // Quận 2
+                    additionalMinutes = 46;
+                    break;
+                case 1444: // Quận 3
+                    additionalMinutes = 33;
+                    break;
+                case 1446: // Quận 4
+                    additionalMinutes = 47;
+                    break;
+                case 1447: // Quận 5
+                    additionalMinutes = 38;
+                    break;
+                case 1448: // Quận 6
+                    additionalMinutes = 35;
+                    break;
+                case 1449: // Quận 7
+                    additionalMinutes = 56;
+                    break;
+                case 1450: // Quận 8
+                    additionalMinutes = 42;
+                    break;
+                case 1451: // Quận 9
+                    additionalMinutes = 55;
+                    break;
+                case 1452: // Quận 10
+                    additionalMinutes = 32;
+                    break;
+                case 1453: // Quận 11
+                    additionalMinutes = 33;
+                    break;
+                case 1454: // Quận 12
+                    additionalMinutes = 15;
+                    break;
+                case 3695: // Thành phố Thủ Đức
+                    additionalMinutes = 30;
+                    break;
+                case 2090: // Huyện Cần Giờ
+                    additionalMinutes = 129; // 2 giờ 9 phút = 129 phút
+                    break;
+                case 1534: // Huyện Nhà Bè
+                    additionalMinutes = 65; // 1 giờ 5 phút = 65 phút
+                    break;
+                case 1533: // Huyện Bình Chánh
+                    additionalMinutes = 35;
+                    break;
+                case 1462: // Quận Bình Thạnh
+                    additionalMinutes = 29;
+                    break;
+                case 1461: // Quận Gò Vấp
+                    additionalMinutes = 17;
+                    break;
+                case 1460: // Huyện Củ Chi
+                    additionalMinutes = 43;
+                    break;
+                case 1459: // Huyện Hóc Môn
+                    additionalMinutes = 16;
+                    break;
+                case 1458: // Quận Bình Tân
+                    additionalMinutes = 23;
+                    break;
+                case 1457: // Quận Phú Nhuận
+                    additionalMinutes = 27;
+                    break;
+                case 1456: // Quận Tân Phú
+                    additionalMinutes = 21;
+                    break;
+                case 1455: // Quận Tân Bình
+                    additionalMinutes = 22;
+                    break;
+                default:
+                    additionalMinutes = 60; // Giá trị mặc định là 1 giờ nếu không có thông tin
+                    break;
+            }
+
+            // Tính toán thời gian giao hàng cuối cùng sau khi cộng thêm phút
+            return DateTime.Now.AddMinutes(additionalMinutes);
         }
 
         #endregion

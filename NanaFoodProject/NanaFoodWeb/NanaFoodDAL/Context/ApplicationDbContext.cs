@@ -103,7 +103,7 @@ namespace NanaFoodDAL.Context
                 .HasOne(e => e.Product)
                 .WithMany(e => e.OrderDetails)
                 .HasForeignKey(e => e.ProductId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.Entity<UserCoupon>()
                 .HasOne(e => e.Coupon)

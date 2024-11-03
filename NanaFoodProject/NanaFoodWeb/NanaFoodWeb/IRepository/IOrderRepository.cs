@@ -1,5 +1,6 @@
 ﻿using NanaFoodWeb.Models;
 using NanaFoodWeb.Models.Dto;
+using NanaFoodWeb.Models.Dto.GHNDto;
 using NanaFoodWeb.Models.Momo;
 using NanaFoodWeb.Models.VNPay;
 
@@ -12,6 +13,7 @@ namespace NanaFoodWeb.IRepository
         Task<ResponseDto> GetWardAsync(int districtId);
         Task<ResponseDto> GetAvailableServiceAsync(int fromDistrict, int toDistrict);
         Task<ResponseDto> CalculateShippingFees(CalculateShippingFeeRequestDto requestDto);
+        Task<ResponseDto> CalculateShippingTime(CalculateShippingTimeRequestDto requestDto);
         Task<ResponseDto> AddOrderAsync(Order order);
         Task<ResponseDto> CancelOrderAsync(int orderId);
         Task<ResponseDto> MomoPayment(int total);

@@ -11,6 +11,9 @@ namespace NanaFoodWeb.Models
         public string FullName { get; set; }
         [Required(ErrorMessage = "Không được để trống số điện thoại")]
         public string PhoneNumber { get; set; }
+        [Required(ErrorMessage = "Không được để trống email")]
+        [EmailAddress]
+        public string Email { get; set; }
         [Required(ErrorMessage = "Không được để trống địa chỉ")]
         public string Address { get; set; }
         [Required(ErrorMessage = "Hãy Chọn phương thức thanh Toán")]
@@ -25,6 +28,7 @@ namespace NanaFoodWeb.Models
         [Required(ErrorMessage = "Mã người dùng không được để trống")]
         public string UserId { get; set; } = "string";
         public double Total { get; set; } = 0;
+        public string ExpectedDeliveryDate { get; set; }
         [Required(ErrorMessage = "Ngày đặt hàng không được trống")]
         public DateTime OrderDate { get; set; } = DateTime.Now;
         public DateTime ReceiveDate { get; set; }

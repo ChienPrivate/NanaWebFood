@@ -1,4 +1,4 @@
-﻿namespace NanaFoodWeb.Models.Dto
+﻿namespace NanaFoodWeb.Models.Dto.GHNDto
 {
     public class GHNResponseDto<T>
     {
