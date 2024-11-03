@@ -73,17 +73,25 @@
                 <!-- Client Information -->
                 <div class="row mb-2">
                     <div class="col-12 section-title">Thông tin người nhận</div>
-                    <div class="col-md-12">
-                        <label class="form-label">Họ Tên:</label>
-                        <input asp-for=FullName type="text" class="form-control-plaintext" readonly>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="form-label">Họ Tên:</label>
+                            <input asp-for=FullName type="text" class="form-control-plaintext" readonly>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Địa chỉ:</label>
+                            <input asp-for=Address type="text" class="form-control-plaintext" readonly>
+                        </div>
                     </div>
-                    <div class="col-md-12">
-                        <label class="form-label">Địa chỉ:</label>
-                        <input asp-for=Address type="text" class="form-control-plaintext" readonly>
-                    </div>
-                    <div class="col-md-12">
-                        <label class="form-label">Số điện thoại:</label>
-                        <input asp-for=PhoneNumber type="text" class="form-control-plaintext" readonly>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="form-label">Số điện thoại:</label>
+                            <input asp-for=PhoneNumber type="text" class="form-control-plaintext" readonly>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Email:</label>
+                            <input asp-for=Email type="text" class="form-control-plaintext" readonly>
+                        </div>
                     </div>
                 </div>
 
@@ -155,16 +163,59 @@
                                         </div>
                                         <div class="modal-body">
                                             <div class="text-left">
-                                                <strong>Bản có chắc muốn hủy đơn này ?</strong>
+                                                <strong>Bạn có chắc muốn hủy đơn này?</strong>
+                                            </div>
+                                            <div class="text-left">
+                                                <label for="cancelReason">Lý do hủy đơn <span class="text-danger">*</span></label>
+                                                <select id="cancelReason" name="message" class="form-select">
+                                                    <option value="">Chọn lý do hủy đơn</option>
+                                                    <option value="Tôi đã thay đổi ý định">Tôi đã thay đổi ý định</option>
+                                                    <option value="Tôi tìm thấy giá tốt hơn ở nơi khác">Tôi tìm thấy giá tốt hơn ở nơi khác</option>
+                                                    <option value="Tôi đặt nhầm đơn hàng">Tôi đặt nhầm đơn hàng</option>
+                                                    <option value="Thời gian giao hàng quá lâu">Thời gian giao hàng quá lâu</option>
+                                                    <option value="Tôi không còn cần món này nữa">Tôi không còn cần món này nữa</option>
+                                                    <option value="Có vấn đề với thanh toán">Có vấn đề với thanh toán</option>
+                                                    <option value="Tôi đã đặt nhầm sản phẩm">Tôi đã đặt nhầm sản phẩm</option>
+                                                    <option value="Dịch vụ khách hàng không như mong đợi">Dịch vụ khách hàng không như mong đợi</option>
+                                                    <option value="Lý do khác">Lý do khác</option>
+                                                </select>
+                                                <span class="text-danger" id="warningText"></span>
                                             </div>
                                         </div>
+
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                            <a asp-action="CancelOrder" asp-controller="Order" asp-route-orderId="@Model.OrderId" class="btn btn-outline-danger">Hủy đơn</a>
+                                            <a href="javascript:void(0);" id="cancelOrderBtn" class="btn btn-outline-danger">Hủy đơn</a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
+                            <script>
+                                document.addEventListener("DOMContentLoaded", function () {
+                                    document.getElementById("cancelOrderBtn").addEventListener("click", function () {
+                                        var reason = document.getElementById("cancelReason").value;
+                                        var warningText = document.getElementById("warningText");
+
+                                        // Kiểm tra nếu lý do không được chọn
+                                        if (!reason) {
+                                            warningText.textContent = "Vui lòng chọn lý do hủy đơn.";
+                                        } else {
+                                            warningText.textContent = ""; // Xóa cảnh báo nếu có lý do được chọn
+
+                                            // Lấy orderId từ model
+                                            var orderId = "@Model.OrderId";
+
+                                            // Tạo URL động bằng cách thêm orderId và message vào URL cơ bản
+                                            var baseUrl = '@Url.Action("CancelOrder", "Order")';
+                                            var cancelUrl = `${baseUrl}?orderId=${orderId}&message=${encodeURIComponent(reason)}`;
+
+                                            // Redirect đến URL hủy đơn với lý do hủy được truyền kèm
+                                            window.location.href = cancelUrl;
+                                        }
+                                    });
+                                });
+                            </script>
                         }
 
                         <a asp-action="OrderHistory" asp-controller="Order" class="btn btn-outline-secondary">Quay lại</a>
@@ -175,54 +226,3 @@
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-@* <div class=" container">
-    <div class="d-flex align-content-center">
-        <div class="card box-shadow-edit">
-            <div class="card-body row">
-                <div class="mb-2 col-6">
-                    <label asp-for="OrderId"></label>
-                    <input asp-for="OrderId" class="form-control" readonly />
-                </div>
-                <div class="mb-2 col-6">
-                    <label asp-for="FullName"></label>
-                    <input asp-for="FullName" class="form-control" readonly />
-                </div>
-                <div class="mb-2">
-                    <label asp-for="Address"></label>
-                    <textarea rows="3" asp-for="Address" class="form-control" readonly></textarea>
-                </div>
-                <div class="mb-2 col-6">
-                    <label asp-for="PhoneNumber"></label>
-                    <input asp-for="PhoneNumber" class="form-control" readonly />
-                </div>
-                <div class="mb-2 col-6">
-                    <label asp-for="PaymentType"></label>
-                    <input asp-for="PaymentType" class="form-control" readonly />
-                </div>
-                <div class="mb-2 col-6">
-                    <label asp-for="PaymentStatus"></label>
-                    <input asp-for="PaymentStatus" class="form-control" readonly />
-                </div>
-                <div class="mb-2 col-6">
-                    <label asp-for="OrderDate"></label>
-                    <input asp-for="OrderDate" class="form-control" readonly />
-                </div>
-                <div class="mb-2">
-                    <label asp-for="OrderStatus"></label>
-                    <input asp-for="OrderStatus" class="form-control" readonly />
-                </div>
-                <div class="mb-2">
-                    <label asp-for="Note"></label>
-                    <input asp-for="Note" class="form-control" readonly />
-                </div>
-                <a asp-action="Order" asp-controller="Auth" class="btn btn-info col-auto mx-3">Go back</a>
-                <a asp-action="OrderDetail" asp-controller="Order" asp-route-id="@Model.OrderId" class="btn btn-warning col-auto mx-3">View food order</a>
-                @if (Model.OrderStatus != "Đang huỷ đơn" && Model.PaymentStatus == "Chưa thanh toán")
-                {
-                    <a asp-action="Cancel" asp-controller="Order" asp-route-id="@Model.OrderId" class="btn btn-primary col-auto">Cancel order</a>
-                }
-            </div>
-        </div>
-    </div>
-</div> *@

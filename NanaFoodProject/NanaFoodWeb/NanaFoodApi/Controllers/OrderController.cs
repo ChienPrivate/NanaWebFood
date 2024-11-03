@@ -90,6 +90,7 @@ namespace NanaFoodApi.Controllers
                 var order = _mapper.Map<Order>(orderDto);
 
                 order.UserId = user.Id;
+                order.Email = user.Email;
 
                 var createdOrder = await _orderRepository.AddOrder(order);
 
@@ -97,6 +98,9 @@ namespace NanaFoodApi.Controllers
                 {
                     OrderId = createdOrder.OrderId,
                     ProductId = item.ProductId,
+                    ProductName = item.ProductName,
+                    Price = item.Price,
+                    ImageUrl = item.Image,
                     Quantity = item.Quantity,
                     Total = item.Total,
                 });
@@ -225,10 +229,10 @@ namespace NanaFoodApi.Controllers
         /// - 200 OK nếu hủy đơn hàng thành công.
         /// </returns>
         /// <response code="200">Đơn hàng đã được hủy thành công.</response>
-        [HttpPut("orders/{OrderId}")]
-        public async Task<IActionResult> CancelOrderAsync(int OrderId)
+        [HttpPut("CancelOrders/{OrderId}/{message}")]
+        public async Task<IActionResult> CancelOrderAsync(int OrderId, string message)
         {
-            var cancelOrderResponse = await _orderRepository.CancelOrderAsync(OrderId);
+            var cancelOrderResponse = await _orderRepository.CancelOrderAsync(OrderId, message);
 
             return Ok(cancelOrderResponse);
         }

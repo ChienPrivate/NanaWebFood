@@ -18,7 +18,7 @@ namespace NanaFoodDAL.IRepository
         Task<ResponseDto> GetOrderDetailsAsync(int OrderId);
         Task<ResponseDto> CalculateProfitAsync();
         Task<ResponseDto> UpdateOrderStatus(int OrderId, string message);
-        Task<ResponseDto> CancelOrderAsync(int OrderId);
+        Task<ResponseDto> CancelOrderAsync(int OrderId, string message);
 
 
     }

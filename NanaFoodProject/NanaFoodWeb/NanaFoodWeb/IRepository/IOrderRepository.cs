@@ -15,7 +15,7 @@ namespace NanaFoodWeb.IRepository
         Task<ResponseDto> CalculateShippingFees(CalculateShippingFeeRequestDto requestDto);
         Task<ResponseDto> CalculateShippingTime(CalculateShippingTimeRequestDto requestDto);
         Task<ResponseDto> AddOrderAsync(Order order);
-        Task<ResponseDto> CancelOrderAsync(int orderId);
+        Task<ResponseDto> CancelOrderAsync(int orderId, string message);
         Task<ResponseDto> MomoPayment(int total);
         string VNPayPayment(int total);
         Task<ResponseDto> CODPayment(Order order);

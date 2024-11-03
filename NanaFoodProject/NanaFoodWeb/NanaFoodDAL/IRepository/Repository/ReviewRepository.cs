@@ -236,21 +236,20 @@ namespace NanaFoodDAL.IRepository.Repository
         {
             try
             {
-                var productList = await (from p in _context.Products
-                                         join od in _context.OrderDetails on p.ProductId equals od.ProductId
+                var productList = await (from od in _context.OrderDetails
                                          join r in _context.Reviews on new { od.OrderId, od.ProductId } equals new { r.OrderId, r.ProductId } into reviewGroup
                                          from review in reviewGroup.DefaultIfEmpty()
-                                         where od.OrderId == orderId// Left join to include products without reviews
+                                         where od.OrderId == orderId // Lọc theo OrderId trong OrderDetails
                                          select new ReviewProductDto
                                          {
-                                             ProductId = p.ProductId,
-                                             ProductImage = p.ImageUrl,
-                                             ProductName = p.ProductName,
-                                             Price = p.Price,
+                                             ProductId = od.ProductId,
+                                             ProductImage = od.ImageUrl,
+                                             ProductName = od.ProductName,
+                                             Price = od.Price,
                                              Quantity = od.Quantity,
                                              Total = od.Total,
-                                             Comment = review.Comment ?? "No comment",
-                                             Rating = review.Rating ?? 0,
+                                             Comment = review.Comment ?? "No comment", // Gán mặc định "No comment" nếu không có đánh giá
+                                             Rating = review.Rating ?? 0, // Gán mặc định 0 nếu không có đánh giá
                                              IsReviewed = od.IsReviewed,
                                              OrderId = od.OrderId
                                          }).ToListAsync();
@@ -258,32 +257,6 @@ namespace NanaFoodDAL.IRepository.Repository
                 _response.IsSuccess = true;
                 _response.Message = "Lấy danh sách sản phẩm từ đơn hàng thành công";
                 _response.Result = productList;
-                /*                var productList = await (from p in _context.Products
-                                                         join od in _context.OrderDetails on p.ProductId equals od.ProductId
-                                                         join r in _context.Reviews on new { od.OrderId, od.ProductId } equals new { r.OrderId, r.ProductId } into reviewGroup
-                                                         from review in reviewGroup.DefaultIfEmpty()
-                                                         join u in _context.Users on review.UserId equals u.Id into userGroup
-                                                         from user in userGroup.DefaultIfEmpty() // Left join to include reviews without users
-                                                         where od.OrderId == orderId
-                                                         select new ReviewProductDto
-                                                         {
-                                                             ProductId = p.ProductId,
-                                                             ProductImage = p.ImageUrl,
-                                                             ProductName = p.ProductName,
-                                                             Price = p.Price,
-                                                             Quantity = od.Quantity,
-                                                             Total = od.Total,
-                                                             Comment = review.Comment ?? "",
-                                                             Rating = review.Rating ?? 0,
-                                                             IsReviewed = od.IsReviewed,
-                                                             OrderId = od.OrderId,
-                                                             UserImageUrl = user.AvatarUrl ?? "Chưa có hình ảnh", // Substitute a default image if user is null
-                                                             UserFullName = user.FullName ?? "Khách" // Substitute a default name if user is null
-                                                         }).ToListAsync();
-
-                                _response.IsSuccess = true;
-                                _response.Message = "Lấy danh sách sản phẩm từ đơn hàng thành công";
-                                _response.Result = productList;*/
 
             }
             catch (Exception ex)

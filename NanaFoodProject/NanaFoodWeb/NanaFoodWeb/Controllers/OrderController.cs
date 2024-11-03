@@ -188,9 +188,9 @@ namespace NanaFoodWeb.Controllers
             return View(order);
         }
 
-        public async Task<IActionResult> CancelOrder(int orderId)
+        public async Task<IActionResult> CancelOrder(int orderId, string message)
         {
-            var response = await _orderRepository.CancelOrderAsync(orderId);
+            var response = await _orderRepository.CancelOrderAsync(orderId, message);
             if (response.IsSuccess)
             {
                 TempData["success"] = "Hủy đơn thành công";
@@ -396,8 +396,6 @@ namespace NanaFoodWeb.Controllers
             {
                 // Lấy đối tượng đầu tiên từ danh sách dữ liệu
                 var expectedShippingTime = serviceResponse.Data;
-
-                var dat = DateTime.Now;
 
                 var expectedShippingTimeGG = CalculateAdjustedDeliveryTime(toDistrict);
 
