@@ -44,12 +44,12 @@ namespace NanaFoodDAL.IRepository.Repository
             return _response;
         }
 
-        public async Task<ResponseDto> CancelOrderAsync(int OrderId)
+        public async Task<ResponseDto> CancelOrderAsync(int OrderId, string message)
         {
             var order = await _context.Orders.SingleOrDefaultAsync(Order => Order.OrderId == OrderId);
             try
             {
-                
+                order.CancelReason = message;
                 order.PaymentStatus = "Đã huỷ";
                 order.OrderStatus = "Đã huỷ";
                 _context.Orders.Update(order);
@@ -105,19 +105,7 @@ namespace NanaFoodDAL.IRepository.Repository
         public async Task<ResponseDto> GetOrderDetailsAsync(int OrderId)
         {
             var orderDetails = await _context.OrderDetails.Where(x => x.OrderId == OrderId).ToListAsync();
-            List<OrderDetailsDto> ListDetail = new List<OrderDetailsDto>();
-            foreach (var detail in orderDetails)
-            {
-                Product? food = _context.Products.Find(detail.ProductId);
-                OrderDetailsDto detailDTO = new OrderDetailsDto();
-                detailDTO.OrderId = detail.OrderId;
-                detailDTO.ProductId = food.ProductId;
-                detailDTO.ProductName = food.ProductName;
-                /*detailDTO.UnitPrice = detail.UnitPrice;*/
-                detailDTO.Quantity = detail.Quantity;
-                detailDTO.Total = detail.Total;
-                ListDetail.Add(detailDTO);
-            }
+            List<OrderDetailsDto> ListDetail = _mapper.Map<List<OrderDetailsDto>>(orderDetails);
             _response.Result = ListDetail;
 
             return _response;

@@ -640,7 +640,7 @@
             </returns>
             <response code="200">Trạng thái đơn hàng được cập nhật thành công.</response>
         </member>
-        <member name="M:NanaFoodApi.Controllers.OrderController.CancelOrderAsync(System.Int32)">
+        <member name="M:NanaFoodApi.Controllers.OrderController.CancelOrderAsync(System.Int32,System.String)">
             <summary>
             Hủy đơn hàng
             </summary>
@@ -1221,6 +1221,30 @@
             <inheritdoc />
         </member>
         <member name="M:NanaFoodApi.Migrations.modifycontraintbetweenProductandOrderDetails.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:NanaFoodApi.Migrations.removeOrderDetailscomlunm">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.removeOrderDetailscomlunm.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.removeOrderDetailscomlunm.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.removeOrderDetailscomlunm.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:NanaFoodApi.Migrations.addcolumncancelreasontoOrder">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.addcolumncancelreasontoOrder.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.addcolumncancelreasontoOrder.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.addcolumncancelreasontoOrder.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
     </members>

@@ -14,6 +14,7 @@ namespace NanaFoodDAL.Dto
         public string FullName { get; set; }
         [Required(ErrorMessage = "Không được để trống số điện thoại")]
         public string PhoneNumber { get; set; }
+        public string Email { get; set; }
         [Required(ErrorMessage = "Không được để trống địa chỉ")]
         public string Address { get; set; }
         [Required(ErrorMessage = "Hãy Chọn phương thức thanh Toán")]
@@ -31,6 +32,7 @@ namespace NanaFoodDAL.Dto
         public double Total { get; set; }
         [Required(ErrorMessage = "Ngày đặt hàng không được trống")]
         public DateTime OrderDate { get; set; } = DateTime.Now;
+        public string ExpectedDeliveryDate { get; set; }
         public DateTime ReceiveDate { get; set; }
     }
 }

@@ -27,16 +27,14 @@ namespace NanaFoodWeb.IRepository.Repository
             });
         }
 
-        public async Task<ResponseDto> CancelOrderAsync(int orderId)
+        public async Task<ResponseDto> CancelOrderAsync(int orderId, string message)
         {
             return await _baseService.SendAsync(new RequestDto
             {
                 ApiType = ApiType.PUT,
-                Url = StaticDetails.APIBase + $"/api/Order/orders/{orderId}",
+                Url = StaticDetails.APIBase + $"/api/Order/CancelOrders/{orderId}/{message}",
             });
         }
-
-
 
         public async Task<ResponseDto> CalculateShippingFees(CalculateShippingFeeRequestDto requestDto)
         {

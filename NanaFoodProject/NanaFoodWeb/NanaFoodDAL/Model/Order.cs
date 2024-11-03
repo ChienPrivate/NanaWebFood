@@ -23,6 +23,7 @@ namespace NanaFoodDAL.Model
         public int ShipmentFee { get; set; }
         public string ExpectedDeliveryDate { get; set; }
         public string? Note { get; set; }
+        public string? CancelReason { get; set; }
         public double Total { get; set; }
         public DateTime OrderDate { get; set; } = DateTime.Now;
         public DateTime ReceiveDate { get; set; }

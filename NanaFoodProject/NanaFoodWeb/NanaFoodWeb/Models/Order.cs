@@ -23,6 +23,7 @@ namespace NanaFoodWeb.Models
         [Required(ErrorMessage = "Trạng thái giao hàng không được để trống")]
         public string OrderStatus { get; set; } = "Đang chuẩn bị";
         public string? Note { get; set; }
+        public string? CancelReason { get; set; }
         [Required(ErrorMessage = "Phí ship không được để trống")]
         public int ShipmentFee { get; set; }
         [Required(ErrorMessage = "Mã người dùng không được để trống")]
