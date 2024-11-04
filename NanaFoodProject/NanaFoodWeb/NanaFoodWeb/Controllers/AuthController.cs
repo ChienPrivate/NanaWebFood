@@ -99,6 +99,19 @@ namespace NanaFoodWeb.Controllers
         }
 
 
+        [HttpPost]
+        [Route("Auth/ChangePassword")]
+        public async Task ChangePassword(string OldPassword, string NewPassword, string ConfirmPassword)
+        {
+            var ChangePass = new ChangePasswordDto()
+            {
+                OldPassword = OldPassword,
+                NewPassword = NewPassword,
+                ConfirmPassword = ConfirmPassword
+            };
+            var responsedto = await _authRepo.ChangePasswordAsync(ChangePass);
+        }
+
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
