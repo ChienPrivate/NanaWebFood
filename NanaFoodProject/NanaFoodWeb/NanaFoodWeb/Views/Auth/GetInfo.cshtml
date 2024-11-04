@@ -385,18 +385,6 @@
             reader.readAsDataURL(file);
         }
     }
-    // Hàm để đọc cookie
-    function getCookie(name) {
-        let cookieArr = document.cookie.split(";"); // Tách các cặp cookie
-        for (let i = 0; i < cookieArr.length; i++) {
-            let cookiePair = cookieArr[i].split("="); // Tách từng cặp tên-giá trị cookie
-            if (name == cookiePair[0].trim()) {
-                return decodeURIComponent(cookiePair[1]); // Trả về giá trị của cookie nếu tìm thấy
-            }
-        }
-        return null; // Trả về null nếu không tìm thấy cookie
-    }
-    var jwtToken = getCookie('JWTToken');
 
     $(document).ready(function () {
 
@@ -404,24 +392,22 @@
             $(this).next('span.text-danger').remove(); // Xóa thẻ <span> thông báo lỗi gần nhất
         });
         $(".btn#ChangePassword").click(function () {
-            const ChangePassDto = {
-                OldPassword: $('#oldPass').val(),
-                NewPassword: $('#newPass').val(),
-                ConfirmPassword: $('#confirmPass').val()
-            };
+            const oldPass = $('#oldPass').val();
+            const newPass = $('#newPass').val();
+            const confirmPass = $('#confirmPass').val();
             $.ajax({
-                url: 'https://localhost:7094/api/Auth/ChangePassword',
+                url: '@Url.Action("ChangePassword", "Auth")',
                 type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify(ChangePassDto),
-                headers: {
-                    'Authorization': `Bearer ${jwtToken}`
+                data: {
+                    OldPassword: oldPass,
+                    NewPassword: newPass,
+                    ConfirmPassword: confirmPass
                 },
                 success: function (response) {
                     $('#changePass').modal('hide');
                     $('.display-success').before(`<div class="alert alert-success text-center fw-bold" role="alert">${response.message}</div>`);
                 },
-                error: function (xhr, status, error) {
+                error: function (xhr, status, error,response) {
                     if (xhr.responseJSON && xhr.responseJSON.errors) {
                         const errors = xhr.responseJSON.errors;
 
