@@ -14,6 +14,11 @@
 @{
     var currentPage = ViewData["currentPage"] as int? ?? 1;
     var totalPages = ViewData["totalPages"] as int? ?? 1;
+    List<Category> listCate = new List<Category>();
+    if(ViewBag.CategoryList != null)
+    {
+        listCate = ViewBag.CategoryList;
+    }
 }
 <style>
     .card-title {
@@ -125,6 +130,30 @@
         <div class="row g-4">
             <div class="col-lg-12">
                 <div class="row g-4">
+                    <h3 class="text-center fw-bold">Danh mục sản phẩm</h3>
+                    <div class="owl-carousel owl-theme">
+                        @if (listCate != null)
+                        {
+                            @foreach (var item in listCate.Where(e => e.IsActive))
+                            {
+                                <div class="item">
+                                    <div class="card bg-warning mb-3 shadow">
+                                        <a class="text-decoration-none" asp-controller="Home" asp-action="FilterLoai" asp-route-id="@item.CategoryId">                                        
+                                        <div class="card-body">
+                                            <h5 class="card-title text-white text-center" style="position: relative; left: 0px; top: 8px;">@item.CategoryName</h5>
+                                        </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <p class="text-center text-muted">Không có sản phẩm nào để hiển thị.</p>
+                        }
+                    </div>
+                </div>
+                <div class="row g-4 my-3">
                     <h3 class="text-center fw-bold">Sản phẩm được xem nhiều nhất </h3>
                     <div class="owl-carousel owl-theme">
 
@@ -237,27 +266,7 @@
     </div>
 </div>
 <!-- Fruits Shop End-->
-<!-- Banner Section Start-->
-<div class="container-fluid banner bg-secondary my-5">
-    <div class="container py-5">
-        <div class="row g-4 align-items-center">
-            <div class="col-lg-6">
-                <div class="py-4">
-                    <h1 class="display-3 text-white">Combo Đại Tiệc</h1>
-                    <p class="fw-normal display-3 text-dark mb-4">Hãy Đặt Hàng Ngay</p>
-                    <p class="mb-4 text-dark">Gồm 7 Miếng gà rán + 1 Burger gà + 1 Bánh cuộn gà + 1 Bắp cải trộn + 1 Nước ngọt</p>
-                    <a href="#" class="banner-btn btn border-2 border-white rounded-pill text-dark py-3 px-5">Mua Ngay</a>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="position-relative">
-                    <img src="images/daitiec.png" class="img-fluid w-100 rounded" alt="">
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Banner Section End -->
+
 <!-- Tastimonial Start -->
 <div class="container-fluid testimonial py-5">
     <div class="container py-5">
