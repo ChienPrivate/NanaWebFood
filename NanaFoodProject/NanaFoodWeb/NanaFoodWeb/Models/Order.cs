@@ -14,7 +14,7 @@ namespace NanaFoodWeb.Models
         [Required(ErrorMessage = "Không được để trống email")]
         [EmailAddress]
         public string Email { get; set; }
-        [Required(ErrorMessage = "Không được để trống địa chỉ")]
+        [Required(ErrorMessage = "Không được để trống số nhà và tên đường")]
         public string Address { get; set; }
         [Required(ErrorMessage = "Hãy Chọn phương thức thanh Toán")]
         public string PaymentType { get; set; }
@@ -33,5 +33,11 @@ namespace NanaFoodWeb.Models
         [Required(ErrorMessage = "Ngày đặt hàng không được trống")]
         public DateTime OrderDate { get; set; } = DateTime.Now;
         public DateTime ReceiveDate { get; set; }
+        [JsonIgnore]
+        [Required(ErrorMessage = "Hãy chọn quận/huyện")]
+        public string District { get; set; }
+        [JsonIgnore]
+        [Required(ErrorMessage = "Hãy chọn phường xã")]
+        public string Ward { get; set; }
     }
 }

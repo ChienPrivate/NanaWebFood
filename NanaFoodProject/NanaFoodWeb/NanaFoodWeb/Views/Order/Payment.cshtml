@@ -1,0 +1,512 @@
+﻿@using NanaFoodWeb.Models.Dto
+@model NanaFoodWeb.Models.Order
+@{
+    ViewData["Title"] = "Order Page";
+    UserDto userInfo = new UserDto();
+    if (ViewBag.UserInfo != null)
+    {
+        userInfo = ViewBag.UserInfo;
+    }
+    List<CartResponseDto> cartDetails = new List<CartResponseDto>();
+    if (ViewBag.cartdetails != null)
+    {
+        cartDetails = ViewBag.cartdetails;
+    }
+}
+<form id="paymentForm" asp-action="Payment" asp-controller="Order" method="post">
+    <div class="container">
+        <div class="card shadow rounded-3">
+            <div class="card-header">
+                <h1 style="font-family: 'Roboto', sans-serif;">Thông tin đặt hàng</h1>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 p-4 bg-white border-end border-3">
+                        <h2 class="text-lg font-semibold mb-4">Thông tin thanh toán</h2>
+
+                        <div class="mb-3">
+                            <label class="form-label">Họ và tên <span class="text-danger">*</span></label>
+                            <input type="text" value="@userInfo.FullName" asp-for=FullName name="FullName" class="form-control" placeholder="Họ và tên đầy đủ">
+                            <span asp-validation-for=FullName class="text-danger"> @* Thông báo lỗi sẽ xuất hiện ở đây (nếu có) *@ </span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Số điện thoại <span class="text-danger">*</span></label>
+                            <input type="text" value="@userInfo.PhoneNumber" asp-for=PhoneNumber name="PhoneNumber" class="form-control" placeholder="08588xxxxx">
+                            <span asp-validation-for=PhoneNumber class="text-danger"> @* Thông báo lỗi sẽ xuất hiện ở đây (nếu có) *@ </span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Email <span class="text-danger">*</span></label>
+                            <input type="email" value="@userInfo.Email" asp-for=Email name="Email" class="form-control" placeholder="nhập email của bạn ở đây">
+                            <span asp-validation-for=Email class="text-danger"> @* Thông báo lỗi sẽ xuất hiện ở đây (nếu có) *@ </span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Địa chỉ nhận hàng <span class="text-danger">*</span></label>
+
+                            <div class="form-group mt-2 mb-2">
+                                <label>Tỉnh/Thành phố: </label>
+                                <select id="ProvinceList" name="Province" class="form-select" disabled>
+                                    <option value=""> Hãy chọn tỉnh/thành phố </option>
+                                    @* @foreach (var item in (List<SelectListItem>)ViewBag.ProvinceList)
+                                    {
+                                    <option value="@item.Value">@item.Text</option>
+                                    } *@
+                                    <option selected value="202">Thành phố Hồ Chí Minh</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group mt-2 mb-2">
+                                <label>Quận huyện: </label>
+                                <select id="DistrictList" name="District" class="form-select">
+                                    <option value="">Hãy chọn quận/huyện</option>
+                                </select>
+                                <span asp-validation-for="District" id="districtError" name="districtError" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group mt-2 mb-2">
+                                <label>Phường xã: </label>
+                                <select id="WardList" name="Ward" class="form-select">
+                                    <option value="">Hãy chọn phường/xã</option>
+                                </select>
+                                <span asp-validation-for="Ward" id="wardError" name="wardError" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group mt-2 mb-2">
+                                <label>Số nhà và tên đường: </label>
+                                <input name="Address" asp-for="Address" class="form-control" placeholder="hãy nhập số nhà và tên đường của bạn ở đây" />
+                                <span asp-validation-for=Address class="text-danger"></span>
+                            </div>
+
+                            <!-- Dropdown hiển thị dịch vụ -->
+                            <div class="form-group mt-2 mb-2" hidden>
+                                <label>Dịch vụ: </label>
+                                <select id="ServiceList" class="form-select">
+                                    <option value=""> Hãy chọn dịch vụ </option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Lưu ý</label>
+                            <textarea name="Note" class="form-control" placeholder="Lưu ý dành cho đơn vị vận chuyển"></textarea>
+                            <span class="text-danger"> @* Thông báo lỗi sẽ xuất hiện ở đây (nếu có) *@ </span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Phương thức thanh toán <span class="text-danger">*</span></label>
+                            <select name="PaymentType" asp-for=PaymentType class="form-select">
+                                <option value="COD">Cash on Delivery</option>
+                                <option value="MOMO">Momo</option>
+                                <option value="VNPAY">VNpay</option>
+                            </select>
+                            <span asp-validation-for=PaymentType class="text-danger"> @* Thông báo lỗi sẽ xuất hiện ở đây (nếu có) *@ </span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 p-4 bg-white">
+                        <h2 class="text-lg mb-4 text-center">Giỏ hàng</h2>
+
+                        <div class="mb-4">
+                            <table class="table text-center">
+                                <thead>
+                                    <tr>
+                                        <th>Tên sản phẩm</th>
+                                        <th>Số lượng</th>
+                                        <th>Tổng</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in cartDetails)
+                                    {
+                                        <tr>
+                                            <td>@item.ProductName</td>
+                                            <td class="text-center">@item.Quantity</td>
+                                            <td class="text-center">@item.Total.ToString("#,##")</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <hr />
+                        <div class="btn-group w-100 coupon-Finder">
+                            <input type="text" id="couponInput" class="form-control" placeholder="Nhập mã giảm giá" style="width: 379.656px;">
+                            <button type="button" id="applyCouponbtn" class="btn btn-outline-danger" style="height: 36px; transform: translate(0px, 12px); position: relative; top: -1px;">Áp dụng</button>
+                        </div>
+                        <hr />
+                        <div class="d-flex justify-content-between mt-2 mb-2">
+                            <strong>Giảm giá:</strong> <span id="discount">0 VNĐ</span>
+
+                        </div>
+                        <div class="d-flex justify-content-between mt-2 mb-2">
+                            <strong>Tổng đơn hàng:</strong> <span>@cartDetails.Sum(x => x.Total).ToString("#,##") VNĐ</span>
+
+                        </div>
+                        <div class="d-flex justify-content-between mt-2 mb-2">
+                            <strong>Phí Ship:</strong> <span id="shippingFee">0 VNĐ</span>
+                            <input asp-for=ShipmentFee id="shipmentFeeInput" hidden />
+                        </div>
+                        <div class="d-flex justify-content-between mt-2 mb-2">
+                            <strong>Thời gian giao hàng dự kiến:</strong> <span id="estimatedDeliveryTime"></span>
+                            <input asp-for=ExpectedDeliveryDate id="estimatedDeliveryTimeInput" hidden />
+                        </div>
+                        <div class="d-flex justify-content-between mt-2 mb-2">
+                            <strong>Tổng thanh toán:</strong> <span id="totalPay">@cartDetails.Sum(x => x.Total).ToString("#,##") VNĐ</span>
+                            <input name="total" id="orderTotal" hidden />
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">Thanh toán</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+            $(document).ready(function () {
+                // Lắng nghe sự kiện khi thay đổi tỉnh/thành phố
+                var defaultProvinceId = 202; // Đặt giá trị mặc định cho provinceId
+
+                // Hàm lấy danh sách quận/huyện dựa trên provinceId
+        function loadDistricts(provinceId) {
+            if (provinceId) {
+                // Reset các dropdown Phường/Xã, Dịch vụ và phí ship
+                $('#DistrictList').empty().append('<option value=""> Hãy chọn quận/huyện </option>');
+                $('#WardList').empty().append('<option value=""> Hãy chọn phường/xã </option>');
+                $('#ServiceList').empty().append('<option value=""> Hãy chọn dịch vụ </option>');
+
+                // Gửi yêu cầu AJAX để lấy danh sách quận/huyện
+                $.ajax({
+                    url: '@Url.Action("GetDistricts", "Order")',
+                    type: 'GET',
+                    data: { provinceId: provinceId },
+                    success: function (data) {
+                        $('#DistrictList').empty().append('<option value=""> Hãy chọn quận/huyện </option>');
+                        $.each(data, function (i, district) {
+                            $('#DistrictList').append('<option value="' + district.value + '">' + district.text + '</option>');
+                        });
+                    },
+                    error: function () {
+                        alert("Không thể lấy danh sách quận/huyện");
+                    }
+                });
+            } else {
+                // Reset danh sách quận/huyện, phường/xã, dịch vụ và phí ship nếu không chọn tỉnh/thành phố
+                $('#DistrictList').empty().append('<option value=""> Hãy chọn quận/huyện </option>');
+                $('#WardList').empty().append('<option value=""> Hãy chọn phường/xã </option>');
+                $('#ServiceList').empty().append('<option value=""> Hãy chọn dịch vụ </option>');
+            }
+        }
+
+        // Gọi hàm loadDistricts với defaultProvinceId khi trang vừa tải
+        loadDistricts(defaultProvinceId);
+
+
+                $('#ProvinceList').change(function () {
+                    var provinceId = $(this).val(); // Lấy giá trị ProvinceID
+
+                    if (provinceId) {
+                        // Reset các dropdown Phường/Xã, Dịch vụ và phí ship
+                        $('#DistrictList').empty().append('<option value=""> Hãy chọn quận/huyện </option>');
+                        $('#WardList').empty().append('<option value=""> Hãy chọn phường/xã </option>');
+                        $('#ServiceList').empty().append('<option value=""> Hãy chọn dịch vụ </option>');
+
+                        // Gửi yêu cầu AJAX để lấy danh sách quận/huyện
+                        $.ajax({
+                            url: '@Url.Action("GetDistricts", "Order")',
+                            type: 'GET',
+                            data: { provinceId: provinceId },
+                            success: function (data) {
+                                $('#DistrictList').empty().append('<option value=""> Hãy chọn quận/huyện </option>');
+                                $.each(data, function (i, district) {
+                                    $('#DistrictList').append('<option value="' + district.value + '">' + district.text + '</option>');
+                                });
+                            },
+                            error: function () {
+                                alert("Không thể lấy danh sách quận/huyện");
+                            }
+                        });
+                    } else {
+                        // Reset danh sách quận/huyện, phường/xã, dịch vụ và phí ship nếu không chọn tỉnh/thành phố
+                        $('#DistrictList').empty().append('<option value=""> Hãy chọn quận/huyện </option>');
+                        $('#WardList').empty().append('<option value=""> Hãy chọn phường/xã </option>');
+                        $('#ServiceList').empty().append('<option value=""> Hãy chọn dịch vụ </option>');
+                    }
+                });
+
+                // Lắng nghe sự kiện khi thay đổi quận/huyện
+                $('#DistrictList').change(function () {
+                    var districtId = $(this).val(); // Lấy giá trị DistrictID
+
+                    // Reset phí ship về 0 VNĐ mỗi khi thay đổi quận/huyện
+                    $('#shippingFee').text('0 VNĐ');
+                    $('#shipmentFeeInput').val(0);
+
+                    if (districtId) {
+                        // Reset dropdown Phường/Xã và Dịch vụ
+                        $('#WardList').empty();
+                        $('#WardList').append('<option value=""> Hãy chọn phường/xã </option>');
+
+                        $('#ServiceList').empty();
+                        $('#ServiceList').append('<option value=""> Hãy chọn dịch vụ </option>');
+
+                        // Gửi yêu cầu AJAX để lấy danh sách phường/xã
+                        $.ajax({
+                            url: '@Url.Action("GetWards", "Order")',
+                            type: 'GET',
+                            data: { districtId: districtId },
+                            success: function (data) {
+                                $('#WardList').empty();
+                                $('#WardList').append('<option value=""> Hãy chọn phường/xã </option>');
+                                $.each(data, function (i, ward) {
+                                    $('#WardList').append('<option value="' + ward.value + '">' + ward.text + '</option>');
+                                });
+                            },
+                            error: function () {
+                                alert("Không thể lấy danh sách phường/xã");
+                            }
+                        });
+
+                        // Gửi yêu cầu AJAX để lấy danh sách dịch vụ
+                        $.ajax({
+                            url: '@Url.Action("GetAvailableService", "Order")', // Action để lấy danh sách dịch vụ
+                            type: 'GET',
+                            data: { fromDistrict: 1454, toDistrict: districtId }, // Gửi từ quận 12 đến quận người dùng chọn
+                            success: function (data) {
+                                $('#ServiceList').empty();
+                                $('#ServiceList').append('<option value=""> Hãy chọn dịch vụ </option>');
+                                $.each(data, function (i, service) {
+                                    $('#ServiceList').append('<option value="' + service.value + '">' + service.text + '</option>');
+                                });
+
+                                // Tự động chọn dịch vụ đầu tiên
+                                if (data.length > 0) {
+                                    $('#ServiceList').val(data[0].value);
+                                }
+                            },
+                            error: function () {
+                                alert("Không thể lấy danh sách dịch vụ");
+                            }
+                        });
+
+                    } else {
+                        $('#WardList').empty();
+                        $('#WardList').append('<option value=""> Hãy chọn phường/xã </option>');
+                        $('#ServiceList').empty();
+                        $('#ServiceList').append('<option value=""> Hãy chọn dịch vụ </option>');
+                    }
+                });
+
+                // Lắng nghe sự kiện khi thay đổi phường/xã và lấy dịch vụ
+                $('#WardList').change(function () {
+                    var wardId = $(this).val(); // Lấy giá trị WardID
+                    var toDistrict = $('#DistrictList').val(); // Lấy giá trị quận huyện
+                    $('#shippingFee').text('0 VNĐ');
+                    $('#shipmentFeeInput').val(0);
+
+
+                    if (toDistrict) {
+                        // Gửi yêu cầu AJAX để lấy dịch vụ
+                        $.ajax({
+                            url: '@Url.Action("GetAvailableService", "Order")',
+                            type: 'GET',
+                            data: { fromDistrict: 1454, toDistrict: toDistrict }, // Gửi từ quận 12 đến quận người dùng chọn
+                            success: function (data) {
+                                $('#ServiceList').empty();
+                                $('#ServiceList').append('<option value=""> Hãy chọn dịch vụ </option>');
+                                $.each(data, function (i, service) {
+                                    $('#ServiceList').append('<option value="' + service.value + '">' + service.text + '</option>');
+                                });
+
+                                // Tự động chọn dịch vụ đầu tiên
+                                if (data.length > 0) {
+                                    $('#ServiceList').val(data[0].value);
+                                }
+                            },
+                            error: function () {
+                                alert("Không thể lấy danh sách dịch vụ");
+                            }
+                        });
+                    } else {
+                        $('#ServiceList').empty();
+                        $('#ServiceList').append('<option value=""> Hãy chọn dịch vụ </option>');
+                    }
+                });
+
+                // Khi thay đổi phường/xã và dịch vụ, gửi yêu cầu tính phí ship
+                $('#WardList, #ServiceList').change(function () {
+                    var wardCode = $('#WardList').val();
+                    var toDistrictId = $('#DistrictList').val();
+                    var serviceId = $('#ServiceList').val();
+
+                    if (wardCode && toDistrictId && serviceId) {
+                        // Gọi AJAX để tính phí vận chuyển
+                        $.ajax({
+                            url: '@Url.Action("CalculateShippingFee", "Order")', // Gọi đến action
+                            type: 'POST',
+                            data: {
+                                serviceId: serviceId,      // ID của dịch vụ đã chọn
+                                toDistrictId: toDistrictId, // ID quận được chọn
+                                wardCode: wardCode         // Mã phường được chọn
+                            },
+                            success: function (response) {
+                                // Hiển thị phí ship ở phần tử #shippingFee
+                                var shippingFee = response.data;
+                                var roundedShippingFee = Math.round(shippingFee / 1000) * 1000;
+                                var formattedFee = roundedShippingFee.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // Thêm dấu phẩy vào các số hàng nghìn
+                                $('#shippingFee').text(formattedFee + ' VNĐ'); // Hiển thị phí ship
+                            },
+                            error: function () {
+                                alert("Không thể tính phí ship");
+                            }
+                        });
+
+                        // Gọi AJAX để tính thời gian giao hàng dự kiến
+                        $.ajax({
+                            url: '@Url.Action("CalculateShippingTime", "Order")', // Gọi đến action
+                            type: 'POST',
+                            data: {
+                                serviceId: serviceId,      // ID của dịch vụ đã chọn
+                                toDistrict: toDistrictId,  // ID quận được chọn
+                                toWardCode: wardCode       // Mã phường được chọn
+                            },
+                            success: function (response) {
+                                // Xóa nội dung cũ trước khi hiển thị thời gian mới
+                                $('#estimatedDeliveryTime').empty();
+                                // Cập nhật thời gian giao hàng mới
+                                var leadTime = response.formattedLeadTime;
+                                $('#estimatedDeliveryTime').text(leadTime); // Cập nhật thời gian mới lên #estimatedDeliveryTime
+
+                                // Truyền giá trị vào input ẩn #estimatedDeliveryTimeInput
+                                $('#estimatedDeliveryTimeInput').val(leadTime);
+
+                            },
+                            error: function () {
+                                alert("Không thể lấy thời gian giao hàng dự kiến.");
+                            }
+                        });
+                    }
+                });
+
+
+                // Hàm để đọc cookie
+                function getCookie(name) {
+                    let cookieArr = document.cookie.split(";"); // Tách các cặp cookie
+                    for (let i = 0; i < cookieArr.length; i++) {
+                        let cookiePair = cookieArr[i].split("="); // Tách từng cặp tên-giá trị cookie
+                        if (name == cookiePair[0].trim()) {
+                            return decodeURIComponent(cookiePair[1]); // Trả về giá trị của cookie nếu tìm thấy
+                        }
+                    }
+                    return null; // Trả về null nếu không tìm thấy cookie
+                }
+                var jwtToken = getCookie('JWTToken');
+                $(".btn#applyCouponbtn").click(function () {
+                    var CouponCode = document.getElementById('couponInput').value;
+                    var discount = document.getElementById('discount').textContent.trim();
+                    var currentTotal = document.getElementById('totalPay').textContent.trim();
+                    var totalPayNumber = parseInt(currentTotal.replace(/,| VNĐ/g, ''));
+                    // var CouponCode = $(this).closest('.coupon-Finder').find('#couponInput');
+                    $.ajax({
+                        url: 'https://localhost:7094/api/Coupon/Check/' + CouponCode,
+                        type: 'GET',
+                        headers: {
+                            'Authorization': 'Bearer ' + jwtToken // Thêm JWT vào header
+                        },
+                        success: function (response) {
+                            var formattedDiscount = response.result.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+                            $('#discount').text('- '+ formattedDiscount + ' VNĐ');
+                            currentTotal = totalPayNumber - response.result;
+                            var formatted = currentTotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                            $('#totalPay').text(formatted + ' VNĐ');
+                        },
+                        error: function (xhr, status, error) {
+                            console.log('result error' + xhr.responseText);
+                        }
+                    });
+                });
+
+                // Thay đổi tổng tiền mỗi khi phí ship thay đổi
+                //  const observer = new MutationObserver(() => {
+                //     var currentTotal = document.getElementById('totalPay').textContent.trim();
+                //     var ship = document.getElementById('shippingFee').textContent.trim();
+                //     var totalPayNumber = parseInt(currentTotal.replace(/,| VNĐ/g, ''));
+                //     var shipInteger =  parseInt(ship.replace(/,| VNĐ/g, ''));
+                //     currentTotal = totalPayNumber + shipInteger;
+                //     var formattedFee = currentTotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                //     $('#totalPay').text(formattedFee + ' VNĐ');
+                //     document.getElementById("shipmentFeeInput").value = shipInteger;
+                //     document.getElementById("orderTotal").value = currentTotal;
+                // });
+
+                // observer.observe(document.getElementById('shippingFee'), { childList: true });
+                let previousShippingFee = 0;
+
+                const observer = new MutationObserver(() => {
+                    var currentTotal = document.getElementById('totalPay').textContent.trim();
+                    var ship = document.getElementById('shippingFee').textContent.trim();
+                    var totalPayNumber = parseInt(currentTotal.replace(/,| VNĐ/g, ''));
+                    var shipInteger = parseInt(ship.replace(/,| VNĐ/g, ''));
+
+                    // Trừ đi phí ship cũ để tránh cộng dồn
+                    totalPayNumber -= previousShippingFee;
+
+                    // Thêm phí ship mới
+                    currentTotal = totalPayNumber + shipInteger;
+
+                    // Cập nhật lại giá trị của phí ship trước đó
+                    previousShippingFee = shipInteger;
+
+                    // Định dạng lại và cập nhật tổng tiền hiển thị
+                    var formattedFee = currentTotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    $('#totalPay').text(formattedFee + ' VNĐ');
+                    document.getElementById("shipmentFeeInput").value = shipInteger;
+                    document.getElementById("orderTotal").value = currentTotal;
+                });
+
+                // Thiết lập MutationObserver để theo dõi thay đổi của #shippingFee
+                observer.observe(document.getElementById('shippingFee'), { childList: true });
+
+            });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('button[type="submit"]').click(function (e) {
+                e.preventDefault(); // Ngăn form gửi ngay lập tức
+
+                // Lấy giá trị từ các trường input và dropdown
+                var address = $('input[name="Address"]').val();
+                var wardText = $('#WardList option:selected').text();
+                var districtText = $('#DistrictList option:selected').text();
+                var provinceText = $('#ProvinceList option:selected').text();
+                const district = $('#DistrictList').val();
+                const ward = $('#WardList').val();
+
+                console.log(districtText);
+                console.log(wardText);
+
+                var hasErrors = $('.text-danger').length > 0; // Giả sử bạn sử dụng class 'text-danger' để hiển thị lỗi
+
+                if (!hasErrors) {
+                    // Tạo chuỗi mới cho Address
+                    var fullAddress = `${address}, ${wardText}, ${districtText}, ${provinceText}`;
+                    // Gán lại giá trị mới cho ô input Address
+                    $('input[name="Address"]').val(fullAddress);
+                }
+
+                // Sau khi cập nhật giá trị, submit form
+                $(this).closest('form').submit();
+            });
+        });
+
+    </script>
+
+
+
+}

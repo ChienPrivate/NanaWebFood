@@ -74,6 +74,49 @@ namespace NanaFoodWeb.Controllers
                 return View();
             }
         }
+        public async Task<IActionResult> Payment()
+        {
+            var token = _tokenProvider.GetToken();
+            if (token == null)
+            {
+                TempData["error"] = "Vui lòng đăng nhập trước";
+                return RedirectToAction("Login", "Auth");
+            }
+            else
+            {
+                var userInfoResponse = await _authRepo.GetInfo();
+                var response = await _cartRepo.GetCart();
+                if (response.Result != null)
+                {
+                    var Data = JsonConvert.DeserializeObject<List<CartResponseDto>>(response.Result.ToString());
+
+                    if (userInfoResponse.IsSuccess)
+                    {
+                        var userInfo = JsonConvert.DeserializeObject<UserDto>(userInfoResponse.Result.ToString());
+                        ViewBag.UserInfo = userInfo;
+                    }
+
+                    var provinceRequest = await _orderRepository.GetProvinceAsync();
+
+                    var provinceResponse = JsonConvert.DeserializeObject<GHNResponseDto<List<ProvinceDto>>>(provinceRequest.Result.ToString());
+
+                    if (provinceResponse.Code == 200)
+                    {
+                        var provinceList = provinceResponse.Data.ToList();
+
+                        var selectListProvinces = provinceList.Where(p => p.ProvinceID == 202).Select(p => new SelectListItem
+                        {
+                            Text = p.ProvinceName,   // Tên tỉnh làm Text
+                            Value = p.ProvinceID.ToString(),  // ID tỉnh làm Value
+                        }).ToList();
+                        ViewBag.cartdetails = Data;
+                        ViewBag.ProvinceList = selectListProvinces;
+                        return View();
+                    }
+                }
+                return View();
+            }
+        }
 
         [HttpPost]
         public async Task<IActionResult> Payment(Order order, int total)
@@ -112,8 +155,40 @@ namespace NanaFoodWeb.Controllers
 
                 return View();
             }
+            else
+            {
+                var userInfoResponse = await _authRepo.GetInfo();
+                var response = await _cartRepo.GetCart();
+                if (response.Result != null)
+                {
+                    var Data = JsonConvert.DeserializeObject<List<CartResponseDto>>(response.Result.ToString());
 
-            return RedirectToAction("Index", "Home");
+                    if (userInfoResponse.IsSuccess)
+                    {
+                        var userInfo = JsonConvert.DeserializeObject<UserDto>(userInfoResponse.Result.ToString());
+                        ViewBag.UserInfo = userInfo;
+                    }
+
+                    var provinceRequest = await _orderRepository.GetProvinceAsync();
+
+                    var provinceResponse = JsonConvert.DeserializeObject<GHNResponseDto<List<ProvinceDto>>>(provinceRequest.Result.ToString());
+
+                    if (provinceResponse.Code == 200)
+                    {
+                        var provinceList = provinceResponse.Data.ToList();
+
+                        var selectListProvinces = provinceList.Where(p => p.ProvinceID == 202).Select(p => new SelectListItem
+                        {
+                            Text = p.ProvinceName,   // Tên tỉnh làm Text
+                            Value = p.ProvinceID.ToString(),  // ID tỉnh làm Value
+                        }).ToList();
+                        ViewBag.cartdetails = Data;
+                        ViewBag.ProvinceList = selectListProvinces;
+                        return View();
+                    }
+                }
+                return View();
+            }
         }
 
         public async Task<IActionResult> OrderHistory()
