@@ -34,6 +34,10 @@
         color: #fff;
         font-weight: bold;
     }
+
+    .table-center td, .table-center th {
+        vertical-align: middle !important; /* Căn giữa theo chiều dọc */
+    }
 </style>
 @* <style>
     .primary-color {
@@ -100,7 +104,7 @@
                 </div>
 
                 <!-- thông tin sản phẩm trong đơn hàng -->
-                <div class="row mb-4">
+                <div class="row mb-2">
                     <div class="col-12 section-title">Thông tin đơn hàng</div>
                     <div class="col-12 mt-2">
                         <table class="table table-bordered text-center">
@@ -132,6 +136,7 @@
 
                 <!-- thông tin giao nhận -->
                 <div class="row mb-2">
+
                     <div class="col-md-6">
                         <div class="section-title">Thông tin thanh toán </div>
                         <p>Phương thức thanh toán: @Model.PaymentType</p>
@@ -141,8 +146,17 @@
                         <p><strong>Tổng thanh toán: @Model.Total.ToString("#,##") VNĐ</strong></p>
                     </div>
 
-                    <!-- ghi chú -->
                     <div class="col-md-6">
+                        <div class="section-title">Thời gian nhận hàng </div>
+                        <p>Ngày đặt hàng: @Model.OrderDate.ToString("dd/MM/yyyy hh:mm:ss")</p>
+                        <p>Thời gian dự kiến: @Model.ExpectedDeliveryDate</p>
+                        <p>Thời gian nhận hàng: @Model.ReceiveDate.ToString("dd/MM/yyyy hh:mm:ss")</p>
+                    </div>
+
+                    
+
+                    <!-- ghi chú -->
+                    <div class="col-md-12">
                         <div class="col-12 section-title">Ghi chú </div>
                         <div class="col-12 mt-2 mb-2">
                             <textarea asp-for="Note" readonly></textarea>
@@ -169,7 +183,7 @@
                                             <div class="text-left">
                                                 @if (listRebuy.Count > 0)
                                                 {
-                                                    <table class="table table-borderless border-0">
+                                                    <table class="table table-center table-borderless border-0">
                                                         <thead>
                                                             <tr>
                                                                 <th>Tên</th>
@@ -185,7 +199,7 @@
 
                                                             @foreach (var item in listRebuy)
                                                             {
-                                                                <tr>
+                                                                <tr class="vertical-align-center">
                                                                     <td>
                                                                         @item.ProductName
                                                                     </td>
@@ -326,12 +340,10 @@
             data: { orderId: orderId },
             success: function(response) {
                 if (response.isSuccess) {
-                    // Thông báo thành công
-                    toastr.success(response.message);
                     // Chuyển hướng đến trang Cart/Index
-                    setTimeout(function() {
-                        window.location.href = '/Carts';
-                    }, 1000); // Đợi 1.0 giây để toastr hiển thị thông báo rồi chuyển hướng
+                    localStorage.setItem('cartMessage', response.message);
+                          
+                    window.location.href = '/Carts';
                 } else {
                     // Thông báo lỗi
                     toastr.error(response.message);
@@ -344,6 +356,5 @@
         });
     });
 });
-
 
 </script>
