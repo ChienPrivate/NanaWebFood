@@ -41,8 +41,6 @@
                                 </div>
                             </div>
                         </div>
-
-                        @* <p><strong>Image:</strong> <span id="image">@Html.DisplayFor(model => model.ImageUrl)</span></p> *@
                         <div class="mt-2">
                             <a asp-action="Edit" asp-controller="Categories" class="btn btn-primary" asp-route-id="@Model?.CategoryId"><i class="fa-regular fa-pen-to-square"></i> Chỉnh sửa</a>
                             <a href="@Url.Action("Index", "Categories")" class="btn btn-secondary"><i class="fa-solid fa-list"></i> Trở về danh sách</a>
