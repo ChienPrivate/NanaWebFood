@@ -236,5 +236,47 @@ namespace NanaFoodApi.Controllers
 
             return Ok(cancelOrderResponse);
         }
+
+        /// <summary>
+        /// Hủy đơn hàng
+        /// </summary>
+        /// <remarks>
+        /// API này cho phép hủy một đơn hàng dựa trên OrderID.
+        /// </remarks>
+        /// <param name="orderId">ID của đơn hàng cần hủy.</param>
+        /// <returns>
+        /// - 200 OK nếu lấy danh sách các món đã mua thành công.
+        /// </returns>
+        /// <response code="200">Đơn hàng đã được hủy thành công.</response>
+        [HttpGet("GetRebuyOrder/{orderId}")]
+        public async Task<IActionResult> GetRebuyOrder(int orderId)
+        {
+            var response = await _orderRepository.GetRebuyOrder(orderId);
+
+            return Ok(response);
+        }
+
+        /// <summary>
+        /// Hủy đơn hàng
+        /// </summary>
+        /// <remarks>
+        /// API này cho phép hủy một đơn hàng dựa trên OrderID.
+        /// </remarks>
+        /// <param name="orderId">ID của đơn hàng cần hủy.</param>
+        /// <returns>
+        /// - 200 OK mua lại các đơn hàng thành công.
+        /// </returns>
+        /// <response code="200">Đơn hàng đã được hủy thành công.</response>
+        [HttpPost("RebuyOrder/{orderId}")]
+        public async Task<IActionResult> RebuyOrder(int orderId)
+        {
+            var response = await _orderRepository.RebuyOrder(orderId);
+
+            return Ok(response);
+        }
+
+
+
+
     }
 }

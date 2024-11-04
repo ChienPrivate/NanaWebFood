@@ -152,5 +152,149 @@ namespace NanaFoodDAL.IRepository.Repository
 
             return _response;
         }
+
+        public async Task<ResponseDto> GetRebuyOrder(int orderId)
+        {
+            var rebuyOrders = await (from od in _context.OrderDetails
+                                     join p in _context.Products on od.ProductId equals p.ProductId into productGroup
+                                     from p in productGroup.DefaultIfEmpty() // Left join
+                                     where od.OrderId == orderId
+                                     select new RebuyOrderDto
+                                     {
+                                         ProductId = od.ProductId,
+                                         OrderId = od.OrderId,
+                                         ProductName = p != null ? p.ProductName : od.ProductName, // Dùng tên sản phẩm từ OrderDetails nếu Product bị xóa
+                                         ProductImage = p != null ? p.ImageUrl : od.ImageUrl,     // Dùng hình ảnh từ OrderDetails nếu Product bị xóa
+                                         CurrentPrice = p != null ? p.Price : 0,                  // Giá hiện tại là 0 nếu Product bị xóa
+                                         OldPrice = od.Price,
+                                         Quantity = od.Quantity,
+                                         Total = od.Total,
+                                         IsActive = p != null && p.IsActive // Gán false nếu Product không tồn tại
+                                     }).ToListAsync();
+
+            _response.Result = rebuyOrders;
+            _response.IsSuccess = true;
+            _response.Message = rebuyOrders.Any() ? "Lấy danh sách đơn hàng thành công" : "không tìm thấy sản phẩm nào";
+
+            return _response;
+        }
+
+        /*public async Task<ResponseDto> RebuyOrder(int orderId)
+        {
+
+            var order = await _context.Orders.FindAsync(orderId);
+            if (order == null)
+            {
+                _response.IsSuccess = false;
+                _response.Message = "Đơn hàng không tồn tại";
+
+                return _response;
+            }
+
+            var userId = order.UserId;
+
+            // Lấy danh sách sản phẩm từ phương thức GetRebuyOrder
+            var orderItemList = await GetRebuyOrder(orderId);
+            var itemList = ((List<RebuyOrderDto>)orderItemList.Result)
+                   .Where(item => item.IsActive) // Lọc các sản phẩm có IsActive = true
+                   .ToList();
+
+            // Kiểm tra nếu itemList rỗng
+            if (!itemList.Any())
+            {
+                _response.IsSuccess = false;
+                _response.Message = "Không có sản phẩm nào có thể mua lại.";
+                return _response;
+            }
+
+            // Map từng RebuyOrderDto vào CartDetails bằng Select
+            var cartDetails = itemList.Select(item => new CartDetails
+            {
+                UserId = userId, // Thay bằng ID người dùng thực tế
+                ProductId = item.ProductId,
+                Quantity = item.Quantity,
+                Total = item.Quantity * item.CurrentPrice,
+            }).ToList();
+
+            // Giả sử _context là DbContext của bạn và CartDetails là DbSet<CartDetails>
+            _context.CartDetails.AddRange(cartDetails);
+            await _context.SaveChangesAsync();
+
+            _response.Result = _mapper.Map<List<CartDetailsDto>>(cartDetails);
+            _response.IsSuccess = true;
+            _response.Message = "Mua thành công";
+
+            return _response;
+        }*/
+
+        public async Task<ResponseDto> RebuyOrder(int orderId)
+        {
+            var order = await _context.Orders.FindAsync(orderId);
+            if (order == null)
+            {
+                _response.IsSuccess = false;
+                _response.Message = "Đơn hàng không tồn tại";
+                return _response;
+            }
+
+            var userId = order.UserId;
+
+            // Lấy danh sách sản phẩm từ phương thức GetRebuyOrder
+            var orderItemList = await GetRebuyOrder(orderId);
+            var itemList = ((List<RebuyOrderDto>)orderItemList.Result)
+                           .Where(item => item.IsActive) // Lọc các sản phẩm có IsActive = true
+                           .ToList();
+
+            // Kiểm tra nếu itemList rỗng
+            if (!itemList.Any())
+            {
+                _response.IsSuccess = false;
+                _response.Message = "Không có sản phẩm nào có thể mua lại.";
+                return _response;
+            }
+
+            // Duyệt qua từng sản phẩm và kiểm tra trong giỏ hàng
+            foreach (var item in itemList)
+            {
+                var existingCartDetail = await _context.CartDetails
+                    .FirstOrDefaultAsync(cd => cd.UserId == userId && cd.ProductId == item.ProductId);
+
+                if (existingCartDetail != null)
+                {
+                    // Nếu sản phẩm đã tồn tại trong giỏ hàng, tăng Quantity
+                    existingCartDetail.Quantity += item.Quantity;
+
+                    // Kiểm tra nếu Quantity vượt quá 10, gán giá trị tối đa là 10
+                    if (existingCartDetail.Quantity > 10)
+                    {
+                        existingCartDetail.Quantity = 10;
+                    }
+
+                    existingCartDetail.Total = existingCartDetail.Quantity * item.CurrentPrice;
+                }
+                else
+                {
+                    // Nếu sản phẩm chưa có trong giỏ hàng, thêm mới vào CartDetails
+                    var newCartDetail = new CartDetails
+                    {
+                        UserId = userId,
+                        ProductId = item.ProductId,
+                        Quantity = item.Quantity,
+                        Total = item.Quantity * item.CurrentPrice
+                    };
+                    _context.CartDetails.Add(newCartDetail);
+                }
+            }
+
+            // Lưu các thay đổi vào database
+            await _context.SaveChangesAsync();
+
+            _response.Result = itemList;
+            _response.IsSuccess = true;
+            _response.Message = "Mua thành công";
+
+            return _response;
+        }
+
     }
 }

@@ -44,7 +44,7 @@
                             <div class="col-md-5">
                                 <div class="card-body">
                                     <h5 class="card-title">@item.ProductName</h5>
-                                    <a id="removeProduct" data-product-id="@item.ProductId" class="text-danger fw-bold" style="cursor : pointer;">Xóa</a>
+                                    <a id="removeProduct" data-product-id="@item.ProductId" class="text-danger fw-bold btn-delete" style="cursor : pointer;">Xóa</a>
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -371,6 +371,40 @@
                 }
             });
         }
+        // Sự kiện click cho nút [Xóa] sản phẩm
+        $('.text-danger.fw-bold.btn-delete').click(function () {
+            const productId = $(this).data('product-id');
+            const productCard = $(this).closest('.card'); // Phần tử chứa toàn bộ sản phẩm
+
+            $.ajax({
+                url: '@Url.Action("RemoveCartItem", "Cart")',
+                type: 'POST',
+                data: { productId: productId },
+                success: function (response) {
+                    if (response.success) {
+                        // Xóa sản phẩm khỏi giao diện
+                        productCard.remove();
+
+                        // Cập nhật số lượng giỏ hàng hiển thị ngoài _Layout
+                        updateCartCount(response.cartCount);
+
+                        // Tính lại tổng giá trị sau khi xóa sản phẩm
+                        calculateOrderTotal();
+
+                        if (response.cartCount === 0) {
+                            $('#cartContent').hide();         // Ẩn nội dung giỏ hàng
+                            $('#cartSummary').hide();         // Ẩn nội dung giỏ hàng
+                            $('#emptyCartMessage').show();    // Hiển thị thông báo giỏ hàng trống
+                        }
+                    } else {
+                        console.log(response.message || 'Error removing item');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error removing item:', error);
+                }
+            });
+        });
 
         // Hàm xóa sản phẩm khỏi giỏ hàng và bảng
         function removeProduct(productId, productCard) {

@@ -133,6 +133,11 @@ namespace NanaFoodWeb.Controllers
         public async Task<IActionResult> OrderHistoryDetail(int id)
         {
             var response = await _orderRepository.GetOrderByIdAsync(id);
+
+            var rebuyOrderResponse = await _orderRepository.GetRebuyOrder(id);
+
+            ViewBag.RebuyOrder = JsonConvert.DeserializeObject<List<RebuyOrderDto>>(rebuyOrderResponse.Result.ToString());
+
             var responseProductFromOrderDetails = await _reviewRepository.GetOrderDetailsFromOrder(id);
 
             if (response.IsSuccess)
@@ -152,7 +157,6 @@ namespace NanaFoodWeb.Controllers
         public async Task<IActionResult> OrderTracking()
         {
             return View();
-
         }
 
         private async Task<IActionResult> COD(Order order)
@@ -240,6 +244,14 @@ namespace NanaFoodWeb.Controllers
 
             TempData["error"] = "xảy ra lỗi trong quá trình gửi đánh giá";
             return RedirectToAction("ReviewOrder", "Order", new { orderId = review.OrderId });
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> RebuyOrder(int orderId)
+        {
+            var response = await _orderRepository.RebuyOrder(orderId);
+            
+            return Json(response);
         }
 
         #region Momo

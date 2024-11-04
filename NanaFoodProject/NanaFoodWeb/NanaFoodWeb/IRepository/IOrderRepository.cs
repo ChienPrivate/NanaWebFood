@@ -24,5 +24,7 @@ namespace NanaFoodWeb.IRepository
         Task<ResponseDto> GetOrderDetailsAsync(int OrderId);
         Task<ResponseDto> CalculateProfitAsync();
         Task<ResponseDto> UpdateOrderStatus(int OrderId, string message);
+        Task<ResponseDto> GetRebuyOrder(int orderId);
+        Task<ResponseDto> RebuyOrder(int orderId);
     }
 }
