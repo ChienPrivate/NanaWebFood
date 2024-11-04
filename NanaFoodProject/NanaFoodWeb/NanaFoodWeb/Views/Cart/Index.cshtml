@@ -4,7 +4,6 @@
     ViewData["Title"] = "Index";
 }
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-@* <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> *@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <!-- Modal -->
@@ -29,10 +28,6 @@
 <div class="container-fluid py-5" style="min-height:60vh;">
     <div class="row">
         <h4 class="text-center mb-4">Giỏ Hàng Của Tôi</h4>
-        @* <div class="alert alert-warning alert-dismissible fade show" id="quantityAlert" style="display: none;">
-            Hãy liên hệ với cửa hàng nếu bạn muốn mua với số lượng lớn. Thông tin liên hệ <a asp-action="Contact" asp-controller="Home" class="alert-link">tại đây</a>.
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div> *@
         @if (Model.Count > 0)
         {
             <div id="cartContent" class="col-lg-8 col-md-12">
@@ -99,7 +94,7 @@
                         <hr>
                         <div class="row mt-3">
                             <a class="btn btn-outline-warning col-6 me-4" asp-action="Menu" asp-controller="Home">Tiếp tục mua <i class="bi bi-basket-fill"></i></a>
-                            <a class="btn btn-danger col-5" asp-action="Index" asp-controller="Order" class="btn btn-primary">Thanh toán</a>
+                            <a class="btn btn-danger col-5" asp-action="Payment" asp-controller="Order" class="btn btn-primary">Thanh toán</a>
                         </div>
                     </div>
                 </div>
@@ -119,7 +114,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            /* height: 100vh; /* Chiều cao của toàn màn hình để căn giữa theo chiều dọc */ */ text-align: center;
+            /* height: 100vh; /* Chiều cao của toàn màn hình để căn giữa theo chiều dọc */ text-align: center;
         }
 
         .empty-cart-container {

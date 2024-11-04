@@ -136,7 +136,15 @@
 
                 <!-- thông tin giao nhận -->
                 <div class="row mb-2">
-
+                    @if(!string.IsNullOrEmpty(Model.Note)){
+                        <!-- ghi chú -->
+                        <div class="col-md-12">
+                            <div class="col-12 section-title">Ghi chú </div>
+                            <div class="col-12 mt-2 mb-2">
+                                <textarea asp-for="Note" readonly></textarea>
+                            </div>
+                        </div>
+                    }
                     <div class="col-md-6">
                         <div class="section-title">Thông tin thanh toán </div>
                         <p>Phương thức thanh toán: @Model.PaymentType</p>
@@ -150,18 +158,12 @@
                         <div class="section-title">Thời gian nhận hàng </div>
                         <p>Ngày đặt hàng: @Model.OrderDate.ToString("dd/MM/yyyy hh:mm:ss")</p>
                         <p>Thời gian dự kiến: @Model.ExpectedDeliveryDate</p>
-                        <p>Thời gian nhận hàng: @Model.ReceiveDate.ToString("dd/MM/yyyy hh:mm:ss")</p>
+                        @if (Model.OrderStatus == "Đã giao")
+                        {
+                            <p>Thời gian nhận hàng: @Model.ReceiveDate.ToString("dd/MM/yyyy hh:mm:ss")</p>
+                        }
                     </div>
 
-                    
-
-                    <!-- ghi chú -->
-                    <div class="col-md-12">
-                        <div class="col-12 section-title">Ghi chú </div>
-                        <div class="col-12 mt-2 mb-2">
-                            <textarea asp-for="Note" readonly></textarea>
-                        </div>
-                    </div>
                 </div>
                 <div class="row mb-2">
                     <div class="text-right g-2">
@@ -241,7 +243,6 @@
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
                                             @if (listRebuy.Count > 0)
                                             {
-
                                                 <button id="rebuyOrder" data-order-id="@Model.OrderId" class="btn btn-primary">Mua lại</button>
                                             }
                                         </div>
