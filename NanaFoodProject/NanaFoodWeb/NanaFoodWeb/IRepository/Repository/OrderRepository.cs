@@ -249,6 +249,22 @@ namespace NanaFoodWeb.IRepository.Repository
             });
         }
 
-        
+        public async Task<ResponseDto> GetRebuyOrder(int orderId)
+        {
+            return await _baseService.SendAsync(new RequestDto
+            {
+                ApiType = ApiType.GET,
+                Url = APIBase + $"/api/Order/GetRebuyOrder/{orderId}"
+            });
+        }
+
+        public async Task<ResponseDto> RebuyOrder(int orderId)
+        {
+            return await _baseService.SendAsync(new RequestDto
+            {
+                ApiType = ApiType.POST,
+                Url = APIBase + $"/api/Order/RebuyOrder/{orderId}"
+            });
+        }
     }
 }
