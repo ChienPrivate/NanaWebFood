@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using NanaFoodDAL.Model;
 using NanaFoodWeb.Extensions;
 using NanaFoodWeb.IRepository;
 using NanaFoodWeb.Models;
@@ -37,7 +36,7 @@ namespace NanaFoodWeb.Controllers
             {
                 _tokenProvider.ClearToken();
                 _tokenProvider.ClearCartCount();
-            }else
+            } else
             {
                 var token = _tokenProvider.GetToken(); // Lấy token nếu có
                 var responseCart = await _cartRepo.GetCart();
@@ -60,6 +59,13 @@ namespace NanaFoodWeb.Controllers
             // Lấy danh sách sản phẩm
             ViewData["page"] = page;
             ViewData["searchQuery"] = searchQuery;
+
+            var categoryApi = await _categoryRepository.GetAllCategoriesAsync(1, 10, true);
+            if (categoryApi.IsSuccess)
+            {
+                var CategoryList = JsonConvert.DeserializeObject<List<Category>>(categoryApi.Result.ToString());
+                ViewBag.CategoryList = CategoryList;
+            }
 
             var response = _productRepo.GetAll(page ?? 1, pageSize, true);
 

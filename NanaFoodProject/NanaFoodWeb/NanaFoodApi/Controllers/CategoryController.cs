@@ -272,7 +272,7 @@ namespace NanaFoodApi.Controllers
         [HttpGet("CategoryMenu")]
         public IActionResult GetFoods()
         {
-            var foods = _productRepo.Products.GroupBy(x => x.CategoryId).Select(c => new
+            var foods = _productRepo.Products.Where(a => a.IsActive).GroupBy(x => x.CategoryId).Select(c => new
             {
                 CategoryId = c.Key,
                 Name = GetResult<CategoryDto>(_categoryRepo.GetById(c.Key)).CategoryName,
