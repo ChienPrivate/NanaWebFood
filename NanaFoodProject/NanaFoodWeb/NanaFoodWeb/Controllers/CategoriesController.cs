@@ -175,11 +175,10 @@ namespace NanaFoodWeb.Controllers
         {
             var response = await _categoryRepository.GetCategoryById(id);
 
-            var category = JsonConvert.DeserializeObject<Result<CategoryDto>>(response.Result.ToString());
-
             if (response.IsSuccess)
             {
-                return View(category.Data);
+                var category = JsonConvert.DeserializeObject<CategoryDto>(response.Result.ToString());
+                return View(category);
             }
             else
             {
@@ -214,8 +213,8 @@ namespace NanaFoodWeb.Controllers
             ResponseDto respone = await _callAPICenter.GetMethod<ResponseDto>(apiName, token);
             if (respone.IsSuccess)
             {
-                var resultData = JsonConvert.DeserializeObject<Result<CategoryDto>>(respone.Result.ToString());
-                return View(resultData.Data);
+                var resultData = JsonConvert.DeserializeObject<CategoryDto>(respone.Result.ToString());
+                return View(resultData);
             }
 
             return View(new CategoryDto());
@@ -228,8 +227,8 @@ namespace NanaFoodWeb.Controllers
             ResponseDto respone = await _callAPICenter.GetMethod<ResponseDto>(apiName, token);
             if (respone.IsSuccess)
             {
-                var resultData = JsonConvert.DeserializeObject<Result<CategoryDto>>(respone.Result.ToString());
-                return View(resultData.Data);
+                var resultData = JsonConvert.DeserializeObject<CategoryDto>(respone.Result.ToString());
+                return View(resultData);
             }
             return View(new CategoryDto());
         }
