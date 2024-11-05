@@ -101,7 +101,7 @@ namespace NanaFoodWeb.Controllers
 
         [HttpPost]
         [Route("Auth/ChangePassword")]
-        public async Task ChangePassword(string OldPassword, string NewPassword, string ConfirmPassword)
+        public async Task<IActionResult> ChangePassword(string OldPassword, string NewPassword, string ConfirmPassword)
         {
             var ChangePass = new ChangePasswordDto()
             {
@@ -110,6 +110,12 @@ namespace NanaFoodWeb.Controllers
                 ConfirmPassword = ConfirmPassword
             };
             var responsedto = await _authRepo.ChangePasswordAsync(ChangePass);
+            if (responsedto.IsSuccess)
+            {
+                return Json(new { success = true, message = "Cập nhật mật khẩu thành công" });
+            }    
+
+            return StatusCode(400, new { success = false, message = responsedto.Message ?? "Cập nhật mật khẩu thất bại" });
         }
 
         public async Task<IActionResult> Logout()
