@@ -29,7 +29,10 @@ namespace NanaFoodWeb.Controllers
             _categoryRepository = categoryRepository;
             _cartRepo = cartRepo;
         }
-
+        public IActionResult NotFoundPage()
+        {
+            return View();
+        }
         public async Task <IActionResult> Index(string searchQuery, int? page = 1, int pageSize = 100)
         {
             if (!User.Identity.IsAuthenticated)
