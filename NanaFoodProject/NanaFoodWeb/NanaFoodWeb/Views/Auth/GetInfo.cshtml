@@ -385,9 +385,38 @@
             reader.readAsDataURL(file);
         }
     }
+    function validatePasswords() {
+        const oldPass = $('#oldPass').val();
+        const newPass = $('#newPass').val();
+        const confirmPass = $('#confirmPass').val();
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
+        if (!oldPass || !newPass || !confirmPass) {
+            if (!oldPass) {
+                $('#oldPass').after(`<span class="d-flex text-danger">Không được để rỗng</span>`);
+            }
+            if (!newPass) {
+                $('#newPass').after(`<span class="d-flex text-danger">Không được để rỗng</span>`);
+            }
+            if (!confirmPass) {
+                $('#confirmPass').after(`<span class="d-flex text-danger">Không được để rỗng</span>`);
+            }
+            return false;
+        }
+        
+
+        if (!passwordRegex.test(newPass)) {
+            $('#newPass').after('<span class="d-flex text-danger">Mật khẩu phải có ít nhất 6 ký tự, bao gồm 1 chữ in hoa, 1 chữ thường và 1 số.</span>');
+            return false;
+        }
+        if (newPass !== confirmPass) {
+            $('#confirmPass').after('<span class="d-flex text-danger">Mật khẩu nhập lại không trùng khớp.</span>');
+            return false;
+        }
+        return true;
+    }
 
     $(document).ready(function () {
-
+        
         $('#oldPass, #newPass, #confirmPass').on('input', function () {
             $(this).next('span.text-danger').remove(); // Xóa thẻ <span> thông báo lỗi gần nhất
         });
@@ -395,6 +424,12 @@
             const oldPass = $('#oldPass').val();
             const newPass = $('#newPass').val();
             const confirmPass = $('#confirmPass').val();
+
+            if (!validatePasswords()) {
+                return; // Dừng lại nếu validate không thành công
+            }
+
+
             $.ajax({
                 url: '@Url.Action("ChangePassword", "Auth")',
                 type: 'POST',
@@ -407,23 +442,8 @@
                     $('#changePass').modal('hide');
                     $('.display-success').before(`<div class="alert alert-success text-center fw-bold" role="alert">${response.message}</div>`);
                 },
-                error: function (xhr, status, error,response) {
-                    if (xhr.responseJSON && xhr.responseJSON.errors) {
-                        const errors = xhr.responseJSON.errors;
-
-                        // Kiểm tra từng trường trước khi thêm thông báo lỗi
-                        if (errors.OldPassword) {
-                            $('#oldPass').after(`<span class="d-flex text-danger">${errors.OldPassword.join(', ')}</span>`);
-                        }
-                        if (errors.NewPassword) {
-                            $('#newPass').after(`<span class="d-flex text-danger">${errors.NewPassword.join(', ')}</span>`);
-                        }
-                        if (errors.ConfirmPassword) {
-                            $('#confirmPass').after(`<span class="d-flex text-danger">${errors.ConfirmPassword.join(', ')}</span>`);
-                        }
-                    } else {
-                            $('#oldPass').after(`<span class="d-flex text-danger">${xhr.responseJSON.message}</span>`);
-                    }
+                error: function () {
+                    $('#oldPass').after(`<span class="d-flex text-danger">Mật khẩu hiện tại không chính xác</span>`);
                 }
             });
         });
