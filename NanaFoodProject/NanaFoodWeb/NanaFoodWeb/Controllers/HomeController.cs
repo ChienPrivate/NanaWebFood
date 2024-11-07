@@ -33,6 +33,12 @@ namespace NanaFoodWeb.Controllers
         {
             return View();
         }
+
+        public IActionResult Forbidden()
+        {
+            return View();
+        }
+
         public async Task <IActionResult> Index(string searchQuery, int? page = 1, int pageSize = 100)
         {
             if (!User.Identity.IsAuthenticated)

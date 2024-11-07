@@ -3,13 +3,18 @@
     Layout = "_Dashboard";
 }
 <ul class="box-info">
+    <a asp-action="Index" asp-controller="Products" class="text-decoration-none">
     <li>
-        <i class='bx bxl-product-hunt'></i>
-        <span class="text">
-            <h3>@ViewBag.ProductCount</h3>
-            <p>Sản Phẩm</p>
-        </span>
+
+            <i class='bx bxl-product-hunt'></i>
+            <span class="text">
+                <h3>@ViewBag.ProductCount</h3>
+                <p>Sản Phẩm</p>
+            </span>
+       
     </li>
+    </a>
+    <a asp-action="Index" asp-controller="Users" class="text-decoration-none">
     <li>
         <i class='bx bxs-group'></i>
         <span class="text">
@@ -17,40 +22,17 @@
             <p>Khách hàng</p>
         </span>
     </li>
-
+    </a>
+    <a asp-action="Index" asp-controller="Categories" class="text-decoration-none">
     <li>
         <i class='bx bxs-category'></i>
         <span class="text">
-            <h3>50</h3>
+            <h3>@ViewBag.CategoryCount</h3>
             <p>Danh mục</p>
         </span>
     </li>
+    </a>
 </ul>
-<ul class="box-info1">
-    <li>
-        <i class='bx bx-category'></i>
-        <span class="text">
-            <h3>1020</h3>
-            <p>Danh Mục</p>
-        </span>
-    </li>
-    <li>
-        <i class='bx bxs-group'></i>
-        <span class="text">
-            <h3>2834</h3>
-            <p>Số lượng</p>
-        </span>
-    </li>
-
-    <li>
-        <i class='bx bxs-dollar-circle'></i>
-        <span class="text">
-            <h3>2600</h3>
-            <p>Sản Phẩm bán ra</p>
-        </span>
-    </li>
-</ul>
-
 <div class="data">
     <div class="content-data">
         <div class="head">
@@ -67,23 +49,6 @@
         </div>
         <div class="chart">
             <div id="chart1"></div>
-        </div>
-    </div>
-    <div class="content-data">
-        <div class="head">
-            <h3>Trạng Thái Đơn Hàng</h3>
-            <div class="menu dropdown">
-                <i class='bx bx-dots-horizontal-rounded icon ' id="dropdownMenuButton"
-                   data-bs-toggle="dropdown" aria-expanded="false"></i>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                    <li><a class="dropdown-item" href="#">Edit</a></li>
-                    <li><a class="dropdown-item" href="#">Save</a></li>
-                    <li><a class="dropdown-item" href="#">Remove</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="chat-box">
-            <div id="chart"></div>
         </div>
     </div>
     <div class="content-data">
@@ -159,7 +124,6 @@
         </div>
 
     </div>
-
     <div class="content-data">
         <div class="head">
             <h3>Trạng Thái Đơn Hàng</h3>
