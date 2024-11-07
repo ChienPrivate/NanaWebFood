@@ -1,0 +1,71 @@
+table
+body {
+    font-family: Arial, sans-serif;
+}
+/*table đơn hàng*/
+
+
+.customer-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.customer-table .cuttom1 {
+    background-color: #f8f9fa;
+}
+
+.customer-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #dee2e6;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+}
+
+.customer-table th {
+    font-weight: bold;
+    color: #333;
+    border: none;
+}
+
+.customer-table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+}
+
+.user-info img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.status {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    color: #fff;
+    font-weight: bold;
+}
+
+.status.completed {
+    font-size: 10px;
+    background-color: #007bff;
+}
+
+.status.pending {
+    font-size: 10px;
+    background-color: #fd7e14;
+}
+
+.status.process {
+    font-size: 10px;
+    background-color: #ffc107;
+}

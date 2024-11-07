@@ -1,0 +1,251 @@
+﻿
+@{
+    Layout = "_Dashboard";
+}
+<ul class="box-info">
+    <li>
+        <i class='bx bxl-product-hunt'></i>
+        <span class="text">
+            <h3>@ViewBag.ProductCount</h3>
+            <p>Sản Phẩm</p>
+        </span>
+    </li>
+    <li>
+        <i class='bx bxs-group'></i>
+        <span class="text">
+            <h3>@ViewBag.UserCount</h3>
+            <p>Khách hàng</p>
+        </span>
+    </li>
+
+    <li>
+        <i class='bx bxs-category'></i>
+        <span class="text">
+            <h3>50</h3>
+            <p>Danh mục</p>
+        </span>
+    </li>
+</ul>
+<ul class="box-info1">
+    <li>
+        <i class='bx bx-category'></i>
+        <span class="text">
+            <h3>1020</h3>
+            <p>Danh Mục</p>
+        </span>
+    </li>
+    <li>
+        <i class='bx bxs-group'></i>
+        <span class="text">
+            <h3>2834</h3>
+            <p>Số lượng</p>
+        </span>
+    </li>
+
+    <li>
+        <i class='bx bxs-dollar-circle'></i>
+        <span class="text">
+            <h3>2600</h3>
+            <p>Sản Phẩm bán ra</p>
+        </span>
+    </li>
+</ul>
+
+<div class="data">
+    <div class="content-data">
+        <div class="head">
+            <h3>Dữ liệu đầu vào tháng 6</h3>
+            <div class="menu dropdown">
+                <i class='bx bx-dots-horizontal-rounded icon ' id="dropdownMenuButton"
+                   data-bs-toggle="dropdown" aria-expanded="false"></i>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                    <li><a class="dropdown-item" href="#">Edit</a></li>
+                    <li><a class="dropdown-item" href="#">Save</a></li>
+                    <li><a class="dropdown-item" href="#">Remove</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="chart">
+            <div id="chart1"></div>
+        </div>
+    </div>
+    <div class="content-data">
+        <div class="head">
+            <h3>Trạng Thái Đơn Hàng</h3>
+            <div class="menu dropdown">
+                <i class='bx bx-dots-horizontal-rounded icon ' id="dropdownMenuButton"
+                   data-bs-toggle="dropdown" aria-expanded="false"></i>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                    <li><a class="dropdown-item" href="#">Edit</a></li>
+                    <li><a class="dropdown-item" href="#">Save</a></li>
+                    <li><a class="dropdown-item" href="#">Remove</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="chat-box">
+            <div id="chart"></div>
+        </div>
+    </div>
+    <div class="content-data">
+        <div class="head">
+            <h3>User</h3>
+            <div class="menu dropdown">
+                <i class='bx bx-dots-horizontal-rounded icon ' id="dropdownMenuButton"
+                   data-bs-toggle="dropdown" aria-expanded="false"></i>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                    <li><a class="dropdown-item" href="#">Edit</a></li>
+                    <li><a class="dropdown-item" href="#">Save</a></li>
+                    <li><a class="dropdown-item" href="#">Remove</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="chat-box">
+            <table class="customer-table">
+                <thead class="cuttom1">
+                    <tr>
+                        <th style="width: 20%;">ID</th>
+                        <th>Tên khách hàng</th>
+                        <th>Ngày sinh</th>
+                        <th>Số điện thoại</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>#183</td>
+                        <td>Hột vịt muối</td>
+                        <td>21/7/1992</td>
+                        <td>0921387221</td>
+                    </tr>
+                    <tr>
+                        <td>#219</td>
+                        <td>Bánh tráng trộn</td>
+                        <td>30/4/1975</td>
+                        <td>0912376352</td>
+                    </tr>
+                    <tr>
+                        <td>#627</td>
+                        <td>Cút rang bơ</td>
+                        <td>12/3/1999</td>
+                        <td>01287326654</td>
+                    </tr>
+                    <tr>
+                        <td>#175</td>
+                        <td>Hủ tiếu nam vang</td>
+                        <td>4/12/2000</td>
+                        <td>0912376763</td>
+                    </tr>
+                    <tr>
+                        <td>#175</td>
+                        <td>Hủ tiếu nam vang</td>
+                        <td>4/12/2000</td>
+                        <td>0912376763</td>
+                    </tr>
+                    <tr>
+                        <td>#175</td>
+                        <td>Hủ tiếu nam vang</td>
+                        <td>4/12/2000</td>
+                        <td>0912376763</td>
+                    </tr>
+                    <tr>
+                        <td>#175</td>
+                        <td>Hủ tiếu nam vang</td>
+                        <td>4/12/2000</td>
+                        <td>0912376763</td>
+                    </tr>
+                </tbody>
+            </table>
+
+
+        </div>
+
+    </div>
+
+    <div class="content-data">
+        <div class="head">
+            <h3>Trạng Thái Đơn Hàng</h3>
+            <div class="menu dropdown">
+                <i class='bx bx-dots-horizontal-rounded icon ' id="dropdownMenuButton"
+                   data-bs-toggle="dropdown" aria-expanded="false"></i>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                    <li><a class="dropdown-item" href="#">Edit</a></li>
+                    <li><a class="dropdown-item" href="#">Save</a></li>
+                    <li><a class="dropdown-item" href="#">Remove</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="chat-box">
+            <div class="table-container">
+                <table class="customer-table">
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Date Order</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="user-info">
+                                    <img src="https://ps.w.org/user-avatar-reloaded/assets/icon-256x256.png?rev=2540745"
+                                         alt="User Image">
+                                    <span>John Doe</span>
+                                </div>
+                            </td>
+                            <td>01-10-2021</td>
+                            <td><span class="status completed">Hoàn Thành</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="user-info">
+                                    <img src="https://ps.w.org/user-avatar-reloaded/assets/icon-256x256.png?rev=2540745"
+                                         alt="User Image">
+                                    <span>John Doe</span>
+                                </div>
+                            </td>
+                            <td>01-10-2021</td>
+                            <td><span class="status pending">Xác Nhận</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="user-info">
+                                    <img src="https://ps.w.org/user-avatar-reloaded/assets/icon-256x256.png?rev=2540745"
+                                         alt="User Image">
+                                    <span>John Doe</span>
+                                </div>
+                            </td>
+                            <td>01-10-2021</td>
+                            <td><span class="status process">Mới Nhất</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="user-info">
+                                    <img src="https://ps.w.org/user-avatar-reloaded/assets/icon-256x256.png?rev=2540745"
+                                         alt="User Image">
+                                    <span>John Doe</span>
+                                </div>
+                            </td>
+                            <td>01-10-2021</td>
+                            <td><span class="status pending">Hoàn Thành</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="user-info">
+                                    <img src="https://ps.w.org/user-avatar-reloaded/assets/icon-256x256.png?rev=2540745"
+                                         alt="User Image">
+                                    <span>John Doe</span>
+                                </div>
+                            </td>
+                            <td>01-10-2021</td>
+                            <td><span class="status completed">Hoàn Thành</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+            </div>

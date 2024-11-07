@@ -281,7 +281,7 @@ namespace NanaFoodWeb.Controllers
             }
 
             TempData["ErrorMessage"] = "Không tìm thấy sản phẩm.";
-            return RedirectToAction("Index");
+            return NotFound();
         }
 
         [HttpPost("deactive/{id}")]

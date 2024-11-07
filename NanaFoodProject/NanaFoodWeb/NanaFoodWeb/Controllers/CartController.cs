@@ -30,7 +30,7 @@ namespace NanaFoodWeb.Controllers
             if (token == null)
             {
                 TempData["error"] = "Vui lòng đăng nhập trước";
-                return RedirectToAction("Login", "Auth");
+                return Unauthorized();
             } else
             {
                 var response = await _cartRepo.GetCart();
