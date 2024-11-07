@@ -83,6 +83,10 @@ app.UseStatusCodePages(async context =>
     {
         context.HttpContext.Response.Redirect("/Home/NotFoundPage");
     }
+    if (context.HttpContext.Response.StatusCode == 401)
+    {
+        context.HttpContext.Response.Redirect("/Auth/Login");
+    }
 });
 //app.MapControllerRoute(
 //    name: "default",
