@@ -1,16 +1,11 @@
 ﻿@using Syncfusion.EJ2
 @model NanaFoodWeb.Models.CategoryDto
 @{
-    Layout = "_AdminLayout";
-    // ViewData["Title"] = "Edit";
+    Layout = "_Dashboard";
+    ViewData["Title"] = "Cập nhật danh mục";
 }
 
-<div id="wrapper">
-    
-    <!-- Main Content -->
-    <div id="content-wrapper" class="d-flex flex-column">
-        <div id="content">
-            <div class="container-fluid">
+<div class="container-fluid">
                 <h1 class="h3 mb-4 text-gray-800">Cập nhật danh mục</h1>
                 <form asp-action="Edit" asp-controller="Categories" method="post" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -115,10 +110,7 @@
                     
                 </form>
                 
-            </div>
-        </div>
-    </div>
-</div>
+            </div>s
 
 <script src="~/template/vendor/jquery/jquery.min.js"></script>
 <script src="~/template/vendor/jquery-easing/jquery.easing.min.js"></script>
