@@ -1,5 +1,5 @@
 ﻿@{
-    Layout = "_AdminLayout";
+    Layout = "_Dashboard";
 }
 @if (TempData["SuccessMessage"] != null)
 {
@@ -21,31 +21,25 @@
 @using Syncfusion.EJ2
 @model NanaFoodWeb.Models.Dto.ViewModels.ProductVM
 
-<div id="wrapper">
-
-    <!-- Main Content -->
-    <div id="content-wrapper" class="d-flex flex-column">
-        <div id="content">
-            <div class="container-fluid">
-                <h1 class="h3 mb-4 text-gray-800">Danh sách sản phẩm</h1>
-                <p>
-                    <a asp-action="Create" class="btn btn-primary mb-3" asp-controller="Products">Thêm mới</a>
-                </p>
-               @Html.EJS().Grid("Grid").DataSource((IEnumerable<object>)ViewBag.lazyLoadData).Columns(col =>{
-                        // col.Field("Id").HeaderText("ID").Width("130").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).IsPrimaryKey(true).Add();
-                        col.Field("ProductId").HeaderText("Mã sản phẩm").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
-                        col.Field("ProductName").HeaderText("Tên sản phẩm").Format("C2").Width("135").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
-                        col.Field("Price").HeaderText("Giá").Format("#,##").Width("135").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Right).Add();
-                        col.Field("Description").HeaderText("Mô tả").Format("C2").Width("135").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Right).Add();
-                        col.Field("IsActive").HeaderText("Trạng thái").Width("160").Template("#isActiveTemplate").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
-                        col.Field("ImageUrl").HeaderText("Hình Ảnh").Width("160").Template("#categoriesImgTemplate").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+    <div class="container-fluid">
+        <h1 class="h3 mb-4 text-gray-800">Danh sách sản phẩm</h1>
+        <p>
+            <a asp-action="Create" class="btn btn-primary mb-3" asp-controller="Products">Thêm mới</a>
+        </p>
+        @Html.EJS().Grid("Grid").DataSource((IEnumerable<object>)ViewBag.lazyLoadData).Columns(col =>
+            {
+                // col.Field("Id").HeaderText("ID").Width("130").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).IsPrimaryKey(true).Add();
+                col.Field("ProductId").HeaderText("ID").Width("100").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                col.Field("ProductName").HeaderText("Tên sản phẩm").Format("C2").Width("135").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                col.Field("Price").HeaderText("Giá").Format("#,##").Width("135").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Right).Add();
+                col.Field("Description").HeaderText("Mô tả").Format("C2").Width("135").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Right).Add();
+                col.Field("IsActive").HeaderText("Trạng thái").Width("160").Template("#isActiveTemplate").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                col.Field("ImageUrl").HeaderText("Hình Ảnh").Width("160").Template("#categoriesImgTemplate").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
 
 
-                        col.Field("commands").HeaderText("Thao tác").Template("#commandTemplate").Width("200").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
-               }).AllowPaging().PageSettings(page => page.PageCount(3).PageSizes(true).PageSize(10)).AllowSorting().AllowFiltering().FilterSettings(filter => { filter.Type(Syncfusion.EJ2.Grids.FilterType.Excel); }).Toolbar(new List<string>() { "Search" }).AllowResizing(false).AutoFit(false).Render()
+                col.Field("commands").HeaderText("Thao tác").Template("#commandTemplate").Width("200").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+            }).AllowPaging().PageSettings(page => page.PageCount(3).PageSizes(true).PageSize(10)).AllowSorting().AllowFiltering().FilterSettings(filter => { filter.Type(Syncfusion.EJ2.Grids.FilterType.Excel); }).Toolbar(new List<string>() { "Search" }).AllowResizing(false).AutoFit(false).Render()
 
-            </div>
-        </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
@@ -81,16 +75,46 @@
         </div>
     </script>
 
+    <style>
+        .btn.warning{
+        padding: 10px 15px;
+        background-color: #ffc107;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        }
+        .btn:hover{
+        background-color: #d19f08;
+        }
+        .btn.delete:hover{
+        background-color: #bb1b2a;
+        }
+        .btn.info {
+        padding: 10px 15px;
+        background-color: #07a0f5;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        }
 
+    .btn.info:hover {
+            background-color: #0479bb;
+    }
+
+    </style>
     <script type="text/x-jsrender" id="commandTemplate">
-
-        <a href="/Products/Edit/${ProductId}" class="btn btn-outline-warning mb-1 d-block"><i class="fa-regular fa-pen-to-square"></i> Chỉnh sửa</a>
-
-        <a href="/Products/Delete/${ProductId}" class="btn btn-outline-danger mb-1 d-block"><i class="bi bi-trash"></i> Xóa</a>
-
-        <a href="/Products/Details/${ProductId}" class="btn btn-outline-info mb-1 d-block"><i class="bi bi-info-circle"></i> Chi tiết</a>
-    </script>
     
-</div>
+    <a href="/Products/Edit/${ProductId}" class="btn warning p-3 me-1"> <i class='bx bxs-edit icon'></i></a>
+
+        <a href="/Products/Delete/${ProductId}" class="btn delete p-3 me-1"><i class='bx bxs-trash icon'></i></a>
+
+        <a href="/Products/Details/${ProductId}" class="btn info p-3"><i class='bx bxs-detail icon'></i></a>
+
+    </script>
+   
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
