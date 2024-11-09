@@ -1,130 +1,123 @@
 ﻿@{
     Layout = "_AdminLayout";
+    ViewData["title"] = "Chỉnh sửa sản phẩm";
 }
 @using Syncfusion.EJ2
 @model NanaFoodWeb.Models.Dto.ProductDto
-<<div id="wrapper">
+<div class="container-fluid">
+    <h1 class="h3 mb-4 text-gray-800">Edit Product</h1>
+    <form id="editProductForm" asp-controller="Products" asp-action="Edit" method="post" enctype="multipart/form-data">
+        <input type="hidden" asp-for="ProductId" />
+        <div class="form-group">
+            <label asp-for="ProductName"></label>
+            <input asp-for="ProductName" class="form-control" id="productName" />
+            <span asp-validation-for="ProductName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Price"></label>
+            <input asp-for="Price" class="form-control" id="productName" />
+            <span asp-validation-for="Price" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="CategoryId">Danh mục sản phẩm</label>
+            <select class="form-select" asp-for="CategoryId" asp-items="@ViewBag.ListCategory">
+                <option value="">Chọn một danh mục</option>
+            </select>
+            <span asp-validation-for="CategoryId" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Description"></label>
+            <textarea asp-for="Description" class="form-control" id="productDescription"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
 
-    <!-- Main Content -->
-    <div id="content-wrapper" class="d-flex flex-column">
-        <div id="content">
-            <div class="container-fluid">
-                <h1 class="h3 mb-4 text-gray-800">Edit Product</h1>
-                <form id="editProductForm" asp-controller="Products" asp-action="Edit" method="post" enctype="multipart/form-data">
-                    <input type="hidden" asp-for="ProductId" />
-                    <div class="form-group">
-                        <label asp-for="ProductName"></label>
-                        <input asp-for="ProductName" class="form-control" id="productName" />
-                        <span asp-validation-for="ProductName" class="text-danger"></span>
+        <div class="form-group mb-2 mt-2">
+            <label>Trạng thái</label>
+            <div class="d-flex align-items-center">
+                <div class="d-flex align-items-center">
+                    <div>
+                        <ejs-switch ejs-for="IsActive" change="onSwitchChange" name="IsActive"></ejs-switch>
                     </div>
-                    <div class="form-group">
-                        <label asp-for="Price"></label>
-                        <input asp-for="Price" class="form-control" id="productName" />
-                        <span asp-validation-for="Price" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="CategoryId">Danh mục sản phẩm</label>
-                        <select class="form-select" asp-for="CategoryId" asp-items="@ViewBag.ListCategory">
-                            <option value="">Chọn một danh mục</option>
-                        </select>
-                        <span asp-validation-for="CategoryId" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Description"></label>
-                        <textarea asp-for="Description" class="form-control" id="productDescription"></textarea>
-                        <span asp-validation-for="Description" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-group mb-2 mt-2">
-                        <label>Trạng thái</label>
-                        <div class="d-flex align-items-center">
-                            <div class="d-flex align-items-center">
-                                <div>
-                                    <ejs-switch ejs-for="IsActive" change="onSwitchChange" name="IsActive"></ejs-switch>
-                                </div>
-                                <h5 class="ms-2">
-                                    <span id="badgeStatus" class="badge @(Model.IsActive ? "bg-success" : "bg-secondary")">
-                                        @(Model.IsActive ? "Hoạt động" : "Vô hiệu")
-                                    </span>
-                                </h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-header">
-                            <h4>Cập nhật hình ảnh</h4>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <div class="container">
-                                            <label asp-for="ImageUrl" class="control-label">Hình ảnh hiện tại</label>
-                                            <img id="categoryImage"
-                                                 class="rounded-3 d-block"
-                                                 src="@(!string.IsNullOrEmpty(Model.ImageUrl) ? Model.ImageUrl : "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png")"
-                                                 style="width:30rem;" />
-                                            <input id="CategoryImageInput" asp-for=ImageUrl hidden />
-                                            <div class="text-center">
-                                                <button id="removeImageBtn" type="button" class="e-btn e-css mt-4">Xóa ảnh hiện tại</button>
-                                            </div>
-                                            <script>
-                                                document.getElementById('removeImageBtn').addEventListener('click', function () {
-                                                    // Thay đổi hình ảnh về ảnh mặc định
-                                                    document.getElementById('categoryImage').src = 'https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png';
-
-                                                    // Làm trống input
-                                                    document.getElementById('CategoryImageInput').value = '';
-                                                });
-                                            </script>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-1 d-flex align-items-center">
-                                    <div style="border-left: 1px solid rgba(0, 0, 0, 0.2); height: 100%;"></div>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label asp-for="ImageUrl" class="control-label">Hình ảnh cần cập nhật</label>
-                                        <div class="control-section control-fluid">
-                                            <div class="control_wrapper">
-                                                <div id='dropArea' style='height: auto;'>
-                                                    <span id='drop'> Chọn hoặc kéo thả hình ảnh của bạn tại đây <a href='' id='browse'><u>Browse</u></a> </span>
-                                                    <ejs-uploader id="UploadFiles"
-                                                                  dropArea=".control-fluid"
-                                                                  allowedExtensions=".jpg,.png,.jpeg"
-                                                                  selected="onSelect"
-                                                                  success="onUploadSuccess"
-                                                                  progress="onFileUpload"
-                                                                  removing="onFileRemove"
-                                                                  failure="onUploadFailed"
-                                                                  asyncSettings="new Syncfusion.EJ2.Inputs.UploaderAsyncSettings { SaveUrl = @Url.Content("https://services.syncfusion.com/aspnet/production/api/FileUploader/Save"), RemoveUrl = @Url.Content("https://services.syncfusion.com/aspnet/production/api/FileUploader/Remove") }"></ejs-uploader>
-
-                                                    <input type="file" id="hiddenFileInput" name="UploadFile" hidden />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 mt-2 property-section">
-                                            <div class="" id="property" title="Properties">
-                                                @Html.EJS().Button("clearbtn").CssClass("e-btn e-css hidden-element").Content("Xóa ảnh").Type("button").Render()
-                                                @Html.EJS().Button("uploadbtn").CssClass("e-btn e-css").Content("Upload ảnh").Render()
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <input type="hidden" asp-for="ProductId" id="productId" />
-
-                    <button type="submit" class="btn btn-primary btn-lg px-4 mr-2">Edit</button>
-                    <a href="@Url.Action("Index", "Products")" class="btn btn-secondary">Cancel</a>
-                </form>
+                    <h5 class="ms-2">
+                        <span id="badgeStatus" class="badge @(Model.IsActive ? "bg-success" : "bg-secondary")">
+                            @(Model.IsActive ? "Hoạt động" : "Vô hiệu")
+                        </span>
+                    </h5>
+                </div>
             </div>
         </div>
-    </div>
+        <div class="card">
+            <div class="card-header">
+                <h4>Cập nhật hình ảnh</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="container">
+                                <label asp-for="ImageUrl" class="control-label">Hình ảnh hiện tại</label>
+                                <img id="categoryImage"
+                                     class="rounded-3 d-block"
+                                     src="@(!string.IsNullOrEmpty(Model.ImageUrl) ? Model.ImageUrl : "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png")"
+                                     style="width:30rem;" />
+                                <input id="CategoryImageInput" asp-for=ImageUrl hidden />
+                                <div class="text-center">
+                                    <button id="removeImageBtn" type="button" class="e-btn e-css mt-4">Xóa ảnh hiện tại</button>
+                                </div>
+                                <script>
+                                    document.getElementById('removeImageBtn').addEventListener('click', function () {
+                                        // Thay đổi hình ảnh về ảnh mặc định
+                                        document.getElementById('categoryImage').src = 'https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png';
+
+                                        // Làm trống input
+                                        document.getElementById('CategoryImageInput').value = '';
+                                    });
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-1 d-flex align-items-center">
+                        <div style="border-left: 1px solid rgba(0, 0, 0, 0.2); height: 100%;"></div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="ImageUrl" class="control-label">Hình ảnh cần cập nhật</label>
+                            <div class="control-section control-fluid">
+                                <div class="control_wrapper">
+                                    <div id='dropArea' style='height: auto;'>
+                                        <span id='drop'> Chọn hoặc kéo thả hình ảnh của bạn tại đây <a href='' id='browse'><u>Browse</u></a> </span>
+                                        <ejs-uploader id="UploadFiles"
+                                                      dropArea=".control-fluid"
+                                                      allowedExtensions=".jpg,.png,.jpeg"
+                                                      selected="onSelect"
+                                                      success="onUploadSuccess"
+                                                      progress="onFileUpload"
+                                                      removing="onFileRemove"
+                                                      failure="onUploadFailed"
+                                                      asyncSettings="new Syncfusion.EJ2.Inputs.UploaderAsyncSettings { SaveUrl = @Url.Content("https://services.syncfusion.com/aspnet/production/api/FileUploader/Save"), RemoveUrl = @Url.Content("https://services.syncfusion.com/aspnet/production/api/FileUploader/Remove") }"></ejs-uploader>
+
+                                        <input type="file" id="hiddenFileInput" name="UploadFile" hidden />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mt-2 property-section">
+                                <div class="" id="property" title="Properties">
+                                    @Html.EJS().Button("clearbtn").CssClass("e-btn e-css hidden-element").Content("Xóa ảnh").Type("button").Render()
+                                    @Html.EJS().Button("uploadbtn").CssClass("e-btn e-css").Content("Upload ảnh").Render()
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <input type="hidden" asp-for="ProductId" id="productId" />
+
+        <button type="submit" class="btn btn-primary btn-lg px-4 mr-2">Edit</button>
+        <a href="@Url.Action("Index", "Products")" class="btn btn-secondary">Cancel</a>
+    </form>
 </div>
 
 <script src="vendor/jquery/jquery.min.js"></script>
