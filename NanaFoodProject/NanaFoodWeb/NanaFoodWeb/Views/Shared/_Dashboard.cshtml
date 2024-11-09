@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/27.1.48/material.css" />
     <!-- Syncfusion ASP.NET Core controls scripts -->
     <script src="https://cdn.syncfusion.com/ej2/27.1.48/dist/ej2.min.js"></script>
+    <script src="~/js/site.js"></script>
     <title>@ViewData["Title"] - Admin</title>
 </head>
 
@@ -35,19 +36,19 @@
             <li class="divider" data-text="Sản Phẩm">Sản Phẩm</li>
 
             <li>
-                <a href="quanlysanpham.html">
+                <a asp-action="Index" asp-controller="Products">
                     <i class='bx bxs-chart icon'></i>
                     Quản lý sản phẩm
                 </a>
             </li>
             <li>
-                <a href="quanlydanhmuc.html">
+                <a asp-action="Index" asp-controller="Categories">
                     <i class='bx bxs-widget icon'></i>
                     Quản lý danh mục
                 </a>
             </li>
             <li>
-                <a href="khosanpham.html">
+                <a asp-action="Index" asp-controller="Coupon">
                     <i class='bx bxs-widget icon'></i>
                     Quản lý kho
                 </a>
