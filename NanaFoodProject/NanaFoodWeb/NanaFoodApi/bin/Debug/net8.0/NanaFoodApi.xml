@@ -1273,5 +1273,17 @@
         <member name="M:NanaFoodApi.Migrations.addcolumncancelreasontoOrder.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
+        <member name="T:NanaFoodApi.Migrations.addcouponcodetoOrder">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.addcouponcodetoOrder.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.addcouponcodetoOrder.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.addcouponcodetoOrder.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
     </members>
 </doc>

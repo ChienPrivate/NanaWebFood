@@ -8,12 +8,13 @@ using NanaFoodDAL.Dto;
 using NanaFoodDAL.IRepository;
 using NanaFoodDAL.Model;
 using System.Security.Claims;
+using NanaFoodDAL.Helper;
 
 namespace NaNaTest
 {
     public class OrderControllerTests
     {
-        private readonly Mock<IOrderRepository> _orderRepositoryMock;
+        /*private readonly Mock<IOrderRepository> _orderRepositoryMock;
         private readonly Mock<ICartRepo> _cartRepoMock;
         private readonly Mock<IMapper> _mapperMock;
         private readonly Mock<SignInManager<User>> _signInManagerMock;
@@ -33,6 +34,32 @@ namespace NaNaTest
                 _signInManagerMock.Object,
                 _cartRepoMock.Object,
                 _mapperMock.Object);
+        }*/
+
+        private readonly Mock<IOrderRepository> _orderRepositoryMock;
+        private readonly Mock<SignInManager<User>> _signInManagerMock;
+        private readonly Mock<ICartRepo> _cartRepoMock;
+        private readonly Mock<IMapper> _mapperMock;
+        private readonly Mock<EmailPoster> _emailPosterMock;
+        private readonly OrderController _orderController;
+
+        public OrderControllerTests()
+        {
+            var userStoreMock = new Mock<IUserStore<User>>();
+            _signInManagerMock = new Mock<SignInManager<User>>(userStoreMock.Object, null, null, null, null, null, null);
+
+            _orderRepositoryMock = new Mock<IOrderRepository>();
+            _cartRepoMock = new Mock<ICartRepo>();
+            _mapperMock = new Mock<IMapper>();
+            _emailPosterMock = new Mock<EmailPoster>();
+
+            _orderController = new OrderController(
+                _orderRepositoryMock.Object,
+                _signInManagerMock.Object,
+                _cartRepoMock.Object,
+                _mapperMock.Object,
+                _emailPosterMock.Object // Thêm Mock cho EmailPoster
+            );
         }
 
         [Fact]

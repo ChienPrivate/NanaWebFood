@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NanaFoodDAL.Dto;
+using NanaFoodDAL.Helper;
 using NanaFoodDAL.IRepository;
 using NanaFoodDAL.Model;
 
@@ -16,15 +16,19 @@ namespace NanaFoodApi.Controllers
         private readonly IOrderRepository _orderRepository;
         private readonly ICartRepo _cartRepo;
         private readonly IMapper _mapper;
+        private readonly EmailPoster _emailPoster;
+
         public OrderController(IOrderRepository orderRepository,
             SignInManager<User> signInManager,
             ICartRepo cartRepo,
-            IMapper mapper)
+            IMapper mapper,
+            EmailPoster emailPoster)
         {
             _signInManager = signInManager;
             _orderRepository = orderRepository;
             _cartRepo = cartRepo;
             _mapper = mapper;
+            _emailPoster = emailPoster;
         }
 
         /// <summary>
@@ -83,14 +87,14 @@ namespace NanaFoodApi.Controllers
 
             var cart = await _cartRepo.GetCart(user);
 
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 List<CartResponseDto> cartItem = (List<CartResponseDto>)cart.Result;
 
                 var order = _mapper.Map<Order>(orderDto);
 
                 order.UserId = user.Id;
-                order.Email = user.Email;
+                /*order.Email = user.Email;*/
 
                 var createdOrder = await _orderRepository.AddOrder(order);
 
@@ -107,7 +111,22 @@ namespace NanaFoodApi.Controllers
 
                 _orderRepository.AddOrderDetails(orderDetails);
 
+                var productQuantity = await _orderRepository.UpdateProductQuantity(order.OrderId, 1);
+
+                if (!productQuantity.IsSuccess)
+                {
+                    return Ok(productQuantity);
+                }
+
                 var removeCartItem = await _cartRepo.RemoveAllCartItem(user.Id);
+
+                var emailContent = _emailPoster.OrderEmailTemplate(order, orderDetails.ToList());
+
+                if (order.Email != string.Empty)
+                {
+                    _emailPoster.SendMail(order.Email, "Chi tiết đơn hàng", emailContent);
+                }
+
 
                 return Ok(new ResponseDto
                 {
@@ -232,7 +251,44 @@ namespace NanaFoodApi.Controllers
         [HttpPut("CancelOrders/{OrderId}/{message}")]
         public async Task<IActionResult> CancelOrderAsync(int OrderId, string message)
         {
+            // thực hiện thay đổi và kiểm tra về số lượng
+
+            var user = await _signInManager.UserManager.GetUserAsync(User);
+
+            var productQuantity = await _orderRepository.UpdateProductQuantity(OrderId, -1);
+
+            if (!productQuantity.IsSuccess)
+            {
+                return Ok(productQuantity);
+            }
+            
+            // thực hiện hủy đơn
+
+            
+
             var cancelOrderResponse = await _orderRepository.CancelOrderAsync(OrderId, message);
+
+
+            // gửi mail về cho người dùng 
+
+            var orderDetails = await _orderRepository.GetOrderDetailsAsync(OrderId);
+
+            var listOd = (List<OrderDetailsDto>)orderDetails.Result;
+
+            var listOdmap = _mapper.Map<List<OrderDetails>>(listOd);
+
+            var orderResponse = await _orderRepository.GetOrderByIdAsync(OrderId);
+
+            var od = (OrderDto)orderResponse.Result;
+
+            var order = _mapper.Map<Order>(od);
+
+            var emailContent = _emailPoster.OrderEmailTemplate(order, listOdmap);
+
+            if (order.Email != string.Empty)
+            {
+                _emailPoster.SendMail(order.Email, "Chi tiết hủy đơn", emailContent);
+            }
 
             return Ok(cancelOrderResponse);
         }

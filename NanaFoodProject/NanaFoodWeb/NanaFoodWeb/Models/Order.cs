@@ -33,6 +33,9 @@ namespace NanaFoodWeb.Models
         [Required(ErrorMessage = "Ngày đặt hàng không được trống")]
         public DateTime OrderDate { get; set; } = DateTime.Now;
         public DateTime ReceiveDate { get; set; }
+        public string? CouponCode { get; set; }
+        public double? Discount { get; set; }// Giá trị giảm giá
+        public double? MinAmount { get; set; } // giá trị điều kiện cần để giảm
         [JsonIgnore]
         [Required(ErrorMessage = "Hãy chọn quận/huyện")]
         public string District { get; set; }

@@ -104,9 +104,21 @@ namespace NanaFoodDAL.IRepository.Repository
 
         public async Task<ResponseDto> GetOrderDetailsAsync(int OrderId)
         {
-            var orderDetails = await _context.OrderDetails.Where(x => x.OrderId == OrderId).ToListAsync();
-            List<OrderDetailsDto> ListDetail = _mapper.Map<List<OrderDetailsDto>>(orderDetails);
-            _response.Result = ListDetail;
+            try
+            {
+                var orderDetails = await _context.OrderDetails.Where(x => x.OrderId == OrderId).ToListAsync();
+                List<OrderDetailsDto> ListDetail = _mapper.Map<List<OrderDetailsDto>>(orderDetails);
+
+                _response.IsSuccess = true;
+                _response.Result = ListDetail;
+                _response.Message = "Lấy danh sách sản phẩm nằm trong đơn hàng thành công";
+            }
+            catch(Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ex.Message;
+                _response.Result = new List<OrderDetailsDto>();
+            }
 
             return _response;
         }
@@ -179,54 +191,6 @@ namespace NanaFoodDAL.IRepository.Repository
             return _response;
         }
 
-        /*public async Task<ResponseDto> RebuyOrder(int orderId)
-        {
-
-            var order = await _context.Orders.FindAsync(orderId);
-            if (order == null)
-            {
-                _response.IsSuccess = false;
-                _response.Message = "Đơn hàng không tồn tại";
-
-                return _response;
-            }
-
-            var userId = order.UserId;
-
-            // Lấy danh sách sản phẩm từ phương thức GetRebuyOrder
-            var orderItemList = await GetRebuyOrder(orderId);
-            var itemList = ((List<RebuyOrderDto>)orderItemList.Result)
-                   .Where(item => item.IsActive) // Lọc các sản phẩm có IsActive = true
-                   .ToList();
-
-            // Kiểm tra nếu itemList rỗng
-            if (!itemList.Any())
-            {
-                _response.IsSuccess = false;
-                _response.Message = "Không có sản phẩm nào có thể mua lại.";
-                return _response;
-            }
-
-            // Map từng RebuyOrderDto vào CartDetails bằng Select
-            var cartDetails = itemList.Select(item => new CartDetails
-            {
-                UserId = userId, // Thay bằng ID người dùng thực tế
-                ProductId = item.ProductId,
-                Quantity = item.Quantity,
-                Total = item.Quantity * item.CurrentPrice,
-            }).ToList();
-
-            // Giả sử _context là DbContext của bạn và CartDetails là DbSet<CartDetails>
-            _context.CartDetails.AddRange(cartDetails);
-            await _context.SaveChangesAsync();
-
-            _response.Result = _mapper.Map<List<CartDetailsDto>>(cartDetails);
-            _response.IsSuccess = true;
-            _response.Message = "Mua thành công";
-
-            return _response;
-        }*/
-
         public async Task<ResponseDto> RebuyOrder(int orderId)
         {
             var order = await _context.Orders.FindAsync(orderId);
@@ -292,6 +256,73 @@ namespace NanaFoodDAL.IRepository.Repository
             _response.Result = itemList;
             _response.IsSuccess = true;
             _response.Message = "Mua thành công";
+
+            return _response;
+        }
+
+        public async Task<ResponseDto> UpdateProductQuantity(int orderId, int state)
+        {
+            try
+            {
+                var order = await _context.Orders.FirstOrDefaultAsync(o => o.OrderId == orderId);
+
+                if (order == null)
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Không tìm thấy đơn hàng";
+                    _response.Result = order;
+                    return _response;
+                }
+
+                var orderDetails = await _context.OrderDetails.Where(o => o.OrderId == orderId).ToListAsync();
+
+                int quantityModifier = state == 1 ? -1 : state == -1 ? 1 : 0;
+
+                if (quantityModifier != 0)
+                {
+                    foreach (var item in orderDetails)
+                    {
+                        var product = await _context.Products.FirstOrDefaultAsync(p => p.ProductId == item.ProductId);
+
+                        if (product != null)
+                        {
+                            if (state == 1 && product.Quantity < item.Quantity)
+                            {
+                                _context.Orders.Remove(order);
+                                await _context.SaveChangesAsync();
+
+                                _response.IsSuccess = false;
+                                _response.Message = "Sản phẩm " + product.ProductName + " đã hết hàng";
+                                return _response;
+                            }
+
+                            product.Quantity += item.Quantity * quantityModifier;
+
+                            if (product.Quantity < 0)
+                            {
+                                product.Quantity = 0;
+                            }
+                        }
+                    }
+
+                    await _context.SaveChangesAsync();
+
+                    _response.IsSuccess = true;
+                    _response.Message = "Cập nhật số lượng sản phẩm thành công";
+                    _response.Result = orderDetails;
+                }
+                else
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Trạng thái không hợp lệ";
+                    _response.Result = orderDetails;
+                }
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ex.Message;
+            }
 
             return _response;
         }

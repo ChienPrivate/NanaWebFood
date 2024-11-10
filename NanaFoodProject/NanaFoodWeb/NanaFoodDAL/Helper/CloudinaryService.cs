@@ -36,7 +36,8 @@ namespace NanaFoodDAL.Helper
             };
             var result = await _cloudinary.UploadAsync(UploadParam);
 
-            return result?.SecureUri.AbsoluteUri;
+            return result?.SecureUrl.AbsoluteUri;
+            /*return result?.SecureUri.AbsoluteUri;*/
         }
 
         public async Task<bool> DeleteImage(string imageUrl)

@@ -9,11 +9,13 @@ namespace NanaFoodApi.Controllers
     public class HelperApiController : ControllerBase
     {
         private readonly CloudinaryService _cloudinaryService;
+        private readonly EmailPoster _emailPoster;
         private readonly ResponseDto _response;
-        public HelperApiController(CloudinaryService cloudinaryService)
+        public HelperApiController(CloudinaryService cloudinaryService, EmailPoster emailPoster)
         {
             _cloudinaryService = cloudinaryService;
             _response = new ResponseDto();
+            _emailPoster = emailPoster;
         }
         [HttpPost("ImagePoster")]
         public async Task<ResponseDto> PostImage(IFormFile file)
