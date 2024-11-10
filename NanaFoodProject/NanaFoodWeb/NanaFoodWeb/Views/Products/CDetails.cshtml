@@ -36,6 +36,16 @@
                 </span>
             </div>
             <div class="h5">Giá : @Model.Price.ToString("#,##") vnđ</div>
+            <div class="h5">
+                Còn lại: 
+                @if(Model.Quantity <= 0){
+                    <span class="badge bg-danger">Hết hàng</span>
+                }
+                else
+                {
+                    <span>@Model.Quantity phần</span>
+                }
+            </div>
             <div class="h6 py-1">Mô tả:</div>
             <div class="fs-6">
                 @Model.Description
@@ -46,6 +56,7 @@
                     <button type="button" class="btn btn-warning" onclick="decrease()">-</button>
                     <input type="number" class="form-control rounded-0 text-center" name="quantity" id="quantity" readonly value="1" />
                     <button type="button" class="btn btn-plus btn-warning" onclick="increase()">+</button>
+                    <input id="productQuantity" asp-for="Quantity" hidden />
                 </div>
                 <div class="d-flex justify-content-between py-3" style="width:250px;">
                     <button type="submit" class="btn btn-warning">Thêm giỏ hàng</button>
@@ -73,7 +84,7 @@
     
 
     <!-- Modal -->
-    <div class="modal fade" id="quantityLimitModal" tabindex="-1" aria-labelledby="quantityLimitModalLabel" aria-hidden="true">
+    @* <div class="modal fade" id="quantityLimitModal" tabindex="-1" aria-labelledby="quantityLimitModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -88,7 +99,27 @@
                 </div>
             </div>
         </div>
+    </div> *@
+
+    <!-- Modal -->
+    <div class="modal fade" id="quantityLimitModal" tabindex="-1" aria-labelledby="quantityLimitModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-center" id="quantityLimitModalLabel">Thông báo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="quantityLimitModalBody">
+                    <!-- Nội dung thông báo sẽ được cập nhật động bởi JavaScript -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
     </div>
+
+
 
     @* <div class="container-fluid">
         @await Html.PartialAsync("ListReview")
@@ -96,9 +127,46 @@
 </div>
 <script>
     function increase() {
+        var quantityInput = document.getElementById('quantity');
+        var currentQuantity = parseInt(quantityInput.value);
+        var maxQuantity = parseInt(document.getElementById('productQuantity').value); // Giá trị tồn kho tối đa
+        var quantityLimitModal = new bootstrap.Modal(document.getElementById('quantityLimitModal'));
+
+        if (currentQuantity < 10 && currentQuantity < maxQuantity) {
+            quantityInput.value = currentQuantity + 1;
+        } else {
+            // Kiểm tra điều kiện để hiển thị thông báo phù hợp
+            var modalBody = document.getElementById('quantityLimitModalBody'); // Thay đổi nội dung của modal
+            if (currentQuantity >= 10) {
+                modalBody.innerHTML = "Số lượng quá lớn, vui lòng liên hệ : <strong>08588xxxxx</strong> để mua với giá tốt nhất";
+            } else if (currentQuantity >= maxQuantity) {
+                modalBody.innerHTML = "Vượt quá số lượng hiện tại , vui lòng liên hệ : <strong>08588xxxxx</strong> để được hỗ trợ";
+            }
+            quantityLimitModal.show();
+        }
+    }
+
+    function decrease() {
+        var quantityInput = document.getElementById('quantity');
+        if (parseInt(quantityInput.value) > 1) {
+            quantityInput.value = parseInt(quantityInput.value) - 1;
+        }
+    }
+</script>
+
+@* <script>
+    function increase() {
+
+        var maxQuantity = document.getElementById('productQuantity').value;
+
+
         if (document.getElementById('quantity').value < 10) {
             document.getElementById('quantity').value++;
-        } else {
+        }
+        else if (document.getElementById('quantity').value < maxQuantity) {
+            document.getElementById('quantity').value++;
+        }
+        else {
             var quantityLimitModal = new bootstrap.Modal(document.getElementById('quantityLimitModal'));
             quantityLimitModal.show();
         }
@@ -108,4 +176,4 @@
             document.getElementById('quantity').value--;
         }
     }
-</script>
+</script> *@
