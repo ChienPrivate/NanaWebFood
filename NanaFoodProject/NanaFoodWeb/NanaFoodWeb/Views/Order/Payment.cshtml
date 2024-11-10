@@ -131,7 +131,7 @@
                         </div>
                         <hr />
                         <div class="btn-group w-100 coupon-Finder">
-                            <input type="text" id="couponInput" class="form-control" placeholder="Nhập mã giảm giá" style="width: 379.656px;">
+                            <input asp-for=CouponCode type="text" id="couponInput" class="form-control" placeholder="Nhập mã giảm giá" style="width: 379.656px;">
                             <button type="button" id="applyCouponbtn" class="btn btn-outline-danger" style="height: 36px; transform: translate(0px, 12px); position: relative; top: -1px;">Áp dụng</button>
                         </div>
                         <hr />
@@ -480,28 +480,56 @@
             $('button[type="submit"]').click(function (e) {
                 e.preventDefault(); // Ngăn form gửi ngay lập tức
 
+                // Làm mới các biến lỗi trong mỗi lần submit
+                var districtError = $('#districtError').text().trim().length > 0;
+                var wardError = $('#wardError').text().trim().length > 0;
+                var hasErrors = districtError || wardError; // Cập nhật điều kiện lỗi mỗi lần nhấn nút
+
                 // Lấy giá trị từ các trường input và dropdown
                 var address = $('input[name="Address"]').val();
                 var wardText = $('#WardList option:selected').text();
                 var districtText = $('#DistrictList option:selected').text();
-                var provinceText = $('#ProvinceList option:selected').text();
+                var provinceText = $('#ProvinceList option:selected').text() || ''; // Nếu không có ProvinceList, set chuỗi rỗng
                 const district = $('#DistrictList').val();
                 const ward = $('#WardList').val();
 
-                console.log(districtText);
-                console.log(wardText);
+                console.log("Address:", address);
+                console.log("Ward Text:", wardText);
+                console.log("District Text:", districtText);
+                console.log("Province Text:", provinceText);
+                console.log("Selected District Value:", district);
+                console.log("Selected Ward Value:", ward);
+                console.log("District Error:", districtError);
+                console.log("Ward Error:", wardError);
+                console.log("Has Errors:", hasErrors);
 
-                var hasErrors = $('.text-danger').length > 0; // Giả sử bạn sử dụng class 'text-danger' để hiển thị lỗi
-
-                if (!hasErrors) {
+                // Kiểm tra nếu không có lỗi và các giá trị district và ward đã được chọn
+                if (!hasErrors && district && ward) {
                     // Tạo chuỗi mới cho Address
-                    var fullAddress = `${address}, ${wardText}, ${districtText}, ${provinceText}`;
+                    var fullAddress = `${address}, ${wardText}, ${districtText}, ${provinceText}`.trim();
+
                     // Gán lại giá trị mới cho ô input Address
+                    console.log("Full Address Created:", fullAddress);
                     $('input[name="Address"]').val(fullAddress);
+                } else {
+                    // Hiển thị thông báo lỗi nếu có
+                    if (!district) $('#districtError').text("Vui lòng chọn quận/huyện.");
+                    if (!ward) $('#wardError').text("Vui lòng chọn phường/xã.");
                 }
 
-                // Sau khi cập nhật giá trị, submit form
-                $(this).closest('form').submit();
+                // Sau khi cập nhật giá trị, submit form nếu không có lỗi
+                if (!hasErrors) {
+                    $(this).closest('form').submit();
+                }
+            });
+
+            // Xóa thông báo lỗi khi người dùng thay đổi lựa chọn
+            $('#DistrictList').change(function () {
+                $('#districtError').text("");
+            });
+
+            $('#WardList').change(function () {
+                $('#wardError').text("");
             });
         });
 

@@ -5,13 +5,12 @@ using System.Net.Mail;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using NanaFoodDAL.Model;
 
 namespace NanaFoodDAL.Helper
 {
     public class EmailPoster
     {
-        
-
         public string SendMail(string to, string subject, string body)
         {
             string from = "chienprivate@gmail.com";
@@ -243,13 +242,172 @@ namespace NanaFoodDAL.Helper
         <!-- Phần thông tin bên phải -->
         <div class=""signature-info"">
             <p><strong>Địa chỉ:</strong> QTSC 9 Building, Đ. Tô Ký, Tân Chánh Hiệp, Quận 12, Hồ Chí Minh, Việt Nam</p>
-            <p><strong>Email:</strong> TrinhVanTruonga6a@gmail.com</p>
+            <p><strong>Email:</strong> nanafoodStore@gmail.com</p>
             <p><strong>Số điện thoại:</strong> 84+ 123456789</p>
         </div>
     </div>
 
 </body>
 
+</html>";
+        }
+
+        public string OrderEmailTemplate(Order order, List<OrderDetails> orderDetailsList)
+        {
+            string orderItemsHtml = "";
+            string receiveDateHtml = order.ReceiveDate == DateTime.MinValue
+        ? "<p><strong>Ngày nhận hàng:</strong> Chưa nhận hàng</p>"
+        : $"<p><strong>Ngày nhận hàng:</strong> {order.ReceiveDate.ToString("dd/MM/yyyy HH:mm:ss tt")}</p>";
+
+            string headerColor = order.OrderStatus == "Đã huỷ" ? "#d9534f" : "#4CAF50";
+            // Kiểm tra nếu có lý do hủy để hiển thị, nếu không thì bỏ qua dòng này
+            string cancelReasonHtml = string.IsNullOrEmpty(order.CancelReason)
+                ? ""
+                : $"<p><strong>Lý do hủy (nếu có):</strong> {order.CancelReason}</p>";
+
+
+
+            // Duyệt qua từng OrderDetails để tạo hàng bảng cho từng sản phẩm
+            foreach (var item in orderDetailsList)
+            {
+                orderItemsHtml += $@"
+            <tr>
+                <td>{item.ProductName}</td>
+                <td><img src='{item.ImageUrl}' alt='{item.ProductName}' style='width: 50px; height: 50px;' /></td>
+                <td>{item.Quantity}</td>
+                <td>{item.Price.ToString("#,##")} VNĐ</td>
+                <td>{item.Total.ToString("#,##")} VNĐ</td>
+            </tr>";
+            }
+
+            // Template HTML cho email
+            return $@"
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+            .container {{
+        width: 100%;
+        max-width: 600px;
+        margin: auto;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+    }}
+    
+    /* Header có màu nền động và chữ màu trắng */
+    .header {{
+        background-color: {headerColor}; /* Màu nền thay đổi tùy thuộc vào trạng thái đơn hàng */
+        color: white;
+        padding: 10px;
+        text-align: center;
+    }}
+    
+    .order-info {{
+        margin-top: 20px;
+        font-size: 14px;
+    }}
+    
+    .order-details table {{
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }}
+    
+    /* Cập nhật màu nền và màu chữ trắng cho thẻ <th> */
+    .order-details th {{
+        background-color: #f7d200; /* Màu vàng cho tiêu đề bảng */
+        color: white; /* Màu chữ trắng cho các thẻ th */
+        padding: 8px;
+        text-align: left;
+    }}
+    
+    .order-details td {{
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }}
+    
+    .footer {{
+        margin-top: 20px;
+        font-size: 12px;
+        color: #555;
+        text-align: center;
+    }}
+    /* Chữ ký cuối email */
+        .signature {{
+            display: flex;
+            align-items: center;
+            margin-top: 20px;
+            font-size: 14px;
+            line-height: 1.5;
+            color: #333;
+        }}
+
+        .signature img {{
+            width: 100px;
+            /* Kích thước ảnh */
+            margin-right: 20px;
+            /* Khoảng cách giữa ảnh và thông tin */
+            border-radius: 10px;
+            /* Bo góc ảnh */
+        }}
+
+        .signature-info {{
+            flex-grow: 1;
+        }}
+    </style>
+</head>
+<body>
+    <div class='container'>
+        <div class='header'>
+            <h2>Chi tiết đơn hàng #{order.OrderId}</h2>
+        </div>
+        <div class='order-info'>
+            <p><strong>Họ tên:</strong> {order.FullName}</p>
+            <p><strong>Số điện thoại:</strong> {order.PhoneNumber}</p>
+            <p><strong>Email:</strong> {order.Email}</p>
+            <p><strong>Địa chỉ:</strong> {order.Address}</p>
+            <p><strong>Ngày đặt hàng:</strong> {order.OrderDate.ToString("dd/MM/yyyy HH:mm:ss tt")}</p>
+            <p><strong>Thời gian giao hàng dự kiến:</strong> {order.ExpectedDeliveryDate}</p>
+            {receiveDateHtml}
+            <p><strong>Phương thức thanh toán:</strong> {order.PaymentType}</p>
+            <p><strong>Trạng thái thanh toán:</strong> {order.PaymentStatus}</p>
+            <p><strong>Phí vận chuyển:</strong> {order.ShipmentFee.ToString("#,##")} VNĐ</p>
+            <p><strong>Tổng cộng:</strong> {order.Total.ToString("#,##")} VNĐ</p>
+            <p><strong>Ghi chú:</strong> {order.Note ?? "Không có"}</p>
+            {cancelReasonHtml}
+        </div>
+        <div class='order-details'>
+            <h3>Chi tiết sản phẩm</h3>
+            <table>
+                <tr>
+                    <th>Sản phẩm</th>
+                    <th>Hình ảnh</th>
+                    <th>Số lượng</th>
+                    <th>Giá</th>
+                    <th>Tổng</th>
+                </tr>
+                {orderItemsHtml}
+            </table>
+        </div>
+        <div class='footer'>
+            <p>Cảm ơn bạn đã tin tưởng và sử dụng dịch vụ của Nana. Chúng tôi rất vui được phục vụ bạn!</p>
+            <p>Đây là email tự động, vui lòng không trả lời. Nếu có bất kỳ thắc mắc nào, hãy liên hệ với chúng tôi qua thông tin hỗ trợ.</p>
+        </div>
+    </div>
+    <!-- Chữ ký của cửa hàng -->
+    <div class=""container bg-white signature"">
+        <!-- Thêm hình ảnh vào bên trái -->
+        <img src=""https://png.pngtree.com/png-clipart/20220131/original/pngtree-pizza-shop-selling-different-pizza-pages-there-is-an-eating-service-png-image_7256996.png""
+            alt=""Pizza Shop Image"">
+        <!-- Phần thông tin bên phải -->
+        <div class=""signature-info"">
+            <p><strong>Địa chỉ:</strong> QTSC 9 Building, Đ. Tô Ký, Tân Chánh Hiệp, Quận 12, Hồ Chí Minh, Việt Nam</p>
+            <p><strong>Email:</strong> nanafoodStore@gmail.com</p>
+            <p><strong>Số điện thoại:</strong> 84+ 123456789</p>
+        </div>
+    </div>
+</body>
 </html>";
         }
     }

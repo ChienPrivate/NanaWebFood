@@ -15,7 +15,8 @@ namespace NanaFoodDAL.Model
         public int MaxUsage { get; set; } // Số lần sử dụng tối đa của mã giảm giá
         public int TimesUsed { get; set; } = 0;  // Số lần mã giảm giá đã được sử dụng
         public CouponStatus Status { get; set; }
-        public List<UserCoupon> UserCoupons { get; set; }   
+        public List<UserCoupon> UserCoupons { get; set; }
+        public List<Order> OrderCoupons { get; set; }
       
     }
    

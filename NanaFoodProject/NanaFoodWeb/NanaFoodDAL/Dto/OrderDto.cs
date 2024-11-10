@@ -30,6 +30,9 @@ namespace NanaFoodDAL.Dto
         public string UserId { get; set; }
         [Required(ErrorMessage = "KHông được để trống hóa đơn")]
         public double Total { get; set; }
+        public string? CouponCode { get; set; }
+        public double? Discount { get; set; }// Giá trị giảm giá
+        public double? MinAmount { get; set; } // giá trị điều kiện cần để giảm
         [Required(ErrorMessage = "Ngày đặt hàng không được trống")]
         public DateTime OrderDate { get; set; } = DateTime.Now;
         public string ExpectedDeliveryDate { get; set; }

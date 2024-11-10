@@ -24,12 +24,18 @@ namespace NanaFoodDAL.Model
         public string ExpectedDeliveryDate { get; set; }
         public string? Note { get; set; }
         public string? CancelReason { get; set; }
+
         public double Total { get; set; }
         public DateTime OrderDate { get; set; } = DateTime.Now;
         public DateTime ReceiveDate { get; set; }
+        [ForeignKey(nameof(Coupon))]
+        public string? CouponCode { get; set; }
+        public double? Discount { get; set; }// Giá trị giảm giá
+        public double? MinAmount { get; set; } // giá trị điều kiện cần để giảm
         [ForeignKey(nameof(User))]
         public string UserId { get; set; }
         public User User { get; set; }
+        public Coupon? Coupon { get; set; }
         public List<OrderDetails> OrderDetails { get; set; }
     }
 }
