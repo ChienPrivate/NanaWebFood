@@ -20,6 +20,7 @@ namespace NanaFoodDAL.Dto
         [StringLength(450)]
         public string? Description { get; set; }
         public bool IsActive { get; set; }
+        public int Quantity { get; set; }
         public int CategoryId { get; set; }
     }
 }
