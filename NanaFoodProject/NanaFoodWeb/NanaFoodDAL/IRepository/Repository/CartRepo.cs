@@ -177,7 +177,7 @@ namespace NanaFoodDAL.IRepository.Repository
 
         public async Task<int> ProductQuantity(int productId)
         {
-            var product = await _context.CartDetails.FirstOrDefaultAsync(p => p.ProductId == productId);
+            var product = await _context.Products.FirstOrDefaultAsync(p => p.ProductId == productId);
 
             if (product != null)
             {
