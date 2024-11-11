@@ -266,5 +266,14 @@ namespace NanaFoodWeb.IRepository.Repository
                 Url = APIBase + $"/api/Order/RebuyOrder/{orderId}"
             });
         }
+
+        public async Task<ResponseDto> ApplyCoupon(int orderId, string couponCode)
+        {
+            return await _baseService.SendAsync(new RequestDto
+            {
+                ApiType = ApiType.PUT,
+                Url = APIBase + $"/api/Order/ApplyCoupon/{orderId}/{couponCode}"
+            });
+        }
     }
 }

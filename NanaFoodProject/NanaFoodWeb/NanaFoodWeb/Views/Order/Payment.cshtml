@@ -131,13 +131,13 @@
                         </div>
                         <hr />
                         <div class="btn-group w-100 coupon-Finder">
-                            <input asp-for=CouponCode type="text" id="couponInput" class="form-control" placeholder="Nhập mã giảm giá" style="width: 379.656px;">
+                            <input type="text" id="couponInput" class="form-control" placeholder="Nhập mã giảm giá" style="width: 379.656px;">
+                            <input asp-for=CouponCode id="couponCodeValue" hidden />
                             <button type="button" id="applyCouponbtn" class="btn btn-outline-danger" style="height: 36px; transform: translate(0px, 12px); position: relative; top: -1px;">Áp dụng</button>
                         </div>
                         <hr />
                         <div class="d-flex justify-content-between mt-2 mb-2">
                             <strong>Giảm giá:</strong> <span id="discount">0 VNĐ</span>
-
                         </div>
                         <div class="d-flex justify-content-between mt-2 mb-2">
                             <strong>Tổng đơn hàng:</strong> <span>@cartDetails.Sum(x => x.Total).ToString("#,##") VNĐ</span>
@@ -158,6 +158,23 @@
 
                         <button type="submit" class="btn btn-primary w-100">Thanh toán</button>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="notification" tabindex="-1" aria-labelledby="notificationModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-center" id="quantityLimitModalLabel">Thông báo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Đóng</button>
                 </div>
             </div>
         </div>
@@ -393,87 +410,124 @@
                     }
                 });
 
+            var originalOrderTotal = parseFloat($('#totalPay').text().replace(/,| VNĐ/g, '')) || 0; // Tổng tiền gốc
+            var discount = 0; // Biến lưu giá trị giảm giá
+            var discountedTotal = originalOrderTotal; // Tổng tiền sau khi giảm giá
+            var couponApplied = false; // Trạng thái mã giảm giá đã được áp dụng
 
-                // Hàm để đọc cookie
-                function getCookie(name) {
-                    let cookieArr = document.cookie.split(";"); // Tách các cặp cookie
-                    for (let i = 0; i < cookieArr.length; i++) {
-                        let cookiePair = cookieArr[i].split("="); // Tách từng cặp tên-giá trị cookie
-                        if (name == cookiePair[0].trim()) {
-                            return decodeURIComponent(cookiePair[1]); // Trả về giá trị của cookie nếu tìm thấy
-                        }
-                    }
-                    return null; // Trả về null nếu không tìm thấy cookie
+            $('#applyCouponbtn').click(function () {
+    var code = $('#couponInput').val().trim(); // Lấy giá trị của coupon và xóa khoảng trắng hai đầu
+
+    // Kiểm tra nếu ô nhập mã giảm giá trống
+    if (!couponApplied && code === "") {
+        showNotification('Hãy nhập mã giảm giá của bạn.'); // Hiển thị thông báo nếu ô trống
+        return; // Dừng lại nếu mã trống
+    }
+
+    if (!couponApplied) {
+        // Nếu mã giảm giá chưa được áp dụng
+        $.ajax({
+            url: '/Order/ApplyCoupon',
+            type: 'POST',
+            data: { code: code },
+            success: function (response) {
+                // Kiểm tra nếu tổng đơn hàng nhỏ hơn giá trị tối thiểu của mã giảm giá
+                if (response.minAmount > @cartDetails.Sum(x => x.Total)) {
+                    showNotification(`Tổng đơn hàng phải lớn hơn ${response.minAmount} VNĐ.`);
+                    $('#couponInput').val(''); // Xóa nội dung của ô nhập mã giảm giá
+                    return;
                 }
-                var jwtToken = getCookie('JWTToken');
-                $(".btn#applyCouponbtn").click(function () {
-                    var CouponCode = document.getElementById('couponInput').value;
-                    var discount = document.getElementById('discount').textContent.trim();
-                    var currentTotal = document.getElementById('totalPay').textContent.trim();
-                    var totalPayNumber = parseInt(currentTotal.replace(/,| VNĐ/g, ''));
-                    // var CouponCode = $(this).closest('.coupon-Finder').find('#couponInput');
-                    $.ajax({
-                        url: 'https://localhost:7094/api/Coupon/Check/' + CouponCode,
-                        type: 'GET',
-                        headers: {
-                            'Authorization': 'Bearer ' + jwtToken // Thêm JWT vào header
-                        },
-                        success: function (response) {
-                            var formattedDiscount = response.result.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
-                            $('#discount').text('- '+ formattedDiscount + ' VNĐ');
-                            currentTotal = totalPayNumber - response.result;
-                            var formatted = currentTotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                            $('#totalPay').text(formatted + ' VNĐ');
-                        },
-                        error: function (xhr, status, error) {
-                            console.log('result error' + xhr.responseText);
-                        }
-                    });
-                });
+                if (response.couponCode) {
+                    // Kiểm tra nếu coupon đã hết hạn
+                    var endDate = new Date(response.endStart);
+                    var now = new Date();
+                    if (endDate < now) {
+                        showNotification('Mã giảm giá đã hết hạn.');
+                        $('#couponInput').val(''); // Xóa nội dung của ô nhập mã giảm giá
+                        return;
+                    }
 
-                // Thay đổi tổng tiền mỗi khi phí ship thay đổi
-                //  const observer = new MutationObserver(() => {
-                //     var currentTotal = document.getElementById('totalPay').textContent.trim();
-                //     var ship = document.getElementById('shippingFee').textContent.trim();
-                //     var totalPayNumber = parseInt(currentTotal.replace(/,| VNĐ/g, ''));
-                //     var shipInteger =  parseInt(ship.replace(/,| VNĐ/g, ''));
-                //     currentTotal = totalPayNumber + shipInteger;
-                //     var formattedFee = currentTotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                //     $('#totalPay').text(formattedFee + ' VNĐ');
-                //     document.getElementById("shipmentFeeInput").value = shipInteger;
-                //     document.getElementById("orderTotal").value = currentTotal;
-                // });
+                    // Kiểm tra nếu coupon đã hết lượt sử dụng
+                    if (response.maxUsage <= 0) {
+                        showNotification('Mã giảm giá đã hết lượt sử dụng.');
+                        $('#couponInput').val(''); // Xóa nội dung của ô nhập mã giảm giá
+                        return;
+                    }
 
-                // observer.observe(document.getElementById('shippingFee'), { childList: true });
-                let previousShippingFee = 0;
+                    // Áp dụng giảm giá nếu hợp lệ và lưu lại giá trị giảm giá
+                    discount = parseFloat(response.discount) || 0;
+                    discountedTotal = originalOrderTotal - discount; // Cập nhật tổng sau khi giảm giá
 
-                const observer = new MutationObserver(() => {
-                    var currentTotal = document.getElementById('totalPay').textContent.trim();
-                    var ship = document.getElementById('shippingFee').textContent.trim();
-                    var totalPayNumber = parseInt(currentTotal.replace(/,| VNĐ/g, ''));
-                    var shipInteger = parseInt(ship.replace(/,| VNĐ/g, ''));
+                    // Hiển thị giá trị giảm giá và cập nhật tổng thanh toán
+                    $('#discount').text(discount.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' VNĐ');
+                    var shippingFee = parseFloat($('#shippingFee').text().replace(/,| VNĐ/g, '')) || 0;
+                    updateTotalPay(shippingFee); // Cập nhật tổng thanh toán với phí ship hiện tại
 
-                    // Trừ đi phí ship cũ để tránh cộng dồn
-                    totalPayNumber -= previousShippingFee;
+                    // Chuyển mã giảm giá vào input ẩn
+                    $('#couponCodeValue').val(code);
 
-                    // Thêm phí ship mới
-                    currentTotal = totalPayNumber + shipInteger;
+                    // Đổi nút "Áp dụng" thành "Hủy" và disable input
+                    $('#applyCouponbtn').text('Hủy');
+                    $('#couponInput').prop('disabled', true);
+                    couponApplied = true;
+                } else {
+                    showNotification('Mã giảm giá không hợp lệ.');
+                }
+            },
+            error: function () {
+                showNotification('Đã xảy ra lỗi khi áp dụng mã giảm giá.');
+            }
+        });
+    } else {
+        // Nếu mã giảm giá đã được áp dụng, thực hiện hủy
+        discount = 0; // Reset giảm giá
+        discountedTotal = originalOrderTotal; // Khôi phục tổng thanh toán ban đầu
+        $('#discount').text('0 VNĐ'); // Xóa hiển thị giảm giá
+        var shippingFee = parseFloat($('#shippingFee').text().replace(/,| VNĐ/g, '')) || 0;
+        updateTotalPay(shippingFee); // Cập nhật lại tổng thanh toán với phí ship hiện tại
 
-                    // Cập nhật lại giá trị của phí ship trước đó
-                    previousShippingFee = shipInteger;
+        // Xóa mã giảm giá khỏi input ẩn và clear input hiển thị
+        $('#couponCodeValue').val('');
+        $('#couponInput').val('').prop('disabled', false);
 
-                    // Định dạng lại và cập nhật tổng tiền hiển thị
-                    var formattedFee = currentTotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                    $('#totalPay').text(formattedFee + ' VNĐ');
-                    document.getElementById("shipmentFeeInput").value = shipInteger;
-                    document.getElementById("orderTotal").value = currentTotal;
-                });
+        // Đổi nút "Hủy" trở lại thành "Áp dụng"
+        $('#applyCouponbtn').text('Áp dụng');
+        couponApplied = false;
+    }
+});
 
-                // Thiết lập MutationObserver để theo dõi thay đổi của #shippingFee
-                observer.observe(document.getElementById('shippingFee'), { childList: true });
+            function updateTotalPay(shippingFee) {
+                var currentTotal = discountedTotal + shippingFee;
 
+                // Định dạng lại và cập nhật tổng thanh toán hiển thị
+                var formattedFee = currentTotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                $('#totalPay').text(formattedFee + ' VNĐ');
+
+                // Cập nhật giá trị cho input ẩn #orderTotal
+                $('#orderTotal').val(currentTotal);
+
+                // Cập nhật giá trị cho input ẩn #shipmentFeeInput để truyền khi submit
+                $('#shipmentFeeInput').val(shippingFee);
+            }
+
+
+            // Theo dõi thay đổi của phí vận chuyển
+            let previousShippingFee = 0;
+            const observer = new MutationObserver(() => {
+                var ship = parseFloat($('#shippingFee').text().replace(/,| VNĐ/g, '')) || 0;
+                updateTotalPay(ship); // Cập nhật tổng thanh toán với phí ship hiện tại
+                previousShippingFee = ship;
             });
+
+            observer.observe(document.getElementById('shippingFee'), { childList: true });
+        });
+
+        // Hàm hiển thị modal thông báo
+        function showNotification(message) {
+            $('#notification .modal-body').text(message);
+            $('#notification').modal('show');
+        }
     </script>
     <script>
         $(document).ready(function () {
@@ -534,7 +588,4 @@
         });
 
     </script>
-
-
-
 }

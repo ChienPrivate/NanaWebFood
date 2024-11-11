@@ -187,6 +187,7 @@
                     url: `@NanaFoodWeb.Utility.StaticDetails.APIBase/api/Cart/GetProductQuantity/${productId}`,
                     type: 'GET',
                     success: function (response) {
+                        console.log(response);
                         if (response.isSuccess) {
                             let maxQuantity = response.result; // Số lượng tối đa từ server
                             if (quantity + 1 > 10) {

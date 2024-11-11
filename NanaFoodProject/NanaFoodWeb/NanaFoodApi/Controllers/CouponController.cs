@@ -154,6 +154,8 @@ namespace NanaFoodApi.Controllers
             }
             return Ok(result);
         }
+
+
         [HttpGet("getbyId/{code}")]
         public async Task<IActionResult>GetById([FromRoute] string code)
         {
