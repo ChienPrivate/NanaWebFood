@@ -129,5 +129,19 @@ namespace NanaFoodApi.Controllers
             }
             return Ok(response);
         }
+
+        [HttpGet("GetProductQuantity/{productId}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetProductQuantity(int productId)
+        {
+            var response = await _cartrepo.ProductQuantity(productId);
+
+            return Ok(new ResponseDto
+            {
+                IsSuccess = true,
+                Result = response,
+                Message = $"Số lượng của sản phẩm mã {productId}"
+            });
+        }
     }
 }
