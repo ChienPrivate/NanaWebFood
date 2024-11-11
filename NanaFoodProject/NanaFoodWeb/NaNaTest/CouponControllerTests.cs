@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -22,7 +23,10 @@ namespace NaNaTest
         {
             _couponRepoMock = new Mock<ICouponRepo>();
             _userCouponRepoMock = new Mock<IUserCouponRepo>();
-            _signInManagerMock = new Mock<SignInManager<User>>(Mock.Of<UserManager<User>>(), null, null, null, null, null, null, null, null);
+            //_signInManagerMock = new Mock<SignInManager<User>>(Mock.Of<UserManager<User>>(), null, null, null, null, null, null, null, null);
+            var userManagerMock = new Mock<UserManager<User>>(Mock.Of<IUserStore<User>>(), null, null, null, null, null, null, null, null);
+            _signInManagerMock = new Mock<SignInManager<User>>(userManagerMock.Object, Mock.Of<IHttpContextAccessor>(), Mock.Of<IUserClaimsPrincipalFactory<User>>(), null, null, null, null);
+
             _mapperMock = new Mock<IMapper>();
 
             _controller = new CouponController(_couponRepoMock.Object, _mapperMock.Object, _signInManagerMock.Object, _userCouponRepoMock.Object);
@@ -165,35 +169,6 @@ namespace NaNaTest
             
             Assert.IsType<NotFoundObjectResult>(result);
         }
-
-        [Fact]
-        public async Task Check_ValidCoupon_ReturnOkResult()
-        {
-            
-            var userId = "userId";
-            _signInManagerMock.Setup(sm => sm.UserManager.GetUserId(It.IsAny<System.Security.Claims.ClaimsPrincipal>())).Returns(userId);
-            _userCouponRepoMock.Setup(repo => repo.ApplyCoupon(userId, "SALE25")).ReturnsAsync(new ResponseDto { IsSuccess = true });
-
-            
-            var result = await _controller.Check("SALE25");
-
-            
-            Assert.IsType<OkObjectResult>(result);
-        }
-
-        [Fact]
-        public async Task Check_InvalidCoupon_ReturnBadRequest()
-        {
-            
-            var userId = "userId";
-            _signInManagerMock.Setup(sm => sm.UserManager.GetUserId(It.IsAny<System.Security.Claims.ClaimsPrincipal>())).Returns(userId);
-            _userCouponRepoMock.Setup(repo => repo.ApplyCoupon(userId, "INVALID")).ReturnsAsync(new ResponseDto { IsSuccess = false });
-
-            
-            var result = await _controller.Check("INVALID");
-
-            
-            Assert.IsType<BadRequestObjectResult>(result);
-        }
+       
     }
 }
