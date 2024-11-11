@@ -1,5 +1,4 @@
-﻿using System.Security.Claims;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -7,114 +6,194 @@ using NanaFoodApi.Controllers;
 using NanaFoodDAL.Dto;
 using NanaFoodDAL.IRepository;
 using NanaFoodDAL.Model;
+using Xunit;
 
 namespace NaNaTest
 {
     public class CouponControllerTests
     {
-        private Mock<ICouponRepo> _couponRepoMock;
-        private Mock<IUserCouponRepo> _userCouponRepoMock;
-        private Mock<IMapper> _mapperMock;
-        private Mock<SignInManager<User>> _signInManagerMock;
-        private CouponController _controller;
+        private readonly Mock<ICouponRepo> _couponRepoMock;
+        private readonly Mock<IUserCouponRepo> _userCouponRepoMock;
+        private readonly Mock<SignInManager<User>> _signInManagerMock;
+        private readonly Mock<IMapper> _mapperMock;
+        private readonly CouponController _controller;
 
-        public void Setup()
+        public CouponControllerTests()
         {
             _couponRepoMock = new Mock<ICouponRepo>();
             _userCouponRepoMock = new Mock<IUserCouponRepo>();
+            _signInManagerMock = new Mock<SignInManager<User>>(Mock.Of<UserManager<User>>(), null, null, null, null, null, null, null, null);
             _mapperMock = new Mock<IMapper>();
-            _signInManagerMock = new Mock<SignInManager<User>>(
-                new Mock<UserManager<User>>().Object, null, null, null, null, null, null, null, null
-            );
+
             _controller = new CouponController(_couponRepoMock.Object, _mapperMock.Object, _signInManagerMock.Object, _userCouponRepoMock.Object);
         }
 
         [Fact]
-        public async Task CreatCoupon_ValidData_ReturnOk()
+        public async Task CreatCoupon_ValidData_ReturnOkResult()
         {
-            var couponDto = new CouponDto { CouponCode = "SALE25", Discount = 25000 };
+            
+            var dto = new CouponDto { CouponCode = "SALE25", Discount = 25000 };
             var coupon = new Coupon { CouponCode = "SALE25", Discount = 25000 };
 
-            _mapperMock.Setup(m => m.Map<Coupon>(couponDto)).Returns(coupon);
+            _mapperMock.Setup(m => m.Map<Coupon>(dto)).Returns(coupon);
             _couponRepoMock.Setup(repo => repo.Create(It.IsAny<Coupon>())).ReturnsAsync(new ResponseDto { IsSuccess = true });
 
-            var result = await _controller.CreatCoupon(couponDto) as OkObjectResult;
+            
+            var result = await _controller.CreatCoupon(dto);
 
-            Assert.NotNull(result);
-            Assert.Equal(200, result.StatusCode);
+            
+            Assert.IsType<OkObjectResult>(result);
         }
 
         [Fact]
         public async Task CreatCoupon_InvalidData_ReturnBadRequest()
         {
-            _controller.ModelState.AddModelError("CouponCode", "Required");
+            
+            _controller.ModelState.AddModelError("Error", "Invalid model state");
 
-            var result = await _controller.CreatCoupon(new CouponDto()) as BadRequestObjectResult;
+            
+            var result = await _controller.CreatCoupon(new CouponDto());
 
-            Assert.NotNull(result);
-            Assert.Equal(400, result.StatusCode);
+            
+            Assert.IsType<BadRequestObjectResult>(result);
         }
 
         [Fact]
-        public async Task GetAll_ExistingCoupons_ReturnOk()
+        public async Task GetAll_ReturnOkResult_WithCouponList()
         {
-            _couponRepoMock.Setup(repo => repo.GetAll()).ReturnsAsync(new ResponseDto { IsSuccess = true });
+            
+            _couponRepoMock.Setup(repo => repo.GetAll()).ReturnsAsync(new ResponseDto { IsSuccess = true, Result = new List<CouponDto>() });
 
-            var result = await _controller.GetAll() as OkObjectResult;
+            
+            var result = await _controller.GetAll();
 
-            Assert.NotNull(result);
-            Assert.Equal(200, result.StatusCode);
+            
+            Assert.IsType<OkObjectResult>(result);
         }
 
         [Fact]
-        public async Task Update_ValidCoupon_ReturnOk()
+        public async Task GetAll_WhenErrorOccurs_ReturnBadRequest()
         {
-            var couponDto = new CouponDto { CouponCode = "SALE25", Discount = 25000 };
+            
+            _couponRepoMock.Setup(repo => repo.GetAll()).ReturnsAsync(new ResponseDto { IsSuccess = false });
+
+            
+            var result = await _controller.GetAll();
+
+            
+            Assert.IsType<BadRequestObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task Update_ValidData_ReturnOkResult()
+        {
+            
+            var dto = new CouponDto { CouponCode = "SALE25", Discount = 25000 };
             var coupon = new Coupon { CouponCode = "SALE25", Discount = 25000 };
 
-            _mapperMock.Setup(m => m.Map<Coupon>(couponDto)).Returns(coupon);
+            _mapperMock.Setup(m => m.Map<Coupon>(dto)).Returns(coupon);
             _couponRepoMock.Setup(repo => repo.Update(It.IsAny<Coupon>())).ReturnsAsync(new ResponseDto { IsSuccess = true });
 
-            var result = await _controller.Update(couponDto) as OkObjectResult;
-
-            Assert.NotNull(result);
-            Assert.Equal(200, result.StatusCode);
-        }
-
-        [Fact]
-        public async Task DeleteCoupon_ValidCode_ReturnOk()
-        {
-            _couponRepoMock.Setup(repo => repo.DeleteById("SALE25"))
-                           .ReturnsAsync(new ResponseDto { IsSuccess = true });
-
-            var result = await _controller.DeleteCoupon("SALE25");
             
-            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            var result = await _controller.Update(dto);
 
-            Assert.Equal(200, okResult.StatusCode);
+            
+            Assert.IsType<OkObjectResult>(result);
         }
 
         [Fact]
-        public async Task GetById_ValidCode_ReturnOk()
+        public async Task Update_InvalidData_ReturnBadRequest()
         {
-            _couponRepoMock.Setup(repo => repo.GetById("SALE25")).ReturnsAsync(new ResponseDto { IsSuccess = true });
+            
+            _controller.ModelState.AddModelError("Error", "Invalid model state");
 
-            var result = await _controller.GetById("SALE25") as OkObjectResult;
+            
+            var result = await _controller.Update(new CouponDto());
 
-            Assert.NotNull(result);
-            Assert.Equal(200, result.StatusCode);
+            
+            Assert.IsType<BadRequestObjectResult>(result);
         }
 
         [Fact]
-        public async Task Check_ValidCoupon_ReturnOk()
+        public async Task DeleteCoupon_ExistingCoupon_ReturnOkResult()
         {
-            _signInManagerMock.Setup(sm => sm.UserManager.GetUserId(It.IsAny<ClaimsPrincipal>())).Returns("user123");
-            _userCouponRepoMock.Setup(repo => repo.ApplyCoupon("user123", "SALE25")).ReturnsAsync(new ResponseDto { IsSuccess = true });
+            
+            _couponRepoMock.Setup(repo => repo.DeleteById("SALE25")).ReturnsAsync(new ResponseDto { IsSuccess = true });
 
-            var result = await _controller.Check("SALE25") as OkObjectResult;
+            
+            var result = await _controller.DeleteCoupon("SALE25");
 
-            Assert.NotNull(result);
-            Assert.Equal(200, result.StatusCode);
+            
+            Assert.IsType<OkObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task DeleteCoupon_NonExistentCoupon_ReturnBadRequest()
+        {
+            
+            _couponRepoMock.Setup(repo => repo.DeleteById("NONEXIST")).ReturnsAsync(new ResponseDto { IsSuccess = false });
+
+            
+            var result = await _controller.DeleteCoupon("NONEXIST");
+
+            
+            Assert.IsType<BadRequestObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task GetById_ExistingCoupon_ReturnOkResult()
+        {
+            
+            _couponRepoMock.Setup(repo => repo.GetById("SALE25")).ReturnsAsync(new ResponseDto { IsSuccess = true, Result = new CouponDto() });
+
+            
+            var result = await _controller.GetById("SALE25");
+
+            
+            Assert.IsType<OkObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task GetById_NonExistentCoupon_ReturnNotFound()
+        {
+            
+            _couponRepoMock.Setup(repo => repo.GetById("NONEXIST")).ReturnsAsync(new ResponseDto { IsSuccess = false });
+
+            
+            var result = await _controller.GetById("NONEXIST");
+
+            
+            Assert.IsType<NotFoundObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task Check_ValidCoupon_ReturnOkResult()
+        {
+            
+            var userId = "userId";
+            _signInManagerMock.Setup(sm => sm.UserManager.GetUserId(It.IsAny<System.Security.Claims.ClaimsPrincipal>())).Returns(userId);
+            _userCouponRepoMock.Setup(repo => repo.ApplyCoupon(userId, "SALE25")).ReturnsAsync(new ResponseDto { IsSuccess = true });
+
+            
+            var result = await _controller.Check("SALE25");
+
+            
+            Assert.IsType<OkObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task Check_InvalidCoupon_ReturnBadRequest()
+        {
+            
+            var userId = "userId";
+            _signInManagerMock.Setup(sm => sm.UserManager.GetUserId(It.IsAny<System.Security.Claims.ClaimsPrincipal>())).Returns(userId);
+            _userCouponRepoMock.Setup(repo => repo.ApplyCoupon(userId, "INVALID")).ReturnsAsync(new ResponseDto { IsSuccess = false });
+
+            
+            var result = await _controller.Check("INVALID");
+
+            
+            Assert.IsType<BadRequestObjectResult>(result);
         }
     }
 }

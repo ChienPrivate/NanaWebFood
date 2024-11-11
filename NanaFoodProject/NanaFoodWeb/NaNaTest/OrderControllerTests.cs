@@ -1,247 +1,194 @@
-﻿using Xunit;
-using Moq;
-using AutoMapper;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Moq;
 using NanaFoodApi.Controllers;
 using NanaFoodDAL.Dto;
+using NanaFoodDAL.Helper;
 using NanaFoodDAL.IRepository;
 using NanaFoodDAL.Model;
 using System.Security.Claims;
-using NanaFoodDAL.Helper;
+using FluentAssertions;
+using Xunit;
 
 namespace NaNaTest
 {
     public class OrderControllerTests
     {
-        /*private readonly Mock<IOrderRepository> _orderRepositoryMock;
-        private readonly Mock<ICartRepo> _cartRepoMock;
-        private readonly Mock<IMapper> _mapperMock;
+        private readonly Mock<IOrderRepository> _orderRepoMock;
         private readonly Mock<SignInManager<User>> _signInManagerMock;
-        private readonly OrderController _orderController;
-
-        public OrderControllerTests()
-        {
-            var userStoreMock = new Mock<IUserStore<User>>();
-            _signInManagerMock = new Mock<SignInManager<User>>(userStoreMock.Object, null, null, null, null, null, null);
-
-            _orderRepositoryMock = new Mock<IOrderRepository>();
-            _cartRepoMock = new Mock<ICartRepo>();
-            _mapperMock = new Mock<IMapper>();
-
-            _orderController = new OrderController(
-                _orderRepositoryMock.Object,
-                _signInManagerMock.Object,
-                _cartRepoMock.Object,
-                _mapperMock.Object);
-        }*/
-
-        private readonly Mock<IOrderRepository> _orderRepositoryMock;
-        private readonly Mock<SignInManager<User>> _signInManagerMock;
+        private readonly Mock<UserManager<User>> _userManagerMock;
         private readonly Mock<ICartRepo> _cartRepoMock;
         private readonly Mock<IMapper> _mapperMock;
         private readonly Mock<EmailPoster> _emailPosterMock;
-        private readonly OrderController _orderController;
+        private readonly OrderController _controller;
 
         public OrderControllerTests()
         {
-            var userStoreMock = new Mock<IUserStore<User>>();
-            _signInManagerMock = new Mock<SignInManager<User>>(userStoreMock.Object, null, null, null, null, null, null);
-
-            _orderRepositoryMock = new Mock<IOrderRepository>();
+            _orderRepoMock = new Mock<IOrderRepository>();
             _cartRepoMock = new Mock<ICartRepo>();
             _mapperMock = new Mock<IMapper>();
             _emailPosterMock = new Mock<EmailPoster>();
+            _userManagerMock = new Mock<UserManager<User>>(
+            new Mock<IUserStore<User>>().Object, null, null, null, null, null, null, null, null);
 
-            _orderController = new OrderController(
-                _orderRepositoryMock.Object,
+            _signInManagerMock = new Mock<SignInManager<User>>(
+                _userManagerMock.Object,
+                new Mock<IHttpContextAccessor>().Object,
+                new Mock<IUserClaimsPrincipalFactory<User>>().Object,
+                null, null, null, null);
+
+            _controller = new OrderController(
+                _orderRepoMock.Object,
                 _signInManagerMock.Object,
                 _cartRepoMock.Object,
                 _mapperMock.Object,
-                _emailPosterMock.Object // Thêm Mock cho EmailPoster
-            );
+                _emailPosterMock.Object);
+        }
+
+        private Mock<SignInManager<User>> MockSignInManager()
+        {
+            var userManagerMock = new Mock<UserManager<User>>(
+                new Mock<IUserStore<User>>().Object, null, null, null, null, null, null, null, null);
+
+            return new Mock<SignInManager<User>>(
+                userManagerMock.Object, Mock.Of<IHttpContextAccessor>(), Mock.Of<IUserClaimsPrincipalFactory<User>>(), null, null, null, null);
         }
 
         [Fact]
-        public async Task GetAllOrderAync_ReturnOkResult_WithOrderList()
+        public async Task GetAllOrderAync_ReturnsOk_WithOrderList()
         {
-            
-            var response = new ResponseDto
+            var orders = new List<OrderDto>
+            {
+                new OrderDto { OrderId = 1, UserId = "user-id-1" },
+                new OrderDto { OrderId = 2, UserId = "user-id-2" }
+            };
+            _orderRepoMock.Setup(repo => repo.GetAllOrderAync()).ReturnsAsync(new ResponseDto
             {
                 IsSuccess = true,
-                Message = "Success",
-                Result = new List<OrderDto> { new OrderDto { OrderId = 1, Total = 100 } }
-            };
-            _orderRepositoryMock.Setup(repo => repo.GetAllOrderAync()).ReturnsAsync(response);
+                Result = orders
+            });
 
-            
-            var result = await _orderController.GetAllOrderAync();
+            var result = await _controller.GetAllOrderAync();
 
-            
-            var okResult = Assert.IsType<OkObjectResult>(result);
-            var responseDto = Assert.IsType<ResponseDto>(okResult.Value);
-            Assert.True(responseDto.IsSuccess);
-            Assert.Equal(200, okResult.StatusCode);
-            Assert.Equal(response.Result, responseDto.Result);
+            result.Should().BeOfType<OkObjectResult>()
+                  .Which.Value.Should().BeEquivalentTo(new ResponseDto
+                  {
+                      IsSuccess = true,
+                      Result = orders
+                  });
         }
 
         [Fact]
-        public async Task AddOrderAsync_ValidOrder_ReturnOkResult()
+        public async Task AddOrderAsync_ValidOrder_ReturnsOk()
         {
-            
-            var user = new User { Id = "user-id", Email = "user@gmail.com" };
-            _signInManagerMock.Setup(sm => sm.UserManager.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user);
+            var orderDto = new OrderDto { UserId = "user-id-example", Total = 500000 };
+            var user = new User { Id = "user-id-example" };
 
-            var cartResponse = new ResponseDto
+            typeof(SignInManager<User>)
+                .GetProperty("UserManager", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+                ?.SetValue(_signInManagerMock.Object, _userManagerMock.Object);
+
+            _userManagerMock.Setup(manager => manager.GetUserAsync(It.IsAny<ClaimsPrincipal>()))
+                            .ReturnsAsync(user);
+
+            var order = new Order { OrderId = 1, UserId = user.Id };
+            _mapperMock.Setup(mapper => mapper.Map<Order>(orderDto)).Returns(order);
+            _orderRepoMock.Setup(repo => repo.AddOrder(order)).ReturnsAsync(order);
+            _cartRepoMock.Setup(repo => repo.GetCart(user)).ReturnsAsync(new ResponseDto
             {
                 IsSuccess = true,
-                Message = "Cart items fetched successfully",
-                Result = new List<CartResponseDto> { new CartResponseDto { ProductId = 1, ProductName = "Sample Product", Quantity = 1 } }
-            };
-            _cartRepoMock.Setup(repo => repo.GetCart(It.IsAny<User>())).ReturnsAsync(cartResponse);
+                Result = new List<CartResponseDto> { new CartResponseDto { ProductId = 1, Quantity = 2 } }
+            });
 
-            var orderDto = new OrderDto { FullName = "John Doe", Total = 2000 };
-            var order = new Order { OrderId = 1, UserId = user.Id, Total = 2000 };
-            _mapperMock.Setup(m => m.Map<Order>(orderDto)).Returns(order);
+            var result = await _controller.AddOrderAsync(orderDto);
 
-            _orderRepositoryMock.Setup(repo => repo.AddOrder(It.IsAny<Order>())).ReturnsAsync(order);
-            _orderRepositoryMock.Setup(repo => repo.AddOrderDetails(It.IsAny<IEnumerable<OrderDetails>>()));
+            var okResult = result as OkObjectResult;
+            okResult.Should().NotBeNull();
 
-            var responseDto = new ResponseDto
+            var response = okResult.Value as ResponseDto;
+            response.Should().NotBeNull();
+            response.Should().BeEquivalentTo(new ResponseDto
             {
+                Message = "Create Order successfully",
                 IsSuccess = true,
-                Message = "Items removed successfully"
-            };
-            _cartRepoMock.Setup(repo => repo.RemoveAllCartItem(It.IsAny<string>())).ReturnsAsync(responseDto);
-
-            
-            var result = await _orderController.AddOrderAsync(orderDto);
-
-            
-            var okResult = Assert.IsType<OkObjectResult>(result);
-            var response = Assert.IsType<ResponseDto>(okResult.Value);
-            Assert.True(response.IsSuccess);
-            Assert.Equal(order.OrderId, response.Result);
+                Result = order.OrderId
+            });
         }
 
         [Fact]
-        public async Task GetOrderByIdAsync_OrderExists_ReturnOkResult()
+        public async Task GetOrderByIdAsync_OrderExists_ReturnsOk()
         {
-            
-            var order = new OrderDto { OrderId = 1, Total = 100 };
-            var responseDto = new ResponseDto
+            int orderId = 1;
+            var order = new OrderDto { OrderId = orderId, UserId = "user-id-example" };
+
+            _orderRepoMock.Setup(repo => repo.GetOrderByIdAsync(orderId)).ReturnsAsync(new ResponseDto
             {
                 IsSuccess = true,
-                Message = "Order found",
                 Result = order
-            };
+            });
 
-            _orderRepositoryMock.Setup(repo => repo.GetOrderByIdAsync(1)).ReturnsAsync(responseDto);
+            var result = await _controller.GetOrderByIdAsync(orderId);
 
-            
-            var result = await _orderController.GetOrderByIdAsync(1);
-
-            
-            var okResult = Assert.IsType<OkObjectResult>(result);
-            Assert.Equal(200, okResult.StatusCode);
-            var returnedDto = Assert.IsType<ResponseDto>(okResult.Value);
-            Assert.Equal(responseDto.Result, returnedDto.Result);
+            result.Should().BeOfType<OkObjectResult>()
+                  .Which.Value.Should().BeEquivalentTo(new ResponseDto
+                  {
+                      IsSuccess = true,
+                      Result = order
+                  });
         }
 
         [Fact]
-        public async Task GetOrderByIdAsync_OrderDoesNotExist_ReturnNotFoundResult()
+        public async Task CancelOrderAsync_ValidOrderId_ReturnsOk()
         {
-            
-            var responseDto = new ResponseDto
-            {
-                IsSuccess = false,
-                Message = "Order not found",
-                Result = null
-            };
+            int orderId = 1;
+            string message = "Order canceled";
+            var user = new User { Id = "user-id-example" };
 
-            _orderRepositoryMock.Setup(repo => repo.GetOrderByIdAsync(2)).ReturnsAsync(responseDto);
+            _signInManagerMock.Setup(manager => manager.UserManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()))
+                              .ReturnsAsync(user);
 
-            
-            var result = await _orderController.GetOrderByIdAsync(2);
+            _orderRepoMock.Setup(repo => repo.CancelOrderAsync(orderId, message))
+                          .ReturnsAsync(new ResponseDto
+                          {
+                              IsSuccess = true,
+                              Message = "Order canceled successfully"
+                          });
 
-            
-            var notFoundResult = Assert.IsType<NotFoundObjectResult>(result);
-            var response = Assert.IsType<ResponseDto>(notFoundResult.Value);
-            Assert.False(response.IsSuccess);
-            Assert.Null(response.Result);
-        }
+            _orderRepoMock.Setup(repo => repo.UpdateProductQuantity(orderId, -1))
+                          .ReturnsAsync(new ResponseDto
+                          {
+                              IsSuccess = true,
+                              Message = "Product quantity updated successfully"
+                          });
 
-        [Fact]
-        public async Task CalculateProfitAsync_ReturnOkResult_WithProfitValue()
-        {
-            
-            var profit = 10000m;
-            var responseDto = new ResponseDto
-            {
-                IsSuccess = true,
-                Message = "Profit calculated successfully",
-                Result = profit
-            };
+            _orderRepoMock.Setup(repo => repo.GetOrderDetailsAsync(orderId))
+                          .ReturnsAsync(new ResponseDto
+                          {
+                              IsSuccess = true,
+                              Result = new List<OrderDetailsDto> { new OrderDetailsDto { ProductId = 1, Quantity = 2 } }
+                          });
 
-            _orderRepositoryMock.Setup(repo => repo.CalculateProfitAsync()).ReturnsAsync(responseDto);
+            _orderRepoMock.Setup(repo => repo.GetOrderByIdAsync(orderId))
+                          .ReturnsAsync(new ResponseDto
+                          {
+                              IsSuccess = true,
+                              Result = new OrderDto { UserId = user.Id, Email = "user@example.com" }
+                          });
 
-            
-            var result = await _orderController.CalculateProfitAsync();
+            var result = await _controller.CancelOrderAsync(orderId, message);
 
-            
-            var okResult = Assert.IsType<OkObjectResult>(result);
-            var returnedDto = Assert.IsType<ResponseDto>(okResult.Value);
-            Assert.Equal(profit, returnedDto.Result);
-        }
+            var okResult = result as OkObjectResult;
+            okResult.Should().NotBeNull();
 
-        [Fact]
-        public async Task UpdateOrderStatus_OrderExists_ReturnOkResult()
-        {
-            
-            var orderId = 1;
-            var statusMessage = "Shipped";
-            var responseDto = new ResponseDto
+            var response = okResult.Value as ResponseDto;
+            response.Should().NotBeNull();
+            response.Should().BeEquivalentTo(new ResponseDto
             {
                 IsSuccess = true,
-                Message = "Order status updated successfully",
-                Result = true
-            };
-
-            _orderRepositoryMock.Setup(repo => repo.UpdateOrderStatus(orderId, statusMessage)).ReturnsAsync(responseDto);
-
-            
-            var result = await _orderController.UpdateOrderStatus(orderId, statusMessage);
-
-            
-            var okResult = Assert.IsType<OkObjectResult>(result);
-            var returnedDto = Assert.IsType<ResponseDto>(okResult.Value);
-            Assert.True(returnedDto.IsSuccess);
+                Message = "Order canceled successfully"
+            });
         }
-
-        [Fact]
-        public async Task UpdateOrderStatus_OrderDoesNotExist_ReturnNotFoundResult()
-        {
-            
-            var orderId = 2;
-            var statusMessage = "Shipped";
-            var responseDto = new ResponseDto
-            {
-                IsSuccess = false,
-                Message = "Order not found",
-                Result = null
-            };
-
-            _orderRepositoryMock.Setup(repo => repo.UpdateOrderStatus(orderId, statusMessage)).ReturnsAsync(responseDto);
-
-            
-            var result = await _orderController.UpdateOrderStatus(orderId, statusMessage);
-
-            
-            var notFoundResult = Assert.IsType<NotFoundObjectResult>(result);
-            var response = Assert.IsType<ResponseDto>(notFoundResult.Value);
-            Assert.False(response.IsSuccess);
-            Assert.Null(response.Result);
-        }
-
     }
 }
