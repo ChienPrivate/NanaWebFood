@@ -26,7 +26,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.Cookie.SameSite = SameSiteMode.None; // Để cookie có thể được gửi trong yêu cầu cross-origin
         options.LoginPath = "/Auth/Login"; // Đường dẫn khi chưa đăng nhập
         options.LogoutPath = "/Auth/Logout"; // Đường dẫn khi đăng xuất
-        options.AccessDeniedPath = "/Home/Forbidden"; // Đường dẫn khi từ chối truy cập
+        /*options.AccessDeniedPath = "/Home/Forbidden";*/ // Đường dẫn khi từ chối truy cập
+        options.AccessDeniedPath = "/Auth/AccessDenied";
         options.ExpireTimeSpan = TimeSpan.FromDays(30);
         options.SlidingExpiration = true;
     });

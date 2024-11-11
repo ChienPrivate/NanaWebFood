@@ -8,6 +8,7 @@ namespace NanaFoodWeb.IRepository
         public Task<ResponseDto> GetCart();
         public Task<ResponseDto> ModifyCartQuantity(int producId, string message);
         public Task<ResponseDto> DeleteCartItem(int productId);
+        public Task<ResponseDto> GetProductQuantity(int productId);
 
     }
 }

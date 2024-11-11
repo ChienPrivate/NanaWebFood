@@ -46,5 +46,14 @@ namespace NanaFoodWeb.IRepository.Repository
                 Url = StaticDetails.APIBase + $"/api/Cart/deletecart/{productId}"
             });
         }
+
+        public async Task<ResponseDto> GetProductQuantity(int productId)
+        {
+            return await _baseService.SendAsync(new RequestDto
+            {
+                ApiType = StaticDetails.ApiType.GET,
+                Url = StaticDetails.APIBase + $"GetProductQuantity/{productId}"
+            });
+        }
     }
 }
