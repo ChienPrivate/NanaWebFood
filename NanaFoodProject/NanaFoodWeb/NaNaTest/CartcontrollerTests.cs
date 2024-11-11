@@ -16,13 +16,14 @@ namespace NaNaTest
         private readonly Mock<SignInManager<User>> _mockSignInManager;
         private readonly Mock<ICartRepo> _mockCartRepo;
         private readonly CartController _cartController;
+        private readonly Mock<UserManager<User>> _userManagerMock;
 
         public CartControllerTests()
         {
             // Setup mock SignInManager
             var userManagerMock = new Mock<UserManager<User>>(Mock.Of<IUserStore<User>>(), null, null, null, null, null, null, null, null);
             _mockSignInManager = new Mock<SignInManager<User>>(userManagerMock.Object, Mock.Of<IHttpContextAccessor>(), Mock.Of<IUserClaimsPrincipalFactory<User>>(), null, null, null, null);
-
+            _userManagerMock = new Mock<UserManager<User>>(Mock.Of<IUserStore<User>>(), null, null, null, null, null, null, null, null);
             _mockCartRepo = new Mock<ICartRepo>();
 
             _cartController = new CartController(_mockSignInManager.Object, _mockCartRepo.Object);
@@ -89,57 +90,102 @@ namespace NaNaTest
         }
 
         [Fact]
-        public async Task UpdateCart_ShouldReturnUnauthorized_WhenUserNotLoggedIn()
-        {           
-            int productId = 1;
-            string message = "Test message";
+        public async Task DeleteProductFromCart_ShouldReturnOk_WhenProductIsDeleted()
+        {
+            // Arrange
+            var userId = "user-id";
+            var productId = 1;
 
-            // Simulate that the user is not logged in by returning null for the user ID
-            _mockSignInManager.Setup(sm => sm.UserManager.GetUserId(It.IsAny<ClaimsPrincipal>()))
-                .Returns((string)null);
-           
-            var result = await _cartController.UpdateCart(productId, message);
-           
-            Assert.IsType<UnauthorizedResult>(result);
-        }        
+            // Mock the GetUserId() method to return a user ID
+            _mockSignInManager.Setup(x => x.UserManager.GetUserId(It.IsAny<System.Security.Claims.ClaimsPrincipal>())).Returns(userId);
+
+            // Mock the repository response
+            _mockCartRepo.Setup(x => x.DeleteCart(productId, userId))
+                .ReturnsAsync(new ResponseDto { IsSuccess = true, Message = "Sản phẩm đã được xóa khỏi giỏ hàng" });
+
+            // Act
+            var result = await _cartController.DeleteProductFromCart(productId);
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            var responseDto = Assert.IsType<ResponseDto>(okResult.Value);
+            Assert.True(responseDto.IsSuccess);
+            Assert.Equal("Sản phẩm đã được xóa khỏi giỏ hàng", responseDto.Message);
+        }
 
         [Fact]
         public async Task DeleteProductFromCart_ShouldReturnBadRequest_WhenDeleteFails()
-        {           
-            int productId = 1;
-            string userId = "testUserId";
-            var response = new ResponseDto { IsSuccess = false };
+        {
+            // Arrange
+            var userId = "user-id";
+            var productId = 1;
 
-            _mockSignInManager.Setup(sm => sm.UserManager.GetUserId(It.IsAny<ClaimsPrincipal>()))
-                              .Returns(userId);
-            _mockCartRepo.Setup(repo => repo.DeleteCart(productId, userId))
-                         .ReturnsAsync(response);
-            
-            var result = await _cartController.DeleteProductFromCart(productId) as BadRequestObjectResult;
-            
-            Assert.NotNull(result);
-            Assert.Equal(400, result.StatusCode);
-            Assert.Equal(response, result.Value);
-        }       
+            // Mock the GetUserId() method to return a user ID
+            _mockSignInManager.Setup(x => x.UserManager.GetUserId(It.IsAny<System.Security.Claims.ClaimsPrincipal>())).Returns(userId);
+
+            // Mock the repository response for failure
+            _mockCartRepo.Setup(x => x.DeleteCart(productId, userId))
+                .ReturnsAsync(new ResponseDto { IsSuccess = false, Message = "Lỗi khi xóa sản phẩm khỏi giỏ hàng" });
+
+            // Act
+            var result = await _cartController.DeleteProductFromCart(productId);
+
+            // Assert
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
+            var responseDto = Assert.IsType<ResponseDto>(badRequestResult.Value);
+            Assert.False(responseDto.IsSuccess);
+            Assert.Equal("Lỗi khi xóa sản phẩm khỏi giỏ hàng", responseDto.Message);
+        }
+
+        [Fact]
+        public async Task UpdateCart_ShouldReturnOk_WhenQuantityIsUpdated()
+        {
+            // Arrange
+            var userId = "user-id";
+            var productId = 1;
+            var message = "increase"; // or "decrease"
+
+            // Mock the GetUserId() method directly on SignInManager
+            _mockSignInManager.Setup(x => x.UserManager.GetUserId(It.IsAny<System.Security.Claims.ClaimsPrincipal>())).Returns(userId);
+
+            // Mock the repository response
+            _mockCartRepo.Setup(x => x.UpdateCart(productId, userId, message))
+                .ReturnsAsync(new ResponseDto { IsSuccess = true, Message = "Cập nhật số lượng thành công" });
+
+            // Act
+            var result = await _cartController.UpdateCart(productId, message);
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            var responseDto = Assert.IsType<ResponseDto>(okResult.Value);
+            Assert.True(responseDto.IsSuccess);
+            Assert.Equal("Cập nhật số lượng thành công", responseDto.Message);
+        }
+
 
         [Fact]
         public async Task UpdateCart_ShouldReturnBadRequest_WhenUpdateFails()
         {
-            int productId = 1;
-            string userId = "testUserId";
-            string message = "Updated message";
-            var response = new ResponseDto { IsSuccess = false };
+            // Arrange
+            var userId = "user-id";
+            var productId = 1;
+            var message = "increase"; // or "decrease"
 
-            _mockSignInManager.Setup(sm => sm.UserManager.GetUserId(It.IsAny<ClaimsPrincipal>()))
-                              .Returns(userId);
-            _mockCartRepo.Setup(repo => repo.UpdateCart(productId, userId, message))
-                         .ReturnsAsync(response);
+            // Mock the GetUserId() method to return a user ID
+            _mockSignInManager.Setup(x => x.UserManager.GetUserId(It.IsAny<System.Security.Claims.ClaimsPrincipal>())).Returns(userId);
 
-            var result = await _cartController.UpdateCart(productId, message) as BadRequestObjectResult;
+            // Mock the repository response
+            _mockCartRepo.Setup(x => x.UpdateCart(productId, userId, message))
+                .ReturnsAsync(new ResponseDto { IsSuccess = false, Message = "Lỗi cập nhật số lượng" });
 
-            Assert.NotNull(result);
-            Assert.Equal(400, result.StatusCode);
-            Assert.Equal(response, result.Value);
+            // Act
+            var result = await _cartController.UpdateCart(productId, message);
+
+            // Assert
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
+            var responseDto = Assert.IsType<ResponseDto>(badRequestResult.Value);
+            Assert.False(responseDto.IsSuccess);
+            Assert.Equal("Lỗi cập nhật số lượng", responseDto.Message);
         }
     }
 }

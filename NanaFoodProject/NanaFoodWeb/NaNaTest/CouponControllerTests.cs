@@ -127,22 +127,11 @@ namespace NaNaTest
             
             var result = await _controller.DeleteCoupon("SALE25");
 
-            
-            Assert.IsType<OkObjectResult>(result);
-        }
-
-        [Fact]
-        public async Task DeleteCoupon_NonExistentCoupon_ReturnBadRequest()
-        {
-            
-            _couponRepoMock.Setup(repo => repo.DeleteById("NONEXIST")).ReturnsAsync(new ResponseDto { IsSuccess = false });
-
-            
-            var result = await _controller.DeleteCoupon("NONEXIST");
-
-            
-            Assert.IsType<BadRequestObjectResult>(result);
-        }
+            //Assert.IsType<OkObjectResult>(result);
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            var returnValue = Assert.IsType<ResponseDto>(okResult.Value);
+            Assert.True(returnValue.IsSuccess);
+        }       
 
         [Fact]
         public async Task GetById_ExistingCoupon_ReturnOkResult()

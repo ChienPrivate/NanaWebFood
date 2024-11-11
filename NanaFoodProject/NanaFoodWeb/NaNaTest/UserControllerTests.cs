@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Azure;
+using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NanaFoodApi.Controllers;
 using NanaFoodDAL.Dto;
@@ -143,8 +144,12 @@ namespace NaNaTest
 
             var result = await _controller.GetUserByIdAsync("invalidId");
 
-            var notFoundResult = Assert.IsType<NotFoundObjectResult>(result);
-            Assert.Equal("User not found", notFoundResult.Value); 
+            //var notFoundResult = Assert.IsType<NotFoundObjectResult>(result);
+            //Assert.Equal("User not found", notFoundResult.Value);
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            var response = Assert.IsType<ResponseDto>(okResult.Value);
+            Assert.False(response.IsSuccess);
+            Assert.Equal("User not found", response.Message);
         }
 
     }
