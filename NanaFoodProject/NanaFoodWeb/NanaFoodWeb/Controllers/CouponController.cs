@@ -35,15 +35,57 @@ namespace NanaFoodWeb.Controllers
         {
             return View();
         }
-        [HttpGet("Edit")]
-        public IActionResult Edit()
+        [HttpPost("Create")]
+        public async Task <IActionResult> Create(CouponDto couponDto)
         {
-            return View();
+            if (!ModelState.IsValid)
+            {
+                return View(couponDto);
+            }
+            var coupon = new Coupon
+            {
+                CouponCode = couponDto.CouponCode,
+                Discount = couponDto.Discount,
+                Description = couponDto.Description,
+                MinAmount = couponDto.MinAmount,
+                CouponStartDate = couponDto.CouponStartDate,
+                EndStart = couponDto.EndStart,
+                MaxUsage = couponDto.MaxUsage,
+                TimesUsed = couponDto.TimesUsed,
+                Status = couponDto.Status
+            };
+            var response = await _couponRepo.Create(coupon);
+            if (response != null && response.IsSuccess)
+            {
+                response.Result = coupon; 
+                return RedirectToAction("Index");
+            }
+            return View(coupon);
         }
-        [HttpGet("Details")]
-        public IActionResult Details()
+        [HttpGet("Edit/{code}")]
+        public async Task<IActionResult>Edit(string code)
         {
-            return View();
+            var response = await _couponRepo.GetById(code);
+            if(response != null && response.IsSuccess)
+            {
+                var coupon = JsonConvert.DeserializeObject<CouponDto>(response.Result.ToString()); 
+                return View(coupon);
+            }
+            TempData["ErrorMessage"] = "Không tìm thấy sản phẩm.";
+            return RedirectToAction("Index");
+
+        }
+        [HttpGet("Details/{code}")]
+        public async Task <IActionResult> Details(string code)
+        {
+            var response = await _couponRepo.GetById(code);
+            if (response?.IsSuccess == true && response.Result != null)
+            {
+                var coupon = JsonConvert.DeserializeObject<CouponDto>(response.Result.ToString());
+                return View(coupon);
+            }
+            TempData["ErrorMessage"] = "Không tìm thấy sản phẩm.";
+            return RedirectToAction("Index");
         }
     }
 }

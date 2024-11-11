@@ -3,46 +3,91 @@
     ViewData["title"] = "Chi tiết sản phẩm";
 }
 @model NanaFoodWeb.Models.Dto.ProductDto
-<div class="container-fluid">
-    <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h4 class="text-info">Thông tin sản phẩm</h4>
-        </div>
-        <div class="card-body">
-            <div class="row">
-                <!-- Image Section -->
-                <div class="col-md-5 text-center image-container">
-                    <img class="img-fluid rounded shadow-lg" src="@Model.ImageUrl" alt="@Model.ProductName" style="width:300px; height:300px;" />
-                </div>
-
-                <!-- Product Details Section -->
-                <div class="col-md-7">
-                    <div class="product-details">
-                        <h3 class="m-0 fw-bold text-warning" id="product-name">@Model.ProductName</h3>
-                        <hr />
-                        <p><strong>Mã sản phẩm:</strong> <span id="product-id">@Model.ProductId</span></p>
-                        <p><strong>Mã danh mục:</strong> <span id="product-category">@Model.CategoryId</span></p>
-                        <p><strong>Giá:</strong> <span id="product-price">@Model.Price.ToString("#,##") VNĐ</span></p>
-                        <p><strong>Lượt xem:</strong> <span id="product-description">@Model.View</span></p>
-                        <p><strong>Mô tả:</strong> <span id="product-description">@Model.Description</span></p>
-                        <p><strong>Trạng thái:</strong> <span id="product-description">@Model.IsActive</span></p>
-                        <hr />
-
-                        <!-- Button Section -->
-                        <div class="button-group">
-                            <a href="@Url.Action("Index", "Products")" class="btn btn-secondary mr-2">Trở lại</a>
-                            <a class="btn btn-warning btn-sm mr-2" asp-action="Edit" asp-controller="Products" asp-route-id="@Model.ProductId">Sửa</a>
-                            <form asp-action="Delete" asp-controller="Products" method="post" style="display:inline">
-                                <input type="hidden" name="id" value="@Model.ProductId" />
-                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                            </form>
+<div id="wrapper">
+    <div id="content-wrapper" class="d-flex flex-column">
+        <div class="content">
+            <div class="container-fluid">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h4 class="text-info">Thông tin sản phẩm</h4>
+                    </div>
+                    <div class="card shadow">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary" id="product-name">@Html.DisplayFor(model => model.ProductName)</h6>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>Tên sản phẩm:</strong> <span id="category-name">@Html.DisplayFor(model => model.ProductName)</span></p>
+                            <p><strong>Mô tả:</strong><span id="description">@Html.DisplayFor(model => model.Description)</span></p>
+                            @* <p><strong>Mã danh mục:</strong> <span id="product-category">@Model.CategoryId</span></p> *@
+                            <p><strong>Giá:</strong> <span id="product-price">@Model.Price.ToString("#,##") VNĐ</span></p>
+                            <p><strong>Lượt xem:</strong> <span id="product-description">@Model.View</span></p>
+                            <p><strong>Số lượng:</strong> <span id="product-description">@Model.Quantity</span></p>
+                            <div class="mb-2 mt-2">
+                                <label>Trạng thái:</label>
+                                <div class="d-flex align-items-center">
+                                    <div>
+                                        <ejs-switch ejs-for="IsActive" change="onSwitchChange" name="IsActive" disabled></ejs-switch>
+                                    </div>
+                                    <h5 class="ms-2">
+                                        <span id="badgeStatus" class="badge @(Model.IsActive ? "bg-success" : "bg-secondary")">
+                                            @(Model.IsActive ? "Hoạt động" : "Vô hiệu")
+                                        </span>
+                                    </h5>
+                                </div>
+                            </div>
+                            <p><strong>Hình ảnh: </strong></p>
+                            <div class="col-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <img src="@Model.ImageUrl" class="rounded-3" style="width:100%;" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <a asp-action="Edit" asp-controller="Products" class="btn btn-primary" asp-route-id="@Model?.ProductId"><i class="fa-regular fa-pen-to-square"></i> Chỉnh sửa</a>
+                                <a href="@Url.Action("Index", "Products")" class="btn btn-secondary"><i class="fa-solid fa-list"></i> Trở về danh sách</a>
+                            </div>
                         </div>
                     </div>
+                    @* <div class="card-body">
+                        <div class="row">
+                            <!-- Image Section -->
+                            <div class="col-md-5 text-center image-container">
+                                <img class="img-fluid rounded shadow-lg" src="@Model.ImageUrl" alt="@Model.ProductName" style="width:300px; height:300px;" />
+                            </div>
+
+                            <!-- Product Details Section -->
+                            <div class="col-md-7">
+                                <div class="product-details">
+                                    <h3 class="m-0 fw-bold text-warning" id="product-name">@Model.ProductName</h3>
+                                    <hr />
+                                   
+                                    <p><strong>Mã danh mục:</strong> <span id="product-category">@Model.CategoryId</span></p>
+                                   
+                                   
+                                    <p><strong>Mô tả:</strong> <span id="product-description">@Model.Description</span></p>
+                                    <p><strong>Trạng thái:</strong> <span id="product-description">@Model.IsActive</span></p>
+                                    <hr />
+
+                                    <!-- Button Section -->
+                                    <div class="button-group">
+                                        <a href="@Url.Action("Index", "Products")" class="btn btn-secondary mr-2">Trở lại</a>
+                                        <a class="btn btn-warning btn-sm mr-2" asp-action="Edit" asp-controller="Products" asp-route-id="@Model.ProductId">Sửa</a>
+                                        <form asp-action="Delete" asp-controller="Products" method="post" style="display:inline">
+                                            <input type="hidden" name="id" value="@Model.ProductId" />
+                                            <button type="submit" class="btn btn-danger btn-sm">Xoá</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> *@
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 
 <script src="vendor/jquery/jquery.min.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

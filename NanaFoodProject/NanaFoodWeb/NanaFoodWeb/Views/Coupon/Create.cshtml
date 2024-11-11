@@ -1,46 +1,67 @@
 ﻿@{
     Layout = "_AdminLayout";
 }
+@model NanaFoodWeb.Models.Dto.CouponDto
+<div id="content-wrapper" class="d-flex flex-column">
+    <div id="content">
+        <div class="container-fluid">
+            <h1 class="h3 mb-4 text-gray-800">Create New Coupon</h1>
 
-    <div id="wrapper">
-        
-        <!-- Main Content -->
-        <div id="content-wrapper" class="d-flex flex-column">
-            <div id="content">
-                <div class="container-fluid">
-                    <h1 class="h3 mb-4 text-gray-800">Create New Coupon</h1>
-
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Coupon Information</h6>
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Coupon Information</h6>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create" asp-controller="Coupon" method="post">
+                        <div class="form-group">
+                            <label asp-for="CouponCode">Mã giảm giá:</label>
+                            <input type="text" class="form-control" asp-for="CouponCode" placeholder="Nhập vào mã giảm giá." required>
+                            <span asp-validation-for="CouponCode" class="text-danger"></span>
                         </div>
-                        <div class="card-body">
-                        <form asp-action="Create" asp-controller="Coupon">
-                                <div class="form-group">
-                                    <label for="couponCode">Coupon Code</label>
-                                    <input type="text" class="form-control" id="couponCode" name="couponCode" placeholder="Enter coupon code" required>
-                                </div>
 
-                                <div class="form-group">
-                                    <label for="discount">Discount (%)</label>
-                                    <input type="number" class="form-control" id="discount" name="discount" placeholder="Enter discount percentage" required>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="minAmount">Minimum Amount ($)</label>
-                                    <input type="number" class="form-control" id="minAmount" name="minAmount" placeholder="Enter minimum purchase amount" required>
-                                </div>
-
-                                <button type="submit" class="btn btn-primary">Create Coupon</button>
-                                <a href="@Url.Action("Index", "Coupon")" class="btn btn-secondary">Cancel</a>
-                            </form>
+                        <div class="form-group">
+                            <label asp-for="Discount">Số tiền giảm giá:</label>
+                            <input type="number" class="form-control" asp-for="Discount" placeholder="Nhập vào số tiền muốn giảm giá." required>
+                            <span asp-validation-for="Discount" class="text-danger"></span>
                         </div>
-                    </div>
 
+                        <div class="form-group">
+                            <label asp-for="Description">Mô tả</label>
+                            <textarea class="form-control" asp-for="Description" placeholder="Nhập vào mô tả mã giảm giá"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="MinAmount">Số tiền tối thiểu</label>
+                            <input type="number" class="form-control" asp-for="MinAmount" placeholder="Nhập vào số tiền tối thiểu."required>
+                            <span asp-validation-for="MinAmount" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="CouponStartDate">Ngày bắt đầu</label>
+                            <input type="date" class="form-control" asp-for="CouponStartDate" required>
+                            <span asp-validation-for="CouponStartDate" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="EndStart">Ngày kết thúc</label>
+                            <input type="date" class="form-control" asp-for="EndStart" required>
+                            <span asp-validation-for="EndStart" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="MaxUsage">Số lần sử dụng</label>
+                            <input type="number" class="form-control" asp-for="MaxUsage" placeholder="Nhập số lần sử dụng mã giảm giá" required>
+                            <span asp-validation-for="MaxUsage" class="text-danger"></span>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Tạo</button>
+                        <a href="@Url.Action("Index", "Coupon")" class="btn btn-secondary">Huỷ</a>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

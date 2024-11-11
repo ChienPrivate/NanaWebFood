@@ -110,6 +110,7 @@ namespace NanaFoodWeb.Controllers
                 Price = productDto.Price,
                 ImageUrl = imageUrl,
                 Description = productDto.Description,
+                Quantity = productDto.Quantity,
                 IsActive = productDto.IsActive,
             };
             // Gọi đến repository để tạo sản phẩm

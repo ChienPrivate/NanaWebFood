@@ -113,23 +113,10 @@ namespace NanaFoodDAL.IRepository.Repository
                 {
                     couponStatus = CouponStatus.Expired; // Hết hạn
                 }
-                var newCoupon = new Coupon
-                {
-                    CouponCode = coupon.CouponCode,
-                    Discount = coupon.Discount,
-                    MinAmount = coupon.MinAmount,
-                    CouponStartDate = coupon.CouponStartDate,
-                    EndStart = coupon.EndStart,
-                    TimesUsed = coupon.TimesUsed, //Số lượt đã dùng
-                    MaxUsage = coupon.MaxUsage, // Số lần sử dụng tối đa
-                    Description = coupon.Description, // Mô tả mã giảm giá
-                    Status = couponStatus,
-                };
-
-                await context.Coupons.AddAsync(newCoupon);
+                context.Coupons.Add(coupon);
                 await context.SaveChangesAsync();
 
-                response.Result = mapper.Map<CouponDto>(newCoupon);
+                response.Result = mapper.Map<CouponDto>(coupon);
                 response.IsSuccess = true;
                 response.Message = "Tạo mã giảm giá thành công";
             }
