@@ -26,7 +26,7 @@
             <div class="container-fluid">
                 <h1 class="h3 mb-4 text-gray-800">Danh sách mã giảm giá</h1>
                 <p>
-                    <a asp-action="Create" class="btn btn-primary mb-3" asp-controller="Coupons">Thêm mới</a>
+                    <a asp-action="Create" class="btn btn-primary mb-3" asp-controller="Coupon">Thêm mới</a>
                 </p>
                 @Html.EJS().Grid("Grid").DataSource((IEnumerable<object>)ViewBag.lazyLoadData).Columns(col =>
                     {
@@ -47,39 +47,18 @@
         </div>
         </div>
     </div>
-
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-    <script src="js/sb-admin-2.min.js"></script>
-
-<script type="text/javascript">
-    function isActiveStatusDetail(e) {
-        var div = document.createElement('div');
-        var h6 = document.createElement('h6'); // Tạo thẻ h5 để bọc thẻ span
-        var span = document.createElement('span');
-        if (e.IsActive === true) {
-            span.className = 'badge bg-success rounded-3';
-            span.textContent = 'Kích hoạt'
-        }
-        if (e.IsActive === false) {
-            span.className = 'badge bg-secondary rounded-3';
-            span.textContent = 'Vô hiệu'
-        }
-
-        h6.appendChild(span); // Đưa span vào bên trong thẻ h5
-        div.appendChild(h6); // Đưa h6 vào bên trong div
-
-        return div.outerHTML;
-    }
-</script>
-<script type="text/x-jsrender" id="commandTemplate">
-
-    <a href="/Products/Edit/${ProductId}" class="btn btn-outline-warning mb-1 d-block"><i class="fa-regular fa-pen-to-square"></i> Chỉnh sửa</a>
-
-    <a href="/Products/Delete/${ProductId}" class="btn btn-outline-danger mb-1 d-block"><i class="bi bi-trash"></i> Xóa</a>
-
-    <a href="/Products/Details/${ProductId}" class="btn btn-outline-info mb-1 d-block"><i class="bi bi-info-circle"></i> Chi tiết</a>
-</script>
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="js/sb-admin-2.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
+
+<script type="text/x-jsrender" id="commandTemplate">
+
+    <a href="/Coupon/Edit/${CouponCode}" class="btn btn-outline-warning mb-1 d-block"><i class="fa-regular fa-pen-to-square"></i> Chỉnh sửa</a>
+
+    <a href="/Coupon/Delete/${CouponCode}" class="btn btn-outline-danger mb-1 d-block"><i class="bi bi-trash"></i> Xóa</a>
+
+    <a href="/Coupon/Details/${CouponCode}" class="btn btn-outline-info mb-1 d-block"><i class="bi bi-info-circle"></i> Chi tiết</a>
+</script>

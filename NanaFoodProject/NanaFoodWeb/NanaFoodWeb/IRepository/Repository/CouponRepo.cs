@@ -27,11 +27,13 @@ namespace NanaFoodWeb.IRepository.Repository
 
         public async Task<ResponseDto> Create(Coupon coupon)
         {
-            return await _baseService.SendAsync(new RequestDto
+            return _baseService.SendAsync(new RequestDto
             {
                 ApiType = StaticDetails.ApiType.POST,
-                Url = StaticDetails.APIBase + $"/api/Coupon/create"
-            });
+                Url = StaticDetails.APIBase + $"/api/Coupon/create",
+                Data = coupon
+
+            }).Result ;
         }
         public async Task<ResponseDto> GetAll()
         {
