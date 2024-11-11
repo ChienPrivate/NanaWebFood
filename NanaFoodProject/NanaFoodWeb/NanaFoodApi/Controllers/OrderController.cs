@@ -322,7 +322,7 @@ namespace NanaFoodApi.Controllers
         /// <returns>
         /// - 200 OK mua lại các đơn hàng thành công.
         /// </returns>
-        /// <response code="200">Đơn hàng đã được hủy thành công.</response>
+        /// <response code="200">Đơn hàng đã được mua lại thành công.</response>
         [HttpPost("RebuyOrder/{orderId}")]
         public async Task<IActionResult> RebuyOrder(int orderId)
         {
@@ -331,7 +331,25 @@ namespace NanaFoodApi.Controllers
             return Ok(response);
         }
 
+        /// <summary>
+        /// Lưu mã giảm giá vào đơn hàng
+        /// </summary>
+        /// <remarks>
+        /// API này cho phép hủy một đơn hàng dựa trên OrderID.
+        /// </remarks>
+        /// <param name="orderId">ID của đơn hàng cần hủy.</param>
+        /// <param name="couponCode">ID của đơn hàng cần hủy.</param>
+        /// <returns>
+        /// - 200 OK áp dụng mã giảm giá cho đơn hàng thành công.
+        /// </returns>
+        /// <response code="200">áp dụng mã giảm giá cho đơn hàng thành công.</response>
+        [HttpPut("ApplyCoupon/{orderId}/{couponCode}")]
+        public async Task<IActionResult> ApplyCoupon(int orderId, string couponCode)
+        {
+            var response = await _orderRepository.ApplyCoupon(orderId, couponCode);
 
+            return Ok(response);
+        }
 
 
     }

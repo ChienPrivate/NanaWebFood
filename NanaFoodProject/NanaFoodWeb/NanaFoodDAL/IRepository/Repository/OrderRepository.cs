@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using NanaFoodDAL.Context;
 using NanaFoodDAL.Dto;
 using NanaFoodDAL.Model;
+using System.Runtime.CompilerServices;
 
 namespace NanaFoodDAL.IRepository.Repository
 {
@@ -324,6 +325,57 @@ namespace NanaFoodDAL.IRepository.Repository
                 _response.Message = ex.Message;
             }
 
+            return _response;
+        }
+
+        public async Task<ResponseDto> ApplyCoupon(int orderId, string couponCode)
+        {
+            var order = await _context.Orders.FirstOrDefaultAsync(or => or.OrderId == orderId);
+
+            if (order != null)
+            {
+                var coupon = await _context.Coupons.FirstOrDefaultAsync(cou => cou.CouponCode == couponCode);
+                
+                if (coupon != null)
+                {
+
+                    order.CouponCode = coupon.CouponCode;
+                    order.Discount = coupon.Discount;
+                    order.MinAmount = coupon.MinAmount;
+
+                    _context.Orders.Update(order);
+
+                    coupon.MaxUsage -= 1;
+                    coupon.TimesUsed += 1;
+
+                    _context.Coupons.Update(coupon);
+
+                    UserCoupon userCoupon = new UserCoupon() 
+                    {
+                        UserId = order.UserId,
+                        CouponCode = coupon.CouponCode,
+                        AppliedAt = DateTime.Now,
+                    };
+
+                    await _context.UserCoupons.AddAsync(userCoupon);
+
+                    await _context.SaveChangesAsync();
+
+                    _response.IsSuccess = true;
+                    _response.Message = $"Áp dụng mã giảm giá thành công cho đơn hàng {orderId}";
+                    _response.Result = order;
+                }
+                else
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Không tìm thấy mã giảm giá";
+                }
+            }
+            else
+            {
+                _response.IsSuccess = false;
+                _response.Message = "Không tìm thấy đơn hàng";
+            }
             return _response;
         }
 

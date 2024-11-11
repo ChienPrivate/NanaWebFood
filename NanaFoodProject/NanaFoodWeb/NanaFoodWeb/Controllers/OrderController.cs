@@ -21,14 +21,21 @@ namespace NanaFoodWeb.Controllers
         private readonly IReviewRepository _reviewRepository;
         private readonly ICartRepo _cartRepo;
         private readonly IAuthRepository _authRepo;
+        private readonly ICouponRepo _couponRepo;
 
-        public OrderController(IOrderRepository orderService, ITokenProvider tokenProvider, ICartRepo cartRepo, IReviewRepository reviewRepository, IAuthRepository authRepo)
+        public OrderController(IOrderRepository orderService, 
+            ITokenProvider tokenProvider, 
+            ICartRepo cartRepo, 
+            IReviewRepository reviewRepository, 
+            IAuthRepository authRepo,
+            ICouponRepo couponRepo)
         {
             _orderRepository = orderService;
             _tokenProvider = tokenProvider;
             _cartRepo = cartRepo;
             _reviewRepository = reviewRepository;
             _authRepo = authRepo;
+            _couponRepo = couponRepo;
         }
 
         public async Task<IActionResult> Index()
@@ -238,6 +245,11 @@ namespace NanaFoodWeb.Controllers
         {
             var response = await _orderRepository.AddOrderAsync(order);
 
+            if (order.CouponCode != null || string.IsNullOrEmpty(order.CouponCode))
+            {
+                await _orderRepository.ApplyCoupon(int.Parse(response.Result.ToString()), order.CouponCode);
+            }
+
             if (response.IsSuccess)
             {
                 TempData["success"] = response.Message;
@@ -327,6 +339,21 @@ namespace NanaFoodWeb.Controllers
             var response = await _orderRepository.RebuyOrder(orderId);
             
             return Json(response);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> ApplyCoupon(string code)
+        {
+            var couponResponse = await _couponRepo.GetById(code);
+
+            if (couponResponse.IsSuccess)
+            {
+                var coupon = JsonConvert.DeserializeObject<Coupon>(couponResponse.Result.ToString());
+
+                return Json(coupon);
+            }
+
+            return Json(new Coupon());
         }
 
         #region Momo
