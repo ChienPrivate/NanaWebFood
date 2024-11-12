@@ -39,34 +39,6 @@
         vertical-align: middle !important; /* Căn giữa theo chiều dọc */
     }
 </style>
-@* <style>
-    .primary-color {
-        color: #d4a235; /* Màu vàng cam trầm */
-    }
-
-    .primary-bg {
-        background-color: #d4a235; /* Màu nền vàng cam trầm */
-        color: #fff;
-    }
-
-    .section-title {
-        background-color: #d4a235; /* Màu vàng cam trầm cho các phần tiêu đề */
-        color: #fff;
-        padding: 0.1rem;
-        font-weight: bold;
-    }
-
-    .form-control-plaintext {
-        font-weight: bold;
-        color: #333; /* Màu chữ tối cho độ tương phản */
-    }
-
-    .table thead th {
-        background-color: #d4a235; /* Màu nền vàng cam trầm cho phần đầu bảng */
-        color: #fff;
-        font-weight: bold;
-    }
-</style> *@
 <div class="container">
     <div class="card shadow">
         <div class="card-header">
@@ -149,6 +121,10 @@
                         <div class="section-title">Thông tin thanh toán </div>
                         <p>Phương thức thanh toán: @Model.PaymentType</p>
                         <p>Trạng thái thanh toán: @Model.PaymentStatus</p>
+                        @if(!string.IsNullOrEmpty(Model.CouponCode)){
+                            <p>Mã giảm: @Model.CouponCode </p>
+                            <p>Giảm giá: @Model.Discount?.ToString("#,##") VNĐ</p>
+                        }
                         <p>Phí ship: @Model.ShipmentFee.ToString("#,##") VNĐ</p>
                         <p>Tổng tiền: @TotalProduct.ToString("#,##") VNĐ</p>
                         <p><strong>Tổng thanh toán: @Model.Total.ToString("#,##") VNĐ</strong></p>
