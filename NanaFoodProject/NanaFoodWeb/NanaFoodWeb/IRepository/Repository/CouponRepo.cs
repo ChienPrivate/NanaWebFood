@@ -19,9 +19,21 @@ namespace NanaFoodWeb.IRepository.Repository
                 Url = StaticDetails.APIBase + $"/api/Coupon/Check/{codeCoupon}"
             });
         }
-        public Task<ResponseDto> DeleteById(string id)
+        public async Task<ResponseDto> DeleteById(string id)
         {
-            throw new NotImplementedException();
+            return await _baseService.SendAsync(new RequestDto
+            {
+                ApiType = StaticDetails.ApiType.DELETE,
+                Url = StaticDetails.APIBase + $"/api/Coupon/Delete/{id}"
+            });
+        }
+        public async Task<ResponseDto> ModifyStatus(string id)
+        {
+            return await _baseService.SendAsync(new RequestDto
+            {
+                ApiType = StaticDetails.ApiType.PUT,
+                Url = StaticDetails.APIBase + $"/api/Coupon/DeleteStatus/{id}"
+            });
         }
 
 
@@ -63,5 +75,6 @@ namespace NanaFoodWeb.IRepository.Repository
             });
         }
 
+       
     }
 }

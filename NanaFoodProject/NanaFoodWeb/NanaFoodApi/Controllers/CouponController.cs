@@ -144,8 +144,8 @@ namespace NanaFoodApi.Controllers
         /// <response code="200">Mã giảm giá đã được xóa thành công.</response>
         /// <response code="400">Yêu cầu không hợp lệ hoặc xảy ra lỗi khi xóa mã giảm giá.</response>
         /// <response code="404">Mã giảm giá không tồn tại.</response>
-        [HttpDelete("Delete")]
-        public async Task<ActionResult<ResponseDto>> DeleteCoupon(string code)
+        [HttpDelete("Delete/{code}")]
+        public async Task<IActionResult> DeleteCoupon([FromRoute] string code)
         {
             var result = await _couponRepo.DeleteById(code);
             if (!result.IsSuccess)
@@ -153,6 +153,16 @@ namespace NanaFoodApi.Controllers
                 return BadRequest(result);
             }
             return Ok(result);
+        }
+        [HttpPut("DeleteStatus/{code}")]
+        public async Task<IActionResult>DeleteStatus([FromRoute]string code)
+        {
+            var coupon = await _couponRepo.ModifyStatus(code);
+            if (!coupon.IsSuccess)
+            {
+                return BadRequest(coupon);
+            }
+            return Ok(coupon);
         }
 
 

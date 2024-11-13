@@ -5,7 +5,7 @@
 <div class="container-fluid">
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h4 class="text-info">Thông tin sản phẩm</h4>
+            <h4 class="text-info">Thông tin mã giảm giá</h4>
         </div>
         <div class="card-body">
             <div class="row">
@@ -15,20 +15,20 @@
                         <h3 class="m-0 fw-bold text-warning" id="CouponCode">@Model.CouponCode</h3>
                         <hr />
                         <p><strong>Mô tả sản mã giảm giá:</strong> <span id="Description">@Model.Description</span></p>
-                        <p><strong>Giá giảm:</strong> <span id="product-price">@Model.Discount.ToString("#,##") VNĐ</span></p>
+                        <p><strong>Giá giảm:</strong> <span id="coupon-price">@Model.Discount.ToString("#,##") VNĐ</span></p>
                         <p><strong>Giá tối thiểu:</strong> <span id="MinAmount">@Model.MinAmount.ToString("#,##")</span></p>
-                        <p><strong>Lượt sử dụng:</strong> <span id="product-description">@Model.MaxUsage</span></p>
-                        <p><strong>Lượt đã sử dụng:</strong> <span id="product-description">@Model.TimesUsed</span></p>
-                        <p><strong>Trạng thái:</strong> <span id="product-description">@Model.Status</span></p>
+                        <p><strong>Lượt sử dụng:</strong> <span id="coupon-description">@Model.MaxUsage</span></p>
+                        <p><strong>Lượt đã sử dụng:</strong> <span id="coupon-description">@Model.TimesUsed</span></p>
+                        <p><strong>Trạng thái:</strong> <span id="coupon-description">@Model.Status</span></p>
                         <hr />
 
                         <!-- Button Section -->
                         <div class="button-group">
                             <a href="@Url.Action("Index", "Coupon")" class="btn btn-secondary mr-2">Trở lại</a>
-                            <a class="btn btn-warning btn-sm mr-2" asp-action="Edit" asp-controller="Coupon" asp-route-id="@Model.CouponCode">Sửa</a>
+                            <a class="btn btn-warning btn-sm mr-2" asp-action="Edit" asp-controller="Coupon" asp-route-id="@Model.CouponCode"><i class="fa-regular fa-pen-to-square"></i>Chỉnh sửa</a>
                             <form asp-action="Delete" asp-controller="Coupon" method="post" style="display:inline">
                                 <input type="hidden" name="id" value="@Model.CouponCode" />
-                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i>Xoá</button>
                             </form>
                         </div>
                     </div>

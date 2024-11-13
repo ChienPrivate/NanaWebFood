@@ -1,0 +1,46 @@
+﻿@{
+    Layout = "_AdminLayout";
+}
+@model NanaFoodWeb.Models.Dto.CouponDto
+<div id="wrapper">
+    <!-- Main Content -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content">
+            <div class="container-fluid">
+                <h1 class="h3 mb-4 text-gray-800">Bạn có chắn chắn muốn xóa danh mục này ?</h1>
+                <div class="card shadow">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary" id="category-name">@Model.CouponCode</h6>
+                    </div>
+                    <div class="card-body">
+
+                        <p><strong>Mã giảm giá:</strong> <span id="coupon-name" @Model.CouponCode</span></p>
+                        <p><strong>Mô tả:</strong><span id="coupon-name">@Model.Description</span></p>
+                        <p><strong>Giảm giá:</strong> <span id="description">@Model.Discount</span></p>
+                        <p><strong>Số tiền tối thiểu:</strong> <span id="description">@Model.MinAmount</span></p>
+                        <div class="mt-2 d-flex gap-1">
+                            <form method="post" asp-action="DeleteConfirm" asp-controller="Coupon" asp-route-id="@Model.CouponCode">
+                                <button type="submit" class="btn btn-danger"><i class="fa-regular fa-square-check"></i> Xóa</button>
+                            </form>
+                            <form method="post">
+                                <button type="submit"
+                                        asp-controller="Coupon"
+                                        asp-action="deDelete"
+                                        asp-route-id="@Model.CouponCode"
+                                        class="btn btn-warning">
+                                    <i class="fa-solid fa-lock"></i> Vô hiệu hóa
+                                </button>
+                            </form>
+                            <a href="@Url.Action("Index", "Coupon")" class="btn btn-secondary">Huỷ</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="js/sb-admin-2.min.js"></script>
