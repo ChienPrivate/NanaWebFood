@@ -199,6 +199,24 @@ namespace NanaFoodDAL.IRepository.Repository
             return response;
         }
 
+        public async Task<ResponseDto> ModifyStatus(string id)
+        {
+            var eCoupon = await context.Coupons.FirstOrDefaultAsync(e => e.CouponCode == id);
+            if (eCoupon == null)
+            {
+                response.IsSuccess = false;
+                response.Message = "Mã giảm giá không tồn tại";
+                return response;
+            }
+            eCoupon.Status = CouponStatus.Delete;
+            context.Coupons.Update(eCoupon);
+            await context.SaveChangesAsync();
+
+            response.IsSuccess = true;
+            response.Message = "Cập nhật trạng thái thành công";
+            return response;
+        }
+
         public async Task<ResponseDto> Update(Coupon coupon)
         {
             try

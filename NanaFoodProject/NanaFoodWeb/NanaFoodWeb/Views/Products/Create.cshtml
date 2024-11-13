@@ -9,24 +9,24 @@
     <div id="content-wrapper" class="d-flex flex-column">
         <div id="content">
             <div class="container-fluid">
-                <h1 class="h3 mb-4 text-gray-800">Add Product</h1>
+                <h1 class="h3 mb-4 text-gray-800">Tạo mới sản phẩm</h1>
                 <form id="addProductForm" asp-action="Create" asp-controller="Products" method="post" enctype="multipart/form-data">
                     <div class="form-group">
-                        <label asp-for="ProductName">Product Name</label>
+                        <label asp-for="ProductName">Tên sản phẩm</label>
                         <input type="text" class="form-control" asp-for="ProductName" placeholder="Nhập tên sản phẩm">
                         <span asp-validation-for="ProductName" class="text-danger"></span>
                     </div>
 
                     <div class="form-group">
-                        <label asp-for="CategoryId">Category</label>
+                        <label asp-for="CategoryId">Loại sản phẩm</label>
                         <select class="form-select" asp-for="CategoryId" asp-items="@ViewBag.ListCategory">
-                            <option value="">Select a category</option>
+                            <option value="">Chọn một danh mục</option>
                         </select>
                         <span asp-validation-for="CategoryId" class="text-danger"></span>
                     </div>
 
                     <div class="form-group">
-                        <label asp-for="Price">Price</label>
+                        <label asp-for="Price">Giá</label>
                         <input type="number" class="form-control" asp-for="Price" placeholder="Nhập giá sản phẩm">
                         <span asp-validation-for="Price" class="text-danger"></span>
                     </div>
@@ -37,7 +37,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label asp-for="Description">Description</label>
+                        <label asp-for="Description">Mô tả</label>
                         <textarea class="form-control" asp-for="Description" placeholder="Nhập Mô tả sản phẩm"></textarea>
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
@@ -83,8 +83,8 @@
                             </div>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-lg px-4 mr-2">Add Product</button>
-                    <a href="@Url.Action("Index", "Products")" class="btn btn-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary btn-lg px-4 mr-2"><i class="fa-regular fa-square-check"></i>Tạo mới</button>
+                    <a href="@Url.Action("Index", "Products")" class="btn btn-secondary">Huỷ</a>
                 </form>
             </div>
         </div>
