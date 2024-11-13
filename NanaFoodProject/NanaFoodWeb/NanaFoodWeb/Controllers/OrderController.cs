@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using NanaFoodWeb.Extensions;
 using NanaFoodWeb.IRepository;
 using NanaFoodWeb.Models;
 using NanaFoodWeb.Models.Dto;
@@ -245,19 +246,55 @@ namespace NanaFoodWeb.Controllers
         {
             var response = await _orderRepository.AddOrderAsync(order);
 
-            if (order.CouponCode != null || string.IsNullOrEmpty(order.CouponCode))
+            if (!response.IsSuccess)
             {
-                await _orderRepository.ApplyCoupon(int.Parse(response.Result.ToString()), order.CouponCode);
+                TempData["error"] = response.Message;
+                var userInfoResponse = await _authRepo.GetInfo();
+                var responseFromcart = await _cartRepo.GetCart();
+                if (responseFromcart.Result != null)
+                {
+                    var Data = JsonConvert.DeserializeObject<List<CartResponseDto>>(responseFromcart.Result.ToString());
+
+                    if (userInfoResponse.IsSuccess)
+                    {
+                        var userInfo = JsonConvert.DeserializeObject<UserDto>(userInfoResponse.Result.ToString());
+                        ViewBag.UserInfo = userInfo;
+                    }
+
+                    var provinceRequest = await _orderRepository.GetProvinceAsync();
+
+                    var provinceResponse = JsonConvert.DeserializeObject<GHNResponseDto<List<ProvinceDto>>>(provinceRequest.Result.ToString());
+
+                    if (provinceResponse.Code == 200)
+                    {
+                        var provinceList = provinceResponse.Data.ToList();
+
+                        var selectListProvinces = provinceList.Where(p => p.ProvinceID == 202).Select(p => new SelectListItem
+                        {
+                            Text = p.ProvinceName,   // Tên tỉnh làm Text
+                            Value = p.ProvinceID.ToString(),  // ID tỉnh làm Value
+                        }).ToList();
+                        ViewBag.cartdetails = Data;
+                        ViewBag.ProvinceList = selectListProvinces;
+                        return RedirectToAction("Payment","Order");
+                    }
+                }
+                return RedirectToAction("Payment", "Order");
             }
 
-            if (response.IsSuccess)
-            {
-                TempData["success"] = response.Message;
-                return RedirectToAction("PaymentSuccess", "Order");
-            }
+                if (order.CouponCode != null || string.IsNullOrEmpty(order.CouponCode))
+                {
+                    await _orderRepository.ApplyCoupon(int.Parse(response.Result.ToString()), order.CouponCode);
+                }
 
-            TempData["error"] = "Phát sinh lỗi trong quá trình đặt đơn";
-            return RedirectToAction("PaymentError", "Order");
+                if (response.IsSuccess)
+                {
+                    TempData["success"] = response.Message;
+                    return RedirectToAction("PaymentSuccess", "Order");
+                }
+
+                TempData["error"] = "Phát sinh lỗi trong quá trình đặt đơn";
+                return RedirectToAction("PaymentError", "Order");
         }
 
         [HttpGet]

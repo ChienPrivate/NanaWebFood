@@ -13,7 +13,7 @@ using System.Diagnostics;
 
 namespace NanaFoodWeb.Controllers
 {
-    [ExcludeAdmin]
+    
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -58,7 +58,7 @@ namespace NanaFoodWeb.Controllers
                 if (token != null)
                 {
                     var role = _tokenProvider.ReadToken("role", token);
-                    if (role == "admin")
+                    if (role == "admin" || role == "employee")
                     {
                         return RedirectToAction("Index", "DashBoard");
                     }
@@ -97,22 +97,22 @@ namespace NanaFoodWeb.Controllers
             return View(); 
         }
 
-
+        [ExcludeAdmin]
         public IActionResult About() 
         {
             return View();
         }
-
+        [ExcludeAdmin]
         public IActionResult Discount()
         {
             return View();
         }
-
+        [ExcludeAdmin]
         public IActionResult Contact()
         {
             return View();
         }
-
+        [ExcludeAdmin]
         public IActionResult Sort(string sort, int page, int pageSize = 9)
         {
             if(page == 0)
@@ -138,7 +138,7 @@ namespace NanaFoodWeb.Controllers
             }
             return NotFound();
         }
-
+        [ExcludeAdmin]
         public async Task<IActionResult> FilterLoai(int id, int page , int pageSize = 9)
         {
             var response = await _productRepo.GetByCategoryId(id, 1, 9);
@@ -159,7 +159,7 @@ namespace NanaFoodWeb.Controllers
             }
             return NotFound();
         }
-
+        [ExcludeAdmin]
         public async Task <IActionResult> Menu(string searchQuery, int? page = 1, int pageSize = 9)
         {
             ViewData["Action"] = "Menu";
@@ -212,7 +212,7 @@ namespace NanaFoodWeb.Controllers
 
             return View();
         }
-
+        [ExcludeAdmin]
         public IActionResult GetTopView(int page, int pageSize)
         {
             ViewData["Action"] = "TopViewed";
@@ -238,7 +238,7 @@ namespace NanaFoodWeb.Controllers
             }
             return NotFound();
         }
-
+        [ExcludeAdmin]
         public async Task<IActionResult> Filter(int? value, int page, int pageSize)
         {
             ViewData["Action"] = "Filter";
@@ -295,7 +295,7 @@ namespace NanaFoodWeb.Controllers
             }
             return NotFound();
         }
-
+        [ExcludeAdmin]
         public async Task<IActionResult>FilterCategory(int categoryid, int page, int pageSize)
         {
 

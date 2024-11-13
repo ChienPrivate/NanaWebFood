@@ -89,6 +89,7 @@ namespace NanaFoodWeb.Controllers
             }
             return View(coupon);
         }
+
         [HttpGet("Details/{code}")]
         public async Task <IActionResult> Details(string code)
         {

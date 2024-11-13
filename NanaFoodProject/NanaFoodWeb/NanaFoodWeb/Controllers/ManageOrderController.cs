@@ -70,13 +70,13 @@ namespace NanaFoodWeb.Controllers
         [HttpGet("ModifyStatus/{orderId}/{message}")]
         public async Task<IActionResult> ModifyDelveringStatus(int orderId, string message)
         {
-            var response = await _orderRepository.CancelOrderAsync(orderId, message);
+            var response = await _orderRepository.UpdateOrderStatus(orderId, message);
             if (response.IsSuccess)
             {
-                TempData["success"] = "Hủy đơn thành công";
+                TempData["success"] = "Cập nhật trạng thái thành công";
                 return RedirectToAction("Index", "ManageOrder");
             }
-            TempData["error"] = "Bạn không thể Hủy đơn hàng này";
+            TempData["error"] = "Không thể cập nhật trạng thái đơn hàng hoặc đơn hàng không tồn tại";
             return RedirectToAction("Index", "ManageOrder");
         }
 

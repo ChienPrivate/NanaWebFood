@@ -207,7 +207,6 @@ namespace NanaFoodWeb.Controllers
             return View();
         }
 
-
         [HttpPost]
         public IActionResult GitHubLogin()
         {

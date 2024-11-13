@@ -89,6 +89,15 @@ app.UseStatusCodePages(async context =>
         context.HttpContext.Response.Redirect("/Auth/Login");
     }
 });
+
+// Cấu hình NotFound với StatusCodePages
+/*app.UseStatusCodePages(async context =>
+{
+    if (context.HttpContext.Response.StatusCode == 404)
+    {
+        context.HttpContext.Response.Redirect("/Home/NotFoundPage");
+    }
+});*/
 //app.MapControllerRoute(
 //    name: "default",
 //    pattern: "{controller=Home}/{action=Index}/{id?}");
