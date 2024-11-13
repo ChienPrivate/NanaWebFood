@@ -15,7 +15,7 @@ using NuGet.Common;
 namespace NanaFoodWeb.Controllers
 {
     [Route("Categories")]
-    [Authorize(Roles = "admin")]
+    [Authorize(Roles = "admin,employee")]
     public class CategoriesController : Controller
     {
         private readonly CallApiCenter _callAPICenter;

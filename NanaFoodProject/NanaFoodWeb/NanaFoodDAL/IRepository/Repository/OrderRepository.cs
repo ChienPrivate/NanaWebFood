@@ -156,6 +156,10 @@ namespace NanaFoodDAL.IRepository.Repository
             {
                 order.PaymentStatus = "Đã thanh toán";
             }
+            else if(message == "Đang chuẩn bị")
+            {
+                order.OrderStatus = "Đang giao";
+            }
             _context.Orders.Update(order);
             await _context.SaveChangesAsync();
             _response.IsSuccess = true;

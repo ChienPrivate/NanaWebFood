@@ -17,6 +17,15 @@ namespace NanaFoodWeb.IRepository.Repository
             _baseService = baseService;
         }
 
+        public async Task<ResponseDto> GetAllOrderAsync()
+        {
+            return await _baseService.SendAsync(new RequestDto
+            {
+                ApiType = ApiType.GET,
+                Url = APIBase + "/api/Order/orders"
+            });
+        }
+
         public async Task<ResponseDto> AddOrderAsync(Order order)
         {
             return await _baseService.SendAsync(new RequestDto

@@ -1,4 +1,5 @@
 ﻿using Azure;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NanaFoodWeb.CallAPICenter;
 using NanaFoodWeb.Convert;
@@ -10,6 +11,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace NanaFoodWeb.Controllers
 {
     [Route("Carts")]
+    [Authorize(Roles = "customer")]
     public class CartController : Controller
     {
         private readonly ICartRepo _cartRepo;

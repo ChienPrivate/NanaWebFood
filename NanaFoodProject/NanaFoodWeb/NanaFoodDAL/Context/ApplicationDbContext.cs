@@ -43,6 +43,11 @@ namespace NanaFoodDAL.Context
                     Name = "customer",
                     NormalizedName = "CUSTOMER",
                 }
+                new IdentityRole()
+                {
+                    Name = "employee",
+                    NormalizedName = "EMPLOYEE"
+                }
             };*/
             /*builder.Entity<IdentityRole>().HasData(roles);*/
             // Cấu hình cho khóa chính

@@ -132,11 +132,11 @@
 
                     <div class="col-md-6">
                         <div class="section-title">Thời gian nhận hàng </div>
-                        <p>Ngày đặt hàng: @Model.OrderDate.ToString("dd/MM/yyyy hh:mm:ss")</p>
+                        <p>Ngày đặt hàng: @Model.OrderDate.ToString("dd/MM/yyyy hh:mm:ss tt")</p>
                         <p>Thời gian dự kiến: @Model.ExpectedDeliveryDate</p>
                         @if (Model.OrderStatus == "Đã giao")
                         {
-                            <p>Thời gian nhận hàng: @Model.ReceiveDate.ToString("dd/MM/yyyy hh:mm:ss")</p>
+                            <p>Thời gian nhận hàng: @Model.ReceiveDate.ToString("dd/MM/yyyy hh:mm:ss tt")</p>
                         }
                     </div>
 

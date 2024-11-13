@@ -1,0 +1,304 @@
+﻿@using Syncfusion.EJ2
+@using System.Security.Claims
+@{
+    Layout = "_AdminLayout";
+    var role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value ?? "Guess";
+}
+
+<div class="container-fluid mt-3">
+    <h2>Danh sách đơn hàng</h2>
+@*     <div class="mt-2 mb-2">
+        <a asp-controller="Users" asp-action="Create" class="btn btn-outline-primary"><i class="bi bi-plus-circle"></i> Tạo người dùng mới</a>
+    </div> *@
+    <br>
+    <!-- Nav pills -->
+    <ul class="nav nav-pills" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" data-bs-toggle="pill" href="#home">Đang chuẩn bị</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="pill" href="#menu1">Đang giao</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="pill" href="#menu2">Hoàn thành</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="pill" href="#menu3">Đã hủy</a>
+        </li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div id="home" class="tab-pane active">
+            <br>
+            <h3>Đơn hàng đang chuẩn bị</h3>
+            <div class="col-lg-12 control-section">
+                <div>
+                    <h1 class="h3 mb-4 text-gray-800"></h1>
+                </div>
+                <div class="control-wrapper">
+                    <div class="control-section">
+                        @Html.EJS().Grid("PreparingGrid").DataSource((IEnumerable<object>)ViewBag.Preparing).Columns(col =>
+                                 {
+                                     col.Field("OrderId").HeaderText("Mã đơn hàng").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                     col.Field("FullName").HeaderText("Họ tên").Format("C2").Width("135").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                     col.Field("PhoneNumber").HeaderText("Số điện thoại").Format("C2").Width("135").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Right).Add();
+                                     col.Field("Email").HeaderText("Email").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                     col.Field("Address").HeaderText("Địa chỉ").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                     col.Field("PaymentType").HeaderText("Phương thức thanh toán").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                     col.Field("PaymentStatus").HeaderText("Trạng thai thanh toán").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                     col.Field("Note").HeaderText("Ghi chú").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                     col.Field("Total").HeaderText("Tổng tiền").Format("{0:N0}").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                     col.Field("commands").HeaderText("Thao tác").Template("#preparingCommandTemplate").Width("200").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+
+                                 }).AllowPaging().PageSettings(page => page.PageCount(3).PageSizes(true).PageSize(10)).AllowSorting().AllowFiltering().FilterSettings(filter => { filter.Type(Syncfusion.EJ2.Grids.FilterType.Excel); }).Toolbar(new List<string>() { "Search" }).AllowResizing(false).AutoFit(false).Render()
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="menu1" class="tab-pane fade">
+            <br>
+            <h3>Đang giao</h3>
+            <div class="col-lg-12 control-section">
+                <div>
+                    <h1 class="h3 mb-4 text-gray-800"></h1>
+                </div>
+
+                <div class="control-wrapper">
+                    <div class="control-section">
+                        @Html.EJS().Grid("DeliveringGrid").DataSource((IEnumerable<object>)ViewBag.Delivering).Columns(col =>
+                                 {
+                                     // col.Field("Id").HeaderText("ID").Width("130").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).IsPrimaryKey(true).Add();
+                                     col.Field("OrderId").HeaderText("Mã đơn hàng").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                     col.Field("FullName").HeaderText("Họ tên").Format("C2").Width("135").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                     col.Field("PhoneNumber").HeaderText("Số điện thoại").Format("C2").Width("135").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Right).Add();
+                                     col.Field("Email").HeaderText("Email").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                     col.Field("Address").HeaderText("Địa chỉ").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                     col.Field("PaymentType").HeaderText("Phương thức thanh toán").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                     col.Field("PaymentStatus").HeaderText("Trạng thai thanh toán").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                     col.Field("Note").HeaderText("Ghi chú").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                     col.Field("Total").HeaderText("Tổng tiền").Format("{0:N0}").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                     col.Field("commands").HeaderText("Thao tác").Template("#deliveringCommandTemplate").Width("200").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+
+                                 }).AllowPaging().PageSettings(page => page.PageCount(3).PageSizes(true).PageSize(10)).AllowSorting().AllowFiltering().FilterSettings(filter => { filter.Type(Syncfusion.EJ2.Grids.FilterType.Excel); }).Toolbar(new List<string>() { "Search" }).AllowResizing(false).AutoFit(false).Render()
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="menu2" class="tab-pane fade">
+            <br>
+            <h3>Đã giao</h3>
+            <div class="col-lg-12 control-section">
+                <div>
+                    <h1 class="h3 mb-4 text-gray-800"></h1>
+                </div>
+                <div class="control-wrapper">
+                    <div class="control-section">
+                        @Html.EJS().Grid("CompleteGrid").DataSource((IEnumerable<object>)ViewBag.Complete).Columns(col =>
+                                 {
+                                     // col.Field("Id").HeaderText("ID").Width("130").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).IsPrimaryKey(true).Add();
+                                     col.Field("OrderId").HeaderText("Mã đơn hàng").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                     col.Field("FullName").HeaderText("Họ tên").Format("C2").Width("135").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                     col.Field("PhoneNumber").HeaderText("Số điện thoại").Format("C2").Width("135").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Right).Add();
+                                     col.Field("Email").HeaderText("Email").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                     col.Field("Address").HeaderText("Địa chỉ").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                     col.Field("PaymentType").HeaderText("Phương thức thanh toán").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                     col.Field("PaymentStatus").HeaderText("Trạng thai thanh toán").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                     col.Field("Note").HeaderText("Ghi chú").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                     col.Field("Total").HeaderText("Tổng tiền").Format("{0:N0}").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                     col.Field("commands").HeaderText("Thao tác").Template("#completeCommandTemplate").Width("200").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+
+                                 }).AllowPaging().PageSettings(page => page.PageCount(3).PageSizes(true).PageSize(10)).AllowSorting().AllowFiltering().FilterSettings(filter => { filter.Type(Syncfusion.EJ2.Grids.FilterType.Excel); }).Toolbar(new List<string>() { "Search" }).AllowResizing(false).AutoFit(false).Render()
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="menu3" class="tab-pane fade">
+            <br>
+            <h3>Đã hủy</h3>
+            <div class="col-lg-12 control-section">
+                <div>
+                    <h1 class="h3 mb-4 text-gray-800"></h1>
+                </div>
+                <div class="control-wrapper">
+                    <div class="control-section">
+                        @Html.EJS().Grid("CancelGrid").DataSource((IEnumerable<object>)ViewBag.CancelOrder).Columns(col =>
+                                 {
+                                     // col.Field("Id").HeaderText("ID").Width("130").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).IsPrimaryKey(true).Add();
+                                     col.Field("OrderId").HeaderText("Mã đơn hàng").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                     col.Field("FullName").HeaderText("Họ tên").Format("C2").Width("135").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                     col.Field("PhoneNumber").HeaderText("Số điện thoại").Format("C2").Width("135").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Right).Add();
+                                     col.Field("Email").HeaderText("Email").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                     col.Field("Address").HeaderText("Địa chỉ").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                     col.Field("PaymentType").HeaderText("Phương thức thanh toán").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                     col.Field("PaymentStatus").HeaderText("Trạng thái thanh toán").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                     col.Field("CancelReason").HeaderText("Lý do hủy").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                     col.Field("Total").HeaderText("Tổng tiền").Format("{0:N0}").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                     col.Field("commands").HeaderText("Thao tác").Template("#cancelCommandTemplate").Width("200").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+
+                                 }).AllowPaging().PageSettings(page => page.PageCount(3).PageSizes(true).PageSize(10)).AllowSorting().AllowFiltering().FilterSettings(filter => { filter.Type(Syncfusion.EJ2.Grids.FilterType.Excel); }).Toolbar(new List<string>() { "Search" }).AllowResizing(false).AutoFit(false).Render()
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script id="preparingCommandTemplate" type="text/x-jsrender">
+    <a href="/ManageOrder/Details/${OrderId}" class="btn btn-outline-info form-control mb-1 d-block"><i class="bi bi-info-circle"></i> Chi tiết</a>
+
+    <button type="button" class="btn btn-outline-primary form-control mb-1 d-block" data-bs-toggle="modal" data-bs-target="#myModal-${OrderId}" data-order-id="${OrderId}">
+       <i class="fa-solid fa-truck-fast"></i> Đang giao
+     </button>
+
+     <!-- Modal Đang giao cho mỗi OrderId -->
+     <div class="modal fade" id="myModal-${OrderId}">
+       <div class="modal-dialog">
+         <div class="modal-content">
+           <div class="modal-header">
+             <div class="text-center"><h4 class="modal-title">Xác nhận</h4></div>
+             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+           </div>
+           <div class="modal-body">
+             Bạn có muốn đổi trạng thái đơn hàng ${OrderId} thành "đang giao"?
+           </div>
+           <div class="modal-footer">
+             <div class="d-flex">
+                 <a href="/ManageOrder/ModifyStatus/${OrderId}" class="btn btn-success me-2"><i class="fa-solid fa-truck-fast"></i> Chuyển trạng thái: Đang giao</a>
+                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+             </div>
+           </div>
+         </div>
+       </div>
+     </div>
+
+     <button type="button" class="btn btn-outline-danger form-control mb-1 d-block" data-bs-toggle="modal" data-bs-target="#cancelModal-${OrderId}" data-order-id="${OrderId}">
+       <i class="fa-regular fa-file-excel"></i> Hủy đơn
+    </button>
+
+    <!-- Modal Hủy Đơn cho mỗi OrderId -->
+    <div class="modal fade" id="cancelModal-${OrderId}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Xác nhận hủy đơn</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-left">
+                        <strong>Bạn có chắc muốn hủy đơn này?</strong>
+                    </div>
+                    <div class="text-left">
+                            <label for="cancelReason-${OrderId}">Lý do hủy đơn <span class="text-danger">*</span></label>
+                            <select id="cancelReason-${OrderId}" name="message" class="form-select">
+                                <option value="">Chọn lý do hủy đơn</option>
+                                <option value="Khách đã thay đổi ý định">Khách đã thay đổi ý định</option>
+                                <option value="Khách tìm thấy giá tốt hơn ở nơi khác">Khách tìm thấy giá tốt hơn ở nơi khác</option>
+                                <option value="Khách đặt nhầm đơn hàng">Khách đặt nhầm đơn hàng</option>
+                                <option value="Khách không còn cần sản phẩm">Khách không còn cần sản phẩm</option>
+                                <option value="Khách gặp vấn đề với thanh toán">Khách gặp vấn đề với thanh toán</option>
+                                <option value="Khách không hài lòng với dịch vụ khách hàng">Khách không hài lòng với dịch vụ khách hàng</option>
+                                <option value="Khách yêu cầu hủy vì lý do khác">Khách yêu cầu hủy vì lý do khác</option>
+                            </select>
+                        <span class="text-danger" id="warningText-${OrderId}"></span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <a href="javascript:void(0);" id="cancelOrderBtn-${OrderId}" class="btn btn-outline-danger" data-order-id="${OrderId}">Hủy đơn</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script id="deliveringCommandTemplate" type="text/x-jsrender">
+    <a href="/ManageOrder/Details/${OrderId}" class="btn btn-outline-info"><i class="bi bi-info-circle"></i> Chi tiết</a>
+
+    <button type="button" class="btn btn-outline-primary form-control mb-1 d-block" data-bs-toggle="modal" data-bs-target="#myModal-${OrderId}" data-order-id="${OrderId}">
+       <i class="fa-solid fa-truck-fast"></i> Đang giao
+     </button>
+
+     <!-- Modal Đang giao cho mỗi OrderId -->
+     <div class="modal fade" id="myModal-${OrderId}">
+       <div class="modal-dialog">
+         <div class="modal-content">
+           <div class="modal-header">
+             <div class="text-center"><h4 class="modal-title">Xác nhận</h4></div>
+             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+           </div>
+           <div class="modal-body">
+             Bạn có muốn đổi trạng thái đơn hàng ${OrderId} thành "đang giao"?
+           </div>
+           <div class="modal-footer">
+             <div class="d-flex">
+                 <a href="/ManageOrder/ModifyStatus/${OrderId}" class="btn btn-success me-2"><i class="fa-solid fa-truck-fast"></i> Chuyển trạng thái: Đang giao</a>
+                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+             </div>
+           </div>
+         </div>
+       </div>
+     </div>
+
+     <button type="button" class="btn btn-outline-danger form-control mb-1 d-block" data-bs-toggle="modal" data-bs-target="#CancelModal-${OrderId}" data-order-id="${OrderId}">
+       <i class="fa-regular fa-file-excel"></i> Hủy đơn
+     </button>
+
+     <!-- Modal Hủy đơn cho mỗi OrderId -->
+     <div class="modal fade" id="CancelModal-${OrderId}">
+       <div class="modal-dialog">
+         <div class="modal-content">
+           <div class="modal-header">
+             <div class="text-center"><h4 class="modal-title">Xác nhận</h4></div>
+             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+           </div>
+           <div class="modal-body">
+             Bạn có muốn đổi trạng thái đơn hàng ${OrderId} thành "đã hủy"?
+           </div>
+           <div class="modal-footer">
+             <div class="d-flex">
+                 <a href="/ManageOrder/ModifyStatus/${OrderId}" class="btn btn-danger me-2"><i class="fa-regular fa-file-excel"></i> Chuyển trạng thái: Hủy đơn</a>
+                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+             </div>
+           </div>
+         </div>
+       </div>
+     </div>
+</script>
+
+<script id="completeCommandTemplate" type="text/x-jsrender">
+    <a href="/ManageOrder/Details/${OrderId}" class="btn btn-outline-info"><i class="bi bi-info-circle"></i> Chi tiết</a>
+</script>
+
+
+<script id="cancelCommandTemplate" type="text/x-jsrender">
+    <a href="/ManageOrder/Details/${OrderId}" class="btn btn-outline-info"><i class="bi bi-info-circle"></i> Chi tiết</a>
+</script>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll("[id^='cancelOrderBtn-']").forEach(function (cancelButton) {
+            cancelButton.addEventListener("click", function () {
+                const orderId = cancelButton.getAttribute("data-order-id");
+                const reasonSelect = document.getElementById(`cancelReason-${orderId}`);
+                const warningText = document.getElementById(`warningText-${orderId}`);
+                const reason = reasonSelect.value;
+
+                if (!reason) {
+                    warningText.textContent = "Vui lòng chọn lý do hủy đơn.";
+                } else {
+                    warningText.textContent = ""; // Xóa cảnh báo nếu có lý do được chọn
+
+                    // URL hủy đơn động với orderId và lý do hủy đơn
+                    const baseUrl = '/ManageOrder/CancelOrder';
+                    const cancelUrl = `${baseUrl}/${orderId}/${encodeURIComponent(reason)}`;
+
+                    // Chuyển hướng đến URL hủy đơn với lý do hủy
+                    window.location.href = cancelUrl;
+                }
+            });
+        });
+    });
+</script>
