@@ -1,5 +1,5 @@
 ﻿@{
-    Layout = "_Dashboard";
+    Layout = "_AdminLayout";
 }
 @if (TempData["SuccessMessage"] != null)
 {
@@ -109,11 +109,11 @@
 
     </style> *@
     <script type="text/x-jsrender" id="commandTemplate">
-    <a href="/Products/Edit/${ProductId}" class="btn btn-warning mb-1 d-block"><i class="bx bxs-edit icon"></i> Chỉnh sửa</a>
+    <a href="/Products/Edit/${ProductId}" class="btn btn-outline-warning mb-1 d-block"><i class="fa-regular fa-pen-to-square"></i> Chỉnh sửa</a>
 
-    <a href="/Products/Delete/${ProductId}" class="btn btn-danger mb-1 d-block"><i class="bx bxs-trash icon"></i> Xóa</a>
+    <a href="/Products/Delete/${ProductId}" class="btn btn-outline-danger mb-1 d-block"><i class="bi bi-trash"></i> Xóa</a>
 
-    <a href="/Products/Details/${ProductId}" class="btn btn-info mb-1 d-block"><i class="bx bxs-detail icon"></i> Chi tiết</a>
+    <a href="/Products/Details/${ProductId}" class="btn btn-outline-info mb-1 d-block"><i class="bi bi-info-circle"></i> Chi tiết</a>
 
     </script>
    

@@ -187,8 +187,6 @@ namespace NanaFoodDAL.IRepository.Repository
 
         public async Task<ResponseDto> GetAllUserAsync()
         {
-
-
             try
             {
                 var usersWithRoles = await (
@@ -302,6 +300,25 @@ namespace NanaFoodDAL.IRepository.Repository
                 _response.IsSuccess = false;
                 _response.Result = userInReturn;
                 _response.Message = "Không tìm thấy người dùng";
+            }
+
+            return _response;
+        }
+
+        public async Task<ResponseDto> GetUsersByRole(string role)
+        {
+            try
+            {
+                var user = await _userManager.GetUsersInRoleAsync(role);
+
+                _response.IsSuccess = true;
+                _response.Result = _mapper.Map<List<UserDto>>(user);
+                _response.Message = $"lấy thành công danh sách người dùng có vai trò là {role}";
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Result = ex.Message;
             }
 
             return _response;

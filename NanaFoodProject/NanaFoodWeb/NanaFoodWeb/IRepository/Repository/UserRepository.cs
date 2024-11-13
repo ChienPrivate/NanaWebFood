@@ -57,6 +57,24 @@ namespace NanaFoodWeb.IRepository.Repository
             });
         }
 
+        public async Task<ResponseDto> GetUserByNameAsync(string userName)
+        {
+            return await _baseService.SendAsync(new RequestDto()
+            {
+                ApiType= StaticDetails.ApiType.GET,
+                Url = StaticDetails.APIBase + $"api/User/users/{userName}"
+            });
+        }
+
+        public async Task<ResponseDto> GetUserByRole(string role)
+        {
+            return await _baseService.SendAsync(new RequestDto()
+            {
+                ApiType = StaticDetails.ApiType.GET,
+                Url = StaticDetails.APIBase + $"api/User/GetUsers/{role}"
+            });
+        }
+
         public async Task<ResponseDto> UpdateUserAsync(UpdateUserRequestDto updateUserRequestDto)
         {
             return await _baseService.SendAsync(new RequestDto() 

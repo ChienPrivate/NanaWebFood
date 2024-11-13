@@ -8,6 +8,7 @@ namespace NanaFoodWeb.IRepository
 {
     public interface IOrderRepository
     {
+        Task<ResponseDto> GetAllOrderAsync();
         Task<ResponseDto> GetProvinceAsync();
         Task<ResponseDto> GetDistrictAsync(int provinceId);
         Task<ResponseDto> GetWardAsync(int districtId);

@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 namespace NanaFoodWeb.Controllers
 {
     [Route("Users")]
-    [Authorize(Roles = "admin")]
+    [Authorize(Roles = "admin,employee")]
     public class UsersController : Controller
     {
         private readonly IUserRepository _userRepository;
@@ -26,9 +26,19 @@ namespace NanaFoodWeb.Controllers
         {
             var response = await _userRepository.GetAllUserAsync();
 
-            var users = JsonConvert.DeserializeObject<List<UserWithRolesDto>>(response.Result.ToString());
+            var users = JsonConvert.DeserializeObject<List<UserWithRolesDto>>(response.Result.ToString()) ?? new List<UserWithRolesDto>();
 
-            ViewBag.lazyLoadData = users;
+            
+            var admin = users.Where(u => u.Roles == "admin").ToList();
+            var employee = users.Where(u => u.Roles == "employee").ToList();
+            var cumtomer = users.Where(u => u.Roles == "customer").ToList();
+
+            ViewBag.Admin = admin;
+
+            ViewBag.Customer = cumtomer;
+
+            ViewBag.Employee = employee;
+
 
             return View();
         }
@@ -231,6 +241,7 @@ namespace NanaFoodWeb.Controllers
                     {
                         "admin" => "Quản trị viên",    // Đổi "admin" thành "Quản trị viên"
                         "customer" => "Khách hàng",    // Đổi "customer" thành "Khách hàng"
+                        "employee" => "Nhân viên",
                         _ => role.Name                 // Nếu không nằm trong danh sách, giữ nguyên giá trị
                     };
 

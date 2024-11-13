@@ -9,7 +9,7 @@ namespace NanaFoodApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "admin")]
+    [Authorize(Roles = "admin,employee")]
     public class UserController : ControllerBase
     {
         private readonly IUserRepository _userRepository;
@@ -64,6 +64,14 @@ namespace NanaFoodApi.Controllers
             var result = await _userRepository.GetUserByIdAsync(userId);
 
             return Ok(result);
+        }
+
+        [HttpGet("GetUsers/{role}")]
+        public async Task<IActionResult> GetUserByRole([FromRoute] string role)
+        {
+            var response = await _userRepository.GetUsersByRole(role);
+
+            return Ok(response);
         }
     }
 }

@@ -1,8 +1,9 @@
 ﻿@{
     var isAdmin = User.IsInRole("admin");
+    var isEmployee = User.IsInRole("employee");
     string controller = "Home";
     string action = "Index";
-    if (isAdmin)
+    if (isAdmin || isEmployee)
     {
         Layout = "_AdminLayout";
         controller = "DashBoard";

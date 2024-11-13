@@ -14,7 +14,7 @@ namespace NanaFoodWeb.Extensions
             if (user.Identity.IsAuthenticated)
             {
                 // Kiểm tra xem người dùng có thuộc role "admin" hay không
-                if (user.IsInRole("admin"))
+                if (user.IsInRole("admin") || user.IsInRole("employee"))
                 {
                     // Nếu có role "admin", chặn truy cập
                     context.Result = new ForbidResult(); // Chặn truy cập với role admin

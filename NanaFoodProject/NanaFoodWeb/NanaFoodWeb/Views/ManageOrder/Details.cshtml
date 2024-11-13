@@ -1,0 +1,185 @@
+﻿@{
+    Layout = "_AdminLayout";
+    var listOrder = ViewBag.ProductList as List<NanaFoodWeb.Models.Dto.ReviewProductDto>;
+    double TotalProduct = 0;
+    foreach(var item in listOrder)
+    {
+        TotalProduct += item.Total;
+    }
+    
+}
+@model NanaFoodWeb.Models.Dto.OrderDto
+<div class="container-fluid">
+    <div class="card shadow">
+        <div class="card-header">
+            <h4>Chi tiết đơn hàng</h4>
+        </div>
+        <div class="card-body">
+            <div class="row mb-2">
+                <div class="col-md-6">
+                    <div class="card userinfo" >
+                        <div class="card-header">
+                            <h5>Thông tin người nhận</h5>
+                        </div>
+                        <div class="p-2">
+                            <div class="mb-2 mt-2">
+                                <p><strong>Mã đơn hàng :</strong> @Model.OrderId</p>
+                            </div>
+                            <div class="mb-2 mt-2">
+                                <p><strong>Tên người đặt :</strong> @Model.FullName</p>
+                            </div>
+                            <div class="mb-2 mt-2">
+                                <p><strong>Số điền thoại :</strong> @Model.PhoneNumber</p>
+                            </div>
+                            <div class="mb-2 mt-2">
+                                <p><strong>Email :</strong> @Model.Email</p>
+                            </div>
+                            <div class="mb-2 mt-2">
+                                <p><strong>Địa chỉ :</strong> @Model.Address</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card deliveryinfo">
+                        <div class="card-header">
+                            <h5>Thông tin giao nhận</h5>
+                        </div>
+                        <div class="p-2">
+                            <div class="mb-2 mt-2">
+                                <p><strong>Phương thức thanh toán :</strong> @Model.PaymentType</p>
+                            </div>
+                            <div class="mb-2 mt-2">
+                                <p><strong>Trạng thái thanh toán :</strong> @Model.OrderId</p>
+                            </div>
+                            <div class="mb-2 mt-2">
+                                <p><strong>Trạng thái giao hàng:</strong> @Model.OrderStatus</p>
+                            </div>
+
+                            <div class="mb-2 mt-2">
+                                <p><strong>Thời gian đặt hàng:</strong> @Model.OrderDate.ToString("dd/MM/yyyy hh:mm:ss tt")</p>
+                            </div>
+
+                            <div class="mb-2 mt-2">
+                                <p><strong>Thời gian dự kiến nhận hàng:</strong> @Model.ExpectedDeliveryDate</p>
+                            </div>
+                            @if (Model.OrderStatus == "Đã giao")
+                            {
+                                <div class="mb-2 mt-2">
+                                    <p><strong>Thời gian nhận hàng:</strong> @Model.ReceiveDate.ToString("dd/MM/yyyy hh:mm:ss tt")</p>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-md-6">
+                    <div class="card paymentinfo mt-2 mb-2">
+                        <div class="card-header">
+                            <h5>Chi phí đơn hàng</h5>
+                        </div>
+                        <div class="p-2">
+                            <div class="mb-2 mt-2">
+                                <p><strong>Tổng tiền các sản phẩm: </strong> @TotalProduct</p>
+                            </div>
+                            <div class="mb-2 mt-2">
+                                <p><strong>Phí vận chuyển:</strong> @Model.ShipmentFee.ToString("#,##") VNĐ</p>
+                            </div>
+                            @if(!string.IsNullOrEmpty(Model.CouponCode)){
+                                <div class="mb-2 mt-2">
+                                    <p><strong>Mã giảm giá:</strong> @Model.CouponCode</p>
+                                </div>
+                                <div class="mb-2 mt-2">
+                                    <p><strong>Giảm giá:</strong> @Model.Discount?.ToString("#,##") VNĐ</p>
+                                </div>
+                            }
+                            <div class="mb-2 mt-2">
+                                <p><strong>Tổng tiền :</strong> @Model.Total.ToString("#,##") VNĐ</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card ordernote mt-2 mb-2">
+                        <div class="card-header">
+                            <h5>Ghi chú</h5>
+                        </div>
+                        @if (!string.IsNullOrEmpty(Model.Note))
+                        {
+                            <div class="card-body">
+                                <div class="mb-2 mt-2">
+                                    <p><strong>Ghi chú:</strong> @Model.Note</p>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="card-body">
+                                <div class="d-flex justify-content-center align-items-center bg-light">
+                                    <div class="mb-2 mt-2">
+                                        <h5>Không có</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            @if (Model.OrderStatus == "Đã huỷ")
+            {
+                <div class="col-md-12">
+                    <div class="card ordernote mt-2 mb-2">
+                        <div class="card-header">
+                            <h5>Lý do hủy</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-2 mt-2">
+                                <p><strong>Lý do hủy:</strong> @Model.CancelReason</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            <div class="row">
+                <div class="col-12 mt-2">
+                    <table class="table table-bordered text-center">
+                        <thead>
+                            <tr>
+                                <th>Hình ảnh</th>
+                                <th>Tên sản phẩm</th>
+                                <th>Giá</th>
+                                <th>Số lượng</th>
+                                <th>Tổng tiền</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in listOrder)
+                            {
+                                <tr>
+                                    <td>
+                                        <img src="@item.ProductImage" class="img-fluid img-thumbnail rounded-2" width="100" height="100" />
+                                    </td>
+                                    <td>
+                                        @item.ProductName
+                                    </td>
+                                    <td>@item.Price.ToString("#,##") VNĐ</td>
+                                    <td>@item.Quantity</td>
+                                    <td>@item.Total.ToString("#,##") VNĐ</td>
+                                </tr>
+                                TotalProduct += item.Total;
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="text-end">
+                <a href="@Url.Action("Index", "ManageOrder")" class="btn btn-secondary"><i class="fa-solid fa-list"></i> Trở về danh sách</a>
+            </div>
+        </div>
+    </div>
+</div>

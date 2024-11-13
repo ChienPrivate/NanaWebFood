@@ -1,6 +1,8 @@
 ﻿@using Syncfusion.EJ2
+@using System.Security.Claims
 @{
     Layout = "_AdminLayout";
+    var role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value ?? "Guess";
 }
 
 @model NanaFoodWeb.Models.Dto.UpdateUserRequestDto
@@ -71,7 +73,10 @@
                         </div>
                     </div>
                     <div class="form-group mt-2">
-                        <a asp-action="Edit" asp-controller="Users" class="btn btn-primary" asp-route-userId="@Model.Id"><i class="fa-regular fa-pen-to-square"></i> Chỉnh sửa</a>
+                        @if (role == "admin")
+                        {
+                            <a asp-action="Edit" asp-controller="Users" class="btn btn-primary" asp-route-userId="@Model.Id"><i class="fa-regular fa-pen-to-square"></i> Chỉnh sửa</a>
+                        }
                         <a href="@Url.Action("Index", "Users")" class="btn btn-secondary"><i class="fa-solid fa-list"></i> Trở về danh sách</a>
                     </div>
                 </form>
