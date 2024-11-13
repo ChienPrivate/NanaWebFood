@@ -203,6 +203,48 @@ namespace NanaFoodDAL.IRepository.Repository
         {
             try
             {
+                var existingCoupon = await context.Coupons.AsNoTracking()
+                  .FirstOrDefaultAsync(e => e.CouponCode == coupon.CouponCode);
+
+                if (existingCoupon == null)
+                {
+                    response.IsSuccess = false;
+                    response.Message = "Mã giảm giá này không tồn tại.";
+                    return response;
+                }
+
+                // Thiết lập trạng thái mã giảm giá
+                var currentDate = DateTime.Now;
+
+                if (currentDate < coupon.CouponStartDate)
+                {
+                    coupon.Status = CouponStatus.Inactive; // Chưa đến ngày bắt đầu
+                }
+                else if (currentDate >= coupon.CouponStartDate && currentDate <= coupon.EndStart)
+                {
+                    coupon.Status = CouponStatus.Active; // Đang có hiệu lực
+                }
+                else
+                {
+                    coupon.Status = CouponStatus.Expired; // Hết hạn
+                }
+
+                _context.Entry(coupon).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+
+                response.IsSuccess = true;
+                response.Result = _mapper.Map<CouponDto>(coupon);
+                response.Message = "Cập nhật mã giảm giá thành công.";
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = $"Đã xảy ra lỗi: {ex.Message}";
+            }
+
+            return response;
+            /*try
+            {
                 coupon.CouponCode = coupon.CouponCode.ToLower();
                 var existingCoupon = await context.Coupons.AsNoTracking()
                     .FirstOrDefaultAsync(e => e.CouponCode == coupon.CouponCode);
@@ -273,9 +315,9 @@ namespace NanaFoodDAL.IRepository.Repository
                 existingCoupon.EndStart = coupon.EndStart;
                 existingCoupon.MaxUsage = coupon.MaxUsage;
                 existingCoupon.TimesUsed = coupon.TimesUsed;
-                existingCoupon.Status = couponStatus; 
+                existingCoupon.Status = couponStatus;
 
-                await _context.SaveChangesAsync();
+                await context.SaveChangesAsync();
                 response.Result = mapper.Map<CouponDto>(coupon);
                 response.IsSuccess = true;
                 response.Message = "Cập nhật mã giảm giá thành công.";
@@ -284,7 +326,7 @@ namespace NanaFoodDAL.IRepository.Repository
 
             }
             catch (Exception e) { response.IsSuccess = false; response.Message = e.Message; }
-            return response;
+            return response;*/
         }
     }
 }

@@ -17,6 +17,15 @@ namespace NanaFoodWeb.IRepository.Repository
             _baseService = baseService;
         }
 
+        public async Task<ResponseDto> GetAllOrderAsync()
+        {
+            return await _baseService.SendAsync(new RequestDto
+            {
+                ApiType = ApiType.GET,
+                Url = APIBase + "/api/Order/orders"
+            });
+        }
+
         public async Task<ResponseDto> AddOrderAsync(Order order)
         {
             return await _baseService.SendAsync(new RequestDto
@@ -245,7 +254,7 @@ namespace NanaFoodWeb.IRepository.Repository
             return await _baseService.SendAsync(new RequestDto
             {
                 ApiType = ApiType.PUT,
-                Url = APIBase + $"/api/Order/profit/orders/{OrderId}&{message}"
+                Url = APIBase + $"/api/Order/orders/{OrderId}&{message}"
             });
         }
 

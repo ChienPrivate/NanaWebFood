@@ -5,6 +5,8 @@ using Newtonsoft.Json;
 using NanaFoodWeb.IRepository;
 using NanaFoodWeb.Models;
 using NanaFoodWeb.Models.Dto.ViewModels;
+using Microsoft.AspNetCore.Razor.Language.Intermediate;
+using Microsoft.AspNetCore.Mvc.Diagnostics;
 
 namespace NanaFoodWeb.Controllers
 {
@@ -65,16 +67,29 @@ namespace NanaFoodWeb.Controllers
         [HttpGet("Edit/{code}")]
         public async Task<IActionResult>Edit(string code)
         {
-            var response = await _couponRepo.GetById(code);
-            if(response != null && response.IsSuccess)
+            var result = await _couponRepo.GetById(code); 
+            if (result != null && result.IsSuccess)
             {
-                var coupon = JsonConvert.DeserializeObject<CouponDto>(response.Result.ToString()); 
+                var coupon = JsonConvert.DeserializeObject<CouponDto>(result.Result.ToString());
                 return View(coupon);
             }
-            TempData["ErrorMessage"] = "Không tìm thấy sản phẩm.";
-            return RedirectToAction("Index");
-
+            else
+            {
+                return RedirectToAction("Index", new { error = "Không tìm thấy sản phẩm để chỉnh sửa." });
+            }
+           
         }
+        [HttpPost("Edit/{code}")]
+        public async Task<IActionResult>Edit(CouponDto coupon, string code)
+        {
+            var result = await  _couponRepo.Update(coupon);
+            if(result != null && result.IsSuccess)
+            {
+                return RedirectToAction("Index");
+            }
+            return View(coupon);
+        }
+
         [HttpGet("Details/{code}")]
         public async Task <IActionResult> Details(string code)
         {

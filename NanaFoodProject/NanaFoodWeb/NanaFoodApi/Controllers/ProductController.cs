@@ -9,6 +9,7 @@ namespace NanaFoodApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "admin,employee")]
     public class ProductController(IProductRepository foodService, IMapper mapper) : ControllerBase
     {
         readonly IProductRepository _foodService = foodService;
@@ -29,6 +30,7 @@ namespace NanaFoodApi.Controllers
         /// <response code="200">Trả về danh sách sản phẩm.</response>
         /// <response code="404">Không tìm thấy sản phẩm nào.</response>
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult<ResponseDto> GetAll(int page = 1, int pageSize = 10, bool isSelectAll = true)
         {
             var response = _foodService.GetAll(page, pageSize, isSelectAll);
@@ -55,6 +57,7 @@ namespace NanaFoodApi.Controllers
         /// <response code="200">Trả về thông tin sản phẩm.</response>
         /// <response code="404">Không tìm thấy sản phẩm.</response>
         [HttpGet("getbyId/{id:int}")]
+        [AllowAnonymous]
         public ResponseDto GetById([FromRoute] int id)
         {
             return _foodService.GetById(id);
@@ -129,6 +132,7 @@ namespace NanaFoodApi.Controllers
         /// </returns>
         /// <response code="200">Trả về danh sách sản phẩm theo danh mục.</response>
         [HttpGet("FilterCategoryID/{categoryId:int}")]
+        [AllowAnonymous]
         public ResponseDto GetByCategoryId([FromRoute] int categoryId, int page = 1, int pageSize = 10)
         {
             var products = _foodService.GetByCategoryId(categoryId, page, pageSize);
@@ -150,6 +154,7 @@ namespace NanaFoodApi.Controllers
         /// </returns>
         /// <response code="200">Trả về danh sách sản phẩm theo khoảng giá.</response>
         [HttpGet("Filter")]
+        [AllowAnonymous]
         public ResponseDto GetByFilter(double? minrange, double? maxrange, int page = 1, int pageSize = 10)
         {
             return _foodService.GetByFilter(minrange, maxrange, page, pageSize);
@@ -169,6 +174,7 @@ namespace NanaFoodApi.Controllers
         /// </returns>
         /// <response code="200">Trả về danh sách sản phẩm theo tên.</response>
         [HttpGet("Get-by-name")]
+        [AllowAnonymous]
         public ResponseDto GetBySearch(string query, int page = 1, int pageSize = 10)
         {
             return _foodService.GetBySearch(query, page, pageSize);
@@ -188,6 +194,7 @@ namespace NanaFoodApi.Controllers
         /// </returns>
         /// <response code="200">Trả về danh sách sản phẩm đã sắp xếp.</response>
         [HttpGet("Sorting")]
+        [AllowAnonymous]
         public ResponseDto Sorting(string sort, int page = 1, int pageSize = 10)
         {
             return _foodService.Sorting(sort, page, pageSize);
@@ -206,6 +213,7 @@ namespace NanaFoodApi.Controllers
         /// </returns>
         /// <response code="200">Trả về danh sách sản phẩm có lượt xem cao nhất.</response>
         [HttpGet("Get-top-view")]
+        [AllowAnonymous]
         public ResponseDto TopViewed(int page = 1, int pageSize = 10)
         {
             return _foodService.TopViewed(page, pageSize);
@@ -317,6 +325,7 @@ namespace NanaFoodApi.Controllers
         /// <response code="200">Trả về danh sách sản phẩm cùng danh mục trừ sản phẩm hiện tại.</response>
         /// <response code="400">Yêu cầu không hợp lệ hoặc có lỗi khi lấy sản phẩm.</response>
         [HttpGet("ExcludeSameProduct/{productId}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetByCategoryIdExcludeSameProduct(int productId, int categoryid, int page, int pageSize)
         {
             var response = await _foodService.GetByCategoryIdExcludeSameProduct(productId, categoryid, page, pageSize);
@@ -328,6 +337,7 @@ namespace NanaFoodApi.Controllers
         }
 
         [HttpGet("get_product")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetProduct()
         {
             var response = _foodService.GetProduct();
@@ -339,6 +349,7 @@ namespace NanaFoodApi.Controllers
         }
 
         [HttpGet("get_product_images/{ProductId}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetImages([FromRoute] int ProductId)
         {
             var response = await _foodService.GetImages(ProductId);

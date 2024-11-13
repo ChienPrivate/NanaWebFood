@@ -78,6 +78,10 @@ namespace NanaFoodWeb.Controllers
                 {
                     return RedirectToAction("Index", "DashBoard");
                 }
+                else if(role == "employee")
+                {
+                    return RedirectToAction("Index", "ManageOrder");
+                }
 
                 var checkEmailConfirmResponse = await _authRepo.CheckEmailConfirm(_tokenProvider.ReadToken("email",userReturn.Token));
                 TempData["response"] = JsonConvert.SerializeObject(response);
@@ -202,7 +206,6 @@ namespace NanaFoodWeb.Controllers
         {
             return View();
         }
-
 
         [HttpPost]
         public IActionResult GitHubLogin()

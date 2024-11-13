@@ -1,38 +1,153 @@
 ﻿@using Syncfusion.EJ2
+@using System.Security.Claims
 @{
     Layout = "_AdminLayout";
+    var role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value ?? "Guess";
+}
+
+@if (role == "employee")
+{
+    <div class="col-lg-12 control-section">
+        <div>
+            <h1 class="h3 mb-4 text-gray-800">Danh sách khách hàng</h1>
+        </div>
+        <div class="mt-2 mb-2">
+            <a asp-controller="Users" asp-action="Create" class="btn btn-outline-primary"><i class="bi bi-plus-circle"></i> Tạo người dùng mới</a>
+        </div>
+        <div class="control-wrapper">
+            <div class="control-section">
+                @Html.EJS().Grid("Grid").DataSource((IEnumerable<object>)ViewBag.Customer).Columns(col =>
+                         {
+                             // col.Field("Id").HeaderText("ID").Width("130").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).IsPrimaryKey(true).Add();
+                             col.Field("AvatarUrl").HeaderText("Hình ảnh").Template("#template1").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                             col.Field("FullName").HeaderText("Họ tên").Format("C2").Width("135").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                             col.Field("UserName").HeaderText("Tên đăng nhập").Format("C2").Width("135").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Right).Add();
+                             col.Field("Status").HeaderText("Trạng thái").Width("160").Template("#userStatusTemplate").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                             col.Field("PhoneNumber").HeaderText("Số điện").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                             col.Field("Address").HeaderText("Địa chỉ").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                             col.Field("Email").HeaderText("Email").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                             col.Field("EmailConfirmed").HeaderText("Xác thực email").Width("160").Template("#emailConfirmedTemplate").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                             col.Field("Roles").HeaderText("Vai trò").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+
+
+                             col.Field("commands").HeaderText("Thao tác").Template("#EmployeeCommand").Width("200").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+
+                         }).AllowPaging().PageSettings(page => page.PageCount(3).PageSizes(true).PageSize(10)).AllowSorting().AllowFiltering().FilterSettings(filter => { filter.Type(Syncfusion.EJ2.Grids.FilterType.Excel); }).Toolbar(new List<string>() { "Search" }).AllowResizing(false).AutoFit(false).Render()
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="container-fluid mt-3">
+        <h2>Danh sách người dùng</h2>
+        <div class="mt-2 mb-2">
+            <a asp-controller="Users" asp-action="Create" class="btn btn-outline-primary"><i class="bi bi-plus-circle"></i> Tạo người dùng mới</a>
+        </div>
+        <br>
+        <!-- Nav pills -->
+        <ul class="nav nav-pills" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" data-bs-toggle="pill" href="#home">Quản trị viên</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="pill" href="#menu1">Nhân viên</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="pill" href="#menu2">Khách hàng</a>
+            </li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div id="home" class="tab-pane active">
+                <br>
+                <h3>Quản trị viên</h3>
+                <div class="col-lg-12 control-section">
+                    <div>
+                        <h1 class="h3 mb-4 text-gray-800"></h1>
+                    </div>
+                    <div class="control-wrapper">
+                        <div class="control-section">
+                            @Html.EJS().Grid("AdminGrid").DataSource((IEnumerable<object>)ViewBag.Admin).Columns(col =>
+                                     {
+                                         // col.Field("Id").HeaderText("ID").Width("130").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).IsPrimaryKey(true).Add();
+                                         col.Field("AvatarUrl").HeaderText("Hình ảnh").Template("#template1").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                         col.Field("FullName").HeaderText("Họ tên").Format("C2").Width("135").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                         col.Field("UserName").HeaderText("Tên đăng nhập").Format("C2").Width("135").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Right).Add();
+                                         col.Field("Status").HeaderText("Trạng thái").Width("160").Template("#userStatusTemplate").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                         col.Field("PhoneNumber").HeaderText("Số điện").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                         col.Field("Address").HeaderText("Địa chỉ").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                         col.Field("Email").HeaderText("Email").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                         col.Field("EmailConfirmed").HeaderText("Xác thực email").Width("160").Template("#emailConfirmedTemplate").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                         col.Field("commands").HeaderText("Thao tác").Template("#commandTemplate").Width("200").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+
+                                     }).AllowPaging().PageSettings(page => page.PageCount(3).PageSizes(true).PageSize(10)).AllowSorting().AllowFiltering().FilterSettings(filter => { filter.Type(Syncfusion.EJ2.Grids.FilterType.Excel); }).Toolbar(new List<string>() { "Search" }).AllowResizing(false).AutoFit(false).Render()
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="menu1" class="tab-pane fade">
+                <br>
+                <h3>Nhân viên</h3>
+                <div class="col-lg-12 control-section">
+                    <div>
+                        <h1 class="h3 mb-4 text-gray-800"></h1>
+                    </div>
+
+                    <div class="control-wrapper">
+                        <div class="control-section">
+                            @Html.EJS().Grid("EmployeeGrid").DataSource((IEnumerable<object>)ViewBag.Employee).Columns(col =>
+                                     {
+                                         // col.Field("Id").HeaderText("ID").Width("130").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).IsPrimaryKey(true).Add();
+                                         col.Field("AvatarUrl").HeaderText("Hình ảnh").Template("#template1").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                         col.Field("FullName").HeaderText("Họ tên").Format("C2").Width("135").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                         col.Field("UserName").HeaderText("Tên đăng nhập").Format("C2").Width("135").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Right).Add();
+                                         col.Field("Status").HeaderText("Trạng thái").Width("160").Template("#userStatusTemplate").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                         col.Field("PhoneNumber").HeaderText("Số điện").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                         col.Field("Address").HeaderText("Địa chỉ").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                         col.Field("Email").HeaderText("Email").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                         col.Field("EmailConfirmed").HeaderText("Xác thực email").Width("160").Template("#emailConfirmedTemplate").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                         col.Field("commands").HeaderText("Thao tác").Template("#commandTemplate").Width("200").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+
+                                     }).AllowPaging().PageSettings(page => page.PageCount(3).PageSizes(true).PageSize(10)).AllowSorting().AllowFiltering().FilterSettings(filter => { filter.Type(Syncfusion.EJ2.Grids.FilterType.Excel); }).Toolbar(new List<string>() { "Search" }).AllowResizing(false).AutoFit(false).Render()
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="menu2" class="tab-pane fade">
+                <br>
+                <h3>Khách hàng</h3>
+                <div class="col-lg-12 control-section">
+                    <div>
+                        <h1 class="h3 mb-4 text-gray-800"></h1>
+                    </div>
+                    <div class="control-wrapper">
+                        <div class="control-section">
+                            @Html.EJS().Grid("CustomerGrid").DataSource((IEnumerable<object>)ViewBag.Customer).Columns(col =>
+                                     {
+                                         // col.Field("Id").HeaderText("ID").Width("130").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).IsPrimaryKey(true).Add();
+                                         col.Field("AvatarUrl").HeaderText("Hình ảnh").Template("#template1").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                         col.Field("FullName").HeaderText("Họ tên").Format("C2").Width("135").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                         col.Field("UserName").HeaderText("Tên đăng nhập").Format("C2").Width("135").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Right).Add();
+                                         col.Field("Status").HeaderText("Trạng thái").Width("160").Template("#userStatusTemplate").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                         col.Field("PhoneNumber").HeaderText("Số điện").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                         col.Field("Address").HeaderText("Địa chỉ").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                         col.Field("Email").HeaderText("Email").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                         col.Field("EmailConfirmed").HeaderText("Xác thực email").Width("160").Template("#emailConfirmedTemplate").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                         col.Field("commands").HeaderText("Thao tác").Template("#commandTemplate").Width("200").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+
+                                     }).AllowPaging().PageSettings(page => page.PageCount(3).PageSizes(true).PageSize(10)).AllowSorting().AllowFiltering().FilterSettings(filter => { filter.Type(Syncfusion.EJ2.Grids.FilterType.Excel); }).Toolbar(new List<string>() { "Search" }).AllowResizing(false).AutoFit(false).Render()
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 }
 
 
-<div class="col-lg-12 control-section">
-    <div>
-        <h1 class="h3 mb-4 text-gray-800">Danh sách người dùng</h1>
-    </div>
-    <div class="mt-2 mb-2">
-        <a asp-controller="Users" asp-action="Create" class="btn btn-outline-primary"><i class="bi bi-plus-circle"></i> Tạo người dùng mới</a>
-    </div>
-    <div class="control-wrapper">
-        <div class="control-section">
-            @Html.EJS().Grid("Grid").DataSource((IEnumerable<object>)ViewBag.lazyLoadData).Columns(col =>
-                     {
-                         // col.Field("Id").HeaderText("ID").Width("130").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).IsPrimaryKey(true).Add();
-                         col.Field("AvatarUrl").HeaderText("Hình ảnh").Template("#template1").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
-                         col.Field("FullName").HeaderText("Họ tên").Format("C2").Width("135").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
-                         col.Field("UserName").HeaderText("Tên đăng nhập").Format("C2").Width("135").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Right).Add();
-                         col.Field("Status").HeaderText("Trạng thái").Width("160").Template("#userStatusTemplate").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
-                         col.Field("PhoneNumber").HeaderText("Số điện").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
-                         col.Field("Address").HeaderText("Địa chỉ").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
-                         col.Field("Email").HeaderText("Email").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
-                         col.Field("EmailConfirmed").HeaderText("Xác thực email").Width("160").Template("#emailConfirmedTemplate").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
-                         col.Field("Roles").HeaderText("Vai trò").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
-                         
 
-                         col.Field("commands").HeaderText("Thao tác").Template("#commandTemplate").Width("200").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
-
-                     }).AllowPaging().PageSettings(page => page.PageCount(3).PageSizes(true).PageSize(10)).AllowSorting().AllowFiltering().FilterSettings(filter => { filter.Type(Syncfusion.EJ2.Grids.FilterType.Excel); }).Toolbar(new List<string>() { "Search" }).AllowResizing(false).AutoFit(false).Render()
-        </div>
-    </div>
-</div>
 
 <script type="text/javascript">
     function emailConfirmedDetail(e) {
@@ -97,39 +212,18 @@
     ${userStatusDetail(data)}
 </script>
 
+<script type="text/x-jsrender" id="EmployeeCommand">
+    <a href="/Users/Details/${Id}" class="btn btn-outline-info mb-1 d-block"><i class="bi bi-info-circle"></i> Chi tiết</a>
+</script>
+
 <script type="text/x-jsrender" id="commandTemplate">
 
     <a href="/Users/Edit/${Id}" class="btn btn-outline-warning mb-1 d-block"><i class="fa-regular fa-pen-to-square"></i> Chỉnh sửa</a>
 
-    @* <button type="button" class="btn btn-danger mb-1 d-block form-control" data-bs-toggle="modal" data-bs-target="#deleteUserModal-${UserName}">
-        <i class="bi bi-trash"></i> Xóa
-    </button>
-
-    <div class="modal fade" id="deleteUserModal-${UserName}" tabindex="-1" aria-labelledby="deleteUserModalLabel-${UserName}" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteUserModalLabel-${UserName}">Xác nhận xóa người dùng</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Bạn có chắc chắn muốn xóa người dùng: <strong>${UserName}</strong> không?
-                </div>
-                <div class="modal-footer">
-                    <form method="post" action="/Users/Delete/${Id}">
-                        <input type="hidden" name="UserName" value="${Id}" />
-                        <button type="submit" class="btn btn-danger">Xóa</button>
-                    </form>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                </div>
-            </div>
-        </div>
-    </div> *@
-
-
     <a href="/Users/Delete/${Id}" class="btn btn-outline-danger mb-1 d-block"><i class="bi bi-trash"></i> Xóa</a>
 
     <a href="/Users/Details/${Id}" class="btn btn-outline-info mb-1 d-block"><i class="bi bi-info-circle"></i> Chi tiết</a>
+
 </script>
 
 <script id="template1" type="text/x-template">

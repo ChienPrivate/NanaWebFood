@@ -152,10 +152,13 @@ namespace NanaFoodDAL.IRepository.Repository
         {
             var order = _context.Orders.SingleOrDefault(Order => Order.OrderId == OrderId);
             order.OrderStatus = message;
-            if (message == "Đã giao")
+
+            if (message == "Đã giao")
             {
+                order.ReceiveDate = DateTime.Now;
                 order.PaymentStatus = "Đã thanh toán";
             }
+            
             _context.Orders.Update(order);
             await _context.SaveChangesAsync();
             _response.IsSuccess = true;

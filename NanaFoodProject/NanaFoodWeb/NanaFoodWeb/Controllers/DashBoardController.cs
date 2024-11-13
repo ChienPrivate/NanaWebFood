@@ -5,21 +5,30 @@ using NanaFoodWeb.IRepository.Repository;
 using NanaFoodWeb.Models.Dto;
 using NanaFoodWeb.Models.Dto.ViewModels;
 using Newtonsoft.Json;
+using System.Security.Claims;
 
 namespace NanaFoodWeb.Controllers
 {
-    [Authorize(Roles = "admin")]
+    [Authorize(Roles = "admin,employee")]
     public class DashBoardController : Controller
     {
         private readonly IAuthRepository _authRepo;
         private readonly IHelperRepository _helperRepository;
-        public DashBoardController(IAuthRepository authRepository, IHelperRepository helperRepository)
+        private readonly ITokenProvider _tokenProvider;
+        public DashBoardController(IAuthRepository authRepository, IHelperRepository helperRepository, ITokenProvider tokenProvider)
         {
             _authRepo = authRepository;
             _helperRepository = helperRepository;
+            _tokenProvider = tokenProvider;
         }
         public IActionResult Index()
         {
+            var token = _tokenProvider.GetToken();
+            var role =  _tokenProvider.ReadToken("role", token);
+            if(role == "employee")
+            {
+                return RedirectToAction("Index","ManageOrder");
+            }
             return View();
         }
 
