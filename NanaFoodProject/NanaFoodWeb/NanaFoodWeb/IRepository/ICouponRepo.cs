@@ -8,7 +8,7 @@ namespace NanaFoodWeb.IRepository
         Task<ResponseDto> GetAll();
         Task<ResponseDto> Create(Coupon coupon);
         Task<ResponseDto> GetById(string id);
-        Task<ResponseDto> Update(Coupon coupon);
+        Task<ResponseDto> Update(CouponDto coupon);
         Task<ResponseDto> DeleteById(string id);
         Task<ResponseDto> CheckUserCoupon(string codeCoupon);
     }

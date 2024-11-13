@@ -1,7 +1,7 @@
 ﻿@{
     Layout = "_AdminLayout";
 }
-
+@model NanaFoodWeb.Models.Dto.CouponDto
 <div id="wrapper">
     <!-- Main Content -->
     <div id="content-wrapper" class="d-flex flex-column">
@@ -14,22 +14,42 @@
                         <h6 class="m-0 font-weight-bold text-primary">Coupon Information</h6>
                     </div>
                     <div class="card-body">
-                        <form asp-action="Edit" asp-controller="Coupon" >
+                        <form id="editCouponForm" asp-action="Edit" asp-controller="Coupon" method="post" enctype="multipart/form-data">
                             <div class="form-group">
-                                <label for="couponCode">Coupon Code</label>
-                                <input type="text" class="form-control" id="couponCode" name="couponCode"  placeholder="Enter coupon code" required>
+                                <label for="couponCode">Mã giảm giá</label>
+                                <input asp-for="CouponCode" class="form-control" id="couponCode" readonly />
+                                <span asp-validation-for="CouponCode" class="text-danger"></span>
                             </div>
 
                             <div class="form-group">
-                                <label for="discount">Discount (%)</label>
-                                <input type="number" class="form-control" id="discount" name="discount"  placeholder="Enter discount percentage" required>
+                                <label for="discount">Giá giảm</label>
+                                <input asp-for="Discount" type="number" class="form-control" id="discount" name="discount" required>
                             </div>
 
                             <div class="form-group">
-                                <label for="minAmount">Minimum Amount ($)</label>
-                                <input type="number" class="form-control" id="minAmount" name="minAmount"  placeholder="Enter minimum purchase amount" required>
+                                <label for="minAmount">Số tiền tối thiểu</label>
+                                <input asp-for="MinAmount" type="number" class="form-control" id="discount" name="minAmount" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Mô tả mã giảm giá</label>
+                                <input asp-for="Description" class="form-control" id="description" name="description" required>
+                            </div>
+                            <div class="form-group">
+                                <label >Ngày bắt đầu</label>
+                                <input asp-for="CouponStartDate" type="date" class="form-control" asp-for="CouponStartDate" required>
+                                <span asp-validation-for="CouponStartDate" class="text-danger"></span>
                             </div>
 
+                            <div class="form-group">
+                                <label >Ngày kết thúc</label>
+                                <input asp-for="EndStart" type="date" class="form-control" asp-for="EndStart" required>
+                                <span asp-validation-for="EndStart" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label>Tổng số mã giảm giá</label>
+                                <input asp-for="MaxUsage" type="number"class="form-control" asp-for="MaxUsage" required />
+                                <span asp-validation-for ="MaxUsage" class="text-danger"></span>
+                            </div>
                             <button type="submit" class="btn btn-primary">Save Changes</button>
                             <a href="@Url.Action("Index", "Coupon")" class="btn btn-secondary">Cancel</a>
                         </form>

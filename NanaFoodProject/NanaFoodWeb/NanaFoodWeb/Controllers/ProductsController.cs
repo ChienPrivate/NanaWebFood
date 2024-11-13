@@ -162,12 +162,12 @@ namespace NanaFoodWeb.Controllers
 
                 var result = _productRepo.GetById(id);
 
-                if (result != null && result.IsSuccess) // Giả sử ResponseDto có thuộc tính IsSuccess
+                if (result != null && result.IsSuccess) 
                 {
-                    var productDto = JsonConvert.DeserializeObject<ProductDto>(result.Result.ToString()); // Giả sử ProductDto nằm trong Result
+                    var productDto = JsonConvert.DeserializeObject<ProductDto>(result.Result.ToString());
                     if (productDto != null)
                     {
-                        return View(productDto); // Trả về View với đối tượng ProductDto
+                        return View(productDto);
                     }
                 }
                 else

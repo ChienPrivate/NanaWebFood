@@ -53,12 +53,13 @@ namespace NanaFoodWeb.IRepository.Repository
             });
         }
 
-        public async Task<ResponseDto> Update(Coupon coupon)
+        public async Task<ResponseDto> Update(CouponDto coupon)
         {
             return await _baseService.SendAsync(new RequestDto
             {
                 ApiType = StaticDetails.ApiType.PUT,
-                Url = StaticDetails.APIBase + $"/api/Coupon/update"
+                Url = StaticDetails.APIBase + $"/api/Coupon/update", 
+                Data = coupon
             });
         }
 
