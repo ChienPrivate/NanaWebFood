@@ -48,7 +48,7 @@
                                      col.Field("PaymentType").HeaderText("Phương thức thanh toán").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
                                      col.Field("PaymentStatus").HeaderText("Trạng thai thanh toán").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
                                      col.Field("Note").HeaderText("Ghi chú").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
-                                     col.Field("Total").HeaderText("Tổng tiền").Format("{0:N0}").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                     col.Field("Total").HeaderText("Tổng tiền").Format("#,##" + " VNĐ").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
                                      col.Field("commands").HeaderText("Thao tác").Template("#preparingCommandTemplate").Width("200").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
 
                                  }).AllowPaging().PageSettings(page => page.PageCount(3).PageSizes(true).PageSize(10)).AllowSorting().AllowFiltering().FilterSettings(filter => { filter.Type(Syncfusion.EJ2.Grids.FilterType.Excel); }).Toolbar(new List<string>() { "Search" }).AllowResizing(false).AutoFit(false).Render()
@@ -77,7 +77,7 @@
                                      col.Field("PaymentType").HeaderText("Phương thức thanh toán").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
                                      col.Field("PaymentStatus").HeaderText("Trạng thai thanh toán").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
                                      col.Field("Note").HeaderText("Ghi chú").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
-                                     col.Field("Total").HeaderText("Tổng tiền").Format("{0:N0}").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                     col.Field("Total").HeaderText("Tổng tiền").Format("#,##" + " VNĐ").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
                                      col.Field("commands").HeaderText("Thao tác").Template("#deliveringCommandTemplate").Width("200").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
 
                                  }).AllowPaging().PageSettings(page => page.PageCount(3).PageSizes(true).PageSize(10)).AllowSorting().AllowFiltering().FilterSettings(filter => { filter.Type(Syncfusion.EJ2.Grids.FilterType.Excel); }).Toolbar(new List<string>() { "Search" }).AllowResizing(false).AutoFit(false).Render()
@@ -105,7 +105,7 @@
                                      col.Field("PaymentType").HeaderText("Phương thức thanh toán").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
                                      col.Field("PaymentStatus").HeaderText("Trạng thai thanh toán").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
                                      col.Field("Note").HeaderText("Ghi chú").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
-                                     col.Field("Total").HeaderText("Tổng tiền").Format("{0:N0}").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                     col.Field("Total").HeaderText("Tổng tiền").Format("#,##" + " VNĐ").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
                                      col.Field("commands").HeaderText("Thao tác").Template("#completeCommandTemplate").Width("200").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
 
                                  }).AllowPaging().PageSettings(page => page.PageCount(3).PageSizes(true).PageSize(10)).AllowSorting().AllowFiltering().FilterSettings(filter => { filter.Type(Syncfusion.EJ2.Grids.FilterType.Excel); }).Toolbar(new List<string>() { "Search" }).AllowResizing(false).AutoFit(false).Render()
@@ -134,7 +134,7 @@
                                      col.Field("PaymentType").HeaderText("Phương thức thanh toán").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
                                      col.Field("PaymentStatus").HeaderText("Trạng thái thanh toán").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
                                      col.Field("CancelReason").HeaderText("Lý do hủy").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
-                                     col.Field("Total").HeaderText("Tổng tiền").Format("{0:N0}").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                     col.Field("Total").HeaderText("Tổng tiền").Format("#,##"+" VNĐ").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
                                      col.Field("commands").HeaderText("Thao tác").Template("#cancelCommandTemplate").Width("200").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
 
                                  }).AllowPaging().PageSettings(page => page.PageCount(3).PageSizes(true).PageSize(10)).AllowSorting().AllowFiltering().FilterSettings(filter => { filter.Type(Syncfusion.EJ2.Grids.FilterType.Excel); }).Toolbar(new List<string>() { "Search" }).AllowResizing(false).AutoFit(false).Render()
@@ -164,11 +164,13 @@
              Bạn có muốn đổi trạng thái đơn hàng ${OrderId} thành "đang giao"?
            </div>
            <div class="modal-footer">
-             <div class="d-flex">
-                 <a href="/ManageOrder/ModifyStatus/${OrderId}" class="btn btn-success me-2"><i class="fa-solid fa-truck-fast"></i> Chuyển trạng thái: Đang giao</a>
-                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-             </div>
-           </div>
+            <div class="d-flex">
+                <a href="javascript:void(0);" id="changeStatusBtn-${OrderId}" class="btn btn-success me-2" data-order-id="${OrderId}" onclick="changeStatus(${OrderId})">
+                    <i class="fa-solid fa-truck-fast"></i> Chuyển trạng thái: Đang giao
+                </a>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+            </div>
+         </div>
          </div>
        </div>
      </div>
@@ -214,10 +216,10 @@
 </script>
 
 <script id="deliveringCommandTemplate" type="text/x-jsrender">
-    <a href="/ManageOrder/Details/${OrderId}" class="btn btn-outline-info"><i class="bi bi-info-circle"></i> Chi tiết</a>
+    <a href="/ManageOrder/Details/${OrderId}" class="btn btn-outline-info form-control mb-1 d-block"><i class="bi bi-info-circle"></i> Chi tiết</a>
 
     <button type="button" class="btn btn-outline-primary form-control mb-1 d-block" data-bs-toggle="modal" data-bs-target="#myModal-${OrderId}" data-order-id="${OrderId}">
-       <i class="fa-solid fa-truck-fast"></i> Đang giao
+       <i class="fa-solid fa-truck-fast"></i> Đã giao
      </button>
 
      <!-- Modal Đang giao cho mỗi OrderId -->
@@ -231,12 +233,14 @@
            <div class="modal-body">
              Bạn có muốn đổi trạng thái đơn hàng ${OrderId} thành "đang giao"?
            </div>
-           <div class="modal-footer">
-             <div class="d-flex">
-                 <a href="/ManageOrder/ModifyStatus/${OrderId}" class="btn btn-success me-2"><i class="fa-solid fa-truck-fast"></i> Chuyển trạng thái: Đang giao</a>
-                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-             </div>
-           </div>
+             <div class="modal-footer">
+                <div class="d-flex">
+                    <a href="javascript:void(0);" id="changeStatusBtn-${OrderId}" class="btn btn-success me-2" data-order-id="${OrderId}" onclick="changeStatusToDelivered(${OrderId})">
+                        <i class="fa-solid fa-truck-fast"></i> Chuyển trạng thái: Đã giao
+                    </a>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
          </div>
        </div>
      </div>
@@ -301,4 +305,22 @@
             });
         });
     });
+</script>
+
+<script type="text/javascript">
+    function changeStatus(orderId) {
+        // Đặt giá trị "Đang giao" cho tham số message
+        const message = "Đang giao";
+        // Chuyển hướng tới action với các tham số orderId và message
+        window.location.href = `/ManageOrder/ModifyStatus/${orderId}/${encodeURIComponent(message)}`;
+    }
+</script>
+
+<script type="text/javascript">
+    function changeStatusToDelivered(orderId) {
+        // Đặt giá trị "Đã giao" cho tham số message
+        const message = "Đã giao";
+        // Chuyển hướng tới action với các tham số orderId và message
+        window.location.href = `/ManageOrder/ModifyStatus/${orderId}/${encodeURIComponent(message)}`;
+    }
 </script>
