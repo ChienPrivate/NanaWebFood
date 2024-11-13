@@ -27,7 +27,6 @@ namespace NaNaTest
         {
             var responseDto = new ResponseDto { IsSuccess = true };
             _mockFoodService.Setup(svc => svc.GetAll(1, 10, true)).Returns(responseDto);
-
             var result = _controller.GetAll(1, 10, true);
 
             var okResult = result.Result as OkObjectResult;

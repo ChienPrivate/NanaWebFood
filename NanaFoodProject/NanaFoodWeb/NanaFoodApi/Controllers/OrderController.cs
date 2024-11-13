@@ -84,7 +84,7 @@ namespace NanaFoodApi.Controllers
         public async Task<IActionResult> AddOrderAsync([FromBody] OrderDto orderDto)
         {
             var user = await _signInManager.UserManager.GetUserAsync(User);
-
+            
             var cart = await _cartRepo.GetCart(user);
 
             if (ModelState.IsValid)

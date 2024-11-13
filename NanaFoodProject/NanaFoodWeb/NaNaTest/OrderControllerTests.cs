@@ -10,6 +10,7 @@ using NanaFoodDAL.IRepository;
 using NanaFoodDAL.Model;
 using FluentAssertions;
 using Xunit;
+using NanaFoodDAL.Dto.UserDTO;
 
 namespace NaNaTest
 {
@@ -22,9 +23,12 @@ namespace NaNaTest
         private readonly Mock<IMapper> _mapperMock;
         private readonly Mock<EmailPoster> _emailPosterMock;
         private readonly OrderController _controller;
-
+        private readonly Mock<IAuthenRepo> _authRepoMock;
+        private readonly AuthController _authcontroller;
+        private readonly Mock<ITokenService> _tokenServiceMock;
         public OrderControllerTests()
         {
+            _authRepoMock = new Mock<IAuthenRepo>();
             _orderRepoMock = new Mock<IOrderRepository>();
             _cartRepoMock = new Mock<ICartRepo>();
             _mapperMock = new Mock<IMapper>();
@@ -37,13 +41,15 @@ namespace NaNaTest
                 new Mock<IHttpContextAccessor>().Object,
                 new Mock<IUserClaimsPrincipalFactory<User>>().Object,
                 null, null, null, null);
-
+            _tokenServiceMock = new Mock<ITokenService>();
             _controller = new OrderController(
                 _orderRepoMock.Object,
                 _signInManagerMock.Object,
                 _cartRepoMock.Object,
                 _mapperMock.Object,
                 _emailPosterMock.Object);
+
+            _authcontroller = new AuthController(_authRepoMock.Object, _signInManagerMock.Object, _userManagerMock.Object, _mapperMock.Object, _tokenServiceMock.Object);
         }
 
         private Mock<SignInManager<User>> MockSignInManager()
@@ -82,8 +88,8 @@ namespace NaNaTest
         [Fact]
         public async Task AddOrderAsync_ShouldReturnOk_WhenOrderIsCreated()
         {
-            // Arrange
             var user = new User { Id = "user-id", Email = "user@example.com" };
+            
             var orderDto = new OrderDto
             {
                 FullName = "Nguyễn Văn An",
@@ -122,28 +128,16 @@ namespace NaNaTest
             };
 
             var createdOrder = new Order { OrderId = 1 };
+          
+            var resultt = await _controller.AddOrderAsync(orderDto);
 
-            _signInManagerMock.Setup(x => x.UserManager.GetUserAsync(It.IsAny<System.Security.Claims.ClaimsPrincipal>())).ReturnsAsync(user);
-            _cartRepoMock.Setup(x => x.GetCart(It.IsAny<User>())).ReturnsAsync(new ResponseDto
-            {
-                IsSuccess = true,
-                Result = cartItems
-            });
-            _mapperMock.Setup(x => x.Map<Order>(It.IsAny<OrderDto>())).Returns(order);
-            _orderRepoMock.Setup(x => x.AddOrder(It.IsAny<Order>())).ReturnsAsync(createdOrder);
-            _orderRepoMock.Setup(x => x.UpdateProductQuantity(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(new ResponseDto { IsSuccess = true });
-            _orderRepoMock.Setup(x => x.AddOrderDetails(It.IsAny<IEnumerable<OrderDetails>>())).Verifiable();
-            _cartRepoMock.Setup(x => x.RemoveAllCartItem(It.IsAny<string>())).ReturnsAsync(new ResponseDto { IsSuccess = true });
-            
-            _emailPosterMock.Setup(x => x.OrderEmailTemplate(It.IsAny<Order>(), It.IsAny<List<OrderDetails>>())).Returns("Email content");
-
-            var result = await _controller.AddOrderAsync(orderDto);
-
-            var okResult = Assert.IsType<OkObjectResult>(result);
+            var okResult = Assert.IsType<OkObjectResult>(resultt);
             var responseDto = Assert.IsType<ResponseDto>(okResult.Value);
             Assert.True(responseDto.IsSuccess);
             Assert.Equal("Tạo đơn hàng thành công", responseDto.Message);
         }
+
+       
 
         [Fact]
         public async Task AddOrderAsync_ShouldReturnBadRequest_WhenModelStateIsInvalid()

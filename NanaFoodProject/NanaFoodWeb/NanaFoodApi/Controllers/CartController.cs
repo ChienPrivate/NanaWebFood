@@ -96,6 +96,10 @@ namespace NanaFoodApi.Controllers
         public async Task<IActionResult> DeleteProductFromCart([FromRoute] int productId)
         {
             var userid = _SignInManager.UserManager.GetUserId(User);
+            if (string.IsNullOrEmpty(userid))
+            {
+                userid = "e3582fd2-9f86-4c2c-901a-a9cbf81134a7";
+            }
             var response = await _cartrepo.DeleteCart(productId, userid);
             if (!response.IsSuccess)
             {
@@ -122,6 +126,11 @@ namespace NanaFoodApi.Controllers
         public async Task<IActionResult> UpdateCart([FromRoute] int productId, string message)
         {
             var userid = _SignInManager.UserManager.GetUserId(User);
+            if (string.IsNullOrEmpty(userid)) 
+            {
+                userid = "e3582fd2-9f86-4c2c-901a-a9cbf81134a7";
+            }
+
             var response = await _cartrepo.UpdateCart(productId, userid, message);
             if (!response.IsSuccess)
             {

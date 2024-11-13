@@ -172,6 +172,7 @@ namespace NanaFoodApi.Controllers
                 return BadRequest(ModelState);
             }
             var user = await _signInManager.UserManager.GetUserAsync(User);
+            
             if (user == null)
             {
                 return Unauthorized("Người dùng chưa đăng nhập");
