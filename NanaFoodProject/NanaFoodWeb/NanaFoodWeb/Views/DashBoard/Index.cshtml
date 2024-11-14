@@ -1,16 +1,39 @@
-﻿@{
+﻿@using NanaFoodWeb.Models.Dto
+@using Syncfusion.EJ2
+@using Syncfusion.EJ2.Charts
+@{
     Layout = "_AdminLayout";
+    var chartData = ViewBag.LineChartData as IEnumerable<LineChartDto>;
+    var yAxisMaximum = ViewBag.YAxisMaximum;
+    var yAxisInterval = ViewBag.YAxisInterval;
 }
-
+@* <script>
+    var load = function (args) {
+        var selectedTheme = themeName ? themeName : 'Fluent2';
+        args.chart.theme = (selectedTheme.charAt(0).toUpperCase() + selectedTheme.slice(1))
+            .replace(/-dark/i, "Dark")
+            .replace(/contrast/i, 'Contrast')
+            .replace(/-highContrast/i, 'HighContrast')
+            .replace(/5.3/i, '5');
+        args.chart.width = ej.base.Browser.isDevice ? "100%" : "75%";
+    };
+</script> *@
+<style>
+    .align-chart {
+        display: flex;
+        justify-content: center; /* Căn giữa theo chiều ngang */
+        align-items: center;     /* Căn giữa theo chiều dọc nếu cần */
+    }
+</style>
 <div class="container-fluid">
 
-    <!-- Page Heading -->
+    @* <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Thống kê</h1>
         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
             <i class="fas fa-download fa-sm text-white-50"></i> Generate Report
         </a>
-    </div>
+    </div> *@
 
     <!-- Content Row -->
     <div class="row">
@@ -22,9 +45,9 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                Earnings (Monthly)
+                                Doanh thu (trong tháng)
                             </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@(ViewBag.ProfitInMonth.ToString("#,##") ?? "0") VNĐ</div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -41,9 +64,9 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                Earnings (Annual)
+                                Doanh thu (trong năm)
                             </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@(ViewBag.ProfitInYear.ToString("#,##") ?? "0") VNĐ</div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -60,19 +83,19 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                Tasks
+                                Số đơn đã giao thành công (trong tháng)
                             </div>
                             <div class="row no-gutters align-items-center">
-                                <div class="col-auto">
-                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                    @ViewBag.Complete <span>Đơn</span>
                                 </div>
-                                <div class="col">
+                                @* <div class="col">
                                     <div class="progress progress-sm mr-2">
                                         <div class="progress-bar bg-info" role="progressbar"
                                              style="width: 50%" aria-valuenow="50" aria-valuemin="0"
                                              aria-valuemax="100"></div>
                                     </div>
-                                </div>
+                                </div> *@
                             </div>
                         </div>
                         <div class="col-auto">
@@ -90,9 +113,11 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                Pending Requests
+                                Số đơn đang giao
                             </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                @ViewBag.Delivering <span>Đơn</span>
+                            </div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-comments fa-2x text-gray-300"></i>
@@ -107,12 +132,82 @@
 
     <div class="row">
 
-        <!-- Area Chart -->
+        <div class="col-xl-12 col-lg-12">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Lược đồ doanh thu</h6>
+                    <div class="dropdown no-arrow">
+                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                             aria-labelledby="dropdownMenuLink">
+                            <div class="dropdown-header">Dropdown Header:</div>
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body text-center">
+                    <div class="chart-area">
+                        <script>
+                            // Khai báo themeName với giá trị mặc định nếu chưa được xác định
+                            var themeName = themeName || "Fluent2";  // Đảm bảo rằng themeName có giá trị
+
+                            var load = function (args) {
+                                var selectedTheme = themeName ? themeName : 'Fluent2';  // Sử dụng themeName mặc định nếu không có giá trị
+                                args.chart.theme = (selectedTheme.charAt(0).toUpperCase() + selectedTheme.slice(1))
+                                    .replace(/-dark/i, "Dark")
+                                    .replace(/contrast/i, 'Contrast')
+                                    .replace(/-highContrast/i, 'HighContrast')
+                                    .replace(/5.3/i, '5');
+                                args.chart.width = ej.base.Browser.isDevice ? "100%" : "75%";
+                            };
+                        </script>
+                        <script type="text/javascript">
+                            function onAxisLabelRender(args) {
+                                if (args.axis.name === "primaryYAxis") {
+                                    args.text = parseInt(args.text).toLocaleString("vi-VN");
+                                }
+                            }
+
+                            function onTooltipRender(args) {
+                                // Lấy giá trị Y từ đối tượng point và định dạng với dấu phẩy
+                                if (args.point && args.point.y) {
+                                    args.text = args.point.y.toLocaleString("vi-VN") + " VNĐ";
+                                }
+                            }
+                        </script>
+
+
+                        @Html.EJS().Chart("container").Series(series =>
+                                 {
+                                     series.Type(Syncfusion.EJ2.Charts.ChartSeriesType.Line).Width(2).XName("Period").YName("Revenue").Name("Doanh thu").Marker(mr => mr.Visible(false)).DataSource(chartData).Add();
+                                 }).PrimaryXAxis(px =>
+                                 {
+                                     px.ValueType(Syncfusion.EJ2.Charts.ValueType.DateTime).MajorGridLines(mg => mg.Width(0)).LabelFormat("MM").EdgeLabelPlacement(Syncfusion.EJ2.Charts.EdgeLabelPlacement.Shift).Minimum(new DateTime(2024, 1, 1)).Maximum(new DateTime(2024, 12, 31)).Interval(1);
+                                 }).PrimaryYAxis(py =>
+                                 {
+                                     py.Title("VNĐ").RangePadding(Syncfusion.EJ2.Charts.ChartRangePadding.None).MajorTickLines(mt => mt.Width(0)).MinorTickLines(mt => mt.Width(0)).LineStyle(ls => ls.Width(0)).Interval(yAxisInterval).Minimum(0).Maximum(yAxisMaximum);
+                                 }).Title("Doanh thu theo từng tháng trong năm").Tooltip(tt => tt.Enable(true)).Load("load").AxisLabelRender("onAxisLabelRender").TooltipRender("onTooltipRender").ChartArea(area => area.Border(br => br.Width(0))).LegendSettings(leg => leg.Visible(true).EnableHighlight(true)).Render();
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @* <!-- Area Chart -->
         <div class="col-xl-8 col-lg-7">
             <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">Earnings Overview</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Lược đồ doanh thu</h6>
                     <div class="dropdown no-arrow">
                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -131,7 +226,48 @@
                 <!-- Card Body -->
                 <div class="card-body">
                     <div class="chart-area">
-                        <canvas id="myAreaChart"></canvas>
+                        <script>
+                            // Khai báo themeName với giá trị mặc định nếu chưa được xác định
+                            var themeName = themeName || "Fluent2";  // Đảm bảo rằng themeName có giá trị
+
+                            var load = function (args) {
+                                var selectedTheme = themeName ? themeName : 'Fluent2';  // Sử dụng themeName mặc định nếu không có giá trị
+                                args.chart.theme = (selectedTheme.charAt(0).toUpperCase() + selectedTheme.slice(1))
+                                    .replace(/-dark/i, "Dark")
+                                    .replace(/contrast/i, 'Contrast')
+                                    .replace(/-highContrast/i, 'HighContrast')
+                                    .replace(/5.3/i, '5');
+                                args.chart.width = ej.base.Browser.isDevice ? "100%" : "75%";
+                            };
+                        </script>
+                        <script type="text/javascript">
+                            function onAxisLabelRender(args) {
+                                if (args.axis.name === "primaryYAxis") {
+                                    args.text = parseInt(args.text).toLocaleString("vi-VN");
+                                }
+                            }
+
+                            function onTooltipRender(args) {
+                                // Lấy giá trị Y từ đối tượng point và định dạng với dấu phẩy
+                                if (args.point && args.point.y) {
+                                    args.text = args.point.y.toLocaleString("vi-VN") + " VNĐ";
+                                }
+                            }
+                        </script>
+
+
+                        @Html.EJS().Chart("container").Series(series =>
+                                 {
+                                     series.Type(Syncfusion.EJ2.Charts.ChartSeriesType.Line).Width(2).XName("Period").YName("Revenue").Name("Doanh thu").Marker(mr => mr.Visible(false)).DataSource(chartData).Add();
+                                 }).PrimaryXAxis(px =>
+                                 {
+                                     px.ValueType(Syncfusion.EJ2.Charts.ValueType.DateTime).MajorGridLines(mg => mg.Width(0)).LabelFormat("MM").EdgeLabelPlacement(Syncfusion.EJ2.Charts.EdgeLabelPlacement.Shift).Minimum(new DateTime(2024, 1, 1)).Maximum(new DateTime(2024, 12, 31)).Interval(1);
+                                 }).PrimaryYAxis(py =>
+                                 {
+                                     py.Title("VNĐ").RangePadding(Syncfusion.EJ2.Charts.ChartRangePadding.None).MajorTickLines(mt => mt.Width(0)).MinorTickLines(mt => mt.Width(0)).LineStyle(ls => ls.Width(0)).Interval(500000).Minimum(0).Maximum(2000000);
+                                 }).Title("Doanh thu theo từng tháng trong năm").Tooltip(tt => tt.Enable(true)).Load("load").AxisLabelRender("onAxisLabelRender").TooltipRender("onTooltipRender").ChartArea(area => area.Border(br => br.Width(0))).LegendSettings(leg => leg.Visible(true).EnableHighlight(true)).Render();
+
+                        
                     </div>
                 </div>
             </div>
@@ -142,7 +278,7 @@
             <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">Revenue Sources</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Nguồn thu nhập</h6>
                     <div class="dropdown no-arrow">
                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -162,6 +298,7 @@
                 <div class="card-body">
                     <div class="chart-pie pt-4 pb-2">
                         <canvas id="myPieChart"></canvas>
+
                     </div>
                     <div class="mt-4 text-center small">
                         <span class="mr-2">
@@ -176,10 +313,10 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> *@
     </div>
 
-    <!-- Content Row -->
+    @* <!-- Content Row -->
     <div class="row">
 
         <!-- Content Column -->
@@ -342,6 +479,6 @@
             </div>
 
         </div>
-    </div>
+    </div> *@
 
 </div>

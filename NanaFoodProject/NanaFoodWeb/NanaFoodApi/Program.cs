@@ -192,6 +192,9 @@ builder.Services.AddAuthentication(x =>
     o.TokenEndpoint = "https://oauth2.googleapis.com/token";
     o.UserInformationEndpoint = "https://www.googleapis.com/oauth2/v3/userinfo";
 
+    o.Scope.Add("https://www.googleapis.com/auth/userinfo.profile");
+    o.Scope.Add("https://www.googleapis.com/auth/userinfo.email");
+
     o.CallbackPath = "/Auth/google";
     /*o.SaveTokens = true;*/
     o.ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "sub");
@@ -462,6 +465,7 @@ builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 builder.Services.AddScoped<ICouponRepo, CouponRepo>();
 builder.Services.AddScoped<IUserCouponRepo, UserCouponRepo>();
+builder.Services.AddScoped<IDashBoardRepository, DashBoardRepository>();
 // Config các IService và Service ở chỗ này ↑
 
 builder.Services.AddCors(options =>
@@ -469,9 +473,10 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowAllOrigins",
         builder =>
         {
-            builder.WithOrigins("https://localhost:51326")
+            builder.WithOrigins("https://nanafoodweb20241114171424.azurewebsites.net")
                    .AllowAnyMethod()
-                   .AllowAnyHeader();
+                   .AllowAnyHeader()
+                   .AllowCredentials();
         });
 });
 
