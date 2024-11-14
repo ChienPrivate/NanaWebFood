@@ -53,13 +53,25 @@ builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<ICartRepo, CartRepo>();
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 builder.Services.AddScoped<ICouponRepo, CouponRepo>();
+builder.Services.AddScoped<IDashBoardRepository, DashBoardRepository>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigins",
+        policy =>
+        {
+            policy.WithOrigins("https://nanafoodweb20241114171424.azurewebsites.net", "https://nanafoodapi20241110164928.azurewebsites.net")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod()
+                  .AllowCredentials(); // Quan trọng để cho phép cookie cross-origin
+        });
+});
 
 
 var app = builder.Build();
 
 
-StaticDetails.APIBase = builder.Configuration["ServiceUrls:APIBase"];
+StaticDetails.APIBase = builder.Configuration["ServiceUrls:PublicAPIUrl"];
 StaticDetails.GHNApiKey = GetEnvironmentVariable("GHN_API_KEY");
 
 // Configure the HTTP request pipeline.
@@ -74,6 +86,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseSession();
 app.UseRouting();
+
+app.UseCors("AllowSpecificOrigins"); // Áp dụng CORS policy
 
 app.UseAuthentication();
 app.UseAuthorization();
