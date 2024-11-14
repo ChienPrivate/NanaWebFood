@@ -5,11 +5,11 @@
 <div id="content-wrapper" class="d-flex flex-column">
     <div id="content">
         <div class="container-fluid">
-            <h1 class="h3 mb-4 text-gray-800">Create New Coupon</h1>
+            <h1 class="h3 mb-4 text-gray-800">Tạo mới mã giảm giá</h1>
 
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Coupon Information</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Thông tin mã giảm giá</h6>
                 </div>
                 <div class="card-body">
                     <form asp-action="Create" asp-controller="Coupon" method="post">
@@ -54,7 +54,7 @@
                             <input type="number" class="form-control" asp-for="MaxUsage" placeholder="Nhập số lần sử dụng mã giảm giá" required>
                             <span asp-validation-for="MaxUsage" class="text-danger"></span>
                         </div>
-                        <button type="submit" class="btn btn-primary">Tạo</button>
+                        <button type="submit" class="btn btn-primary"><i class="fa-regular fa-square-check"></i> Tạo mới</button>
                         <a href="@Url.Action("Index", "Coupon")" class="btn btn-secondary">Huỷ</a>
                     </form>
                 </div>

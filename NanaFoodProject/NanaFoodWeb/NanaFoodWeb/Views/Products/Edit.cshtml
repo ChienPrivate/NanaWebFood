@@ -9,12 +9,12 @@
     <form id="editProductForm" asp-controller="Products" asp-action="Edit" method="post" enctype="multipart/form-data">
         <input type="hidden" asp-for="ProductId" />
         <div class="form-group">
-            <label asp-for="ProductName"></label>
+            <label asp-for="ProductName">Tên sản phẩm</label>
             <input asp-for="ProductName" class="form-control" id="productName" />
             <span asp-validation-for="ProductName" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="Price"></label>
+            <label asp-for="Price">Giá</label>
             <input asp-for="Price" class="form-control" id="productName" />
             <span asp-validation-for="Price" class="text-danger"></span>
         </div>
@@ -26,7 +26,12 @@
             <span asp-validation-for="CategoryId" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="Description"></label>
+            <label asp-for="Quantity">Số lượng</label>
+            <input asp-for="Quantity" type="number" class="form-control" id="productQuantity"></input>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Description">Mô tả</label>
             <textarea asp-for="Description" class="form-control" id="productDescription"></textarea>
             <span asp-validation-for="Description" class="text-danger"></span>
         </div>
@@ -113,8 +118,8 @@
         </div>
         <input type="hidden" asp-for="ProductId" id="productId" />
 
-        <button type="submit" class="btn btn-primary btn-lg px-4 mr-2">Edit</button>
-        <a href="@Url.Action("Index", "Products")" class="btn btn-secondary">Cancel</a>
+        <button type="submit" class="btn btn-primary btn-lg px-4 mr-2"><i class="fa-regular fa-pen-to-square"></i>Chỉnh sửa</button>
+        <a href="@Url.Action("Index", "Products")" class="btn btn-secondary">Huỷ</a>
     </form>
 </div>
 

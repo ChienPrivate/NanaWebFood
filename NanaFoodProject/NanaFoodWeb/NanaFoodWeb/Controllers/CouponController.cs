@@ -102,5 +102,50 @@ namespace NanaFoodWeb.Controllers
             TempData["ErrorMessage"] = "Không tìm thấy sản phẩm.";
             return RedirectToAction("Index");
         }
+
+        [HttpGet("delete/{code}")]
+        public async Task<IActionResult> Delete(string code)
+        {
+            var response = await _couponRepo.GetById(code);
+            if (response?.IsSuccess == true && response.Result != null)
+            {
+                var coupon = JsonConvert.DeserializeObject<CouponDto>(response.Result.ToString());
+                return View(coupon);
+            }
+            TempData["ErrorMessage"] = "Không tìm thấy sản phẩm.";
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost("DeleteConfirm")]
+        public async Task<IActionResult> DeleteConfirm(string id)
+        {
+            var response = await _couponRepo.DeleteById(id);
+            if (response.IsSuccess)
+            {
+                TempData["success"] = "Xóa danh mục thành công";
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                string message = response.Message;
+                return NotFound(message);
+            }
+        }
+
+        [HttpPost("deDelete/{id}")]
+        public async Task<IActionResult> deDelete(string id)
+        {
+            var response = await _couponRepo.ModifyStatus(id);
+            if (response.IsSuccess)
+            {
+                TempData["success"] = "Xoá thành công";
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                string message = response.Message;
+                return NotFound(message);
+            }
+        }
     }
 }
