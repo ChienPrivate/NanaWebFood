@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using NanaFoodWeb.IRepository;
 using NanaFoodWeb.IRepository.Repository;
+using NanaFoodWeb.Models;
 using NanaFoodWeb.Models.Dto;
 using NanaFoodWeb.Models.Dto.ViewModels;
 using Newtonsoft.Json;
@@ -15,17 +16,61 @@ namespace NanaFoodWeb.Controllers
         private readonly IAuthRepository _authRepo;
         private readonly IHelperRepository _helperRepository;
         private readonly ITokenProvider _tokenProvider;
-        public DashBoardController(IAuthRepository authRepository, IHelperRepository helperRepository, ITokenProvider tokenProvider)
+        private readonly IDashBoardRepository _boardRepository;
+        public DashBoardController(IAuthRepository authRepository, IHelperRepository helperRepository, ITokenProvider tokenProvider, IDashBoardRepository boardRepository)
         {
             _authRepo = authRepository;
             _helperRepository = helperRepository;
             _tokenProvider = tokenProvider;
+            _boardRepository = boardRepository;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             var token = _tokenProvider.GetToken();
             var role =  _tokenProvider.ReadToken("role", token);
-            if(role == "employee")
+
+            var profitInMonthRes = await _boardRepository.GetProfitByMonthAsync(DateTime.Now.Month);
+
+            ViewBag.ProfitInMonth = profitInMonthRes.Result ?? 0;
+
+            var profitInYearRes = await _boardRepository.GetProfitByYearAsync(DateTime.Now.Year);
+
+            ViewBag.ProfitInYear = profitInYearRes.Result ?? 0;
+
+            var deliveringOrderRes = await _boardRepository.GetDeliveringOrderAsync();
+
+            if (deliveringOrderRes.IsSuccess)
+            {
+                var deliveringOrders = JsonConvert.DeserializeObject<List<Order>>(deliveringOrderRes.Result.ToString());
+                ViewBag.Delivering = deliveringOrders.Count;
+            }
+
+            var completeOrderRes = await _boardRepository.GetCompleteOrderInMonthAsync(DateTime.Now.Month);
+
+            if (completeOrderRes.IsSuccess)
+            {
+                var completeOrders = JsonConvert.DeserializeObject<List<Order>>(completeOrderRes.Result.ToString());
+                ViewBag.Complete = completeOrders.Count;
+            }
+
+            var getprofitEachMonthRes = await _boardRepository.GetProfitEachMonth(DateTime.Now.Year);
+
+            if (getprofitEachMonthRes.IsSuccess)
+            {
+                var getprofitEachMonth = JsonConvert.DeserializeObject<List<LineChartDto>>(getprofitEachMonthRes.Result.ToString());
+                double maxRevenue = getprofitEachMonth.Max(data => data.Revenue);
+                double roundedMaxRevenue = Math.Ceiling(maxRevenue / 1000000) * 1000000;
+
+                // Đặt khoảng cách Interval cho trục Y
+                double interval = roundedMaxRevenue / 4;
+
+
+                ViewBag.YAxisMaximum = roundedMaxRevenue;
+                ViewBag.YAxisInterval = interval;
+                ViewBag.LineChartData = getprofitEachMonth;
+            }
+
+            if (role == "employee")
             {
                 return RedirectToAction("Index","ManageOrder");
             }

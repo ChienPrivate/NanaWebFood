@@ -210,19 +210,19 @@ namespace NanaFoodWeb.Controllers
         [HttpPost]
         public IActionResult GitHubLogin()
         {
-            return Redirect("https://localhost:7094/api/Auth/github");
+            return Redirect("https://nanafoodapi20241110164928.azurewebsites.net/api/Auth/github");
         }
 
         [HttpPost]
         public IActionResult GoogleLogin()
         {
-            return Redirect("https://localhost:7094/api/Auth/google");
+            return Redirect("https://nanafoodapi20241110164928.azurewebsites.net/api/Auth/google");
         }
 
         [HttpPost]
         public IActionResult FacebookLogin()
         {
-            return Redirect("https://localhost:7094/api/Auth/facebook");
+            return Redirect("https://nanafoodapi20241110164928.azurewebsites.net/api/Auth/facebook");
         }
 
         public async Task<IActionResult> ExternalLoginCallback(string data)

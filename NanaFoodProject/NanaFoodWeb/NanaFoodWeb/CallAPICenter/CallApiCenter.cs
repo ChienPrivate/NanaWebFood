@@ -9,7 +9,7 @@ namespace NanaFoodWeb.CallAPICenter
     public class CallApiCenter
     {
         public CallApiCenter() { }
-        private string URLAPI = "https://localhost:7094/api/";
+        private string URLAPI = "https://nanafoodapi20241110164928.azurewebsites.net/api/";
         public async Task<T> GetMethod<T>(string apiName,string token)
         {
             //var res = new ResponeModel();

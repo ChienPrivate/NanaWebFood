@@ -204,7 +204,7 @@ namespace NanaFoodApi.Controllers
             {
                 return BadRequest(response);
             }
-            return Redirect("https://localhost:51326/Auth/Login?message=activation-success");
+            return Redirect("https://nanafoodweb20241114171424.azurewebsites.net/Auth/Login?message=activation-success");
         }
 
 
@@ -248,12 +248,12 @@ namespace NanaFoodApi.Controllers
         {
             /*var properties = new AuthenticationProperties() { RedirectUri = Url.Action("GitHubExternalCallBack") };
             return Challenge(properties, "github");*/
-            var redirectUri = "https://localhost:51326/Auth/ExternalLoginCallBack";
+            var redirectUri = "https://nanafoodweb20241114171424.azurewebsites.net/Auth/ExternalLoginCallBack";
             return Challenge(new AuthenticationProperties()
             {
                 RedirectUri = redirectUri,
             }
-            , authenticationSchemes: ["github"]);
+            , authenticationSchemes: "github");
         }
 
 
@@ -270,7 +270,7 @@ namespace NanaFoodApi.Controllers
         [HttpGet("google")]
         public async Task<IActionResult> GoogleLogin()
         {
-            var redirectUri = "https://localhost:51326/Auth/ExternalLoginCallBack";
+            var redirectUri = "https://nanafoodweb20241114171424.azurewebsites.net/Auth/ExternalLoginCallBack";
             return Challenge(new AuthenticationProperties()
             {
                 RedirectUri = redirectUri,
@@ -291,7 +291,7 @@ namespace NanaFoodApi.Controllers
         [HttpGet("facebook")]
         public async Task<IActionResult> FacebookLogin()
         {
-            var redirectUri = "https://localhost:51326/Auth/ExternalLoginCallBack";
+            var redirectUri = "https://nanafoodweb20241114171424.azurewebsites.net/Auth/ExternalLoginCallBack";
             return Challenge(new AuthenticationProperties()
             {
                 RedirectUri = redirectUri,
