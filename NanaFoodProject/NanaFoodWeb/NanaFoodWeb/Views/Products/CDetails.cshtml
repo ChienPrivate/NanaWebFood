@@ -64,10 +64,10 @@
             </form>
         </div>
         <div class="offset-1 col-5 mt-2">
-            <img class="img-fluid me-1 ms-1" src="https://drive.google.com/file/d/1hrWYPxShTe1Hu5S8uOVUIOkNum4SSelk/view" style="height : 90px; width : 90px;" />
-            <img class="img-fluid me-1" src="https://placehold.co/300x300" style="height : 90px; width : 90px;"/>
-            <img class="img-fluid me-1" src="https://placehold.co/300x300" style="height : 90px; width : 90px;"/>
-            <img class="img-fluid me-1" src="https://placehold.co/300x300" style="height : 90px; width : 90px;"/>
+            <img class="img-fluid me-1 ms-1 lazyload" data-src="https://drive.google.com/file/d/1hrWYPxShTe1Hu5S8uOVUIOkNum4SSelk/view" style="height : 90px; width : 90px;" />
+            <img class="img-fluid me-1 lazyload" data-src="https://placehold.co/300x300" style="height : 90px; width : 90px;" />
+            <img class="img-fluid me-1 lazyload" data-src="https://placehold.co/300x300" style="height : 90px; width : 90px;" />
+            <img class="img-fluid me-1 lazyload" data-src="https://placehold.co/300x300" style="height : 90px; width : 90px;" />
         </div>
     </div>
 
@@ -75,13 +75,22 @@
     {
         <div class="card shadow rounded-2">
             <div class="card-header">
-                <h2>Bình luận sản phẩm </h2>
+                <h2>Đánh giá sản phẩm </h2>
                 <hr />
                 @(await Html.PartialAsync("_PartialCDetail"))
             </div>
         </div>
+    } else
+    {
+        <div class="card shadow rounded-2">
+            <div class="card-header">
+                <h2>Đánh giá sản phẩm </h2>
+                <hr />
+                <p>Chưa có đánh giá nào</p>
+            </div>
+        </div>
     }
-    
+
 
     <!-- Modal -->
     @* <div class="modal fade" id="quantityLimitModal" tabindex="-1" aria-labelledby="quantityLimitModalLabel" aria-hidden="true">

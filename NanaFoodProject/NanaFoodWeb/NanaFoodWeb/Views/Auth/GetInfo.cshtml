@@ -17,8 +17,8 @@
             <div class="col-lg-4">
                 <div class="card mb-4">
                     <div class="card-body text-center">
-                        <img src="@Model.UserDto.AvatarUrl" alt="avatar"
-                             class="rounded-circle img-fluid" style="width: 150px; height:150px;">
+                        <img data-src="@Model.UserDto.AvatarUrl" alt="avatar"
+                             class="rounded-circle img-fluid lazyload" style="width: 150px; height:150px;">
                             <h5 class="my-3">@Model.UserDto.UserName</h5>
                         <div class="d-flex justify-content-between mb-2">
 
@@ -145,7 +145,7 @@
 
 
 @*ES2 kéo thả hình ảnh *@
-<script>
+<script defer>
     document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('browse').onclick = function () {
             document.getElementsByClassName('e-file-select-wrap')[0].querySelector('button').click();
@@ -385,6 +385,10 @@
             reader.readAsDataURL(file);
         }
     }
+</script>
+
+@* Đổi mật khẩu *@
+<script>
     function validatePasswords() {
         const oldPass = $('#oldPass').val();
         const newPass = $('#newPass').val();
@@ -440,7 +444,23 @@
                 },
                 success: function (response) {
                     $('#changePass').modal('hide');
-                    $('.display-success').before(`<div class="alert alert-success text-center fw-bold" role="alert">${response.message}</div>`);
+
+
+                    // Hiển thị thông báo thành công
+                    const successMessage = $(`<div class="alert alert-success text-center fw-bold" role="alert">${response.message}</div>`);
+                    $('.display-success').before(successMessage);
+
+
+                    $('#oldPass').val('');
+                    $('#newPass').val('');
+                    $('#confirmPass').val('');
+
+                    // Tự động ẩn thông báo sau 5 giây
+                    setTimeout(function () {
+                        successMessage.fadeOut(function () {
+                            $(this).remove();
+                        });
+                    }, 5000);
                 },
                 error: function () {
                     $('#oldPass').after(`<span class="d-flex text-danger">Mật khẩu hiện tại không chính xác</span>`);

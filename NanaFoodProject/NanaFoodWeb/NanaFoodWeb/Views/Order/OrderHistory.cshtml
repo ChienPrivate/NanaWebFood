@@ -24,10 +24,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if (Model == null)
+                    @if (Model.Count() < 1)
                     {
                         <tr>
-                            <td colspan="5">@ViewBag.none</td>
+                            <td colspan="8" class="text-center">Bạn chưa có mua đơn hàng nào</td>
                         </tr>
                     }
                     else
