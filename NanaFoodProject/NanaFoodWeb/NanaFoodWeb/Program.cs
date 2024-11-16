@@ -9,7 +9,7 @@ using static System.Environment;
 var builder = WebApplication.CreateBuilder(args);
 
 Env.Load();
-string lisense = GetEnvironmentVariable("SyncFusionLisense");
+string lisense = builder.Configuration["Key:SyncFunsion"];
 Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(lisense);
 
 // Add services to the container.
@@ -72,7 +72,9 @@ var app = builder.Build();
 
 
 StaticDetails.APIBase = builder.Configuration["ServiceUrls:PublicAPIUrl"];
-StaticDetails.GHNApiKey = GetEnvironmentVariable("GHN_API_KEY");
+/*StaticDetails.GHNApiKey = GetEnvironmentVariable("GHN_API_KEY");*/
+StaticDetails.GHNApiKey = builder.Configuration["Key:GHN_API_KEY"];
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

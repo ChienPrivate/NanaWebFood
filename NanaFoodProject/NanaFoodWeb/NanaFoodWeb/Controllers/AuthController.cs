@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using Azure;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -83,13 +84,14 @@ namespace NanaFoodWeb.Controllers
                     return RedirectToAction("Index", "ManageOrder");
                 }
 
-                var checkEmailConfirmResponse = await _authRepo.CheckEmailConfirm(_tokenProvider.ReadToken("email",userReturn.Token));
+                var checkEmailConfirmResponse = await _authRepo.CheckEmailConfirm(_tokenProvider.ReadToken("nameid", userReturn.Token));
                 TempData["response"] = JsonConvert.SerializeObject(response);
                 if (checkEmailConfirmResponse != null && checkEmailConfirmResponse.IsSuccess)
                 {
                     TempData["response"] = JsonConvert.SerializeObject(response);
                     return RedirectToAction("Index", "Home");
                 }
+
                 TempData["success"] = null;
                 return RedirectToAction(nameof(NotificationConfirmEmail));
                 

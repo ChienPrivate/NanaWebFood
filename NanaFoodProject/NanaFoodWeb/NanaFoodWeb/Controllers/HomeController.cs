@@ -348,10 +348,21 @@ namespace NanaFoodWeb.Controllers
                 return View(new ProductVM());
             }
         }
-        public IActionResult Privacy()
+        public IActionResult Privacy(string lang = "vi")
         {
+            // Xác định ngôn ngữ dựa trên tham số "lang" từ URL, mặc định là "vi"
+            if (lang != "vi" && lang != "en")
+            {
+                lang = "vi"; // Nếu giá trị lang không hợp lệ, đặt lại thành "vi"
+            }
+
+            // Gán giá trị "lang" vào ViewData để sử dụng trong view
+            ViewData["lang"] = lang;
+
             return View();
         }
+
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
