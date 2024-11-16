@@ -219,10 +219,11 @@ namespace NanaFoodApi.Controllers
         /// <response code="200">Email đã xác nhận.</response>
         /// <response code="400">Kiểm tra thất bại.</response>
         /// <response code="500">Có lỗi xảy ra từ phía server.</response>
-        [HttpGet("CheckEmailConfirm/{email}")]
-        public async Task<IActionResult> CheckEmailConfirm(string email)
+        [HttpGet("CheckEmailConfirm/{userId}")]
+        public async Task<IActionResult> CheckEmailConfirm(string userId)
         {
-            var user = await _userManager.FindByEmailAsync(email);
+            /*var user = await _userManager.FindByEmailAsync(email);*/
+            var user = await _userManager.FindByIdAsync(userId);
             var response = await _auth.CheckEmailConfirm(user);
             if (!response.IsSuccess)
             {

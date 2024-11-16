@@ -143,8 +143,10 @@ namespace NanaFoodWeb.IRepository.Repository
             momoRequest.partnerName = "Test Momo API Payment";
             momoRequest.storeId = "Momo Test Store";
             momoRequest.orderInfo = "Payment with momo";
-            momoRequest.redirectUrl = "https://localhost:51326/Order/MomoReturn";
-            momoRequest.ipnUrl = "https://localhost:51326";
+            /*momoRequest.redirectUrl = "https://localhost:51326/Order/MomoReturn";
+            momoRequest.ipnUrl = "https://localhost:51326";*/
+            momoRequest.redirectUrl = "https://nanafoodweb20241114171424.azurewebsites.net/MomoReturn";
+            momoRequest.ipnUrl = "https://nanafoodweb20241114171424.azurewebsites.net";
             momoRequest.requestType = "captureWallet";
             momoRequest.amount = Math.Round((decimal)total).ToString();
             momoRequest.orderId = Guid.NewGuid().ToString();
@@ -177,7 +179,7 @@ namespace NanaFoodWeb.IRepository.Repository
 
         public string VNPayPayment(int total)
         {
-            string vnp_Returnurl = "https://localhost:51326/Order/VNPReturn"; //URL nhan ket qua tra ve 
+            string vnp_Returnurl = "https://nanafoodweb20241114171424.azurewebsites.net/Order/VNPReturn"; //URL nhan ket qua tra ve 
             string vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html"; //URL thanh toan cua VNPAY 
             string vnp_TmnCode = "2DQGKKDA"; //Ma định danh merchant kết nối (Terminal Id)
             string vnp_HashSecret = "UMTCVNGYSCWSWVEJCADPUEECDUCVHVNU"; //Secret Key
