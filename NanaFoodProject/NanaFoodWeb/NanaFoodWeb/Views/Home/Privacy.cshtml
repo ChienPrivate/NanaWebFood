@@ -1,6 +1,100 @@
 ﻿@{
-    ViewData["Title"] = "Privacy Policy";
-}
-<h1>@ViewData["Title"]</h1>
+    Layout = "_Layout";
 
-<p>Use this page to detail your site's privacy policy.</p>
+    // Lấy giá trị lang từ URL, nếu không có thì mặc định là "vi"
+    var lang = Context.Request.Query["lang"].ToString() ?? "vi";
+    ViewData["lang"] = lang;
+}
+
+// Nút chuyển đổi ngôn ngữ
+<p>
+    <a href="?lang=vi" class="btn btn-primary" style="margin-right: 10px;">Tiếng Việt</a>
+    <a href="?lang=en" class="btn btn-secondary">English</a>
+</p>
+
+@if (ViewData["lang"] == "vi")
+{
+    <h1>Chính Sách Quyền Riêng Tư</h1>
+
+    <p>Chúng tôi cam kết bảo vệ quyền riêng tư và bảo mật thông tin cá nhân của bạn. Chính sách này giải thích cách chúng tôi thu thập, sử dụng và bảo vệ thông tin của bạn khi bạn sử dụng ứng dụng của chúng tôi.</p>
+
+    <h2>1. Thông Tin Chúng Tôi Thu Thập</h2>
+    <p>Khi bạn sử dụng ứng dụng của chúng tôi, chúng tôi có thể thu thập các loại thông tin sau đây:</p>
+    <ul>
+        <li><strong>Thông tin cá nhân:</strong> bao gồm tên, địa chỉ email và các thông tin liên quan khác mà bạn cung cấp khi đăng nhập hoặc đăng ký.</li>
+        <li><strong>Thông tin từ thiết bị:</strong> bao gồm địa chỉ IP, loại thiết bị, phiên bản hệ điều hành, và thông tin trình duyệt.</li>
+    </ul>
+
+    <h2>2. Cách Chúng Tôi Sử Dụng Thông Tin</h2>
+    <p>Chúng tôi sử dụng thông tin của bạn cho các mục đích sau:</p>
+    <ul>
+        <li>Để cung cấp và duy trì dịch vụ của chúng tôi.</li>
+        <li>Để cải thiện tính năng và trải nghiệm người dùng.</li>
+        <li>Để liên hệ với bạn, bao gồm việc gửi các thông báo và cập nhật liên quan đến dịch vụ.</li>
+    </ul>
+
+    <h2>3. Chia Sẻ Thông Tin</h2>
+    <p>Chúng tôi không chia sẻ thông tin cá nhân của bạn với bên thứ ba trừ khi cần thiết để:</p>
+    <ul>
+        <li>Tuân thủ quy định pháp luật.</li>
+        <li>Bảo vệ quyền và tài sản của chúng tôi.</li>
+        <li>Đáp ứng các yêu cầu hợp pháp từ cơ quan chức năng.</li>
+    </ul>
+
+    <h2>4. Bảo Mật Thông Tin</h2>
+    <p>Chúng tôi sử dụng các biện pháp bảo mật thích hợp để bảo vệ thông tin của bạn khỏi truy cập trái phép, mất mát hoặc rò rỉ. Tuy nhiên, không có phương thức truyền tải dữ liệu qua internet hoặc lưu trữ điện tử nào là tuyệt đối an toàn.</p>
+
+    <h2>5. Quyền Của Bạn</h2>
+    <p>Bạn có quyền truy cập, chỉnh sửa hoặc xóa thông tin cá nhân của mình bất kỳ lúc nào. Nếu bạn muốn thực hiện các quyền này, vui lòng liên hệ với chúng tôi qua thông tin liên hệ bên dưới.</p>
+
+    <h2>6. Thay Đổi Chính Sách Quyền Riêng Tư</h2>
+    <p>Chúng tôi có thể cập nhật Chính Sách Quyền Riêng Tư này theo thời gian. Chúng tôi sẽ thông báo cho bạn về bất kỳ thay đổi nào bằng cách đăng chính sách mới lên trang web của chúng tôi.</p>
+
+    <h2>7. Liên Hệ</h2>
+    <p>Nếu bạn có bất kỳ câu hỏi nào về Chính Sách Quyền Riêng Tư này, vui lòng liên hệ với chúng tôi qua email: <a href="mailto:chienprivate@gmail.com">chienprivate@gmail.com</a>.</p>
+
+    <p>Cảm ơn bạn đã sử dụng ứng dụng của chúng tôi và tin tưởng vào chính sách bảo mật của chúng tôi.</p>
+}
+else if (ViewData["lang"] == "en")
+{
+    <h1>Privacy Policy</h1>
+
+    <p>We are committed to protecting your privacy and safeguarding your personal information. This policy explains how we collect, use, and protect your information when you use our application.</p>
+
+    <h2>1. Information We Collect</h2>
+    <p>When you use our application, we may collect the following types of information:</p>
+    <ul>
+        <li><strong>Personal Information:</strong> includes name, email address, and other relevant details that you provide when logging in or registering.</li>
+        <li><strong>Device Information:</strong> includes IP address, device type, operating system version, and browser information.</li>
+    </ul>
+
+    <h2>2. How We Use Your Information</h2>
+    <p>We use your information for the following purposes:</p>
+    <ul>
+        <li>To provide and maintain our service.</li>
+        <li>To improve functionality and user experience.</li>
+        <li>To contact you, including sending notifications and updates related to the service.</li>
+    </ul>
+
+    <h2>3. Sharing Information</h2>
+    <p>We do not share your personal information with third parties except as necessary to:</p>
+    <ul>
+        <li>Comply with legal requirements.</li>
+        <li>Protect our rights and property.</li>
+        <li>Respond to lawful requests from regulatory authorities.</li>
+    </ul>
+
+    <h2>4. Information Security</h2>
+    <p>We use appropriate security measures to protect your information from unauthorized access, loss, or disclosure. However, no method of data transmission over the internet or electronic storage is entirely secure.</p>
+
+    <h2>5. Your Rights</h2>
+    <p>You have the right to access, modify, or delete your personal information at any time. If you wish to exercise these rights, please contact us using the information provided below.</p>
+
+    <h2>6. Changes to Privacy Policy</h2>
+    <p>We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new policy on our website.</p>
+
+    <h2>7. Contact</h2>
+    <p>If you have any questions regarding this Privacy Policy, please contact us via email: <a href="mailto:chienprivate@gmail.com">chienprivate@gmail.com</a>.</p>
+
+    <p>Thank you for using our application and trusting our privacy practices.</p>
+}

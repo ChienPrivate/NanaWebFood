@@ -36,10 +36,12 @@ namespace NanaFoodWeb.IRepository.Repository
 
         public string? GetToken()
         {
+            Console.WriteLine("Đang lấy token từ cookies...");
             string? token = null;
 
             bool? hasToken = _contextAccessor.HttpContext?.Request.Cookies.TryGetValue(StaticDetails.TokenCookie, out token);
 
+            Console.WriteLine($"Token retrieved: {token}");
             return hasToken is true ? token : null;
         }
 
