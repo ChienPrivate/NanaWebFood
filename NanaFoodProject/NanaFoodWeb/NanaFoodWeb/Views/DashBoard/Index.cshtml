@@ -167,6 +167,7 @@
                                     .replace(/-highContrast/i, 'HighContrast')
                                     .replace(/5.3/i, '5');
                                 args.chart.width = ej.base.Browser.isDevice ? "100%" : "75%";
+                                args.chart.width = !ej.base.Browser.isDevice ? "100%" : "75%";
                             };
                         </script>
                         <script type="text/javascript">
@@ -175,14 +176,15 @@
                                     args.text = parseInt(args.text).toLocaleString("vi-VN");
                                 }
                             }
-
                             function onTooltipRender(args) {
                                 // Lấy giá trị Y từ đối tượng point và định dạng với dấu phẩy
                                 if (args.point && args.point.y) {
                                     args.text = args.point.y.toLocaleString("vi-VN") + " VNĐ";
                                 }
                             }
+                            
                         </script>
+               
 
 
                         @Html.EJS().Chart("container").Series(series =>
@@ -195,8 +197,6 @@
                                  {
                                      py.Title("VNĐ").RangePadding(Syncfusion.EJ2.Charts.ChartRangePadding.None).MajorTickLines(mt => mt.Width(0)).MinorTickLines(mt => mt.Width(0)).LineStyle(ls => ls.Width(0)).Interval(yAxisInterval).Minimum(0).Maximum(yAxisMaximum);
                                  }).Title("Doanh thu theo từng tháng trong năm").Tooltip(tt => tt.Enable(true)).Load("load").AxisLabelRender("onAxisLabelRender").TooltipRender("onTooltipRender").ChartArea(area => area.Border(br => br.Width(0))).LegendSettings(leg => leg.Visible(true).EnableHighlight(true)).Render();
-
-
                     </div>
                 </div>
             </div>

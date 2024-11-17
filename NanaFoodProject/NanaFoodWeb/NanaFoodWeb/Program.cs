@@ -105,6 +105,10 @@ app.UseStatusCodePages(async context =>
     {
         context.HttpContext.Response.Redirect("/Auth/Login");
     }
+    if(context.HttpContext.Response.StatusCode == 403)
+    {
+        context.HttpContext.Response.Redirect("/Home/Forbiden"); 
+    }
 });
 
 // Cấu hình NotFound với StatusCodePages
