@@ -355,7 +355,7 @@ namespace NanaFoodApi.Controllers
             var response = await _foodService.GetImages(ProductId);
             if(response != null)
             {
-                return Ok(response);
+                return Ok(new ResponseDto { IsSuccess = true, Result = response, Message = "Lấy danh sánh ảnh thành công" });
             }
             return NotFound();
         }

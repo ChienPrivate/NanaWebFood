@@ -21,7 +21,7 @@ namespace NanaFoodWeb.Models
         [Required(ErrorMessage = "Trạng thái thanh toán không được để trống")]
         public string PaymentStatus { get; set; } = "Chưa thanh toán";
         [Required(ErrorMessage = "Trạng thái giao hàng không được để trống")]
-        public string OrderStatus { get; set; } = "Đang chuẩn bị";
+        public string OrderStatus { get; set; } = "Chờ xác nhận";
         public string? Note { get; set; }
         public string? CancelReason { get; set; }
         [Required(ErrorMessage = "Phí ship không được để trống")]

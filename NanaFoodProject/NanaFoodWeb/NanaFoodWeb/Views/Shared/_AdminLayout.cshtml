@@ -40,6 +40,10 @@
 
     <!-- Syncfusion ASP.NET Core controls scripts -->
     <script src="https://cdn.syncfusion.com/ej2/27.1.48/dist/ej2.min.js"></script>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="~/template/vendor/jquery/jquery.min.js"></script>
+    <script src="~/template/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 </head>
 
  <body id="page-top">
@@ -52,7 +56,7 @@
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" asp-action="Index" asp-controller="DashBoard">
-                @* <div class="sidebar-brand-icon rotate-n-15">
+                @* <div class="sidebar-brand-icon rotate-n-15">a
                     <i class="fas fa-laugh-wink"></i>
                     
                 </div> *@
@@ -116,8 +120,13 @@
                 </a>
             </li>
 
-            
-
+            <!-- Nav Item - Coupon -->
+            <li class="nav-item @(ViewContext.RouteData.Values["Controller"].ToString() == "Review" ? "active" : "")">
+                <a class="nav-link" asp-action="Index" asp-controller="Review">
+                    <i class="fa-solid fa-message"></i>
+                    <span>Đánh giá sản phẩm</span>
+                </a>
+            </li>
 
             
             <!-- Divider -->
@@ -172,7 +181,8 @@
                             </div>
                         </li>
 
-                        <div class="topbar-divider d-none d-sm-block"></div>
+                        
+                        
 
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
@@ -200,10 +210,11 @@
                     </ul>
 
                 </nav>
+                
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
-                <partial name="_Notification" />
+                <partial name="_DashBoardNotification" />
                 @RenderBody()
                 <!-- /.container-fluid -->
 
@@ -254,9 +265,7 @@
     @* Font awsome icon js *@
     <script src="https://kit.fontawesome.com/0d6fe42d10.js" crossorigin="anonymous"></script>
 
-    <!-- Bootstrap core JavaScript-->
-    <script src="~/template/vendor/jquery/jquery.min.js"></script>
-    <script src="~/template/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    
 
     <!-- Core plugin JavaScript-->
     <script src="~/template/vendor/jquery-easing/jquery.easing.min.js"></script>

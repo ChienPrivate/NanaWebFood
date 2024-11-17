@@ -71,6 +71,7 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 
+/*StaticDetails.APIBase = builder.Configuration["ServiceUrls:APIBase"];*/
 StaticDetails.APIBase = builder.Configuration["ServiceUrls:PublicAPIUrl"];
 /*StaticDetails.GHNApiKey = GetEnvironmentVariable("GHN_API_KEY");*/
 StaticDetails.GHNApiKey = builder.Configuration["Key:GHN_API_KEY"];
@@ -103,6 +104,10 @@ app.UseStatusCodePages(async context =>
     if (context.HttpContext.Response.StatusCode == 401)
     {
         context.HttpContext.Response.Redirect("/Auth/Login");
+    }
+    if(context.HttpContext.Response.StatusCode == 403)
+    {
+        context.HttpContext.Response.Redirect("/Home/Forbiden"); 
     }
 });
 

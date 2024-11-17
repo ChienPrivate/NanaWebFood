@@ -15,7 +15,7 @@
 <div class="container-fluid">
     <!-- Filter -->
     <div class="row mb-4">
-        <div class="col">
+        <div class="col-lg-4 col-md-6 mt-2">
             <form asp-controller="Home" asp-action="Sort">
                 <div class="d-flex">
                     <select class="form-select me-3 text-center" style="width:200px;" name="sort">
@@ -27,7 +27,7 @@
                 </div>
             </form>
         </div>
-        <div class="col text-end">
+        <div class="col-lg-4 col-md-6 mt-2 text-end">
             <form asp-controller="Home" asp-action="Filter">
                 <div class="d-flex">
                     <select class="form-select me-3 text-center" style="width:200px;" name="value">
@@ -42,7 +42,7 @@
                 </div>
             </form>
         </div>
-        <div class="col text-center">
+        <div class="col-lg-4 col-md-12 mt-2 text-lg-center">
             <form asp-controller="Home" asp-action="GetTopView">
                 <button class="btn btn-primary" type="submit">Sản phẩm xem nhiều nhất</button>
             </form>
@@ -53,7 +53,7 @@
         <!-- Category Menu -->
         @await Component.InvokeAsync("CategoryCount")
         <!-- Product List -->
-        <div class="col-9">
+        <div class="col-lg-9 col-md-8">
             <div class="row">
                 @RenderBody()
             </div>
