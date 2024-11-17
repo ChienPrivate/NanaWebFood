@@ -116,8 +116,13 @@
                 </a>
             </li>
 
-            
-
+            <!-- Nav Item - Coupon -->
+            <li class="nav-item @(ViewContext.RouteData.Values["Controller"].ToString() == "Review" ? "active" : "")">
+                <a class="nav-link" asp-action="Index" asp-controller="Review">
+                    <i class="fa-solid fa-message"></i>
+                    <span>Đánh giá sản phẩm</span>
+                </a>
+            </li>
 
             
             <!-- Divider -->

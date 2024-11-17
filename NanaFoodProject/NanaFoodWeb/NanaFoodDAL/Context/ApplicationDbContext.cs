@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using NanaFoodDAL.Model;
+using System.Collections.Generic;
 using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
 
@@ -42,14 +43,14 @@ namespace NanaFoodDAL.Context
                 {
                     Name = "customer",
                     NormalizedName = "CUSTOMER",
-                }
+                },
                 new IdentityRole()
                 {
                     Name = "employee",
                     NormalizedName = "EMPLOYEE"
                 }
-            };*/
-            /*builder.Entity<IdentityRole>().HasData(roles);*/
+            };
+            builder.Entity<IdentityRole>().HasData(roles);*/
             // Cấu hình cho khóa chính
             builder.Entity<Coupon>().ToTable("Coupon");
             builder.Entity<UserCoupon>().HasKey(e => e.Id);

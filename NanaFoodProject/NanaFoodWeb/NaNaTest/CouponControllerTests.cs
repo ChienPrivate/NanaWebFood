@@ -128,7 +128,8 @@ namespace NaNaTest
             var result = await _controller.DeleteCoupon("SALE25");
 
             //Assert.IsType<OkObjectResult>(result);
-            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            /*var okResult = Assert.IsType<OkObjectResult>(result.Result);*/
+            var okResult = Assert.IsType<OkObjectResult>(result);
             var returnValue = Assert.IsType<ResponseDto>(okResult.Value);
             Assert.True(returnValue.IsSuccess);
         }       
