@@ -13,7 +13,6 @@ namespace NaNaTest
     {
         private readonly Mock<IUserRepository> _userRepositoryMock;
         private readonly UserController _controller;
-
         public UserControllerTests()
         {
             _userRepositoryMock = new Mock<IUserRepository>();
@@ -25,11 +24,9 @@ namespace NaNaTest
         {
             var createUserRequestDto = new CreateUserRequestDto { };
             var responseDto = new ResponseDto { IsSuccess = true, Message = "User created successfully" };
-            _userRepositoryMock.Setup(repo => repo.CreateUserAsync(createUserRequestDto))
-                               .ReturnsAsync(responseDto);
+            _userRepositoryMock.Setup(repo => repo.CreateUserAsync(createUserRequestDto)).ReturnsAsync(responseDto);
 
             var result = await _controller.CreateUserEndpoint(createUserRequestDto);
-
             var okResult = Assert.IsType<OkObjectResult>(result);
             Assert.Equal(200, okResult.StatusCode);
             Assert.Equal(responseDto, okResult.Value);
@@ -43,18 +40,14 @@ namespace NaNaTest
                 new UserDto { },
                 new UserDto { }
             };
-
             var responseDto = new ResponseDto
             {
                 IsSuccess = true,
                 Result = users 
             };
-
-            _userRepositoryMock.Setup(repo => repo.GetAllUserAsync())
-                               .ReturnsAsync(responseDto);
+            _userRepositoryMock.Setup(repo => repo.GetAllUserAsync()).ReturnsAsync(responseDto);
 
             var result = await _controller.GetAllUser();
-
             var okResult = Assert.IsType<OkObjectResult>(result);
             Assert.Equal(200, okResult.StatusCode);
             Assert.Equal(responseDto, okResult.Value);

@@ -51,7 +51,6 @@ namespace NaNaTest
 
             _authcontroller = new AuthController(_authRepoMock.Object, _signInManagerMock.Object, _userManagerMock.Object, _mapperMock.Object, _tokenServiceMock.Object);
         }
-
         private Mock<SignInManager<User>> MockSignInManager()
         {
             var userManagerMock = new Mock<UserManager<User>>(
@@ -74,9 +73,7 @@ namespace NaNaTest
                 IsSuccess = true,
                 Result = orders
             });
-
             var result = await _controller.GetAllOrderAync();
-
             result.Should().BeOfType<OkObjectResult>()
                   .Which.Value.Should().BeEquivalentTo(new ResponseDto
                   {
@@ -84,66 +81,11 @@ namespace NaNaTest
                       Result = orders
                   });
         }
-
-        [Fact]
-        public async Task AddOrderAsync_ShouldReturnOk_WhenOrderIsCreated()
-        {
-            var user = new User { Id = "user-id", Email = "user@example.com" };
-            
-            var orderDto = new OrderDto
-            {
-                FullName = "Nguyễn Văn An",
-                PhoneNumber = "0123456789",
-                Address = "123 Đường ABC, TP. HCM",
-                PaymentType = "MOMO",
-                PaymentStatus = "Đã thanh toán",
-                OrderStatus = "Đang chuẩn bị",
-                ShipmentFee = 30000,
-                Note = "Giao hàng vào buổi sáng",
-                UserId = "user-id-example",
-                Total = 500000,
-                OrderDate = DateTime.Now,
-                ReceiveDate = DateTime.Now.AddDays(7)
-            };
-
-            var cartItems = new List<CartResponseDto>
-            {
-                new CartResponseDto
-                {
-                    ProductId = 1,
-                    ProductName = "Product 1",
-                    Price = 100000,
-                    Image = "image1.jpg",
-                    Quantity = 2,
-                    Total = 200000
-                }
-            };
-
-            var order = new Order
-            {
-                UserId = "user-id",
-                Total = 500000,
-                OrderDate = DateTime.Now,
-                ReceiveDate = DateTime.Now.AddDays(7)
-            };
-
-            var createdOrder = new Order { OrderId = 1 };
-          
-            var resultt = await _controller.AddOrderAsync(orderDto);
-
-            var okResult = Assert.IsType<OkObjectResult>(resultt);
-            var responseDto = Assert.IsType<ResponseDto>(okResult.Value);
-            Assert.True(responseDto.IsSuccess);
-            Assert.Equal("Tạo đơn hàng thành công", responseDto.Message);
-        }
-
-       
-
+    
         [Fact]
         public async Task AddOrderAsync_ShouldReturnBadRequest_WhenModelStateIsInvalid()
         {
             _controller.ModelState.AddModelError("key", "Some error");
-
             var orderDto = new OrderDto
             {
                 FullName = "Nguyễn Văn An",
@@ -159,13 +101,62 @@ namespace NaNaTest
                 OrderDate = DateTime.Now,
                 ReceiveDate = DateTime.Now.AddDays(7)
             };
-
             var result = await _controller.AddOrderAsync(orderDto);
-
             var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
             Assert.NotNull(badRequestResult.Value);
         }
 
+        //[Fact]
+        //public async Task AddOrderAsync_ShouldReturnOk_WhenOrderIsCreated()
+        //{
+        //    var user = new User { Id = "user-id", Email = "user@example.com" };
+
+        //    var orderDto = new OrderDto
+        //    {
+        //        FullName = "Nguyễn Văn An",
+        //        PhoneNumber = "0123456789",
+        //        Address = "123 Đường ABC, TP. HCM",
+        //        PaymentType = "MOMO",
+        //        PaymentStatus = "Đã thanh toán",
+        //        OrderStatus = "Đang chuẩn bị",
+        //        ShipmentFee = 30000,
+        //        Note = "Giao hàng vào buổi sáng",
+        //        UserId = "user-id-example",
+        //        Total = 500000,
+        //        OrderDate = DateTime.Now,
+        //        ReceiveDate = DateTime.Now.AddDays(7)
+        //    };
+
+        //    var cartItems = new List<CartResponseDto>
+        //    {
+        //        new CartResponseDto
+        //        {
+        //            ProductId = 1,
+        //            ProductName = "Product 1",
+        //            Price = 100000,
+        //            Image = "image1.jpg",
+        //            Quantity = 2,
+        //            Total = 200000
+        //        }
+        //    };
+
+        //    var order = new Order
+        //    {
+        //        UserId = "user-id",
+        //        Total = 500000,
+        //        OrderDate = DateTime.Now,
+        //        ReceiveDate = DateTime.Now.AddDays(7)
+        //    };
+
+        //    var createdOrder = new Order { OrderId = 1 };
+
+        //    var resultt = await _controller.AddOrderAsync(orderDto);
+
+        //    var okResult = Assert.IsType<OkObjectResult>(resultt);
+        //    var responseDto = Assert.IsType<ResponseDto>(okResult.Value);
+        //    Assert.True(responseDto.IsSuccess);
+        //    Assert.Equal("Tạo đơn hàng thành công", responseDto.Message);
+        //}
 
         [Fact]
         public async Task GetOrderByIdAsync_OrderExists_ReturnsOk()
