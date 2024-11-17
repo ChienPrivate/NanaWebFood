@@ -16,12 +16,12 @@
     }
 </style>
 <div class="container" style="min-height:50vh;">
-    <div class="mb-3 row box-shadow-edit py-3 rounded-2">
+    <div class="row d-flex justify-content-center">
         
-        <div class="offset-1 col-4">
-            <img src="@Model.ImageUrl" width="400px" height="400px" />
+        <div class="col-lg-6">
+            <img src="@Model.ImageUrl" class="img-fluid mb-3" width="400" height="400" />
         </div>
-        <div class="col-6" style="position: relative; top: 0px; left: 57px;">
+        <div class="col-lg-6">
             <div class="h2 fw-bold text-warning">@Model.ProductName.ToUpper()</div>
             <div class="h6 py-1">
                 <span>Lượt xem : @Model.View <i class="bi bi-eye-fill"></i></span>
@@ -63,7 +63,7 @@
                 </div>
             </form>
         </div>
-        <div class="offset-1 col-5 mt-2">
+        <div class="col-12 d-none d-lg-block text-start mt-1">
             <img class="img-fluid me-1 ms-1 lazyload" data-src="https://drive.google.com/file/d/1hrWYPxShTe1Hu5S8uOVUIOkNum4SSelk/view" style="height : 90px; width : 90px;" />
             <img class="img-fluid me-1 lazyload" data-src="https://placehold.co/300x300" style="height : 90px; width : 90px;" />
             <img class="img-fluid me-1 lazyload" data-src="https://placehold.co/300x300" style="height : 90px; width : 90px;" />
@@ -90,25 +90,6 @@
             </div>
         </div>
     }
-
-
-    <!-- Modal -->
-    @* <div class="modal fade" id="quantityLimitModal" tabindex="-1" aria-labelledby="quantityLimitModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title text-center" id="quantityLimitModalLabel">Thông báo</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Số lượng quá lớn, vui lòng liên hệ : <strong>08588xxxxx</strong> để mua với giá tốt nhất
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Đóng</button>
-                </div>
-            </div>
-        </div>
-    </div> *@
 
     <!-- Modal -->
     <div class="modal fade" id="quantityLimitModal" tabindex="-1" aria-labelledby="quantityLimitModalLabel" aria-hidden="true">
