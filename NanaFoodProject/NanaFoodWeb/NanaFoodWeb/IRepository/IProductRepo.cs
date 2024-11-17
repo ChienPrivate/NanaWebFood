@@ -20,6 +20,7 @@ namespace NanaFoodWeb.IRepository
         ResponseDto ModifyStatus(int id, bool status);
         ResponseDto UnActiveCategory(int id);
         Task<ResponseDto> GetByCategoryIdExcludeSameProduct(int productId, int categoryid, int page, int pageSize);
-        Task<ResponseDto> GetProduct(); 
+        Task<ResponseDto> GetProduct();
+        Task<List<string>> GetImages(int ProductId);
     }
 }

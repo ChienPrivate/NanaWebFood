@@ -71,7 +71,7 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 
-StaticDetails.APIBase = builder.Configuration["ServiceUrls:PublicAPIUrl"];
+StaticDetails.APIBase = builder.Configuration["ServiceUrls:APIBase"];
 /*StaticDetails.GHNApiKey = GetEnvironmentVariable("GHN_API_KEY");*/
 StaticDetails.GHNApiKey = builder.Configuration["Key:GHN_API_KEY"];
 

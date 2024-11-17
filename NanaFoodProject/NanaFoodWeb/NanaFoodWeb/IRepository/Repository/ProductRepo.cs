@@ -2,6 +2,7 @@
 using NanaFoodWeb.Models;
 using NanaFoodWeb.Utility;
 using Humanizer;
+using Newtonsoft.Json;
 
 namespace NanaFoodWeb.IRepository.Repository
 {
@@ -130,6 +131,20 @@ namespace NanaFoodWeb.IRepository.Repository
                 ApiType = StaticDetails.ApiType.GET,
                 Url = StaticDetails.APIBase + "/api/Product/get_product"
             });
+        }
+
+        public async Task<List<string>> GetImages(int ProductId)
+        {
+            var response = await _baseService.SendAsync(new RequestDto
+            {
+                ApiType = StaticDetails.ApiType.GET,
+
+                Url = StaticDetails.APIBase + $"/api/Product/get_product_images/{ProductId}"
+
+            });
+            var reuslt = JsonConvert.DeserializeObject<List<string>>(response.Result.ToString());
+
+            return reuslt;
         }
     }
 }

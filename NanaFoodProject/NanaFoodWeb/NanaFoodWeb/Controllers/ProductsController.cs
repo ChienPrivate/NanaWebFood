@@ -260,8 +260,11 @@ namespace NanaFoodWeb.Controllers
             var response = _productRepo.GetById(id);
             var ratingResponse = await _reviewRepository.GetProductRating(id);
             var reviewListResponse = await _reviewRepository.GetProducReview(id, page, 5);
-
+            var ListProductImage = await _productRepo.GetImages(id);
+            var productImageVM = ListProductImage;
             var reviewVM = JsonConvert.DeserializeObject<ReviewVM>(reviewListResponse.Result.ToString());
+
+            ViewBag.ListImage = productImageVM;
 
             ViewData["totalPages"] = reviewVM.TotalPages;
             ViewData["currentPage"] = page;
@@ -278,6 +281,7 @@ namespace NanaFoodWeb.Controllers
             if (response?.IsSuccess == true && response.Result != null)
             {
                 var productDto = JsonConvert.DeserializeObject<ProductDto>(response.Result.ToString());
+               
                 return View(productDto);
             }
 

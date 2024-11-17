@@ -1,5 +1,6 @@
 ﻿@{
     List<NanaFoodWeb.Models.Dto.UserReviewDto> listReview = ViewBag.ReviewList as List<NanaFoodWeb.Models.Dto.UserReviewDto>;
+    List<string> images = ViewBag.ListImage as List<string> ?? new List<string>();
     var currentPage = ViewData["currentPage"] as int? ?? 1;
     var totalPages = ViewData["totalPages"] as int? ?? 1;
     double rating = ViewData["rating"] is double value ? value : 5;
@@ -19,7 +20,7 @@
     <div class="row d-flex justify-content-center">
         
         <div class="col-lg-6">
-            <img src="@Model.ImageUrl" class="img-fluid mb-3" width="400" height="400" />
+            <img id="mainImage" src="@Model.ImageUrl" class="img-fluid mb-3" style="max-width: 400px; max-height: 400px; object-fit: cover; border-radius: 10px;" />
         </div>
         <div class="col-lg-6">
             <div class="h2 fw-bold text-warning">@Model.ProductName.ToUpper()</div>
@@ -64,10 +65,24 @@
             </form>
         </div>
         <div class="col-12 d-none d-lg-block text-start mt-1">
-            <img class="img-fluid me-1 ms-1 lazyload" data-src="https://drive.google.com/file/d/1hrWYPxShTe1Hu5S8uOVUIOkNum4SSelk/view" style="height : 90px; width : 90px;" />
-            <img class="img-fluid me-1 lazyload" data-src="https://placehold.co/300x300" style="height : 90px; width : 90px;" />
-            <img class="img-fluid me-1 lazyload" data-src="https://placehold.co/300x300" style="height : 90px; width : 90px;" />
-            <img class="img-fluid me-1 lazyload" data-src="https://placehold.co/300x300" style="height : 90px; width : 90px;" />
+            @if (ViewBag.ListImage != null)
+            {
+
+                @foreach (var image in images)
+                {
+                    <img class="img-fluid me-2 lazyload thumbnail"
+                         data-src="@image"
+                         onclick="changeMainImage(this)"
+                         style="height: 90px; width: 90px; object-fit: cover; border-radius: 5px; cursor: pointer; transition: transform 0.3s;" />
+                }
+            }
+            else
+            {
+                <img class="img-fluid me-1 ms-1 lazyload" data-src="https://placehold.co/300x300" style="height: 90px; width: 90px; object-fit: cover; border-radius: 5px;" />
+                <img class="img-fluid me-1 ms-1 lazyload" data-src="https://placehold.co/300x300" style="height: 90px; width: 90px; object-fit: cover; border-radius: 5px;" />
+                <img class="img-fluid me-1 ms-1 lazyload" data-src="https://placehold.co/300x300" style="height: 90px; width: 90px; object-fit: cover; border-radius: 5px;" />
+                <img class="img-fluid me-1 ms-1 lazyload" data-src="https://placehold.co/300x300" style="height: 90px; width: 90px; object-fit: cover; border-radius: 5px;" />
+            }
         </div>
     </div>
 
@@ -141,6 +156,13 @@
         if (parseInt(quantityInput.value) > 1) {
             quantityInput.value = parseInt(quantityInput.value) - 1;
         }
+    }
+</script>
+<script>
+    function changeMainImage(thumbnail) {
+        const mainImage = document.getElementById('mainImage');
+        const newSrc = thumbnail.getAttribute('data-src'); 
+        mainImage.src = newSrc;
     }
 </script>
 
