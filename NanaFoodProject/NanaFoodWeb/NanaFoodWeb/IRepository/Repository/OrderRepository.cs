@@ -145,7 +145,7 @@ namespace NanaFoodWeb.IRepository.Repository
             momoRequest.orderInfo = "Payment with momo";
             /*momoRequest.redirectUrl = "https://localhost:51326/Order/MomoReturn";
             momoRequest.ipnUrl = "https://localhost:51326";*/
-            momoRequest.redirectUrl = "https://nanafoodweb20241114171424.azurewebsites.net/MomoReturn";
+            momoRequest.redirectUrl = "https://nanafoodweb20241114171424.azurewebsites.net/Order/MomoReturn";
             momoRequest.ipnUrl = "https://nanafoodweb20241114171424.azurewebsites.net";
             momoRequest.requestType = "captureWallet";
             momoRequest.amount = Math.Round((decimal)total).ToString();

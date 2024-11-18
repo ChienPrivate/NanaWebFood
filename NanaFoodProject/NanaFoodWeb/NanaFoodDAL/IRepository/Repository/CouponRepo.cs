@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace NanaFoodDAL.IRepository.Repository
 {
-    internal class CouponRepo(ApplicationDbContext _context, IMapper _mapper) :ICouponRepo
+    internal class CouponRepo(ApplicationDbContext _context, IMapper _mapper) : ICouponRepo
     {
         readonly ApplicationDbContext context = _context;
         readonly IMapper mapper = _mapper; 
@@ -170,6 +170,29 @@ namespace NanaFoodDAL.IRepository.Repository
                 }
             }
             catch (Exception e) { response.IsSuccess = false; response.Message = e.Message; }
+            return response;
+        }
+
+        public async Task<ResponseDto> GetAvailableCoupon()
+        {
+            try
+            {
+                var availableCoupon = await context.Coupons.Where(c => c.Status == CouponStatus.Active && c.EndStart >= DateTime.Now).ToListAsync();
+
+                var couponsList = mapper.Map<List<CouponDto>>(availableCoupon);
+
+                response.IsSuccess = true;
+                response.Message = "Lấy danh mã sách khuyến mãi thành công";
+                response.Result = couponsList;
+                
+            }
+            catch(Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = "Lấy danh sách mã khuyến mãi không thành công";
+                response.Result = new List<CouponDto>();
+            }
+
             return response;
         }
 
