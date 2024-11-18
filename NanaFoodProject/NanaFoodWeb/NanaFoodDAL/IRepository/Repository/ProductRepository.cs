@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using NanaFoodDAL.Context;
 using NanaFoodDAL.Dto;
@@ -402,5 +404,38 @@ namespace NanaFoodDAL.IRepository.Repository
 
             return images;
         }
+        public async Task<ResponseDto> CreateImages(int ProductId, List<string> ImageUrls)
+        {
+            var product = _context.Products.FindAsync(ProductId);
+            if (product == null)
+            {
+                response.IsSuccess = false;
+                response.Message = "Không có sản phẩm tồn tại";
+                return response;
+            }
+           
+            if (ImageUrls == null || !ImageUrls.Any())
+            {
+                response.IsSuccess = false;
+                response.Message = "Không có ảnh để thêm vào.";
+                return response; 
+            }
+
+            var productImages = ImageUrls.Select(imageUrl => new ProductImages
+            {
+                ProductId = ProductId,
+                ImageUrl = imageUrl
+            }).ToList();
+            var productImageDto = _mapper.Map<List<ProductImageDto>>(productImages);
+
+            await _context.ProductImages.AddRangeAsync(productImages);
+            await _context.SaveChangesAsync();
+
+            response.IsSuccess = true;
+            response.Message = "Thêm ảnh thành công.";
+            response.Result = productImageDto;
+            return response;
+        }
+
     }
 }

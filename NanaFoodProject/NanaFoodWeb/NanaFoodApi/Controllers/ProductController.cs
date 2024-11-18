@@ -359,5 +359,19 @@ namespace NanaFoodApi.Controllers
             }
             return NotFound();
         }
+
+        [HttpPost("CreateImages")]
+        [AllowAnonymous]
+        public async Task<IActionResult> CreateImages(int productId, [FromBody] List<string> imageUrls)
+        {
+            var response =  await _foodService.CreateImages(productId, imageUrls);
+            if (response != null)
+            {
+                
+                return Ok(response);
+            }
+            return BadRequest(response);
+        }
+
     }
 }
