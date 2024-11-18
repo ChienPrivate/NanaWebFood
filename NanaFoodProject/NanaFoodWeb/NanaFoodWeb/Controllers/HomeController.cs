@@ -21,13 +21,20 @@ namespace NanaFoodWeb.Controllers
         private readonly IProductRepo _productRepo;
         private readonly ICategoryRepository _categoryRepository;
         private readonly ICartRepo _cartRepo;
-        public HomeController(ILogger<HomeController> logger, ITokenProvider tokenProvider, IProductRepo productRepo, ICategoryRepository categoryRepository, ICartRepo cartRepo)
+        private readonly ICouponRepo _couponRepo;
+        public HomeController(ILogger<HomeController> logger, 
+            ITokenProvider tokenProvider, 
+            IProductRepo productRepo, 
+            ICategoryRepository categoryRepository, 
+            ICartRepo cartRepo,
+            ICouponRepo couponRepo)
         {
             _logger = logger;
             _tokenProvider = tokenProvider;
             _productRepo = productRepo;
             _categoryRepository = categoryRepository;
             _cartRepo = cartRepo;
+            _couponRepo = couponRepo;
         }
         public IActionResult NotFoundPage()
         {
@@ -103,9 +110,18 @@ namespace NanaFoodWeb.Controllers
             return View();
         }
         [ExcludeAdmin]
-        public IActionResult Discount()
+        public async Task<IActionResult> Discount()
         {
-            return View();
+            var couponResponse = await _couponRepo.GetAvailableCoupon();
+
+            List<CouponDto> coupons = new List<CouponDto>();
+
+            if (couponResponse.IsSuccess)
+            {
+                coupons = JsonConvert.DeserializeObject<List<CouponDto>>(couponResponse.Result.ToString());
+            }
+
+            return View(coupons);
         }
         [ExcludeAdmin]
         public IActionResult Contact()

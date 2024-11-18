@@ -12,5 +12,6 @@ namespace NanaFoodWeb.IRepository
         Task<ResponseDto> ModifyStatus(string id);
         Task<ResponseDto> DeleteById(string id);
         Task<ResponseDto> CheckUserCoupon(string codeCoupon);
+        Task<ResponseDto> GetAvailableCoupon();
     }
 }
