@@ -23,5 +23,7 @@ namespace NanaFoodDAL.IRepository
         Task<List<string>> GetImages(int ProductId);
 
         Task<ResponseDto> CreateImages(int ProductId, List<string> ImageUrls);
+        Task<ResponseDto> UpdateImages(ProductImages productImages);
+        Task<ResponseDto> DeleteImages(int productImageId);
     }
 }
