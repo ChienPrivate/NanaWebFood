@@ -1311,5 +1311,53 @@
         <member name="M:NanaFoodApi.Migrations.addnewroletodatabase.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
+        <member name="T:NanaFoodApi.Migrations.addOrdersCanceledcolumntoUsertable">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.addOrdersCanceledcolumntoUsertable.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.addOrdersCanceledcolumntoUsertable.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.addOrdersCanceledcolumntoUsertable.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:NanaFoodApi.Migrations.addnewroletoAspRolesTable">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.addnewroletoAspRolesTable.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.addnewroletoAspRolesTable.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.addnewroletoAspRolesTable.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:NanaFoodApi.Migrations.RemoveOrderCanceledcolunmfromUsers">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.RemoveOrderCanceledcolunmfromUsers.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.RemoveOrderCanceledcolunmfromUsers.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.RemoveOrderCanceledcolunmfromUsers.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:NanaFoodApi.Migrations.AddemloyeeroletoAspRoletable">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.AddemloyeeroletoAspRoletable.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.AddemloyeeroletoAspRoletable.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.AddemloyeeroletoAspRoletable.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
     </members>
 </doc>

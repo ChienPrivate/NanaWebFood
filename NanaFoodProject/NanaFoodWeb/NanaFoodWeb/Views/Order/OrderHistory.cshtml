@@ -53,6 +53,10 @@
                                     }
                                 </td>
                                 <td>
+                                    @if (item.OrderStatus == "Chờ xác nhận")
+                                    {
+                                        <div class="p-2 badge bg-info text-white">@item.OrderStatus</div>
+                                    }
                                     @if (@item.OrderStatus == "Đang chuẩn bị")
                                     {
                                         <div class="p-2 badge bg-warning text-white">@item.OrderStatus</div>

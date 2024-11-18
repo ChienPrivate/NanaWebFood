@@ -3,7 +3,7 @@
 {
     @foreach (var product in Model.Products.Where(e => e.IsActive))
     {
-        <div class="col-4 mb-3">
+        <div class="col-lg-4 col-md-6 col-12 mb-3">
             <div class="card shadow">
                 <a asp-controller="Products" asp-action="CDetails" asp-route-id="@product.ProductId">
                     <img data-src="@product.ImageUrl" class="lazyload" width="100%" height="100%" />

@@ -52,10 +52,8 @@ namespace NaNaTest
                 IsSuccess = true,
                 Result = new CategoryDto { CategoryId = 1, CategoryName = "Beverages", IsActive = true }
             };
-            _mockCategoryRepo.Setup(repo => repo.GetById(1)).Returns(mockResponse);
-            
-            var result = _controller.GetCategoryById(1);
-            
+            _mockCategoryRepo.Setup(repo => repo.GetById(1)).Returns(mockResponse);           
+            var result = _controller.GetCategoryById(1);           
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
             var returnValue = Assert.IsType<ResponseDto>(okResult.Value);
             Assert.True(returnValue.IsSuccess);
@@ -72,7 +70,6 @@ namespace NaNaTest
                 Description = "Test description",
                 IsActive = true
             };
-
             var category = new Category
             {
                 CategoryId = categoryDto.CategoryId,
@@ -80,17 +77,13 @@ namespace NaNaTest
                 Description = categoryDto.Description,
                 IsActive = categoryDto.IsActive
             };
-
             var mockResponse = new ResponseDto
             {
                 IsSuccess = true,
                 Result = categoryDto
             };
-
-            _mockCategoryRepo.Setup(repo => repo.Create(It.IsAny<Category>())).Returns(mockResponse);
-            
-            var result = _controller.CreateCategory(categoryDto);
-            
+            _mockCategoryRepo.Setup(repo => repo.Create(It.IsAny<Category>())).Returns(mockResponse);           
+            var result = _controller.CreateCategory(categoryDto);            
             var createdResult = Assert.IsType<CreatedAtActionResult>(result.Result);
             var returnValue = Assert.IsType<ResponseDto>(createdResult.Value);
             Assert.True(returnValue.IsSuccess);
@@ -159,28 +152,7 @@ namespace NaNaTest
             var returnValue = Assert.IsType<ResponseDto>(okResult.Value);
             Assert.True(returnValue.IsSuccess);
             Assert.IsType<List<CategoryDto>>(returnValue.Result);
-        }
-
-        //[Fact]
-        //public void DeleteCategory_ValidId_ReturnsOk()
-        //{
-            
-        //    int categoryId = 1;
-        //    var mockResponse = new ResponseDto
-        //    {
-        //        IsSuccess = true,
-        //        Message = "Xóa danh mục thành công"
-        //    };
-
-        //    _mockCategoryRepo.Setup(repo => repo.Delete(categoryId)).Returns(mockResponse);
-           
-        //    var result = _controller.DeleteCategory(categoryId);
-           
-        //    var okResult = Assert.IsType<OkObjectResult>(result.Result);
-        //    var returnValue = Assert.IsType<ResponseDto>(okResult.Value);
-        //    Assert.True(returnValue.IsSuccess);
-        //    Assert.Equal("Xóa danh mục thành công", returnValue.Message);
-        //}
+        }      
 
         [Fact]
         public void GetCategoryById_NonExistingId_ReturnsNotFound()
@@ -229,8 +201,7 @@ namespace NaNaTest
 
         [Fact]
         public void UpdateCategory_ReturnsOkResponse_WhenUpdateIsSuccessful()
-        {
-            
+        {            
             var categoryDto = new CategoryDto
             {
                 CategoryId = 1,
@@ -239,19 +210,14 @@ namespace NaNaTest
                 CategoryImage = "https://example.com/new-image.jpg",
                 IsActive = true
             };
-
             var successfulResponse = new ResponseDto
             {
                 IsSuccess = true,
                 Message = "Update successful",
                 Result = categoryDto
             };
-
-            _mockCategoryRepo.Setup(repo => repo.Update(It.IsAny<Category>())).Returns(successfulResponse);
-
-            
+            _mockCategoryRepo.Setup(repo => repo.Update(It.IsAny<Category>())).Returns(successfulResponse);           
             var result = _controller.UpdateCategory(categoryDto.CategoryId, categoryDto);
-
             
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
             var responseDto = Assert.IsType<ResponseDto>(okResult.Value);
@@ -262,27 +228,23 @@ namespace NaNaTest
 
         [Fact]
         public void UpdateCategory_ReturnsBadRequest_WhenModelStateIsInvalid()
-        {
-            
+        {            
             var categoryDto = new CategoryDto
             {
                 CategoryId = 1,
                 CategoryName = "Invalid Category"
             };
             _controller.ModelState.AddModelError("CategoryName", "Required");
-
-            
+           
             var result = _controller.UpdateCategory(categoryDto.CategoryId, categoryDto);
-
-            
+           
             var badRequestResult = Assert.IsType<BadRequestObjectResult>(result.Result);
             Assert.Equal("Đầu vào không hợp lệ.", badRequestResult.Value);
         }
 
         [Fact]
         public void UpdateCategory_ReturnsBadRequest_WhenCategoryIdMismatch()
-        {
-            
+        {           
             var categoryDto = new CategoryDto
             {
                 CategoryId = 1,
@@ -290,11 +252,8 @@ namespace NaNaTest
                 Description = "Updated Description",
                 CategoryImage = "https://example.com/new-image.jpg",
                 IsActive = true
-            };
-
-            
-            var result = _controller.UpdateCategory(2, categoryDto);
-
+            };           
+            var result = _controller.UpdateCategory(2, categoryDto);   
             
             var badRequestResult = Assert.IsType<BadRequestObjectResult>(result.Result);
             Assert.Equal("Đầu vào không hợp lệ.", badRequestResult.Value);
@@ -302,8 +261,7 @@ namespace NaNaTest
 
         [Fact]
         public void UpdateCategory_ReturnsBadRequest_WhenUpdateFails()
-        {
-            
+        {           
             var categoryDto = new CategoryDto
             {
                 CategoryId = 1,
@@ -320,10 +278,8 @@ namespace NaNaTest
             };
 
             _mockCategoryRepo.Setup(repo => repo.Update(It.IsAny<Category>())).Returns(failedResponse);
-
             
             var result = _controller.UpdateCategory(categoryDto.CategoryId, categoryDto);
-
             
             var badRequestResult = Assert.IsType<BadRequestObjectResult>(result.Result);
             var responseDto = Assert.IsType<ResponseDto>(badRequestResult.Value);

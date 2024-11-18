@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NanaFoodDAL.Context;
 
@@ -11,9 +12,11 @@ using NanaFoodDAL.Context;
 namespace NanaFoodApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241116074808_add new role to Asp Roles Table")]
+    partial class addnewroletoAspRolesTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,7 +54,7 @@ namespace NanaFoodApi.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "0bd424b3-04a9-4440-8076-f3f034d74c27",
+                            Id = "b33f1cd7-07ed-4eb4-a0c4-2e5bb2cf4f7a",
                             Name = "employee",
                             NormalizedName = "EMPLOYEE"
                         });
@@ -574,6 +577,9 @@ namespace NanaFoodApi.Migrations
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
+
+                    b.Property<int>("OrdersCanceled")
+                        .HasColumnType("int");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");

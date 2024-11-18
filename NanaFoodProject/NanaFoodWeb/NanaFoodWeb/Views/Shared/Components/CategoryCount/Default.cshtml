@@ -1,10 +1,17 @@
 ﻿@model IEnumerable<NanaFoodWeb.Models.CategoryCount>
+<style>
+    a.bg-primary:hover, a.bg-primary:focus,
+        button.bg-primary:hover,
+        button.bg-primary:focus {
+            background-color: #b0692f !important;
+        }
+</style>
  <!-- Category Menu -->
- <div class="col-3">
+ <div class="col-lg-3 col-md-4 d-none d-md-block">
      <div class="card shadow">
-         <div class="card-header bg-primary h4 text-center text-white">
+        <div class="card-header bg-primary h4 text-center text-white">
              <div class="p-1">
-                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-list" viewBox="0 2 16 16">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-list" viewBox="0 2 16 16">
                      <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5" />
                  </svg>
                  Danh mục
@@ -28,4 +35,41 @@
              </div>
          }
      </div>
+ </div>
+ <div class="d-md-none d-lg-none d-xl-none d-block mb-2">
+    <div class="accordion accordion-flush" id="accordionFlushExample">
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed bg-primary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                    <div class="p-1 text-white h4 fw-bold">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-list" viewBox="0 2 16 16">
+                            <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5" />
+                        </svg>
+                        Danh mục
+                    </div>
+                </button>
+            </h2>
+            <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+                    @foreach (var item in Model)
+                    {
+                        <div class="card-body">
+                            <a class="text-decoration-none" asp-controller="Home" asp-action="FilterLoai" asp-route-id="@item.CategoryId">
+                                <div class="row py-2">
+                                    <div class="col-10">
+                                        @item.Name
+                                    </div>
+                                    <div class="col-2 text-end">
+                                        <span class="badge bg-primary badge-pill">
+                                            @item.Quantity
+                                        </span>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
  </div>

@@ -31,7 +31,7 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="~/css/bootstrap.min.css" rel="stylesheet">
-     <link href="~/template/css/sb-admin-2.min.css" rel="stylesheet asp-append-version=" true"">
+     <link href="~/template/css/sb-admin-2.min.css" rel="stylesheet" asp-append-version="true">
     <link href="~/css/ejs2.css" rel="stylesheet" asp-append-version="true" />
     <!-- Template Stylesheet -->
     <link href="~/css/style.css" rel="stylesheet">
@@ -50,6 +50,36 @@
             top: 15%; /* Điều chỉnh giá trị này để modal nằm khoảng 1/3 từ trên xuống */
             transform: translateY(0); /* Xóa tác dụng của 'modal-dialog-centered' */
         }
+
+        /* Đảm bảo Navbar luôn hiển thị trên Carousel */
+        .navbar-collapse {
+            position: relative;
+            z-index: 1050; /* Đảm bảo cao hơn Carousel */
+        }
+
+        #navbarCollapse.show ~ #carouselExample {
+            margin-top: 250px; /* Khoảng cách đẩy xuống */
+            transition: margin-top 0.3s ease; /* Hiệu ứng mượt */
+        }
+
+        /* Đặt Z-index cho Carousel */
+        #carouselExample {
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-primary:hover {
+            color: #fff;
+            background-color: #b0692f;
+            border-color: #b0692f;
+        }
+        a:hover{
+            color: #b0692f;
+            text-decoration:none;
+        }
+        .page-link:hover{
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -60,17 +90,13 @@
     <!-- Spinner End -->
     <!-- Navbar start -->
     <div class="container-fluid">
-        <div class="container topbar bg-warning  d-none d-lg-block">
+        <div class="container topbar bg-warning d-none d-lg-block">
             <div class="d-flex justify-content-between">
-                <div class="top-info ps-2">
-                    <small class="me-3"><i class="fa-solid fa-timer text-secondary"></i> <a class="text-white">Quán bắt đầu mở cửa từ 8h sáng và đóng cửa vào khoảng 11h tối</a></small>
-                </div>
-                <div class="top-link pe-2">
-                </div>
+                <marquee class="text-white">NanaFood là một trang web chuyên cung cấp dịch vụ bán thức ăn nhanh trực tuyến, mang đến sự tiện lợi tối đa cho khách hàng trong việc lựa chọn và thưởng thức các món ăn yêu thích chỉ qua vài cú nhấp chuột. Với sự đa dạng trong thực đơn và cam kết chất lượng, NanaFood phục vụ mọi nhu cầu ăn uống từ những món ăn phổ biến hàng ngày như cơm, bún, phở đến các món ăn quốc tế như pizza, hamburger, sushi, và các món tráng miệng hấp dẫn. Được thiết kế thân thiện, dễ sử dụng, trang web của NanaFood giúp khách hàng dễ dàng tìm kiếm, chọn món, và đặt hàng với trải nghiệm mượt mà và đơn giản.</marquee>
             </div>
         </div>
         <div class="container px-0">
-            <nav class="navbar navbar-light bg-white navbar-expand-xl">
+            <nav class="navbar navbar-expand-lg navbar-toggleable-lg navbar-light mb-3 rounded-4 px-2  border-0  sticky-top" data-bs-theme="light">
                 <a asp-action="Index" asp-controller="Home" class="navbar-brand"><img class="display-6" src="/images/Nana.png"></a>
                 <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                     <span class="fa fa-bars text-warning"></span>
@@ -145,8 +171,8 @@
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://kit.fontawesome.com/0d6fe42d10.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="https://kit.fontawesome.com/0d6fe42d10.js" crossorigin="anonymous" defer></script>
 <script src="~/lib/easing/easing.min.js"></script>
 <script src="~/lib/waypoints/waypoints.min.js"></script>
 <script src="~/lib/lightbox/js/lightbox.min.js"></script>
@@ -169,6 +195,21 @@
 </script> *@
 <script>
     
+    document.addEventListener('DOMContentLoaded', function () {
+        const navbarCollapse = document.getElementById('navbarCollapse');
+        const carousel = document.getElementById('carouselExample');
+
+        // Khi toggler mở
+        navbarCollapse.addEventListener('show.bs.collapse', function () {
+            const navbarHeight = navbarCollapse.scrollHeight; // Lấy chiều cao menu
+            carousel.style.marginTop = navbarHeight + 'px'; // Đặt khoảng cách
+        });
+
+        // Khi toggler đóng
+        navbarCollapse.addEventListener('hide.bs.collapse', function () {
+            carousel.style.marginTop = '0'; // Xóa khoảng cách
+        });
+    });
 
     function getCookie(name) {
         let cookieArr = document.cookie.split(";"); // Tách các cặp cookie

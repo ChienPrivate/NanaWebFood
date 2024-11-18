@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using NanaFoodDAL.Context;
 using NanaFoodDAL.Dto;
@@ -401,6 +403,70 @@ namespace NanaFoodDAL.IRepository.Repository
             }
 
             return images;
+        }
+        public async Task<ResponseDto> CreateImages(int ProductId, List<string> ImageUrls)
+        {
+            var product = _context.Products.FindAsync(ProductId);
+            if (product == null)
+            {
+                response.IsSuccess = false;
+                response.Message = "Không có sản phẩm tồn tại";
+                return response;
+            }
+           
+            if (ImageUrls == null || !ImageUrls.Any())
+            {
+                response.IsSuccess = false;
+                response.Message = "Không có ảnh để thêm vào.";
+                return response; 
+            }
+
+            var productImages = ImageUrls.Select(imageUrl => new ProductImages
+            {
+                ProductId = ProductId,
+                ImageUrl = imageUrl
+            }).ToList();
+            response.Result = _mapper.Map<List<ProductImageDto>>(productImages);
+            await _context.ProductImages.AddRangeAsync(productImages);
+            await _context.SaveChangesAsync();
+
+            response.IsSuccess = true;
+            response.Message = "Thêm ảnh thành công.";
+            return response;
+        }
+
+        public async Task<ResponseDto> UpdateImages( ProductImages productImages)
+        {
+            try
+            {
+                _context.Entry(productImages).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+                response.Result = _mapper.Map<ProductImageDto>(productImages);
+                response.Message = "Cập nhật món ăn thành công";
+            }
+            catch
+            {
+                response.IsSuccess = false;
+                response.Message = "Loại món này không tồn tại";
+            }
+            return response;
+
+        }
+        public async Task<ResponseDto> DeleteImages(int productImageId)
+        {
+            var productImage = await _context.ProductImages.FindAsync(productImageId); 
+            if(productImage == null)
+            {
+                response.IsSuccess = false;
+                response.Message = "Không tìm thấy sản phẩm.";
+                return response;
+            }
+            _context.ProductImages.Remove(productImage);
+            await _context.SaveChangesAsync();
+            response.IsSuccess = true;
+            response.Message = "Xoá hình ảnh thành công.";
+            response.Result = productImage;
+            return response;
         }
     }
 }

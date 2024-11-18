@@ -24,7 +24,6 @@ namespace NaNaTest
         private readonly AuthController _authcontroller;
         private readonly Mock<ITokenService> _tokenServiceMock;
         private readonly Mock<IAuthenRepo> _authRepoMock;
-
         public static class MockHelpers
         {
             public static Mock<UserManager<TUser>> MockUserManager<TUser>() where TUser : class
@@ -32,7 +31,6 @@ namespace NaNaTest
                 var store = new Mock<IUserStore<TUser>>();
                 return new Mock<UserManager<TUser>>(store.Object, null, null, null, null, null, null, null, null);
             }
-
             public static Mock<SignInManager<TUser>> MockSignInManager<TUser>(UserManager<TUser> userManager) where TUser : class
             {
                 var contextAccessor = new Mock<IHttpContextAccessor>();
@@ -46,15 +44,14 @@ namespace NaNaTest
             _userManagerMock = MockHelpers.MockUserManager<User>();
             _mockSignInManager = MockHelpers.MockSignInManager(_userManagerMock.Object);
             _mapperMock = new Mock<IMapper>();
-            // Setup mock SignInManager
             var userManagerMock = new Mock<UserManager<User>>(Mock.Of<IUserStore<User>>(), null, null, null, null, null, null, null, null);
-            _mockSignInManager = new Mock<SignInManager<User>>(userManagerMock.Object, Mock.Of<IHttpContextAccessor>(), Mock.Of<IUserClaimsPrincipalFactory<User>>(), null, null, null, null);
+            _mockSignInManager = new Mock<SignInManager<User>>(userManagerMock.Object, Mock.Of<IHttpContextAccessor>(), Mock.Of<IUserClaimsPrincipalFactory<User>>(),
+                null, null, null, null);
             _userManagerMock = new Mock<UserManager<User>>(Mock.Of<IUserStore<User>>(), null, null, null, null, null, null, null, null);
             _mockCartRepo = new Mock<ICartRepo>();
             _tokenServiceMock = new Mock<ITokenService>();
             _cartController = new CartController(_mockSignInManager.Object, _mockCartRepo.Object);
 
-            // Set up User Claims for SignInManager to simulate an authenticated user
             var userClaims = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
             {
                 new Claim(ClaimTypes.NameIdentifier, "4536e838-7775-4bf2-a86f-0bf8a4db22f1"),
@@ -64,10 +61,7 @@ namespace NaNaTest
                 HttpContext = new DefaultHttpContext { User = userClaims }
             };
             _authcontroller = new AuthController(_authRepoMock.Object, _mockSignInManager.Object, _userManagerMock.Object, _mapperMock.Object, _tokenServiceMock.Object);
-            //_cartController.ControllerContext = new ControllerContext()
-            //{
-
-            //};
+            
         }
 
         [Fact]
@@ -123,33 +117,25 @@ namespace NaNaTest
         [Fact]
         public async Task DeleteProductFromCart_ShouldReturnOk_WhenProductIsDeleted()
         {
-            // Arrange
             var userId = "e3582fd2-9f86-4c2c-901a-a9cbf81134a7";
             var productId = 1;
 
-            // Tạo một ClaimsPrincipal giả để mô phỏng người dùng đã đăng nhập
             var userClaims = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
             {
         new Claim(ClaimTypes.NameIdentifier, userId)  // Đặt Claim để chứa userId
             }, "mock"));
-
-            // Thiết lập SignInManager để trả về userId giả lập
             //_mockSignInManager.Setup(x => x.UserManager.GetUserId(It.IsAny<ClaimsPrincipal>())).Returns(userId);
 
-            // Mock repository để trả về thành công khi xóa sản phẩm
             _mockCartRepo.Setup(x => x.DeleteCart(productId, userId))
                 .ReturnsAsync(new ResponseDto { IsSuccess = true, Message = "Sản phẩm đã được xóa khỏi giỏ hàng" });
 
-            // Thiết lập ControllerContext với người dùng giả lập
             _cartController.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext { User = userClaims }
             };
 
-            // Act
             var result = await _cartController.DeleteProductFromCart(productId);
 
-            // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
             var responseDto = Assert.IsType<ResponseDto>(okResult.Value);
             Assert.True(responseDto.IsSuccess);
@@ -159,24 +145,16 @@ namespace NaNaTest
         [Fact]
         public async Task DeleteProductFromCart_ShouldReturnBadRequest_WhenDeleteFails()
         {
-            // Arrange
             var userId = "e3582fd2-9f86-4c2c-901a-a9cbf81134a7";
             var productId = 1;
 
-            // Mock the GetUserId() method to return a user ID
             _userManagerMock
                 .Setup(x => x.GetUserId(It.IsAny<ClaimsPrincipal>()))
                 .Returns(userId);
-
-            // Mock the repository response for failed deletion
             _mockCartRepo
                 .Setup(x => x.DeleteCart(productId, userId))
                 .ReturnsAsync(new ResponseDto { IsSuccess = false, Message = "Lỗi khi xóa sản phẩm khỏi giỏ hàng" });
-
-            // Act
             var result = await _cartController.DeleteProductFromCart(productId);
-
-            // Assert
             var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
             var responseDto = Assert.IsType<ResponseDto>(badRequestResult.Value);
             Assert.False(responseDto.IsSuccess);
@@ -186,7 +164,6 @@ namespace NaNaTest
         [Fact]
         public async Task UpdateCart_ShouldReturnOk_WhenUpdateIsSuccessful()
         {
-            // Arrange
             int productId = 1;
             string message = "increase";
             var userId = "e3582fd2-9f86-4c2c-901a-a9cbf81134a7";
@@ -200,10 +177,8 @@ namespace NaNaTest
                 .Setup(x => x.UpdateCart(productId, userId, message))
                 .ReturnsAsync(responseDto);
 
-            // Act
             var result = await _cartController.UpdateCart(productId, message);
 
-            // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
             Assert.Equal(responseDto, okResult.Value);
         }
@@ -211,7 +186,6 @@ namespace NaNaTest
         [Fact]
         public async Task UpdateCart_ShouldReturnBadRequest_WhenUpdateFails()
         {
-            // Arrange
             int productId = 1;
             string message = "increase";
             var userId = "e3582fd2-9f86-4c2c-901a-a9cbf81134a7";
@@ -225,10 +199,8 @@ namespace NaNaTest
                 .Setup(x => x.UpdateCart(productId, userId, message))
                 .ReturnsAsync(responseDto);
 
-            // Act
             var result = await _cartController.UpdateCart(productId, message);
 
-            // Assert
             var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
             Assert.Equal(responseDto, badRequestResult.Value);
         }
