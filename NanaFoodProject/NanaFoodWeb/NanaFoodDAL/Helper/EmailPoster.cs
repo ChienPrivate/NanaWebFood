@@ -6,6 +6,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using NanaFoodDAL.Model;
+using NanaFoodDAL.Dto.UserDTO;
 
 namespace NanaFoodDAL.Helper
 {
@@ -405,6 +406,81 @@ namespace NanaFoodDAL.Helper
             <p><strong>Địa chỉ:</strong> QTSC 9 Building, Đ. Tô Ký, Tân Chánh Hiệp, Quận 12, Hồ Chí Minh, Việt Nam</p>
             <p><strong>Email:</strong> nanafoodStore@gmail.com</p>
             <p><strong>Số điện thoại:</strong> 84+ 123456789</p>
+        </div>
+    </div>
+</body>
+</html>";
+        }
+
+
+        public string BlockUserEmailTemplate(UserDto user, string reason)
+        {
+            string reasonHtml = string.IsNullOrEmpty(reason)
+                ? "Vi phạm các điều khoản sử dụng của chúng tôi."
+                : reason;
+
+            // Template HTML cho email thông báo người dùng bị chặn
+            return $@"
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .container {{
+            width: 100%;
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+        }}
+
+        .header {{
+            background-color: #d9534f; /* Màu đỏ cảnh báo */
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }}
+
+        .content {{
+            margin-top: 20px;
+            font-size: 14px;
+            color: #333;
+        }}
+
+        .footer {{
+            margin-top: 30px;
+            font-size: 12px;
+            color: #777;
+            text-align: center;
+        }}
+
+        .button {{
+            display: inline-block;
+            background-color: #d9534f;
+            color: white;
+            padding: 10px 20px;
+            margin-top: 20px;
+            text-decoration: none;
+            border-radius: 5px;
+        }}
+    </style>
+</head>
+<body>
+    <div class='container'>
+        <div class='header'>
+            <h2>Thông báo khóa tài khoản</h2>
+        </div>
+        <div class='content'>
+            <p>Xin chào <strong>{user.FullName}</strong>,</p>
+            <p>Tài khoản của bạn (<strong>{user.UserName}</strong>) đã bị <strong>chặn</strong> do vi phạm các điều khoản sử dụng của chúng tôi.</p>
+            <p><strong>Lý do:</strong> {reasonHtml}</p>
+            <p>Nếu bạn cho rằng đây là một nhầm lẫn hoặc cần thêm thông tin, vui lòng liên hệ với đội ngũ hỗ trợ của chúng tôi.</p>
+            <a href='mailto:nanafoodStore@gmail.com' class='button'>Liên hệ hỗ trợ</a>
+        </div>
+        <div class='footer'>
+            <p>Cảm ơn bạn đã sử dụng dịch vụ của Nana. Chúng tôi luôn sẵn sàng hỗ trợ bạn!</p>
+            <p>Email: nanafoodStore@gmail.com | Số điện thoại: 84+ 123456789</p>
+            <p>Đây là email tự động, vui lòng không trả lời trực tiếp.</p>
         </div>
     </div>
 </body>

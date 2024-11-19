@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NanaFoodDAL.Dto;
+using NanaFoodDAL.Dto.UserDTO;
 using NanaFoodDAL.Helper;
 using NanaFoodDAL.IRepository;
 using NanaFoodDAL.Model;
@@ -18,19 +19,25 @@ namespace NanaFoodApi.Controllers
         private readonly IOrderRepository _orderRepository;
         private readonly ICartRepo _cartRepo;
         private readonly IMapper _mapper;
+        private readonly IUserRepository _userRepository;
         private readonly EmailPoster _emailPoster;
+        private readonly UserManager<User> _userManager;
 
         public OrderController(IOrderRepository orderRepository,
             SignInManager<User> signInManager,
             ICartRepo cartRepo,
             IMapper mapper,
-            EmailPoster emailPoster)
+            EmailPoster emailPoster,
+            IUserRepository userRepository,
+            UserManager<User> userManager)
         {
             _signInManager = signInManager;
             _orderRepository = orderRepository;
             _cartRepo = cartRepo;
             _mapper = mapper;
             _emailPoster = emailPoster;
+            _userRepository = userRepository;
+            _userManager = userManager;
         }
 
         /// <summary>
@@ -239,6 +246,7 @@ namespace NanaFoodApi.Controllers
             return Ok(updateOrderStatusResponse);
         }
 
+
         /// <summary>
         /// Hủy đơn hàng
         /// </summary>
@@ -263,14 +271,9 @@ namespace NanaFoodApi.Controllers
             {
                 return Ok(productQuantity);
             }
-            
+
             // thực hiện hủy đơn
-
-            
-
             var cancelOrderResponse = await _orderRepository.CancelOrderAsync(OrderId, message);
-
-
             // gửi mail về cho người dùng 
 
             var orderDetails = await _orderRepository.GetOrderDetailsAsync(OrderId);
@@ -290,6 +293,26 @@ namespace NanaFoodApi.Controllers
             if (order.Email != string.Empty)
             {
                 _emailPoster.SendMail(order.Email, "Chi tiết hủy đơn", emailContent);
+            }
+
+            // lấy số đơn đã hủy trong một tuần của user
+            var getCancelOrdersInWeek = await _orderRepository.GetCancelOrderInWeek(order.UserId);
+
+            if (getCancelOrdersInWeek >= 3)
+            {
+                var updateUserStateResponse = await _userRepository.UpdateUserState(order.UserId, 3);
+
+                if (updateUserStateResponse.IsSuccess)
+                {
+                    var userById = await _userManager.FindByIdAsync(order.UserId);
+
+                    if (userById != null)
+                    {
+                        var userDto = _mapper.Map<UserDto>(userById);
+                        var mailTemplate = _emailPoster.BlockUserEmailTemplate(userDto, "Bạn đã vi phạm chính sách vi phạm của cửa hàng, hủy 3 đơn trong 1 tuần");
+                        _emailPoster.SendMail(order.Email, "Thông báo khóa tài khoản", mailTemplate);
+                    }
+                }
             }
 
             return Ok(cancelOrderResponse);
