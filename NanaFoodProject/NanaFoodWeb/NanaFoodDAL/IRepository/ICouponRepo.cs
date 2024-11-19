@@ -6,6 +6,7 @@ namespace NanaFoodDAL.IRepository
     public interface ICouponRepo
     {
         Task<ResponseDto>GetAll();
+        Task<ResponseDto> GetAvailableCoupon();
         Task<ResponseDto>Create(Coupon  coupon);
         Task<ResponseDto> GetById(string id);
         Task<ResponseDto> ModifyStatus(string id);

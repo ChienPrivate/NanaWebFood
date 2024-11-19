@@ -7,10 +7,12 @@ using NanaFoodWeb.Models;
 using NanaFoodWeb.Models.Dto.ViewModels;
 using Microsoft.AspNetCore.Razor.Language.Intermediate;
 using Microsoft.AspNetCore.Mvc.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 
 namespace NanaFoodWeb.Controllers
 {
     [Route("Coupon")]
+    [Authorize(Roles = "admin,employee")]
     public class CouponController : Controller
     {
         private readonly ICouponRepo _couponRepo;

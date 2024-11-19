@@ -359,5 +359,38 @@ namespace NanaFoodApi.Controllers
             }
             return NotFound();
         }
+
+        [HttpPost("CreateImages")]
+        public async Task<IActionResult> CreateImages(int productId, [FromBody] List<string> imageUrls)
+        {
+            var response =  await _foodService.CreateImages(productId, imageUrls);
+            if (response !=  null)
+            {
+                return Ok(response);
+            }
+            return BadRequest(response);
+        }
+        [HttpPut("updateImage")]
+        public async Task<IActionResult> UpdateImage([FromBody] ProductImageDto dto)
+        {
+            if (ModelState.IsValid)
+            {
+                var response = await _foodService.UpdateImages(_mapper.Map<ProductImages>(dto));
+                return Ok(response);
+            }
+            return BadRequest();
+        }
+
+        [HttpDelete("deleteImage/{productImageId:int}")]
+        public async Task<IActionResult>deleteImage(int productImageId)
+        {
+            if (ModelState.IsValid)
+            {
+                var response = await _foodService.DeleteImages(productImageId);
+                return Ok(response);
+            }
+            return BadRequest();
+        }
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using NanaFoodWeb.Models;
+﻿using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
+using NanaFoodWeb.Models;
 using NanaFoodWeb.Models.Dto;
 using NanaFoodWeb.Utility;
 
@@ -75,6 +76,13 @@ namespace NanaFoodWeb.IRepository.Repository
             });
         }
 
-       
+       public async Task<ResponseDto> GetAvailableCoupon()
+        {
+            return await _baseService.SendAsync(new RequestDto
+            {
+                ApiType = StaticDetails.ApiType.GET,
+                Url = StaticDetails.APIBase + "/api/Coupon/GetAvailableCoupon"
+            });
+        }
     }
 }

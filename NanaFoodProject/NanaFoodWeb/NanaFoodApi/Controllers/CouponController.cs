@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Azure;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +12,7 @@ namespace NanaFoodApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "admin,employee")]
     public class CouponController : ControllerBase
     {
         private readonly ICouponRepo _couponRepo;
@@ -193,15 +195,25 @@ namespace NanaFoodApi.Controllers
         /// <response code="404">Mã giảm giá không tồn tại.</response>
 
         [HttpGet("Check/{code}")]
-        public async Task<IActionResult>Check(string code)
+        public async Task<IActionResult> Check(string code)
         {
             var userId = _sm.UserManager.GetUserId(User);
-            var result = await _userCouponRepo.ApplyCoupon(userId,code);
+            var result = await _userCouponRepo.ApplyCoupon(userId, code);
             if (!result.IsSuccess)
             {
                 return BadRequest(result);
             }
             return Ok(result);
+        }
+
+
+        [HttpGet("GetAvailableCoupon")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetAvailableCoupon()
+        {
+            var response = await _couponRepo.GetAvailableCoupon();
+
+            return Ok(response);
         }
     }
 }
