@@ -17,6 +17,7 @@ namespace NanaFoodDAL.IRepository
         Task<ResponseDto> GetAllUserAsync();
         Task<ResponseDto> GetUserByIdAsync(string userId);
         Task<ResponseDto> GetUsersByRole(string role);
+        Task<ResponseDto> UpdateUserState(string userId, int state);
 
     }
 }

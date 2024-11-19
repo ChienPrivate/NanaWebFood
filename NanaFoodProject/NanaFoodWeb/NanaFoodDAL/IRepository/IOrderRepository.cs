@@ -23,5 +23,6 @@ namespace NanaFoodDAL.IRepository
         Task<ResponseDto> RebuyOrder(int orderId);
         Task<ResponseDto> UpdateProductQuantity(int orderId, int state);
         Task<ResponseDto> ApplyCoupon(int orderId, string couponCode);
+        Task<int> GetCancelOrderInWeek(string userId);
     }
 }

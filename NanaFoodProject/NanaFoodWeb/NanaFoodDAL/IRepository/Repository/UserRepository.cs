@@ -323,5 +323,29 @@ namespace NanaFoodDAL.IRepository.Repository
 
             return _response;
         }
+
+        public async Task<ResponseDto> UpdateUserState(string userId, int state)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user != null)
+            {
+                user.Status = (UserStatus)state;
+
+                await _userManager.UpdateAsync(user);
+
+                _response.IsSuccess = true;
+                _response.Message = "Cập nhật trạng thái của người dùng thành công";
+                _response.Result = user;
+
+                return _response;
+            }
+
+            _response.IsSuccess = true;
+            _response.Message = "Không thể cập nhật trạng thái của người dùng";
+            _response.Result = user;
+
+            return _response;
+        }
     }
 }

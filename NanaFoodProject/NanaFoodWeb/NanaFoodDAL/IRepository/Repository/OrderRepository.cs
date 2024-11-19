@@ -382,5 +382,21 @@ namespace NanaFoodDAL.IRepository.Repository
             return _response;
         }
 
+        public async Task<int> GetCancelOrderInWeek(string userId)
+        {
+            DateTime startOfWeek = DateTime.Now.AddDays(-(int)DateTime.Now.DayOfWeek);
+            DateTime endOfWeek = startOfWeek.AddDays(7);
+
+            // Lấy số lượng đơn hàng đã huỷ trong tuần hiện tại của người dùng
+            int cancelledOrderCount = await _context.Orders
+                .Where(o => o.UserId == userId &&
+                            o.OrderStatus == "Đã huỷ" &&
+                            o.OrderDate >= startOfWeek &&
+                            o.OrderDate < endOfWeek)
+                .CountAsync();
+
+            return cancelledOrderCount;
+        }
+
     }
 }
