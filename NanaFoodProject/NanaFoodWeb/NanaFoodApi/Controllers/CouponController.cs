@@ -12,7 +12,7 @@ namespace NanaFoodApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "admin,employee")]
+    [Authorize(Roles = "admin,employee,customer")]
     public class CouponController : ControllerBase
     {
         private readonly ICouponRepo _couponRepo;

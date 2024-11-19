@@ -13,6 +13,7 @@
         cartDetails = ViewBag.cartdetails;
     }
 }
+
 <form id="paymentForm" asp-action="Payment" asp-controller="Order" method="post">
     <div class="container">
         <div class="card shadow rounded-3">
@@ -525,8 +526,12 @@
 
         // Hàm hiển thị modal thông báo
         function showNotification(message) {
-            $('#notification .modal-body').text(message);
-            $('#notification').modal('show');
+            console.log($.fn.modal); // Kiểm tra phương thức .modal()
+            console.log(typeof bootstrap); // Kiểm tra bootstrap API (Bootstrap 5)
+            // Tạo instance modal
+            var notificationModal = new bootstrap.Modal(document.getElementById('notification'));
+            document.querySelector('#notification .modal-body').textContent = message; // Cập nhật nội dung
+            notificationModal.show(); // Hiển thị modal
         }
     </script>
     <script>
