@@ -1,0 +1,59 @@
+﻿@{
+    Layout = "_AdminLayout";
+}
+@model NanaFoodWeb.Models.Dto.UserWithReviewDto
+<style>
+    .e-rating-container.custom-font .e-rating-item-list:hover .e-rating-item-container .e-rating-icon,
+    .e-rating-container.custom-font .e-rating-item-container .e-rating-icon {
+        background: linear-gradient(to right, #ffe814 var(--rating-value), #d8d7d4 var(--rating-value));
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent; /* Ẩn màu viền */
+        -webkit-text-fill-color: transparent; /* Ẩn viền trong trình duyệt Webkit */
+    }
+</style>
+<div class="container-fluid">
+    <div class="card shadow">
+        <div class="card-header">
+            <h1>Chi tiết đánh giá</h1>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-lg-1 col-md-1 col-sm-1">
+                <img src="@Model.UserAvartar"
+                     class="img-fluid lazyload" />
+            </div>
+            <div class="col-lg-11 col-md-11 col-sm-11">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="d-flex flex-column align-items-start justify-content-start">
+                            <span><strong>Mã người dùng:</strong> @Model.UserId</span>
+                            <span><strong>Tên đăng nhập:</strong> @Model.UserName</span>
+                            <span><strong>Họ tên:</strong> @Model.FullName</span>
+                            <span>Số sao:</span>
+                            <ejs-rating id="@Model.ReviewId" value=@Model.Rating cssClass="custom-font" readOnly=true></ejs-rating>
+                        </div>
+                        <div>
+                            <span><strong>Ngày đánh giá:</strong> @Model.ReviewedDate.ToString("dd/MM/yyyy hh:mm:ss tt")</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        @Model.Comment
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="text-end">
+                <a class="btn btn-secondary" asp-action="Index" asp-controller="Review"> Quay trở lại danh sách</a>
+                @if(!Model.IsConfirm){
+                    <a class="btn btn-success" asp-action="ConfirmReview" asp-controler="Review" asp-route-reviewId="@Model.ReviewId"> <i class="bi bi-check-circle-fill"></i> Duyệt</a>
+                }
+                else{
+                    <a class="btn btn-danger" asp-action="ConfirmReview" asp-controler="Review" asp-route-reviewId="@Model.ReviewId"> <i class="bi bi-x-circle-fill"></i>Bỏ Duyệt</a>
+                }
+            </div>
+        </div>
+    </div>
+</div>

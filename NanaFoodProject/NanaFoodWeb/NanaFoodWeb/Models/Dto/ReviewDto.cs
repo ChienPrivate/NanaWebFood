@@ -1,20 +1,13 @@
-﻿using NanaFoodDAL.Model;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace NanaFoodDAL.Dto
+namespace NanaFoodWeb.Models.Dto
 {
     public class ReviewDto
     {
         public Guid ReviewId { get; set; } = Guid.NewGuid();
         [Required(ErrorMessage = "Hãy cho biết đánh giá của bạn về món ăn")]
         public string Comment { get; set; }
-        [Range(1,5)]
+        [Range(1, 5)]
         public double Rating { get; set; }
         [Required(ErrorMessage = "Mã người dùng không thể trống")]
         public string UserId { get; set; }

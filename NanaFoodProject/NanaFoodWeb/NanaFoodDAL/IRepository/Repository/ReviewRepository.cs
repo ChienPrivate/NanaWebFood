@@ -266,5 +266,93 @@ namespace NanaFoodDAL.IRepository.Repository
             }
             return _response;
         }
+
+        public async Task<ResponseDto> GetReviewWithUser()
+        {
+            try
+            {
+                var reviewsWithUsers = await _context.Reviews
+                .Include(r => r.User)
+                .Where(r => r.User != null)
+                .Select(r => new UserWithReviewDto
+                {
+                    ReviewId = r.ReviewId.ToString(),
+                    UserId = r.UserId,
+                    UserAvartar = r.User.AvatarUrl ?? "https://placehold.co/300x300",
+                    FullName = r.User.FullName,
+                    UserName = r.User.UserName,
+                    Rating = r.Rating ?? 0, // Nếu null thì mặc định là 0
+                    Comment = r.Comment,
+                    ReviewedDate = r.ReviewedDate,
+                    IsConfirm = r.IsConfirm
+
+                }).ToListAsync();
+
+                _response.IsSuccess = true;
+                _response.Message = "Lấy danh sách đánh giá thành công";
+                _response.Result = reviewsWithUsers;
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ex.Message;
+                _response.Result = new List<UserWithReviewDto>();
+            }
+
+            return _response;
+        }
+
+        public async Task<ResponseDto> ConfirmReview(string reviewId)
+        {
+            var review = await _context.Reviews.FirstOrDefaultAsync(r => r.ReviewId.ToString() == reviewId);
+
+            if (review == null)
+            {
+                _response.IsSuccess = false;
+                _response.Message = $"Không tìm thấy đánh giá {reviewId}";
+
+                return _response;
+            }
+
+            var reviewDto = _mapper.Map<ReviewDto>(review);
+
+            review.IsConfirm = !review.IsConfirm;
+
+            _context.Reviews.Update(review);
+            await _context.SaveChangesAsync();
+
+            _response.IsSuccess = true;
+            _response.Message = $"Duyệt đánh giá {reviewDto.ReviewId} thành công";
+            _response.Result = reviewDto;
+
+            return _response;
+
+        }
+
+        public async Task<ResponseDto> GetReviewById(string reviewId)
+        {
+            var reviewWithUser = await _context.Reviews
+                .Include(r => r.User) // Include để lấy thông tin liên quan đến User
+                .Where(r => r.ReviewId.ToString() == reviewId && r.User != null) // Lọc theo reviewId và đảm bảo User không null
+                .Select(r => new UserWithReviewDto
+                {
+                    ReviewId = r.ReviewId.ToString(),
+                    UserId = r.UserId,
+                    UserAvartar = r.User.AvatarUrl ?? "https://placehold.co/300x300",
+                    FullName = r.User.FullName,
+                    UserName = r.User.UserName,
+                    Rating = r.Rating ?? 0, // Nếu null thì mặc định là 0
+                    Comment = r.Comment,
+                    ReviewedDate = r.ReviewedDate,
+                    IsConfirm = r.IsConfirm
+
+                }).FirstOrDefaultAsync();
+
+            _response.IsSuccess = reviewWithUser != null;
+            _response.Message = reviewWithUser != null ? $"Lấy thông tin đánh giá {reviewId} thành công" : $"Đánh giá {reviewId} không tồn tại";
+            _response.Result = reviewWithUser != null ? reviewWithUser : new UserWithReviewDto();
+
+            return _response;
+        }
     }
 }

@@ -14,5 +14,8 @@ namespace NanaFoodWeb.IRepository
         Task<ResponseDto> PostReviewAsync(Review review);
         Task<ResponseDto> GetProductRating(int productId);
         Task<ResponseDto> GetProducReview(int productId, int page , int pageSize);
+        Task<ResponseDto> GetReviewWithUsers();
+        Task<ResponseDto> ConfirmReview(string reviewId);
+        Task<ResponseDto> GetReviewById(string reviewId);
     }
 }

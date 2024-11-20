@@ -48,6 +48,15 @@ namespace NanaFoodWeb.IRepository.Repository
             });
         }
 
+        public async Task<ResponseDto> GetReviewWithUsers()
+        {
+            return await _baseService.SendAsync(new RequestDto
+            {
+                ApiType = ApiType.GET,
+                Url = APIBase + $"/api/Review/GetReviewWithUsers"
+            });
+        }
+
         public async Task<ResponseDto> PostReviewAsync(Review review)
         {
             return await _baseService.SendAsync(new RequestDto
@@ -55,6 +64,24 @@ namespace NanaFoodWeb.IRepository.Repository
                 ApiType = ApiType.POST,
                 Url = APIBase + $"/api/Review/review",
                 Data = review
+            });
+        }
+
+        public async Task<ResponseDto> ConfirmReview(string reviewId)
+        {
+            return await _baseService.SendAsync(new RequestDto
+            {
+                ApiType = ApiType.PUT,
+                Url = APIBase + $"/api/Review/ConfirmReview/{reviewId}"
+            });
+        }
+
+        public async Task<ResponseDto> GetReviewById(string reviewId)
+        {
+            return await _baseService.SendAsync(new RequestDto
+            {
+                ApiType = ApiType.GET,
+                Url = APIBase + $"/api/Review/GetReviewById/{reviewId}"
             });
         }
     }
