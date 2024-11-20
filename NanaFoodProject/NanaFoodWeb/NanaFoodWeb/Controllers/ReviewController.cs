@@ -22,8 +22,8 @@ namespace NanaFoodWeb.Controllers
             {
                 var reviewithUser = JsonConvert.DeserializeObject<List<UserWithReviewDto>>(reviewWithUserResponse.Result.ToString());
 
-                var confirmedYet = reviewithUser.Where(c => c.IsConfirm);
-                var confirmed = reviewithUser.Where(c => !c.IsConfirm);
+                var confirmedYet = reviewithUser.Where(c => !c.IsConfirm);
+                var confirmed = reviewithUser.Where(c => c.IsConfirm);
 
                 ViewBag.ConfirmedYet = confirmedYet;
                 ViewBag.Confirmed = confirmed;

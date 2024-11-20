@@ -177,8 +177,22 @@
             </div>
         </div>
         <div class="card-footer">
-            <div class="text-end">
+            <div class="text-end gap-1">
                 <a href="@Url.Action("Index", "ManageOrder")" class="btn btn-secondary"><i class="fa-solid fa-list"></i> Trở về danh sách</a>
+                @if(Model.OrderStatus == "Chờ xác nhận"){
+                    string message = "Đang chuẩn bị";
+                    <a class="btn btn-success" asp-action="ModifyDelveringStatus" asp-controller="ManageOrder" asp-route-orderId="@Model.OrderId" asp-route-message="@message"><i class="fa-solid fa-phone-volume"></i> Đã xác nhận</a>
+                }
+                else if (Model.OrderStatus == "Đang chuẩn bị")
+                {
+                    string message = "Đang giao";
+                    <a class="btn btn-warning" asp-action="ModifyDelveringStatus" asp-controller="ManageOrder" asp-route-orderId="@Model.OrderId" asp-route-message="@message"><i class="fa-solid fa-truck-fast"></i> Đang giao</a>
+                }
+                else if (Model.OrderStatus == "Đang giao")
+                {
+                    string message = "Đã giao";
+                    <a class="btn btn-success" asp-action="ModifyDelveringStatus" asp-controller="ManageOrder" asp-route-orderId="@Model.OrderId" asp-route-message="@message"><i class="bi bi-check-circle-fill"></i> Đã giao</a>
+                }
             </div>
         </div>
     </div>

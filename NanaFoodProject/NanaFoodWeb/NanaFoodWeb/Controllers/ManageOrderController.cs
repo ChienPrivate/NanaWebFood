@@ -79,7 +79,7 @@ namespace NanaFoodWeb.Controllers
                 var updatedResponse = await _orderRepository.GetAllOrderAsync();
                 var orderList = JsonConvert.DeserializeObject<List<OrderDto>>(updatedResponse.Result.ToString());
 
-                var confirmedYet = orderList.Where(o => o.OrderStatus == "Chờ xác nhận").ToList();
+                /*var confirmedYet = orderList.Where(o => o.OrderStatus == "Chờ xác nhận").ToList();
                 var deliveringList = orderList.Where(o => o.OrderStatus == "Đang giao").ToList();
                 var preparingList = orderList.Where(o => o.OrderStatus == "Đang chuẩn bị").ToList();
                 var completedList = orderList.Where(o => o.OrderStatus == "Đã giao").ToList();
@@ -90,7 +90,7 @@ namespace NanaFoodWeb.Controllers
                 ViewBag.Delivering = deliveringList;
                 ViewBag.Preparing = preparingList;
                 ViewBag.Complete = completedList;
-                ViewBag.CancelOrder = cancelOrder;
+                ViewBag.CancelOrder = cancelOrder;*/
 
                 TempData["success"] = "Cập nhật trạng thái thành công";
                 return RedirectToAction("Index", "ManageOrder");
