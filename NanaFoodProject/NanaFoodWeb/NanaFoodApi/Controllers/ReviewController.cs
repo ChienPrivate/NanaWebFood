@@ -163,6 +163,18 @@ namespace NanaFoodApi.Controllers
             return Ok(response);
         }
 
+
+        /// <summary>
+        /// Lấy danh các món hàng trong đơn hàng
+        /// </summary>
+        /// <param name="orderId">Mã đơn hàng</param>
+        /// <returns>
+        /// <remarks>
+        /// Lấy danh sách các mòn hàng đã đặt theo mã đơn hàng
+        /// </remarks>
+        ///  200 OK nếu lấy thành công cón món hàng trong đơn hàng
+        /// </returns>
+        /// <response code="200">Trả về các món hàng trong đơn hàng.</response>
         [HttpGet("orderdetailsInOrder/{orderId}")]
         public async Task<IActionResult> GetOrderDetailsFromOrder(int orderId)
         {
@@ -171,6 +183,18 @@ namespace NanaFoodApi.Controllers
             return Ok(response);
         }
 
+
+        /// <summary>
+        /// Tính trung bình đánh giá theo từng sản phẩm
+        /// </summary>
+        /// <param name="productId">Mã sản phẩm</param>
+        /// <remarks>
+        /// Tính trung bình cộng đánh giá đã được duyệt của các đánh giá theo mã sản phẩm
+        /// </remarks>
+        /// <returns>
+        ///  200 OK trả về trung bình cộng đánh giá đã được duyệt theo mã đơn hàng 
+        /// </returns>
+        /// <response code="200">Trả về trung bình cộng các lượt đánh giá đã được duyệt</response>
         [HttpGet("GetRating/{productId}")]
         [AllowAnonymous]
         public async Task<IActionResult> CalculateAvgRating(int productId)
@@ -183,6 +207,30 @@ namespace NanaFoodApi.Controllers
                 Result = result,
                 Message = result.ToString()
             });
+        }
+
+        [HttpGet("GetReviewWithUsers")]
+        public async Task<IActionResult> GetReviewWithUser()
+        {
+            var response = await _reviewRepository.GetReviewWithUser();
+
+            return Ok(response);
+        }
+
+        [HttpPut("ConfirmReview/{reviewId}")]
+        public async Task<IActionResult> ConfirmReview([FromRoute] string reviewId)
+        {
+            var response = await _reviewRepository.ConfirmReview(reviewId);
+
+            return Ok(response);
+        }
+
+        [HttpGet("GetReviewById/{reviewId}")]
+        public async Task<IActionResult> GetReviewById([FromRoute] string reviewId)
+        {
+            var response = await _reviewRepository.GetReviewById(reviewId);
+
+            return Ok(response);
         }
     }
 }

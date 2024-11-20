@@ -999,6 +999,32 @@
             </returns>
             <response code="200">Trả về chi tiết đánh giá trong đơn hàng.</response>
         </member>
+        <member name="M:NanaFoodApi.Controllers.ReviewController.GetOrderDetailsFromOrder(System.Int32)">
+            <summary>
+            Lấy danh các món hàng trong đơn hàng
+            </summary>
+            <param name="orderId">Mã đơn hàng</param>
+            <returns>
+            <remarks>
+            Lấy danh sách các mòn hàng đã đặt theo mã đơn hàng
+            </remarks>
+             200 OK nếu lấy thành công cón món hàng trong đơn hàng
+            </returns>
+            <response code="200">Trả về các món hàng trong đơn hàng.</response>
+        </member>
+        <member name="M:NanaFoodApi.Controllers.ReviewController.CalculateAvgRating(System.Int32)">
+            <summary>
+            Tính trung bình đánh giá theo từng sản phẩm
+            </summary>
+            <param name="productId">Mã sản phẩm</param>
+            <remarks>
+            Tính trung bình cộng đánh giá đã được duyệt của các đánh giá theo mã sản phẩm
+            </remarks>
+            <returns>
+             200 OK trả về trung bình cộng đánh giá đã được duyệt theo mã đơn hàng 
+            </returns>
+            <response code="200">Trả về trung bình cộng các lượt đánh giá đã được duyệt</response>
+        </member>
         <member name="T:NanaFoodApi.Migrations.init">
             <inheritdoc />
         </member>

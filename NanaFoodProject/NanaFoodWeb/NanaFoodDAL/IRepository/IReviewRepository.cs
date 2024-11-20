@@ -18,5 +18,8 @@ namespace NanaFoodDAL.IRepository
         Task<ResponseDto> GetOrderDetailsFromOrder(int orderId);
         Task<double> CalculateAvgRating(int productId);
         Task<ResponseDto> UpdateOrderDetailsReviewState(int orderId, int productId, bool IsReviewState);
+        Task<ResponseDto> GetReviewWithUser();
+        Task<ResponseDto> ConfirmReview(string reviewId);
+        Task<ResponseDto> GetReviewById(string reviewId);
     }
 }

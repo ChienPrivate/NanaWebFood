@@ -1,0 +1,324 @@
+﻿@using Syncfusion.EJ2
+@{
+    Layout = "_AdminLayout";
+}
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<style>
+    .grid-center {
+        display: grid;
+        align-items: center; /* Canh giữa theo chiều dọc */
+        justify-items: center; /* Canh giữa theo chiều ngang (nếu cần) */
+        height: 100%; /* Đảm bảo chiều cao để căn giữa */
+    }
+</style>
+<!-- Nav pills -->
+<ul class="nav nav-pills">
+    <li class="nav-item">
+        <a class="nav-link active" data-bs-toggle="pill" href="#ConfirmedYet">Chưa duyệt</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="pill" href="#Confirmed">Đã duyệt</a>
+    </li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+    <div class="tab-pane active" id="ConfirmedYet">
+        <div class="container-fluid mt-3">
+            <h2>Danh sách đánh giá chưa duyệt</h2>
+            <div class="control-wrapper">
+                <div class="control-section">
+                    @Html.EJS().Grid("ConfirmedYetReviewGrid").DataSource((IEnumerable<object>)ViewBag.ConfirmedYet).EmptyRecordTemplate("#emptytemplate").Columns(col =>
+                             {
+                                 col.Field("ReviewId").HeaderText("Mã đánh giá").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                 col.Field("userInfo").HeaderText("Thông tin người dùng").Template("#userInfoTemplate").Width("350").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                 col.Field("Rating").HeaderText("Đánh giá").Template("#ratingTemplate").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                 col.Field("Comment").HeaderText("Đánh giá").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                 col.Field("ReviewedDate").HeaderText("Ngày đánh giá").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                 col.Field("IsConfirm").HeaderText("Trạng thái duyệt").Template("#isConfirmTemplate").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                 col.Field("commands").HeaderText("Thao tác").Template("#reviewCommandTemplate").Width("200").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+
+                             }).AllowPaging().PageSettings(page => page.PageCount(3).PageSizes(true).PageSize(10)).AllowSorting().AllowFiltering().FilterSettings(filter => { filter.Type(Syncfusion.EJ2.Grids.FilterType.Excel); }).Toolbar(new List<string>() { "Search" }).AllowResizing(false).AutoFit(false).Render()
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tab-pane fade" id="Confirmed">
+        <div class="container-fluid mt-3">
+            <h2>Danh sách đánh giá đã duyệt</h2>
+            <div class="control-wrapper">
+                <div class="control-section">
+                    @Html.EJS().Grid("ConfirmedReviewGrid").DataSource((IEnumerable<object>)ViewBag.Confirmed).EmptyRecordTemplate("#emptytemplate").Columns(col =>
+                             {
+                                 col.Field("ReviewId").HeaderText("Mã đánh giá").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                 col.Field("userInfo").HeaderText("Thông tin người dùng").Template("#userInfoTemplate").Width("350").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                 col.Field("Rating").HeaderText("Đánh giá").Template("#ratingTemplate").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                 col.Field("Comment").HeaderText("Đánh giá").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                 col.Field("ReviewedDate").HeaderText("Ngày đánh giá").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                 col.Field("IsConfirm").HeaderText("Trạng thái duyệt").Template("#isConfirmTemplate").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                 col.Field("commands").HeaderText("Thao tác").Template("#reviewCommandTemplate").Width("200").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+
+                             }).AllowPaging().PageSettings(page => page.PageCount(3).PageSizes(true).PageSize(10)).AllowSorting().AllowFiltering().FilterSettings(filter => { filter.Type(Syncfusion.EJ2.Grids.FilterType.Excel); }).Toolbar(new List<string>() { "Search" }).AllowResizing(false).AutoFit(false).Render()
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script id="reviewCommandTemplate" type="text/x-template">
+    ${renderCommandButton(data)}
+</script>
+
+<script>
+    function renderCommandButton(data) {
+        if (data.IsConfirm) {
+            return `
+                    <a class="btn btn-danger mb-1 d-block" href="/Review/Details/${data.ReviewId}">
+                    <i class="bi bi-x-circle-fill"></i> Bỏ Duyệt
+                </a>`;
+        } else {
+            return `
+                <a href="/Review/Details/${data.ReviewId}" class="btn btn-success mb-1 d-block">
+                    <i class="bi bi-check-circle-fill"></i> Duyệt
+                </a>`;
+        }
+    }
+</script>
+
+
+
+
+<script id="UserInfoTemplate" type="text/x-template">
+    <div class="image w-50">
+        <img class="img-fluid d-block mx-auto rounded-3" src="${CategoryImage}" />
+    </div>
+</script>
+
+
+<script type="text/x-jsrender" id="userInfoTemplate">
+        <div class="row">
+        <div class="col-md-4">
+            <img class="img-fluid d-block mx-auto rounded-3" src="${UserAvartar}" />
+        </div>
+        <div class="col-md-8 grid-center">
+            <p><strong>Id:</strong> ${UserId}</p>
+            <p><strong>Tên tài khoản:</strong> ${UserName}</p>
+            <p><strong>Họ tên</strong> ${FullName}</p>
+        </div>
+    </div>
+</script>
+
+
+<script type="text/x-jsrender" id="ratingTemplate">
+    ${ratingDetail(data)}
+</script>
+
+<script type="text/javascript">
+    function ratingDetail(e) {
+        var temp = document.getElementsByTagName("template")[0];
+        var cloneTemplate = temp.content.cloneNode(true);
+        var ratingElement = cloneTemplate.querySelector(".rating");
+        var rating = new ej.inputs.Rating({
+            value: e.Rating,
+            readOnly: true,
+            cssClass: 'custom-rating'
+        });
+        rating.appendTo(ratingElement);
+        return ratingElement.ej2_instances[0].wrapper.outerHTML;
+    }
+</script>
+
+<template>
+    <div class="rating"></div>
+</template>
+
+<style>
+    .custom-rating.e-rating-container .e-rating-item-container,
+    .e-bigger .custom-rating.e-rating-container .e-rating-item-container .e-rating-icon,
+    .e-bigger.custom-rating.e-rating-container .e-rating-item-container .e-rating-icon {
+        font-size: 11px;
+    }
+
+        .custom-rating.e-rating-container .e-rating-item-container .e-rating-icon {
+            -webkit-text-fill-color: lightgrey;
+            -webkit-text-stroke: 1px lightgrey;
+        }
+
+        .custom-rating.e-rating-container .e-rating-item-container.e-rating-selected .e-rating-icon {
+            background: linear-gradient(to right, #ffa600 var(--rating-value), #ffa600 var(--rating-value));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            -webkit-text-stroke: 1px #ffa600;
+        }
+</style>
+
+<script type="text/javascript">
+    function isConfirm(e) {
+        var div = document.createElement('div');
+        var h6 = document.createElement('h6'); // Tạo thẻ h5 để bọc thẻ span
+        var span = document.createElement('span');
+        if (e.IsConfirm === true) {
+            span.className = 'badge bg-success rounded-3';
+            span.textContent = 'Đã duyệt'
+        }
+        if (e.IsConfirm === false) {
+            span.className = 'badge bg-secondary rounded-3';
+            span.textContent = 'Đợi duyệt'
+        }
+
+        h6.appendChild(span); // Đưa span vào bên trong thẻ h5
+        div.appendChild(h6); // Đưa h6 vào bên trong div
+
+        return div.outerHTML;
+    }
+</script>
+
+<script type="text/x-jsrender" id="isConfirmTemplate">
+    ${isConfirm(data)}
+</script>
+
+
+<style type="text/css" class="cssStyles">
+    .emptyRecordTemplate {
+        text-align: center;
+    }
+
+    .e-emptyRecord {
+        display: block;
+        margin: 10px auto;
+    }
+</style>
+<script id="emptytemplate" type="text/x-template">
+    <div class='emptyRecordTemplate'>
+        ${renderEmptyImg()}
+        <h1>Hiện đang không có đánh giá nào</h1>
+    </div>
+</script>
+<script>
+    window.renderEmptyImg = function () {
+        var img = document.createElement('img');
+        if (document.body.classList.value.indexOf('dark') > -1 || document.body.classList.value.indexOf('highcontrast') > -1) {
+            img.src = "@Url.Content("~/images/noresult.jpg")";
+        } else {
+            img.src = "@Url.Content("~/images/noresult.jpg")";
+        }
+        img.classList.add("e-emptyRecord");
+        img.alt = "No record";
+        return img.outerHTML;
+    }
+</script>
+
+
+
+@* <script type="text/javascript">
+    // Hiển thị thông báo Toast
+    function showToast(type, message) {
+        const toastTypeClass = type === "success" ? "text-bg-success" : "text-bg-danger";
+        const toastContainer = document.createElement("div");
+
+        toastContainer.className = `toast ${toastTypeClass} border-0 position-fixed top-0 end-0 m-3`;
+        toastContainer.style.zIndex = "1055";
+        toastContainer.setAttribute("role", "alert");
+        toastContainer.setAttribute("aria-live", "assertive");
+        toastContainer.setAttribute("aria-atomic", "true");
+
+        toastContainer.innerHTML = `
+            <div class="toast-header">
+                <i class="bi ${type === "success" ? "bi-check-circle-fill" : "bi-exclamation-circle-fill"} me-2"></i>
+                <strong class="me-auto">${type === "success" ? "Thành công" : "Lỗi"}</strong>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">${message}</div>
+        `;
+
+        document.body.appendChild(toastContainer);
+
+        const toast = new bootstrap.Toast(toastContainer);
+        toast.show();
+
+        // Tự động xóa toast sau khi hiển thị xong
+        setTimeout(() => {
+            toastContainer.remove();
+        }, 5000);
+    }
+
+    // Làm mới dữ liệu cho Grid với dữ liệu mới
+    function refreshGridWithNewData(gridId, newData) {
+        const gridElement = document.getElementById(gridId);
+        if (!gridElement) {
+            console.error(`Không tìm thấy grid với ID: ${gridId}`);
+            return;
+        }
+
+        const gridInstance = gridElement.ej2_instances ? gridElement.ej2_instances[0] : null;
+        if (!gridInstance) {
+            console.error(`Grid với ID: ${gridId} chưa được khởi tạo.`);
+            return;
+        }
+
+        newData = Array.isArray(newData) ? newData : [];
+        const mappedData = newData.map(item => ({
+            ReviewId: item.ReviewId || item.reviewId,
+            UserId: item.UserId || item.userId,
+            UserAvartar: item.UserAvartar || item.userAvartar,
+            UserName: item.UserName || item.userName,
+            FullName: item.FullName || item.fullName,
+            Rating: item.Rating || item.rating,
+            Comment: item.Comment || item.comment,
+            ReviewedDate: item.ReviewedDate || item.reviewedDate,
+            IsConfirm: item.IsConfirm || item.isConfirm
+        }));
+
+        gridInstance.dataSource = mappedData;
+        gridInstance.refresh();
+    }
+
+    // Gọi API để lấy dữ liệu mới từ server và làm mới Grid
+    function updateGridFromServer(gridId, apiUrl) {
+        $.ajax({
+            url: apiUrl,
+            type: 'GET',
+            success: function (data) {
+                refreshGridWithNewData(gridId, data); // Làm mới Grid với dữ liệu trả về
+            },
+            error: function (xhr) {
+                console.error(`Không thể làm mới Grid với ID: ${gridId}`);
+                const errorMessage = xhr.responseJSON ? xhr.responseJSON.message : "Lỗi không xác định.";
+                showToast("error", errorMessage);
+            }
+        });
+    }
+
+    // Xử lý xác nhận duyệt đánh giá
+    function ConfirmReview(reviewId) {
+        if (!reviewId) {
+            console.error("ReviewId không hợp lệ.");
+            return;
+        }
+
+        // Gọi AJAX đến API ConfirmReview
+        $.ajax({
+            url: `/ConfirmReview/${reviewId}`, // Endpoint API
+            type: 'GET',
+            success: function (response) {
+                console.log("Xác nhận thành công:", response);
+
+                // Làm mới lại grid với dữ liệu mới từ server
+                updateGridFromServer("ReviewGrid", `/Review/GetReviewList?_=${new Date().getTime()}`);
+
+                // Hiển thị thông báo thành công
+                showToast("success", `Đã duyệt đánh giá ${reviewId}`);
+            },
+            error: function (xhr) {
+                console.error(`Xảy ra lỗi trong quá trình duyệt đánh giá ${reviewId}`);
+                const errorMessage = xhr.responseJSON ? xhr.responseJSON.message : "Xảy ra lỗi không xác định.";
+                showToast("error", errorMessage);
+            }
+        });
+    }
+</script> *@
