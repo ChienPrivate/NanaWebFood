@@ -5,7 +5,91 @@
     Layout = "_AdminLayout";
     var role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value ?? "Guess";
 }
+<style>
+    /* Toast Header Thành Công */
+    .toast-header-success {
+        background-color: #d1e7dd; /* Nền xanh nhạt */
+        color: #0f5132; /* Chữ xanh đậm */
+        border-bottom: 1px solid #badbcc; /* Viền dưới */
+        font-weight: bold; /* In đậm tiêu đề */
+    }
+
+    /* Toast Body Thành Công */
+    .toast-body-success {
+        background-color: #0f5132; /* Nền xanh đậm */
+        color: #ffffff; /* Chữ trắng */
+        border-top: 1px solid #badbcc; /* Viền trên */
+        padding: 0.75rem 1rem; /* Khoảng cách trong */
+    }
+
+    /* Toast Header Lỗi */
+    .toast-header-error {
+        background-color: #f8d7da; /* Nền đỏ nhạt */
+        color: #842029; /* Chữ đỏ đậm */
+        border-bottom: 1px solid #f5c2c7; /* Viền đỏ nhạt */
+        font-weight: bold; /* In đậm tiêu đề */
+    }
+
+    /* Toast Body Lỗi */
+    .toast-body-error {
+        background-color: #842029; /* Nền đỏ đậm */
+        color: #ffffff; /* Chữ trắng */
+        border-top: 1px solid #f5c2c7; /* Viền trên */
+        padding: 0.75rem 1rem; /* Khoảng cách trong */
+    }
+
+    /* Nút đóng */
+    .btn-close-white {
+        color: #0f5132; /* Màu nút đóng */
+    }
+</style>
 <script type="text/javascript">
+
+    function showToast(message, type = 'success') {
+        // Tạo container chính cho toast nếu chưa tồn tại
+        let toastContainer = document.getElementById('toastContainer');
+        if (!toastContainer) {
+            toastContainer = document.createElement('div');
+            toastContainer.id = 'toastContainer';
+            toastContainer.className = 'position-fixed';
+            toastContainer.style.zIndex = 1055;
+            toastContainer.style.top = '2%'; // Thay đổi style top
+            toastContainer.style.right = '1%'; // Thay đổi style right
+            document.body.appendChild(toastContainer);
+        }
+
+        // Tạo toast element
+        const toast = document.createElement('div');
+        toast.className = `toast text-bg-${type === 'success' ? 'success' : 'danger'} border-0`;
+        toast.setAttribute('role', 'alert');
+        toast.setAttribute('aria-live', 'assertive');
+        toast.setAttribute('aria-atomic', 'true');
+
+        // Nội dung của toast
+        toast.innerHTML = `
+                <div class="toast-header ${type === 'success' ? 'toast-header-success' : 'toast-header-error'}">
+                    <i class="bi ${type === 'success' ? 'bi-check-circle-fill' : 'bi-exclamation-circle-fill'} me-2"></i>
+                    <strong class="me-auto">${type === 'success' ? 'Thành công' : 'Lỗi'}</strong>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body ${type === 'success' ? 'toast-body-success' : 'toast-body-error'}">
+                    ${message}
+                </div>
+            `;
+
+        // Thêm toast vào container
+        toastContainer.appendChild(toast);
+
+        // Hiển thị toast
+        const bootstrapToast = new bootstrap.Toast(toast, { delay: 4000 });
+        bootstrapToast.show();
+
+        // Tự động xóa toast sau khi ẩn
+        toast.addEventListener('hidden.bs.toast', () => {
+            toast.remove();
+        });
+    }
+
     function refreshGridWithNewData(gridId, newData, templateId) {
         var gridElement = document.getElementById(gridId);
         var gridInstance = gridElement.ej2_instances[0];
@@ -66,6 +150,9 @@
                 $(`#myModal-${orderId}`).modal('hide');
 
                 setTimeout(() => {
+
+                    showToast("Trạng thái đơn hàng đã được cập nhật thành Đang giao.", "success");
+
                     updateGridFromServer(
                         "ConfirmedYetGrid",
                         '/ManageOrder/GetConfirmedOrders?_=' + new Date().getTime(),
@@ -81,7 +168,9 @@
             },
             error: function () {
                 $(`#myModal-${orderId}`).modal('hide');
-                alert("Có lỗi xảy ra khi cập nhật trạng thái đơn hàng.");
+
+                // Gọi toast lỗi
+                showToast("Có lỗi xảy ra khi cập nhật trạng thái đơn hàng.", "error");
             }
         });
     }
@@ -92,9 +181,12 @@
             url: `/ManageOrder/ModifyStatus/${orderId}/Đang giao`, // Gọi đến URL của phương thức
             type: 'GET',
             success: function (response) {
-                $(`#myModal-${orderId}`).modal('hide');                
+                $(`#myModal-${orderId}`).modal('hide');
 
                 setTimeout(() => {
+
+                    showToast("Trạng thái đơn hàng đã được cập nhật thành Đang giao.", "success");
+
                     // Làm mới DeliveringGrid
                     updateGridFromServer(
                         "DeliveringGrid",
@@ -112,7 +204,9 @@
             },
             error: function () {
                 $(`#myModal-${orderId}`).modal('hide');
-                alert("Có lỗi xảy ra khi cập nhật trạng thái đơn hàng.");
+
+                // Gọi toast lỗi
+                showToast("Có lỗi xảy ra khi cập nhật trạng thái đơn hàng.", "error");
             }
         });
     }
@@ -125,9 +219,12 @@
             success: function (response) {
                 $(`#myModal-${orderId}`).modal('hide');
 
+                
+
                 setTimeout(() => {
 
-                    
+                    showToast("Trạng thái đơn hàng đã được cập nhật thành Đã giao.", "success");
+
                     // Làm mới CompleteGrid
                     updateGridFromServer(
                         "CompleteGrid",
@@ -146,7 +243,9 @@
             },
             error: function () {
                 $(`#myModal-${orderId}`).modal('hide');
-                alert("Có lỗi xảy ra khi cập nhật trạng thái đơn hàng.");
+
+                // Gọi toast lỗi
+                showToast("Có lỗi xảy ra khi cập nhật trạng thái đơn hàng.", "error");
             }
         });
     }
@@ -163,12 +262,18 @@
             warningText.textContent = "";
         }
 
+
+
         await $.ajax({
             url: `/ManageOrder/CancelOrder/${orderId}/${encodeURIComponent(reason)}`,
             type: 'GET',
             success: function () {
                 $(`#cancelModal-${orderId}`).modal('hide');
+
                 setTimeout(() => {
+
+                    showToast("Đơn hàng đã được hủy thành công.", "success");
+
                     updateGridFromServer("ConfirmedYetGrid", '/ManageOrder/GetConfirmedOrders?_=' + new Date().getTime(), "confirmedYetCommandTemplate");
                     updateGridFromServer("PreparingGrid", '/ManageOrder/GetPreparingOrders?_=' + new Date().getTime(), "preparingCommandTemplate");
                     updateGridFromServer("DeliveringGrid", '/ManageOrder/GetDeliveringOrders?_=' + new Date().getTime(), "deliveringCommandTemplate");
@@ -177,7 +282,9 @@
             },
             error: function () {
                 $(`#cancelModal-${orderId}`).modal('hide');
-                alert("Có lỗi xảy ra khi hủy đơn hàng.");
+
+                // Gọi toast lỗi
+                showToast("Có lỗi xảy ra khi hủy đơn hàng.", "error");
             }
         });
     }
@@ -385,50 +492,50 @@
        </div>
      </div>
 
-     @* <button type="button" class="btn btn-outline-danger form-control mb-1 d-block" data-bs-toggle="modal" data-bs-target="#cancelModal-${OrderId}" data-order-id="${OrderId}">
-        <i class="fa-regular fa-file-excel"></i> Hủy đơn
-     </button>
+     <button type="button" class="btn btn-outline-danger form-control mb-1 d-block" data-bs-toggle="modal" data-bs-target="#cancelModal-${OrderId}" data-order-id="${OrderId}">
+       <i class="fa-regular fa-file-excel"></i> Hủy đơn
+    </button>
 
-     <!-- Modal Hủy Đơn cho mỗi OrderId -->
-     <div class="modal fade" id="cancelModal-${OrderId}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-         <div class="modal-dialog">
-             <div class="modal-content">
-                 <div class="modal-header">
-                     <h5 class="modal-title">Xác nhận hủy đơn</h5>
-                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                 </div>
-                 <div class="modal-body">
-                     <div class="text-left">
-                         <strong>Bạn có chắc muốn hủy đơn này?</strong>
-                     </div>
-                     <div class="text-left">
-                             <label for="cancelReason-${OrderId}">Lý do hủy đơn <span class="text-danger">*</span></label>
-                             <select id="cancelReason-${OrderId}" name="message" class="form-select">
-                                 <option value="">Chọn lý do hủy đơn</option>
-                                 <option value="Khách đã thay đổi ý định">Khách đã thay đổi ý định</option>
-                                 <option value="Khách tìm thấy giá tốt hơn ở nơi khác">Khách tìm thấy giá tốt hơn ở nơi khác</option>
-                                 <option value="Khách đặt nhầm đơn hàng">Khách đặt nhầm đơn hàng</option>
-                                 <option value="Khách không còn cần sản phẩm">Khách không còn cần sản phẩm</option>
-                                 <option value="Khách gặp vấn đề với thanh toán">Khách gặp vấn đề với thanh toán</option>
-                                 <option value="Khách không hài lòng với dịch vụ khách hàng">Khách không hài lòng với dịch vụ khách hàng</option>
-                                 <option value="Khách yêu cầu hủy vì lý do khác">Khách yêu cầu hủy vì lý do khác</option>
-                             </select>
-                         <span class="text-danger" id="warningText-${OrderId}"></span>
-                     </div>
-                 </div>
-                 <div class="modal-footer">
-                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                     <a href="javascript:void(0);" id="cancelOrderBtn-${OrderId}" class="btn btn-outline-danger" data-order-id="${OrderId}">Hủy đơn</a>
-                 </div>
-             </div>
-         </div>
-     </div> *@
+    <!-- Modal Hủy Đơn cho mỗi OrderId -->
+    <div class="modal fade" id="cancelModal-${OrderId}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Xác nhận hủy đơn</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-left">
+                        <strong>Bạn có chắc muốn hủy đơn này?</strong>
+                    </div>
+                    <div class="text-left">
+                            <label for="cancelReason-${OrderId}">Lý do hủy đơn <span class="text-danger">*</span></label>
+                            <select id="cancelReason-${OrderId}" name="message" class="form-select">
+                                <option value="">Chọn lý do hủy đơn</option>
+                                <option value="Khách đã thay đổi ý định">Khách đã thay đổi ý định</option>
+                                <option value="Khách tìm thấy giá tốt hơn ở nơi khác">Khách tìm thấy giá tốt hơn ở nơi khác</option>
+                                <option value="Khách đặt nhầm đơn hàng">Khách đặt nhầm đơn hàng</option>
+                                <option value="Khách không còn cần sản phẩm">Khách không còn cần sản phẩm</option>
+                                <option value="Khách gặp vấn đề với thanh toán">Khách gặp vấn đề với thanh toán</option>
+                                <option value="Khách không hài lòng với dịch vụ khách hàng">Khách không hài lòng với dịch vụ khách hàng</option>
+                                <option value="Khách yêu cầu hủy vì lý do khác">Khách yêu cầu hủy vì lý do khác</option>
+                            </select>
+                        <span class="text-danger" id="warningText-${OrderId}"></span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <a href="javascript:void(0);" id="cancelOrderBtn-${OrderId}" class="btn btn-outline-danger" data-order-id="${OrderId}" onclick="changeStatusToCancel(${OrderId})" >Hủy đơn</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </script>
 
 <script id="preparingCommandTemplate" type="text/x-jsrender">
     <a href="/ManageOrder/Details/${OrderId}" class="btn btn-outline-info form-control mb-1 d-block"><i class="bi bi-info-circle"></i> Chi tiết</a>
 
-    <button type="button" class="btn btn-outline-primary form-control mb-1 d-block" data-bs-toggle="modal" data-bs-target="#myModal-${OrderId}" data-order-id="${OrderId}">
+    <button type="button" class="btn btn-outline-warning form-control mb-1 d-block" data-bs-toggle="modal" data-bs-target="#myModal-${OrderId}" data-order-id="${OrderId}">
        <i class="fa-solid fa-truck-fast"></i> Đang giao
      </button>
 
@@ -498,8 +605,8 @@
 <script id="deliveringCommandTemplate" type="text/x-jsrender">
     <a href="/ManageOrder/Details/${OrderId}" class="btn btn-outline-info form-control mb-1 d-block"><i class="bi bi-info-circle"></i> Chi tiết</a>
 
-    <button type="button" class="btn btn-outline-primary form-control mb-1 d-block" data-bs-toggle="modal" data-bs-target="#myModal-${OrderId}" data-order-id="${OrderId}">
-       <i class="fa-solid fa-truck-fast"></i> Đã giao
+    <button type="button" class="btn btn-outline-success form-control mb-1 d-block" data-bs-toggle="modal" data-bs-target="#myModal-${OrderId}" data-order-id="${OrderId}">
+       <i class="bi bi-check-circle-fill"></i> Đã giao
      </button>
 
      <!-- Modal Đang giao cho mỗi OrderId -->
