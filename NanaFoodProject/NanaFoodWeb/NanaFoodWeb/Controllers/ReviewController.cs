@@ -36,14 +36,28 @@ namespace NanaFoodWeb.Controllers
         public async Task<IActionResult> Details(string reviewId)
         {
             var reviewResponse = await _reviewRepository.GetReviewById(reviewId);
+            
 
             if (reviewResponse.IsSuccess)
             {
                 var review = JsonConvert.DeserializeObject<UserWithReviewDto>(reviewResponse.Result.ToString());
 
+                var productResponse = await _reviewRepository.GetProductById(review.ProductId);
+                var ratingResponse = await _reviewRepository.GetProductRating(review.ProductId);
+                if (productResponse.IsSuccess)
+                {
+                    var product = JsonConvert.DeserializeObject<ProductDto>(productResponse.Result.ToString());
+                    ViewBag.Product = product;
+                }
+
+                if (ratingResponse.IsSuccess)
+                {
+                    ViewData["rating"] = double.Parse(ratingResponse.Result.ToString());
+                }
+
                 return View(review);
             }
-            TempData["error"] = $"{reviewResponse.Message} hoặc đánh giá {reviewId}";
+            TempData["error"] = $"{reviewResponse.Message}";
             return RedirectToAction("Index", "Review");
         }
 

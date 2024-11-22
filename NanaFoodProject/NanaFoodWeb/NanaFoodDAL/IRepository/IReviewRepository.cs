@@ -21,5 +21,6 @@ namespace NanaFoodDAL.IRepository
         Task<ResponseDto> GetReviewWithUser();
         Task<ResponseDto> ConfirmReview(string reviewId);
         Task<ResponseDto> GetReviewById(string reviewId);
+        Task<ResponseDto> GetProductById(int productId);
     }
 }

@@ -1,5 +1,15 @@
 ﻿@{
     Layout = "_AdminLayout";
+    NanaFoodWeb.Models.Dto.ProductDto product = new NanaFoodWeb.Models.Dto.ProductDto();
+    if (ViewBag.Product != null)
+    {
+        product = ViewBag.Product;
+    }
+    else
+    {
+        product = null;
+    }
+    double rating = ViewData["rating"] is double value ? value : 5;
 }
 @model NanaFoodWeb.Models.Dto.UserWithReviewDto
 <style>
@@ -11,6 +21,13 @@
         color: transparent; /* Ẩn màu viền */
         -webkit-text-fill-color: transparent; /* Ẩn viền trong trình duyệt Webkit */
     }
+
+    .e-rating-container .e-rating-item-container.e-rating-selected .e-rating-icon, .e-rating-container .e-rating-item-container.e-rating-intermediate .e-rating-icon {
+        background: linear-gradient(to right, rgb(236 249 67) var(--rating-value), transparent var(--rating-value));
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-stroke: 1px rgb(223 219 73);
+    }
 </style>
 <div class="container-fluid">
     <div class="card shadow">
@@ -19,10 +36,54 @@
         </div>
     </div>
     <div class="card-body">
-        <div class="row">
+        <div class="">
+            <div class=row>
+                <h1>Sản phẩm được đánh giá</h1>
+                @if(product != null){
+                    <div class="row">
+                        <div class="d-flex">
+                            <div class="me-4">
+                                <img id="mainImage" src="@product.ImageUrl" class="img-fluid mb-3" style="max-width: 400px; max-height: 400px; object-fit: cover; border-radius: 10px;" />
+                            </div>
+                            <div class="me-4">
+                                <div class="h2 fw-bold text-warning">@product.ProductName.ToUpper()</div>
+                                <div class="h6 py-1">
+                                    <span>Lượt xem : @product.View <i class="bi bi-eye-fill"></i></span>
+                                </div>
+                                <div class="h6">
+                                    <span class="d-flex align-items-center">
+                                        Số sao hiện tại :
+                                        <ejs-rating id="productRating-@Model.ProductId"
+                                                    value=@rating
+                                                    readOnly=true
+                                                    precision=Exact></ejs-rating>@* aria-valuenow="2.5" *@
+                                    </span>
+                                </div>
+                                <div class="h5">Giá : @product.Price.ToString("#,##") vnđ</div>
+                                <div class="h6 py-1">Mô tả:</div>
+                                <div class="fs-6">
+                                    @product.Description
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center">
+                        <div class="mb-2">
+                            <img src="https://hunanchinesefoodwhitby.com/img/placeholders/comfort_food_placeholder" style="max-width: 100%; height: 48vh;" alt="Product Responsive" />
+                        </div>
+                        <h4>Sản phẩm này đã bị xóa hoặc đã ngừng kinh doanh</h4>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="row mt-2">
+            <h1>Đánh giá của người dùng</h1>
             <div class="col-lg-1 col-md-1 col-sm-1">
                 <img src="@Model.UserAvartar"
-                     class="img-fluid lazyload" />
+                     class="img-fluid img-thumbnail lazyload" />
             </div>
             <div class="col-lg-11 col-md-11 col-sm-11">
                 <div class="card">

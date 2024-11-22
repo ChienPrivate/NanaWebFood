@@ -232,5 +232,13 @@ namespace NanaFoodApi.Controllers
 
             return Ok(response);
         }
+
+        [HttpGet("GetProductById/{productId}")]
+        public async Task<IActionResult> GetProductById([FromRoute] int productId)
+        {
+            var response = await _reviewRepository.GetProductById(productId);
+
+            return Ok(response);
+        }
     }
 }
