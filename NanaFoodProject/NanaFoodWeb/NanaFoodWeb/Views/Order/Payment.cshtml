@@ -12,7 +12,14 @@
     {
         cartDetails = ViewBag.cartdetails;
     }
+    List<CouponDto> coupons = new List<CouponDto>();
+
+    if (ViewBag.couponlist != null)
+    {
+        coupons = ViewBag.couponlist;
+    }
 }
+
 
 <form id="paymentForm" asp-action="Payment" asp-controller="Order" method="post">
     <div class="container">
@@ -132,7 +139,7 @@
                         </div>
                         <hr />
                         <div class="btn-group w-100 coupon-Finder">
-                            <input type="text" id="couponInput" class="form-control" placeholder="Nhập mã giảm giá" style="width: 379.656px;">
+                            <input type="text" id="couponInput" class="form-control" placeholder="Nhập mã giảm giá của bạn tại đây" style="width: 379.656px;">
                             <input asp-for=CouponCode id="couponCodeValue" hidden />
                             <button type="button" id="applyCouponbtn" class="btn btn-outline-danger" style="height: 36px; transform: translate(0px, 12px); position: relative; top: -1px;">Áp dụng</button>
                         </div>
@@ -158,8 +165,69 @@
                         </div>
 
                         <button type="submit" class="btn btn-primary w-100">Thanh toán</button>
+
+                        <button type="button" class="btn btn-success w-100 mt-2" data-bs-toggle="modal" data-bs-target="#couponModal">
+                                Xem mã giảm giá
+                        </button>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- The Modal -->
+    <div class="modal" id="couponModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Mã giảm giá</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    @if (coupons.Count > 0)
+                    {
+                        <div class="row">
+                            @foreach (var item in coupons)
+                            {
+                                <div class="col-md-6">
+                                    <div class="card border-warning mb-4">
+                                        <div class="card-header bg-warning text-center">
+                                            <h5 class=" text-dark"> Mã Giảm Giá: @item.CouponCode</h5>
+                                        </div>
+                                        <div class="card-body text-center">
+                                            <p class="card-text">
+                                                Giảm @item.Discount.ToString("#,##") đ cho đơn hàng từ @item.MinAmount.ToString("#,##") đ trở lên.
+                                            </p>
+                                            <p>Hạn sử dụng: @item.EndStart.ToString("dd/MM/yyyy ")</p>
+                                            <button type="button" id="btncopy-@item.CouponCode" data-code="@item.CouponCode" class="btn btn-warning" onclick="copyCouponCode(this)"><i class="fas fa-copy"></i> Sao chép mã</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center">
+                            <div class="mb-2">
+                                <img src="https://cdn-ilbhegb.nitrocdn.com/pgAEPFEvxkLRtRpysBFHMeRzffWoPlqR/assets/images/optimized/rev-32de2e1/www.contentformula.com/wp-content/uploads/2020/08/Bot_form-8.png" style="max-width: 100%; height: 48vh;" alt="Bot Responsive" />
+                            </div>
+                            <h4>Hiện Nana đang cập nhật chương trình khuyến mãi, hãy qua lại sau nhé</h4>
+                        </div>
+                    }
+
+
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Đóng</button>
+                </div>
+
             </div>
         </div>
     </div>
@@ -185,6 +253,29 @@
 
 @section Scripts {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script>
+        function copyCouponCode(button) {
+            // Lấy mã giảm giá từ thuộc tính data-code
+            const couponCode = button.getAttribute('data-code');
+
+            // Tạo một input tạm thời để sao chép
+            const tempInput = document.createElement('input');
+            tempInput.value = couponCode;
+            document.body.appendChild(tempInput);
+
+            // Chọn và sao chép giá trị trong input
+            tempInput.select();
+            tempInput.setSelectionRange(0, 99999); // Dành cho mobile
+            document.execCommand('copy');
+
+            // Xóa input tạm thời
+            document.body.removeChild(tempInput);
+
+            // Hiển thị thông báo bằng toastr
+            toastr.success(`Đã sao chép mã: ${couponCode}`, 'Lấy mã thành công');
+        }
+    </script>
     <script defer>
             $(document).ready(function () {
                 // Lắng nghe sự kiện khi thay đổi tỉnh/thành phố
@@ -434,7 +525,8 @@
             success: function (response) {
                 // Kiểm tra nếu tổng đơn hàng nhỏ hơn giá trị tối thiểu của mã giảm giá
                 if (response.minAmount > @cartDetails.Sum(x => x.Total)) {
-                    showNotification(`Tổng đơn hàng phải lớn hơn ${response.minAmount} VNĐ.`);
+                    const formattedAmount = formatCurrencyVND(response.minAmount); // Định dạng số thành VNĐ
+                    showNotification(`Tổng đơn hàng phải lớn hơn ${formattedAmount}`);
                     $('#couponInput').val(''); // Xóa nội dung của ô nhập mã giảm giá
                     return;
                 }
@@ -523,6 +615,10 @@
 
             observer.observe(document.getElementById('shippingFee'), { childList: true });
         });
+
+        function formatCurrencyVND(amount) {
+            return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' VNĐ';
+        }
 
         // Hàm hiển thị modal thông báo
         function showNotification(message) {

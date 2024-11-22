@@ -93,6 +93,16 @@ namespace NanaFoodWeb.Controllers
             else
             {
                 var userInfoResponse = await _authRepo.GetInfo();
+
+                var discountListRes = await _couponRepo.GetAvailableCoupon();
+
+                if (discountListRes.IsSuccess)
+                {
+                    var coupons = JsonConvert.DeserializeObject<List<CouponDto>>(discountListRes.Result.ToString());
+
+                    ViewBag.couponlist = coupons;
+                }
+
                 var response = await _cartRepo.GetCart();
                 if (response.Result != null)
                 {
