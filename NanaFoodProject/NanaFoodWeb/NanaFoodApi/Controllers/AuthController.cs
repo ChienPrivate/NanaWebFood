@@ -108,10 +108,10 @@ namespace NanaFoodApi.Controllers
                 return BadRequest(ModelState);
             }
             var response = await _auth.Register(regis);
-            if (!response.IsSuccess)
+            /*if (!response.IsSuccess)
             {
                 return BadRequest(response);
-            }
+            }*/
             return Ok(response);
         }
 

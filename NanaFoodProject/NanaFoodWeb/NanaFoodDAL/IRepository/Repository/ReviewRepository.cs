@@ -332,12 +332,12 @@ namespace NanaFoodDAL.IRepository.Repository
         public async Task<ResponseDto> GetReviewById(string reviewId)
         {
             var reviewWithUser = await _context.Reviews
-                .Include(r => r.User) // Include để lấy thông tin liên quan đến User
-                .Where(r => r.ReviewId.ToString() == reviewId && r.User != null) // Lọc theo reviewId và đảm bảo User không null
+                .Include(r => r.User) // Include để lấy thông tin liên quan đến User\
                 .Select(r => new UserWithReviewDto
                 {
                     ReviewId = r.ReviewId.ToString(),
                     UserId = r.UserId,
+                    ProductId = r.ProductId,
                     UserAvartar = r.User.AvatarUrl ?? "https://placehold.co/300x300",
                     FullName = r.User.FullName,
                     UserName = r.User.UserName,
@@ -351,6 +351,17 @@ namespace NanaFoodDAL.IRepository.Repository
             _response.IsSuccess = reviewWithUser != null;
             _response.Message = reviewWithUser != null ? $"Lấy thông tin đánh giá {reviewId} thành công" : $"Đánh giá {reviewId} không tồn tại";
             _response.Result = reviewWithUser != null ? reviewWithUser : new UserWithReviewDto();
+
+            return _response;
+        }
+
+        public async Task<ResponseDto> GetProductById(int productId)
+        {
+            var product = await _context.Products.FirstOrDefaultAsync(p => p.ProductId == productId);
+
+            _response.IsSuccess = product != null;
+            _response.Message = product != null ? $"Tìm thấy sản phẩm có mã {product.ProductId}" : $"Không tìm thấy sản phẩm có mã {productId}";
+            _response.Result = product != null ? _mapper.Map<ProductDto>(product) : new ProductDto();
 
             return _response;
         }

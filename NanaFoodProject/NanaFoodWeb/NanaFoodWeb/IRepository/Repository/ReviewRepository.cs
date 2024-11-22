@@ -84,5 +84,14 @@ namespace NanaFoodWeb.IRepository.Repository
                 Url = APIBase + $"/api/Review/GetReviewById/{reviewId}"
             });
         }
+
+        public async Task<ResponseDto> GetProductById(int productId)
+        {
+            return await _baseService.SendAsync(new RequestDto
+            {
+                ApiType = ApiType.GET,
+                Url = APIBase + $"/api/Review/GetProductById/{productId}"
+            });
+        }
     }
 }
