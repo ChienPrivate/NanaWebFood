@@ -15,13 +15,13 @@
                 <form asp-action="Create" asp-controller="Categories" method="post" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
-                        <label asp-for="CategoryName" class="control-label"></label>
+                        <label asp-for="CategoryName" class="control-label">Tên danh mục</label>
                         <input asp-for="CategoryName" class="form-control" />
 
                         <span asp-validation-for="CategoryName" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="Description" class="control-label"></label>
+                        <label asp-for="Description" class="control-label">Mô tả</label>
                         <textarea asp-for="Description" class="form-control" rows="5"></textarea>
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
