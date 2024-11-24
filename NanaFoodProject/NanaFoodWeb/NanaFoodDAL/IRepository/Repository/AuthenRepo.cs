@@ -101,7 +101,8 @@ namespace NanaFoodDAL.IRepository.Repository
                 {
                     UserName = regis.UserName,
                     Email = regis.Email,
-                    FullName = regis.FullName
+                    FullName = regis.FullName,
+                    PhoneNumber = regis.PhoneNumber,
                 };
                 var createdUser = await _userManager.CreateAsync(user, regis.Password);
 

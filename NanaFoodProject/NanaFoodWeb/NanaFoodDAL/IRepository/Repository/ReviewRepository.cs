@@ -88,6 +88,8 @@ namespace NanaFoodDAL.IRepository.Repository
         {
             try
             {
+                reviewDto.IsConfirm = false;
+
                 await _context.Reviews.AddAsync(_mapper.Map<Review>(reviewDto));
 
                 await _context.SaveChangesAsync();
@@ -109,7 +111,7 @@ namespace NanaFoodDAL.IRepository.Repository
         public async Task<ResponseDto> GetReviewByProductId(int productId, int page, int pageSize)
         {
             var productReview = await _context.Reviews
-                .Where(r => r.ProductId == productId)
+                .Where(r => r.ProductId == productId && r.IsConfirm)
                 .Include(r => r.User)
                 .Select(ur => new UserReviewDto
                 {

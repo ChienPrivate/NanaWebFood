@@ -1,4 +1,5 @@
-﻿﻿@{
+﻿@using Syncfusion.EJ2
+﻿@{
     ViewData["title"] = "View Order";
 }
 @model IEnumerable<NanaFoodWeb.Models.Order>;
@@ -10,89 +11,79 @@
             </div>
         </div>
         <div class="card-body">
-            <table class="table table-hover table-bordered text-center my-4">
-                <thead class="table-warning">
-                    <tr>
-                        <th>Mã hóa đơn</th>
-                        <th>Phương thức thanh toán</th>
-                        <th>Ngày đặt hàng</th>
-                        <th>Trạng thái thanh toán</th>
-                        <th>Trạng thái đơn hàng</th>
-                        <th>Phí ship</th>
-                        <th>Tổng đơn hàng</th>
-                        <th>Thao tác</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (Model.Count() < 1)
-                    {
-                        <tr>
-                            <td colspan="8" class="text-center">Bạn chưa có mua đơn hàng nào</td>
-                        </tr>
-                    }
-                    else
-                    {
-                        @foreach (var item in Model)
-                        {
-                            <tr class="align-middle">
-                                <td>@item.OrderId</td>
-                                <td>@item.PaymentType</td>
-                                <td>@item.OrderDate.ToString("dd-MM-yyyy HH:mm:ss")</td>
-                                <td>
-                                    @if (item.PaymentStatus == "Chưa thanh toán")
-                                    {
-                                        <div class="p-2 badge bg-primary text-white">@item.PaymentStatus</div>
-                                    }
-                                    @if (item.PaymentStatus == "Đã thanh toán")
-                                    {
-                                        <div class="p-2 badge bg-success text-white">@item.PaymentStatus</div>
-                                    }
-                                    @if (item.PaymentStatus == "Đã huỷ")
-                                    {
-                                        <div class="p-2 badge bg-danger text-white">@item.PaymentStatus</div>
-                                    }
-                                </td>
-                                <td>
-                                    @if (item.OrderStatus == "Chờ xác nhận")
-                                    {
-                                        <div class="p-2 badge bg-info text-white">@item.OrderStatus</div>
-                                    }
-                                    @if (@item.OrderStatus == "Đang chuẩn bị")
-                                    {
-                                        <div class="p-2 badge bg-warning text-white">@item.OrderStatus</div>
-                                    }
-                                    @if (item.OrderStatus == "Đã huỷ")
-                                    {
-                                        <div class="p-2 badge bg-danger text-white">@item.OrderStatus</div>
-                                    }
-                                    @if (item.OrderStatus == "Đang giao")
-                                    {
-                                        <div class="p-2 badge bg-primary text-white">@item.OrderStatus</div>
-                                    }
-                                    @if (item.OrderStatus == "Đã giao")
-                                    {
-                                        <div class="p-2 badge bg-success text-white">@item.OrderStatus</div>
-                                    }
-                                </td>
-                                <th>@item.ShipmentFee.ToString("#,##") VNĐ</th>
-                                <th>@item.Total.ToString("#,##") VNĐ</th>
-                                <td>
-                                    <a asp-action="OrderHistoryDetail" asp-controller="Order" asp-route-id="@item.OrderId" class="btn btn-sm btn-outline-dark">Xem chi tiết</a>
-                                    @if (item.PaymentStatus == "Đã thanh toán" && item.OrderStatus == "Đã giao")
-                                    {
-                                        <a asp-action="ReviewOrder" asp-controller="Order" asp-route-orderId="@item.OrderId" class="btn btn-sm btn-outline-dark">Đánh giá</a>
-                                    }
-                                </td>
+            <div>
+                @Html.EJS().Grid("OrderList").DataSource(Model).Columns(col =>
+                         {
+                             col.Field("OrderId").HeaderText("Mã đơn hàng").Width("135").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                             col.Field("PaymentType").HeaderText("Phương thức thanh toán").Width("135").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                             col.Field("OrderDate").HeaderText("Ngày đặt hàng").Format("dd-MM-yyyy HH:mm:ss").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                             col.Field("PaymentStatus").HeaderText("Trạng thái thanh toán").Width("160").Template("#paymentStatusTemplate").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                             col.Field("OrderStatus").HeaderText("Trạng thái giao hàng").Width("160").Template("#OrderStatusTemplate").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                             col.Field("ShipmentFee").HeaderText("Phí ship").Format("#,##" + " VNĐ").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                             col.Field("Total").HeaderText("Tổng tiền").Format("#,##" + " VNĐ").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                             col.Field("commands").HeaderText("Thao tác").Template("#orderCommandTemplate").Width("200").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
 
-                            </tr>
-                        }
-                    }
-                </tbody>
-            </table>
-            <div class="text-right g-2">
+                         }).AllowPaging().PageSettings(page => page.PageCount(3).PageSizes(true).PageSize(10)).AllowSorting().AllowFiltering().FilterSettings(filter => { filter.Type(Syncfusion.EJ2.Grids.FilterType.Excel); }).Toolbar(new List<string>() { "Search" }).AllowResizing(false).AutoFit(false).Render()
+            </div>
+            <div class="text-right mt-2 g-2">
                 <a class="btn btn-outline-warning" asp-action="Menu" asp-controller="Home">Tiếp tục mua <i class="bi bi-basket-fill"></i></a>
                 <a asp-action="Index" asp-controller="Home" class="btn btn-outline-secondary">Trở về trang chủ</a>
             </div>
         </div>
     </div>
 </div>
+<script type="text/x-template" id="paymentStatusTemplate">
+    @foreach(var item in Model)
+    {
+        @if (item.PaymentStatus == "Chưa thanh toán")
+        {
+            <div class="p-2 badge bg-primary text-white">@item.PaymentStatus</div>
+        }
+        @if (item.PaymentStatus == "Đã thanh toán")
+        {
+            <div class="p-2 badge bg-success text-white">@item.PaymentStatus</div>
+        }
+        @if (item.PaymentStatus == "Đã huỷ")
+        {
+            <div class="p-2 badge bg-danger text-white">@item.PaymentStatus</div>
+        }
+    }
+</script>
+
+<script type="text/x-template" id="OrderStatusTemplate">
+    @foreach (var item in Model)
+    {
+        @if (item.OrderStatus == "Chờ xác nhận")
+        {
+            <div class="p-2 badge bg-info text-white">@item.OrderStatus</div>
+        }
+        @if (@item.OrderStatus == "Đang chuẩn bị")
+        {
+             <div class="p-2 badge bg-warning text-white">@item.OrderStatus</div>
+        }
+        @if (item.OrderStatus == "Đã huỷ")
+        {
+             <div class="p-2 badge bg-danger text-white">@item.OrderStatus</div>
+        }
+        @if (item.OrderStatus == "Đang giao")
+        {
+             <div class="p-2 badge bg-primary text-white">@item.OrderStatus</div>
+        }
+        @if (item.OrderStatus == "Đã giao")
+        {
+             <div class="p-2 badge bg-success text-white">@item.OrderStatus</div>
+        }
+    }
+</script>
+
+<script type="text/x-template" id="orderCommandTemplate">
+    @foreach (var item in Model)
+    {
+        <a asp-action="OrderHistoryDetail" asp-controller="Order" asp-route-id="@item.OrderId" class="btn btn-sm btn-outline-dark me-2">Xem chi tiết</a>
+        @if (item.PaymentStatus == "Đã thanh toán" && item.OrderStatus == "Đã giao")
+        {
+                <a asp-action="ReviewOrder" asp-controller="Order" asp-route-orderId="@item.OrderId" class="btn btn-sm btn-outline-dark">Đánh giá</a>
+        }
+    }
+</script>
+

@@ -21,6 +21,11 @@
                                     <span asp-validation-for="UserName" class="text-danger"></span>
                                 </div>
                                 <div class="mb-3">
+                                <label for="phone" class="form-label">Số điện thoại <span class="text-danger">*</span></label>
+                                    <input asp-for=PhoneNumber type="tel" class="form-control" id="phone" placeholder="Nhập số điện thoại">
+                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                </div>
+                                <div class="mb-3">
                                 <label for="email" class="form-label">Địa chỉ email của bạn <span class="text-danger">*</span></label>
                                     <input asp-for=Email type="email" class="form-control" id="email" placeholder="Nhập email">
                                     <span asp-validation-for="Email" class="text-danger"></span>
