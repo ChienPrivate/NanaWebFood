@@ -28,6 +28,8 @@ namespace NanaFoodDAL.Dto.UserDTO
         /// </summary>
         [Required, EmailAddress(ErrorMessage = "Email không hợp lệ)")]
         public string? Email { get; set; }
+        [Phone]
+        public string PhoneNumber { get; set; }
 
         /// <summary>
         /// Tên đầy đủ

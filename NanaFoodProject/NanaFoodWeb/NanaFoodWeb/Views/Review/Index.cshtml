@@ -40,12 +40,12 @@
                         @Html.EJS().Grid("ConfirmedYetReviewGrid").DataSource((IEnumerable<object>)ViewBag.ConfirmedYet).EmptyRecordTemplate("#emptytemplate").Columns(col =>
                                  {
                                      col.Field("ReviewId").HeaderText("Mã đánh giá").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
-                                     col.Field("userInfo").HeaderText("Thông tin người dùng").Template("#userInfoTemplate").Width("350").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                     col.Field("userInfo").HeaderText("Thông tin người dùng").Template("#userInfoTemplate").Width("350").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).AllowFiltering(false).Add();
                                      col.Field("Rating").HeaderText("Đánh giá").Template("#ratingTemplate").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
-                                     col.Field("Comment").HeaderText("Đánh giá").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                     col.Field("Comment").HeaderText("Nhận xét").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
                                      col.Field("ReviewedDate").HeaderText("Ngày đánh giá").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
                                      col.Field("IsConfirm").HeaderText("Trạng thái duyệt").Template("#isConfirmTemplate").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
-                                     col.Field("commands").HeaderText("Thao tác").Template("#reviewCommandTemplate").Width("200").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                     col.Field("commands").HeaderText("Thao tác").Template("#reviewCommandTemplate").Width("200").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).AllowFiltering(false).Add();
 
                                  }).AllowPaging().PageSettings(page => page.PageCount(3).PageSizes(true).PageSize(10)).AllowSorting().AllowFiltering().FilterSettings(filter => { filter.Type(Syncfusion.EJ2.Grids.FilterType.Excel); }).Toolbar(new List<string>() { "Search" }).AllowResizing(false).AutoFit(false).Render()
                     </div>
@@ -60,12 +60,12 @@
                         @Html.EJS().Grid("ConfirmedReviewGrid").DataSource((IEnumerable<object>)ViewBag.Confirmed).EmptyRecordTemplate("#emptytemplate").Columns(col =>
                                  {
                                      col.Field("ReviewId").HeaderText("Mã đánh giá").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
-                                     col.Field("userInfo").HeaderText("Thông tin người dùng").Template("#userInfoTemplate").Width("350").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                     col.Field("userInfo").HeaderText("Thông tin người dùng").Template("#userInfoTemplate").Width("350").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).AllowFiltering(false).Add();
                                      col.Field("Rating").HeaderText("Đánh giá").Template("#ratingTemplate").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
-                                     col.Field("Comment").HeaderText("Đánh giá").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                     col.Field("Comment").HeaderText("Nhận xét").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
                                      col.Field("ReviewedDate").HeaderText("Ngày đánh giá").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
                                      col.Field("IsConfirm").HeaderText("Trạng thái duyệt").Template("#isConfirmTemplate").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
-                                     col.Field("commands").HeaderText("Thao tác").Template("#reviewCommandTemplate").Width("200").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                     col.Field("commands").HeaderText("Thao tác").Template("#reviewCommandTemplate").Width("200").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).AllowFiltering(false).Add();
 
                                  }).AllowPaging().PageSettings(page => page.PageCount(3).PageSizes(true).PageSize(10)).AllowSorting().AllowFiltering().FilterSettings(filter => { filter.Type(Syncfusion.EJ2.Grids.FilterType.Excel); }).Toolbar(new List<string>() { "Search" }).AllowResizing(false).AutoFit(false).Render()
                     </div>

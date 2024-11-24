@@ -65,6 +65,7 @@
         text-stroke: 1px #ffe814; /* Tạo viền màu vàng cho các trình duyệt hỗ trợ */
     }
 </style>
+
 <script>
 $(document).ready(function () {
     $(".submit-review").click(function () {
@@ -85,6 +86,12 @@ $(document).ready(function () {
                 // Disable textarea và xóa nút submit sau khi gửi thành công
                 $(`#comment-${productId}`).prop("disabled", true);
                 $(`button[data-product-id="${productId}"]`).remove();
+
+                // Thiết lập ejs-rating thành readOnly
+                var ratingObj = document.querySelector(`#rating-${productId}`).ej2_instances[0];
+                if (ratingObj) {
+                    ratingObj.readOnly = true;
+                }
 
                 // Hiển thị thông báo nếu không còn sản phẩm nào để đánh giá
                 if ($(".product-review").length === 0) {
