@@ -39,6 +39,33 @@
                                 </div>
                                 <div class="text-right">
                                     <button type="button" class="btn btn-primary submit-review" data-product-id="@product.ProductId" @(product.IsReviewed ? "hidden" : "")>Gửi đánh giá</button>
+
+                                    <button type="button" class="btn btn-warning modify-review" id="modify-review-@product.ProductId" data-product-id="@product.ProductId" @(product.IsReviewed ? "" : "hidden")>Chỉnh sửa</button>
+
+                                    <button type="button" class="btn btn-danger" id="delete-review-@product.ProductId" data-bs-toggle="modal" data-bs-target="#myModal-@product.ProductId" @(product.IsReviewed ? "" : "hidden")>
+                                        Xóa đánh giá
+                                    </button>
+
+                                    <div class="modal fade" id="myModal-@product.ProductId" tabindex="-1" aria-labelledby="myModalLabel-@product.ProductId" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="myModalLabel-@product.ProductId">Xác nhận</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="text-start">
+                                                        Bạn có muốn xóa đi đánh giá này?
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <a class="btn btn-danger">Xóa</a>
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </form>
                         </div>
@@ -66,7 +93,7 @@
     }
 </style>
 
-<script>
+@* <script>
 $(document).ready(function () {
     $(".submit-review").click(function () {
         var productId = $(this).data("product-id");
@@ -105,4 +132,48 @@ $(document).ready(function () {
         });
     });
 });
+</script> *@
+<script>
+    $(document).ready(function () {
+        $(".submit-review").click(function () {
+            var productId = $(this).data("product-id");
+            var rating = $(`#rating-${productId}`).val();
+            var comment = $(`#comment-${productId}`).val();
+            var orderId = $(`#orderId-${productId}`).val(); // Lấy giá trị OrderId từ input ẩn
+
+            // Gửi dữ liệu qua AJAX
+            $.ajax({
+                url: '@Url.Action("PostReview", "Order")',
+                type: 'POST',
+                data: JSON.stringify({ ProductId: productId, Rating: rating, Comment: comment, OrderId: orderId }),
+                contentType: 'application/json; charset=utf-8',
+                success: function (response) {
+                    toastr.success("Đánh giá của bạn đã được gửi thành công!");
+
+                    // Disable textarea và xóa nút submit sau khi gửi thành công
+                    $(`#comment-${productId}`).prop("disabled", true);
+                    $(`button.submit-review[data-product-id="${productId}"]`).remove(); // Xóa nút Gửi đánh giá
+
+                    // Thiết lập ejs-rating thành readOnly
+                    var ratingObj = document.querySelector(`#rating-${productId}`).ej2_instances[0];
+                    if (ratingObj) {
+                        ratingObj.readOnly = true;
+                    } 
+
+                    // Hiện nút Chỉnh sửa và Xóa đánh giá sau khi gửi thành công
+                    $(`#modify-review-${productId}`).removeClass("hidden");
+                    $(`#delete-review-${productId}`).removeClass("hidden");
+
+                    // Hiển thị thông báo nếu không còn sản phẩm nào để đánh giá
+                    if ($(".product-review").length === 0) {
+                        $("#no-more-reviews").show();
+                    }
+                },
+                error: function (xhr) {
+                    console.log(xhr);
+                    toastr.error(xhr.responseJSON || "Có lỗi xảy ra, vui lòng thử lại.");
+                }
+            });
+        });
+    });
 </script>

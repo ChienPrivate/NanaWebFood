@@ -227,10 +227,21 @@ namespace NanaFoodDAL.IRepository.Repository
                 var existingCartDetail = await _context.CartDetails
                     .FirstOrDefaultAsync(cd => cd.UserId == userId && cd.ProductId == item.ProductId);
 
+                // hãy giúp tôi ở dòng này
+                var product = await _context.Products
+                    .FirstOrDefaultAsync(p => p.ProductId == item.ProductId);
+
+                if (product == null || product.Quantity == 0)
+                {
+                    continue;
+                }
+
+                var quantityToAdd = Math.Min(item.Quantity, product.Quantity);
+
                 if (existingCartDetail != null)
                 {
                     // Nếu sản phẩm đã tồn tại trong giỏ hàng, tăng Quantity
-                    existingCartDetail.Quantity += item.Quantity;
+                    existingCartDetail.Quantity += quantityToAdd;
 
                     // Kiểm tra nếu Quantity vượt quá 10, gán giá trị tối đa là 10
                     if (existingCartDetail.Quantity > 10)

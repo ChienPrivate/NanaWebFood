@@ -18,10 +18,10 @@
                              col.Field("PaymentType").HeaderText("Phương thức thanh toán").Width("135").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
                              col.Field("OrderDate").HeaderText("Ngày đặt hàng").Format("dd-MM-yyyy HH:mm:ss").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
                              col.Field("PaymentStatus").HeaderText("Trạng thái thanh toán").Width("160").Template("#paymentStatusTemplate").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
-                             col.Field("OrderStatus").HeaderText("Trạng thái giao hàng").Width("160").Template("#OrderStatusTemplate").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                             col.Field("OrderStatus").HeaderText("Trạng thái giao hàng").Width("160").Template("#orderStatusTemplate").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
                              col.Field("ShipmentFee").HeaderText("Phí ship").Format("#,##" + " VNĐ").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
                              col.Field("Total").HeaderText("Tổng tiền").Format("#,##" + " VNĐ").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
-                             col.Field("commands").HeaderText("Thao tác").Template("#orderCommandTemplate").Width("200").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                             col.Field("orderCommands").HeaderText("Thao tác").Template("#orderCommandTemplate").Width("200").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
 
                          }).AllowPaging().PageSettings(page => page.PageCount(3).PageSizes(true).PageSize(10)).AllowSorting().AllowFiltering().FilterSettings(filter => { filter.Type(Syncfusion.EJ2.Grids.FilterType.Excel); }).Toolbar(new List<string>() { "Search" }).AllowResizing(false).AutoFit(false).Render()
             </div>
@@ -32,58 +32,107 @@
         </div>
     </div>
 </div>
-<script type="text/x-template" id="paymentStatusTemplate">
-    @foreach(var item in Model)
-    {
-        @if (item.PaymentStatus == "Chưa thanh toán")
-        {
-            <div class="p-2 badge bg-primary text-white">@item.PaymentStatus</div>
+
+<script type="text/javascript">
+    function paymentStatusDetail(e) {
+        var div = document.createElement('div');
+        var h6 = document.createElement('h6'); // Tạo thẻ h5 để bọc thẻ span
+        var span = document.createElement('span');
+        if (e.PaymentStatus === "Chưa thanh toán") {
+
+            span.className = 'p-2 badge bg-primary text-white';
+            span.textContent = 'Chưa thanh toán';
         }
-        @if (item.PaymentStatus == "Đã thanh toán")
-        {
-            <div class="p-2 badge bg-success text-white">@item.PaymentStatus</div>
+        if (e.PaymentStatus === 'Đã thanh toán') {
+
+            span.className = 'p-2 badge bg-success text-white';
+            span.textContent = 'Đã thanh toán';
         }
-        @if (item.PaymentStatus == "Đã huỷ")
-        {
-            <div class="p-2 badge bg-danger text-white">@item.PaymentStatus</div>
+        if (e.PaymentStatus === 'Đã huỷ') {
+
+            span.className = 'p-2 badge bg-danger text-white';
+            span.textContent = 'Đã huỷ';
         }
+
+        h6.appendChild(span); // Đưa span vào bên trong thẻ h5
+        div.appendChild(h6); // Đưa h6 vào bên trong div
+
+        return div.outerHTML;
     }
 </script>
 
-<script type="text/x-template" id="OrderStatusTemplate">
-    @foreach (var item in Model)
-    {
-        @if (item.OrderStatus == "Chờ xác nhận")
-        {
-            <div class="p-2 badge bg-info text-white">@item.OrderStatus</div>
+<script type="text/javascript">
+    function orderStatusDetail(e) {
+        var div = document.createElement('div');
+        var h6 = document.createElement('h6'); // Tạo thẻ h5 để bọc thẻ span
+        var span = document.createElement('span');
+        if (e.OrderStatus === 'Chờ xác nhận') {
+
+            span.className = 'p-2 badge bg-info text-white';
+            span.textContent = 'Chờ xác nhận';
         }
-        @if (@item.OrderStatus == "Đang chuẩn bị")
-        {
-             <div class="p-2 badge bg-warning text-white">@item.OrderStatus</div>
+        if (e.OrderStatus === 'Đang chuẩn bị') {
+
+            span.className = 'p-2 badge bg-warning text-white';
+            span.textContent = 'Đang chuẩn bị';
         }
-        @if (item.OrderStatus == "Đã huỷ")
-        {
-             <div class="p-2 badge bg-danger text-white">@item.OrderStatus</div>
+        if (e.OrderStatus === 'Đã huỷ') {
+
+            span.className = 'p-2 badge bg-danger text-white';
+            span.textContent = 'Đã huỷ';
         }
-        @if (item.OrderStatus == "Đang giao")
-        {
-             <div class="p-2 badge bg-primary text-white">@item.OrderStatus</div>
+        if (e.OrderStatus === 'Đang giao') {
+
+            span.className = 'p-2 badge bg-primary text-white';
+            span.textContent = 'Đang giao';
         }
-        @if (item.OrderStatus == "Đã giao")
-        {
-             <div class="p-2 badge bg-success text-white">@item.OrderStatus</div>
+        if (e.OrderStatus === 'Đã giao'){
+
+            span.className = 'p-2 badge bg-success text-white';
+            span.textContent = 'Đã giao'
         }
+
+        h6.appendChild(span); // Đưa span vào bên trong thẻ h5
+        div.appendChild(h6); // Đưa h6 vào bên trong div
+
+        return div.outerHTML;
     }
 </script>
 
-<script type="text/x-template" id="orderCommandTemplate">
-    @foreach (var item in Model)
-    {
-        <a asp-action="OrderHistoryDetail" asp-controller="Order" asp-route-id="@item.OrderId" class="btn btn-sm btn-outline-dark me-2">Xem chi tiết</a>
-        @if (item.PaymentStatus == "Đã thanh toán" && item.OrderStatus == "Đã giao")
-        {
-                <a asp-action="ReviewOrder" asp-controller="Order" asp-route-orderId="@item.OrderId" class="btn btn-sm btn-outline-dark">Đánh giá</a>
+<script type="text/javascript">
+    function ordercommandDetail(e) {
+        var btn = document.createElement('a');
+
+        console.log('OrderData:', e);
+
+        if (e.OrderStatus === 'Đã giao' && e.PaymentStatus === 'Đã thanh toán') {
+            btn.className = 'btn btn-sm btn-outline-dark me-2';
+            btn.textContent = 'Đánh giá';
+            btn.setAttribute('href', '/Order/ReviewOrder/?orderId=' + e.OrderId);
         }
+
+        return btn.outerHTML; // Trả về HTML của nút
     }
 </script>
+
+<script type="text/x-jsrender" id="orderCommandTemplate">
+    <a href="/Order/OrderHistoryDetail/${OrderId}" class="btn btn-sm btn-outline-dark me-2">Xem chi tiết</a>
+
+    ${ordercommandDetail(data)}
+</script>
+
+<script type="text/x-jsrender" id="paymentStatusTemplate">
+    ${paymentStatusDetail(data)}
+</script>
+
+<script type="text/x-jsrender" id="orderStatusTemplate">
+    ${orderStatusDetail(data)}
+</script>
+
+
+
+
+
+
+
 
