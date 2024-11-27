@@ -119,6 +119,12 @@
                 gridInstance.dataSource = newData;
             }
 
+            // Nếu dữ liệu không thay đổi, không cần làm mới grid
+            if (JSON.stringify(gridInstance.dataSource) !== JSON.stringify(newData)) {
+                gridInstance.dataSource = newData; // Gán dữ liệu mới vào grid
+                gridInstance.refresh(); // Refresh lại grid
+            }
+
             // gridInstance.dataSource = newData; // Gán dữ liệu đã ánh xạ
             gridInstance.refresh();
         } else {
@@ -149,9 +155,9 @@
             success: function (response) {
                 $(`#myModal-${orderId}`).modal('hide');
 
-                setTimeout(() => {
+                showToast("Trạng thái đơn hàng đã được cập nhật thành Đang giao.", "success");
 
-                    showToast("Trạng thái đơn hàng đã được cập nhật thành Đang giao.", "success");
+                setTimeout(() => {
 
                     updateGridFromServer(
                         "ConfirmedYetGrid",
@@ -164,7 +170,7 @@
                         '/ManageOrder/GetPreparingOrders?_=' + new Date().getTime(),
                         "preparingCommandTemplate"
                     );
-                }, 500);
+                }, 1000);
             },
             error: function () {
                 $(`#myModal-${orderId}`).modal('hide');
@@ -183,9 +189,9 @@
             success: function (response) {
                 $(`#myModal-${orderId}`).modal('hide');
 
-                setTimeout(() => {
+                showToast("Trạng thái đơn hàng đã được cập nhật thành Đang giao.", "success");
 
-                    showToast("Trạng thái đơn hàng đã được cập nhật thành Đang giao.", "success");
+                setTimeout(() => {
 
                     // Làm mới DeliveringGrid
                     updateGridFromServer(
@@ -199,7 +205,7 @@
                             '/ManageOrder/GetPreparingOrders?_=' + new Date().getTime(),
                             "preparingCommandTemplate"
                         )
-                }, 500);
+                }, 1000);
                 
             },
             error: function () {
@@ -219,11 +225,9 @@
             success: function (response) {
                 $(`#myModal-${orderId}`).modal('hide');
 
-                
+                showToast("Trạng thái đơn hàng đã được cập nhật thành Đã giao.", "success");
 
                 setTimeout(() => {
-
-                    showToast("Trạng thái đơn hàng đã được cập nhật thành Đã giao.", "success");
 
                     // Làm mới CompleteGrid
                     updateGridFromServer(
@@ -239,7 +243,7 @@
                         "deliveringCommandTemplate"
                     );
 
-                }, 500);
+                }, 1000);
             },
             error: function () {
                 $(`#myModal-${orderId}`).modal('hide');
@@ -270,15 +274,15 @@
             success: function () {
                 $(`#cancelModal-${orderId}`).modal('hide');
 
-                setTimeout(() => {
+                showToast("Đơn hàng đã được hủy thành công.", "success");
 
-                    showToast("Đơn hàng đã được hủy thành công.", "success");
+                setTimeout(() => {
 
                     updateGridFromServer("ConfirmedYetGrid", '/ManageOrder/GetConfirmedOrders?_=' + new Date().getTime(), "confirmedYetCommandTemplate");
                     updateGridFromServer("PreparingGrid", '/ManageOrder/GetPreparingOrders?_=' + new Date().getTime(), "preparingCommandTemplate");
                     updateGridFromServer("DeliveringGrid", '/ManageOrder/GetDeliveringOrders?_=' + new Date().getTime(), "deliveringCommandTemplate");
                     updateGridFromServer("CancelGrid", '/ManageOrder/GetCanceledOrders?_=' + new Date().getTime(), "cancelCommandTemplate");
-                }, 200);
+                }, 500);
             },
             error: function () {
                 $(`#cancelModal-${orderId}`).modal('hide');
