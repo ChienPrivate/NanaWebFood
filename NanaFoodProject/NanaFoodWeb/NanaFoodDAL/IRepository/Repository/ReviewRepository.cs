@@ -46,7 +46,7 @@ namespace NanaFoodDAL.IRepository.Repository
 
         public async Task<ResponseDto> GetReviewByIdAsync(string id)
         {
-            var review = await _context.Reviews.FirstOrDefaultAsync();
+            var review = await _context.Reviews.FirstOrDefaultAsync(r => r.ReviewId.ToString() == id);
 
             if (review != null)
             {
@@ -335,6 +335,7 @@ namespace NanaFoodDAL.IRepository.Repository
         {
             var reviewWithUser = await _context.Reviews
                 .Include(r => r.User) // Include để lấy thông tin liên quan đến User\
+                .Where(r => r.ReviewId.ToString() == reviewId)
                 .Select(r => new UserWithReviewDto
                 {
                     ReviewId = r.ReviewId.ToString(),

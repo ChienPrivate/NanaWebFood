@@ -18,7 +18,7 @@
                     </nav>
                 </div>
             </div> *@
-            <div class="row">
+            <div class="row display-success">
                 <div class="col-lg-4">
                     <div class="card mb-4">
                         <div class="card-body text-center">
@@ -32,44 +32,31 @@
                                     Đổi mật khẩu
                                 </button>
 
-                                <form asp-action="ChangePassword" method="post">
-                                    <div class="modal fade" id="changePass" tabindex="-1" aria-labelledby="changePassLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h1 class="modal-title fs-5" id="changePassLabel">Đổi mật khẩu</h1>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <div class="modal fade" id="changePass" tabindex="-1" aria-labelledby="changePassLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="changePassLabel">Đổi mật khẩu</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="mb-2">
+                                                    <input type="password" id="oldPass" class="form-control" placeholder="Mật khẩu cũ" />
                                                 </div>
-                                                <div class="modal-body">
-                                                    <div class="mb-2">
-                                                        <ejs-textbox ejs-for=changepass.OldPassword floatLabelType=Auto placeholder="Mật khẩu hiện tại"></ejs-textbox>
-                                                        @* <label asp-for="changepass.OldPassword" class="mb-1"></label>
-                                                        <input asp-for="changepass.OldPassword" class="form-control border-1 border-warning rounded-1" autofocus />
-                                                        <span class="text-primary" asp-validation-for="changepass.OldPassword"></span> *@
-                                                    </div>
-                                                    <div class="mb-2">
-                                                        <ejs-textbox ejs-for=changepass.NewPassword floatLabelType=Auto placeholder="Mật khẩu mới"></ejs-textbox>
-
-                                                        @* <label asp-for="changepass.NewPassword" class="mb-1"></label>
-                                                        <input type="password" asp-for="changepass.NewPassword" class="form-control border-1 border-warning rounded-1" />
-                                                        <span class="text-primary" asp-validation-for="changepass.NewPassword"></span> *@
-                                                    </div>
-                                                    <div class="mb-2">
-                                                        <ejs-textbox ejs-for=changepass.ConfirmPassword floatLabelType=Auto placeholder="Xác nhận mật khẩu"></ejs-textbox>
-
-                                                        @* <label asp-for="changepass.ConfirmPassword" class="mb-1"></label>
-                                                        <input type="password" asp-for="changepass.ConfirmPassword" class="form-control border-1 border-warning rounded-1" />
-                                                        <span class="text-primary" asp-validation-for="changepass.ConfirmPassword"></span> *@
-                                                    </div>
+                                                <div class="mb-2">
+                                                    <input type="password" id="newPass" class="form-control" placeholder="Mật khẩu mới" />
                                                 </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Đóng</button>
-                                                    <button type="submit" class="btn btn-outline-secondary">Đổi mật khẩu</button>
+                                                <div class="mb-2">
+                                                    <input type="password" id="confirmPass" class="form-control" placeholder="Xác nhận mật khẩu mới" />
                                                 </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Đóng</button>
+                                                <button type="submit" id="ChangePassword" class="btn btn-outline-secondary">Đổi mật khẩu</button>
                                             </div>
                                         </div>
                                     </div>
-                                </form>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -405,4 +392,87 @@
             reader.readAsDataURL(file);
         }
     }
+</script>
+
+@* Đổi mật khẩu *@
+<script>
+    function validatePasswords() {
+        const oldPass = $('#oldPass').val();
+        const newPass = $('#newPass').val();
+        const confirmPass = $('#confirmPass').val();
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
+        if (!oldPass || !newPass || !confirmPass) {
+            if (!oldPass) {
+                $('#oldPass').after(`<span class="d-flex text-danger">Không được để rỗng</span>`);
+            }
+            if (!newPass) {
+                $('#newPass').after(`<span class="d-flex text-danger">Không được để rỗng</span>`);
+            }
+            if (!confirmPass) {
+                $('#confirmPass').after(`<span class="d-flex text-danger">Không được để rỗng</span>`);
+            }
+            return false;
+        }
+
+
+        if (!passwordRegex.test(newPass)) {
+            $('#newPass').after('<span class="d-flex text-danger">Mật khẩu phải có ít nhất 6 ký tự, bao gồm 1 chữ in hoa, 1 chữ thường và 1 số.</span>');
+            return false;
+        }
+        if (newPass !== confirmPass) {
+            $('#confirmPass').after('<span class="d-flex text-danger">Mật khẩu nhập lại không trùng khớp.</span>');
+            return false;
+        }
+        return true;
+    }
+
+    $(document).ready(function () {
+
+        $('#oldPass, #newPass, #confirmPass').on('input', function () {
+            $(this).next('span.text-danger').remove(); // Xóa thẻ <span> thông báo lỗi gần nhất
+        });
+        $(".btn#ChangePassword").click(function () {
+            const oldPass = $('#oldPass').val();
+            const newPass = $('#newPass').val();
+            const confirmPass = $('#confirmPass').val();
+
+            if (!validatePasswords()) {
+                return; // Dừng lại nếu validate không thành công
+            }
+
+
+            $.ajax({
+                url: '@Url.Action("ChangePassword", "Auth")',
+                type: 'POST',
+                data: {
+                    OldPassword: oldPass,
+                    NewPassword: newPass,
+                    ConfirmPassword: confirmPass
+                },
+                success: function (response) {
+                    $('#changePass').modal('hide');
+
+
+                    // Hiển thị thông báo thành công
+                    const successMessage = $(`<div class="alert alert-success text-center fw-bold" role="alert">${response.message}</div>`);
+                    $('.display-success').before(successMessage);
+
+
+                    $('#oldPass').val('');
+                    $('#newPass').val('');
+                    $('#confirmPass').val('');
+
+                    // Tự động ẩn thông báo sau 5 giây
+                    setTimeout(function () {
+                        successMessage.fadeOut(function () {
+                            $(this).remove();
+                        });
+                    }, 5000);
+                },
+                error: function () {
+                    $('#oldPass').after(`<span class="d-flex text-danger">Mật khẩu hiện tại không chính xác</span>`);
+                }
+            });
+        });
+    });
 </script>

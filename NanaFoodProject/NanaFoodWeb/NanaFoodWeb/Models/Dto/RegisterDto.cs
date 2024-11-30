@@ -25,7 +25,7 @@ namespace NanaFoodWeb.Models.Dto
         [Required(ErrorMessage = "Vui lòng nhập email"), EmailAddress(ErrorMessage = "Email không hợp lệ")]
         public string? Email { get; set; }
 
-        [RegularExpression(@"^0\d{9,10}$", ErrorMessage = "Số điện thoại không hợp lệ. Số điện thoại phải bắt đầu bằng số 0 và chứa 10-11 chữ số.")]
+        [RegularExpression(@"^(01|03|05|07|08|09)\d{8}$", ErrorMessage = "Số điện thoại không hợp lệ.")]
         public string PhoneNumber { get; set; }
 
         /// <summary>

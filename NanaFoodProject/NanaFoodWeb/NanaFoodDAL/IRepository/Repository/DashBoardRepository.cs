@@ -138,7 +138,7 @@ namespace NanaFoodDAL.IRepository.Repository
             try
             {
                 var profit = await _context.Orders
-                    .Where(o => o.OrderStatus == "Đã giao" && o.PaymentStatus == "Đã thanh toán" && o.OrderDate == dateTime && o.OrderDate.Date == DateTime.Now.Date)
+                    .Where(o => o.OrderStatus == "Đã giao" && o.PaymentStatus == "Đã thanh toán" && o.OrderDate.Date == DateTime.Now.Date)
                     .SumAsync(o => o.Total);
 
                 _response.IsSuccess = true;
@@ -168,6 +168,35 @@ namespace NanaFoodDAL.IRepository.Repository
             {
                 _response.IsSuccess = false;
                 _response.Message = $"Lỗi khi lấy dữ liệu: {ex.Message}";
+            }
+            return _response;
+        }
+
+        public async Task<ResponseDto> GetProfitInWeek(DateTime dateTime)
+        {
+            try
+            {
+                // Xác định ngày bắt đầu và kết thúc của tuần
+                int diff = dateTime.DayOfWeek - DayOfWeek.Monday;  // Thứ hai là ngày đầu tuần (có thể thay đổi tùy vào hệ thống bạn chọn)
+                DateTime startOfWeek = dateTime.AddDays(-diff).Date;  // Ngày đầu tuần
+                DateTime endOfWeek = startOfWeek.AddDays(6);          // Ngày cuối tuần (Thứ bảy)
+
+                // Lọc các đơn hàng trong tuần
+                var weeklyRevenue = await _context.Orders
+                    .Where(o => o.OrderStatus == "Đã giao"
+                                && o.PaymentStatus == "Đã thanh toán"
+                                && o.OrderDate >= startOfWeek
+                                && o.OrderDate <= endOfWeek)
+                    .SumAsync(o => o.Total);  // Tính tổng doanh thu trong tuần
+
+                _response.IsSuccess = true;
+                _response.Message = $"Tính tổng doanh thu tuần từ {startOfWeek.ToString("dd/MM/yyyy")} đến {endOfWeek.ToString("dd/MM/yyyy")}";
+                _response.Result = weeklyRevenue;
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ex.Message;
             }
             return _response;
         }

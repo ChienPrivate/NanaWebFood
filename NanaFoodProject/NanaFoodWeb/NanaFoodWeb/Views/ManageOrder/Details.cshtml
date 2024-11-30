@@ -133,10 +133,15 @@
                 <div class="col-md-12">
                     <div class="card ordernote mt-2 mb-2">
                         <div class="card-header">
-                            <h5>Lý do hủy</h5>
+                            <h5>Chi tiết hủy đơn</h5>
                         </div>
                         <div class="card-body">
                             <div class="mb-2 mt-2">
+                                <p><strong>Ngày hủy đơn</strong> @Model.CancelDate?.ToString("dd/MM/yyyy hh:mm:ss tt")</p>
+                                <p><strong>Người hủy:</strong> @Model.CancelUserRoles</p>
+                                <p><strong>Mã người hủy:</strong> @Model.CancelUserId</p>
+                                <p><strong>Tên tài khoản:</strong> @Model.CancelUserName</p>
+                                <p><strong>Tên đầy đủ:</strong>@Model.CancelUserFullName</p>
                                 <p><strong>Lý do hủy:</strong> @Model.CancelReason</p>
                             </div>
                         </div>

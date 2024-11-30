@@ -273,7 +273,7 @@ namespace NanaFoodApi.Controllers
             }
 
             // thực hiện hủy đơn
-            var cancelOrderResponse = await _orderRepository.CancelOrderAsync(OrderId, message);
+            var cancelOrderResponse = await _orderRepository.CancelOrderAsync(OrderId, user.Id , message);
             // gửi mail về cho người dùng 
 
             var orderDetails = await _orderRepository.GetOrderDetailsAsync(OrderId);

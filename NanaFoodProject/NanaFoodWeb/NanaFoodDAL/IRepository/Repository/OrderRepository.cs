@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Azure;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NanaFoodDAL.Context;
 using NanaFoodDAL.Dto;
@@ -13,11 +14,17 @@ namespace NanaFoodDAL.IRepository.Repository
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
         private readonly ResponseDto _response;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
         public OrderRepository(ApplicationDbContext context,
-            IMapper mapper)
+            IMapper mapper,
+            UserManager<User> userManager,
+            SignInManager<User> signInManager)
         {
             _context = context;
             _mapper = mapper;
+            _userManager = userManager;
+            _signInManager = signInManager;
             _response = new ResponseDto();
         }
 
@@ -45,11 +52,38 @@ namespace NanaFoodDAL.IRepository.Repository
             return _response;
         }
 
-        public async Task<ResponseDto> CancelOrderAsync(int OrderId, string message)
+        public async Task<ResponseDto> CancelOrderAsync(int OrderId, string userId, string message)
         {
             var order = await _context.Orders.SingleOrDefaultAsync(Order => Order.OrderId == OrderId);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            string roleInVietnamese = string.Empty;
+            if (user != null)
+            {
+                var roleList = await _userManager.GetRolesAsync(user);
+
+                var role = roleList.FirstOrDefault();
+
+                switch (role)
+                {
+                    case "admin":
+                        roleInVietnamese = "Quản trị viên";
+                        break;
+                    case "employee":
+                        roleInVietnamese = "Nhân viên";
+                        break;
+                    default:
+                        roleInVietnamese = "Khách hàng";
+                        break;
+                }
+            }
+
             try
             {
+                order.CancelUserId = user.Id;
+                order.CancelUserName = user.UserName;
+                order.CancelUserFullName = user.FullName;
+                order.CancelUserRoles = roleInVietnamese ?? "không xác định";
+                order.CancelDate = DateTime.Now;
                 order.CancelReason = message;
                 order.PaymentStatus = "Đã huỷ";
                 order.OrderStatus = "Đã huỷ";
