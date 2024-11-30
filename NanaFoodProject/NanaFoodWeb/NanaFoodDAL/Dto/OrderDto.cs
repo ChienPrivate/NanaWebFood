@@ -26,6 +26,11 @@ namespace NanaFoodDAL.Dto
         [Required(ErrorMessage = "Phí ship không được để trống")]
         public int ShipmentFee { get; set; }
         public string? Note { get; set; }
+        public string? CancelUserId { get; set; }
+        public string? CancelUserName { get; set; }
+        public string CancelUserFullName { get; set; }
+        public string? CancelUserRoles { get; set; }
+        public DateTime? CancelDate { get; set; }
         public string? CancelReason { get; set; }
         [Required(ErrorMessage = "Mã người dùng không được để trống")]
         public string UserId { get; set; }

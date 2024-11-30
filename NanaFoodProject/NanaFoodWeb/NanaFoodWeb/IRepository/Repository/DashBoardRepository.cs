@@ -74,12 +74,21 @@ namespace NanaFoodWeb.IRepository.Repository
             });
         }
 
-        public async Task<ResponseDto> GetProfitInDay(DateTime dateTime)
+        public async Task<ResponseDto> GetProfitInDay()
         {
             return await _baseService.SendAsync(new RequestDto
             {
                 ApiType = StaticDetails.ApiType.GET,
-                Url = StaticDetails.APIBase + $"/api/DashBoard/GetProfitInDay/{dateTime}"
+                Url = StaticDetails.APIBase + $"/api/DashBoard/GetProfitInDay"
+            });
+        }
+
+        public async Task<ResponseDto> GetProfitInWeek()
+        {
+            return await _baseService.SendAsync(new RequestDto
+            {
+                ApiType = StaticDetails.ApiType.GET,
+                Url = StaticDetails.APIBase + "/api/DashBoard/GetprofitInWeek"
             });
         }
     }

@@ -29,6 +29,14 @@ namespace NanaFoodWeb.Controllers
             var token = _tokenProvider.GetToken();
             var role =  _tokenProvider.ReadToken("role", token);
 
+            var profitInDayRes = await _boardRepository.GetProfitInDay();
+
+            ViewBag.ProfitInDay = profitInDayRes.Result ?? 0;
+
+            var profitInWeekRes = await _boardRepository.GetProfitInWeek();
+
+            ViewBag.ProfitInWeek = profitInWeekRes.Result ?? 0;
+
             var profitInMonthRes = await _boardRepository.GetProfitByMonthAsync(DateTime.Now.Month);
 
             ViewBag.ProfitInMonth = profitInMonthRes.Result ?? 0;
@@ -37,7 +45,8 @@ namespace NanaFoodWeb.Controllers
 
             ViewBag.ProfitInYear = profitInYearRes.Result ?? 0;
 
-            var deliveringOrderRes = await _boardRepository.GetDeliveringOrderAsync();
+
+            /*var deliveringOrderRes = await _boardRepository.GetDeliveringOrderAsync();
 
             if (deliveringOrderRes.IsSuccess)
             {
@@ -51,7 +60,7 @@ namespace NanaFoodWeb.Controllers
             {
                 var completeOrders = JsonConvert.DeserializeObject<List<Order>>(completeOrderRes.Result.ToString());
                 ViewBag.Complete = completeOrders.Count;
-            }
+            }*/
 
             var getprofitEachMonthRes = await _boardRepository.GetProfitEachMonth(DateTime.Now.Year);
 
@@ -129,9 +138,21 @@ namespace NanaFoodWeb.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ChangePassword()
+        public async Task<IActionResult> ChangePassword(string OldPassword, string NewPassword, string ConfirmPassword)
         {
-            return View();
+            var ChangePass = new ChangePasswordDto()
+            {
+                OldPassword = OldPassword,
+                NewPassword = NewPassword,
+                ConfirmPassword = ConfirmPassword
+            };
+            var responsedto = await _authRepo.ChangePasswordAsync(ChangePass);
+            if (responsedto.IsSuccess)
+            {
+                return Json(new { success = true, message = "Cập nhật mật khẩu thành công" });
+            }
+
+            return StatusCode(400, new { success = false, message = responsedto.Message ?? "Cập nhật mật khẩu thất bại" });
         }
     }
 }

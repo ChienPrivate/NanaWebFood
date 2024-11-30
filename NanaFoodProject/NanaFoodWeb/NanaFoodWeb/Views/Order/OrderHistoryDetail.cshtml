@@ -131,7 +131,7 @@
                     </div>
 
                     <div class="col-md-6">
-                        <div class="section-title">Thời gian nhận hàng </div>
+                        <div class="section-title">Thời gian giao nhận </div>
                         <p>Ngày đặt hàng: @Model.OrderDate.ToString("dd/MM/yyyy hh:mm:ss tt")</p>
                         <p>Thời gian dự kiến: @Model.ExpectedDeliveryDate</p>
                         @if (Model.OrderStatus == "Đã giao")
@@ -141,6 +141,15 @@
                     </div>
 
                 </div>
+                @if(Model.OrderStatus == "Đã huỷ" && Model.PaymentStatus == "Đã huỷ"){
+                    <div class="row mb-2">
+                        <div class="section-title">Chi tiết hủy đơn</div>
+                        <p>Ngày hủy: @Model.CancelDate?.ToString("dd/MM/yyyy hh:mm:ss tt")</p>
+                        <p>Người hủy đơn: @Model.CancelUserRoles</p>
+                        <p>Tên người hủy: @Model.CancelUserFullName</p>
+                        <p>Lý do hủy: @Model.CancelReason</p>
+                    </div>
+                }
                 <div class="row mb-2">
                     <div class="text-right g-2">
                         @if (Model.OrderStatus == "Đã giao" && Model.PaymentStatus == "Đã thanh toán" || Model.OrderStatus == "Đã huỷ" && Model.PaymentStatus == "Đã huỷ")

@@ -17,12 +17,20 @@ namespace NanaFoodApi.Controllers
             _dashboardRepository = dashboardRepository;
         }
 
-        [HttpGet("GetProfitInDay/{dateTime}")]
-        public async Task<IActionResult> GetProfitInDay(DateTime dateTime)
+        [HttpGet("GetProfitInDay")]
+        public async Task<IActionResult> GetProfitInDay()
         {
-            var reponse = await _dashboardRepository.GetProfitInDay(dateTime);
+            var reponse = await _dashboardRepository.GetProfitInDay(DateTime.Now);
 
             return Ok(reponse);
+        }
+
+        [HttpGet("GetprofitInWeek")]
+        public async Task<IActionResult> GetProfitInWeek()
+        {
+            var response = await _dashboardRepository.GetProfitInWeek(DateTime.Now);
+
+            return Ok(response);
         }
 
         [HttpGet("GetProfitByMonth/{month}")]

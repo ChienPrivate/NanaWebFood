@@ -42,12 +42,12 @@ namespace NaNaTest
                 new Mock<IUserClaimsPrincipalFactory<User>>().Object,
                 null, null, null, null);
             _tokenServiceMock = new Mock<ITokenService>();
-            _controller = new OrderController(
+            /*_controller = new OrderController(
                 _orderRepoMock.Object,
                 _signInManagerMock.Object,
                 _cartRepoMock.Object,
                 _mapperMock.Object,
-                _emailPosterMock.Object);
+                _emailPosterMock.Object);*/
 
             _authcontroller = new AuthController(_authRepoMock.Object, _signInManagerMock.Object, _userManagerMock.Object, _mapperMock.Object, _tokenServiceMock.Object);
         }

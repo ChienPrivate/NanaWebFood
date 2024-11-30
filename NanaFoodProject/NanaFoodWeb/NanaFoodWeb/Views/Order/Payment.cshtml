@@ -53,6 +53,74 @@
                         <div class="mb-4">
                             <label class="form-label">Địa chỉ nhận hàng <span class="text-danger">*</span></label>
 
+                            @* <div class="form-group mt-2 mb-2">
+                                <label>Chọn địa chỉ: </label>
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addressModal">
+                                    Chọn địa chỉ
+                                </button>
+
+                                <div class="modal fade" id="addressModal">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+
+                                            <!-- Modal Header -->
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Chọn địa chỉ nhận hàng</h4>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                            </div>
+
+                                            <!-- Modal body -->
+                                            <div class="modal-body">
+                                                if(personnalAddressList.Count > 0){
+                                                    <div>
+                                                        <table>
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Tên gợi nhớ</th>
+                                                                    <th>Thành phố/Tỉnh</th>
+                                                                    <th>Quận/Huyện</th>
+                                                                    <th>Phường xã</th>
+                                                                    <th>Số nhà và đường</th>
+                                                                    <th>Thao tác</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                foreach(var item in personnalAddressList)
+                                                                {
+                                                                    <tr>
+                                                                        <td>item.Name</td>
+                                                                        <td>item.Province</td>
+                                                                        <td>item.District</td>
+                                                                        <td>item.Ward</td>
+                                                                        <td>item.Street</td>
+                                                                        <td>
+                                                                            <button class="btn btn-primary mb-2">Chọn</button>
+                                                                            <button class="btn btn-danger">Xóa</button>
+                                                                        </td>
+                                                                    </tr>
+                                                                }
+                                                            </tbody>
+                                                        </table>
+                                                        <button class="btn btn-primary" id="addnewAddressBtn" >thêm</button>
+                                                    </div>
+                                                }
+                                                else{
+                                                    <button class="btn btn-primary" id="addnewAddressBtn" >thêm</button>
+                                                }
+                                            </div>
+
+                                            <!-- Modal footer -->
+                                            <div class="modal-footer">
+
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> *@
+
+
                             <div class="form-group mt-2 mb-2">
                                 <label>Tỉnh/Thành phố: </label>
                                 <select id="ProvinceList" name="Province" class="form-select" disabled>

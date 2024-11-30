@@ -264,7 +264,7 @@ namespace NanaFoodDAL.Helper
             // Kiểm tra nếu có lý do hủy để hiển thị, nếu không thì bỏ qua dòng này
             string cancelReasonHtml = string.IsNullOrEmpty(order.CancelReason)
                 ? ""
-                : $"<p><strong>Lý do hủy (nếu có):</strong> {order.CancelReason}</p>";
+                : $"<p><strong>Lý do hủy:</strong> {order.CancelReason}</p>";
 
 
 

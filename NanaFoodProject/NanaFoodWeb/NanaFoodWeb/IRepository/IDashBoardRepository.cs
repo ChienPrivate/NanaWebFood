@@ -4,7 +4,8 @@ namespace NanaFoodWeb.IRepository
 {
     public interface IDashBoardRepository
     {
-        public Task<ResponseDto> GetProfitInDay(DateTime dateTime);
+        public Task<ResponseDto> GetProfitInDay();
+        public Task<ResponseDto> GetProfitInWeek();
         public Task<ResponseDto> GetProfitByMonthAsync(int month);
         public Task<ResponseDto> GetProfitByYearAsync(int year);
         public Task<ResponseDto> GetProfitAsync();

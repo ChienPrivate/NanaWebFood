@@ -1385,5 +1385,17 @@
         <member name="M:NanaFoodApi.Migrations.AddemloyeeroletoAspRoletable.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
+        <member name="T:NanaFoodApi.Migrations.AddColumnToOrder">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.AddColumnToOrder.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.AddColumnToOrder.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.AddColumnToOrder.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
     </members>
 </doc>
