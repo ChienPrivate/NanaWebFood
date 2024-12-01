@@ -144,7 +144,6 @@ namespace NanaFoodWeb.Controllers
             return View();
         }
 
-
         public IActionResult Register()
         {
             return View();

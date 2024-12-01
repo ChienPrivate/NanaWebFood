@@ -16,6 +16,7 @@ namespace NanaFoodWeb.Models.Dto
         [Compare(nameof(ConfirmPassword), ErrorMessage = "Mật khẩu và mật khẩu xác nhận không trùng khớp")]
         public string? Password { get; set; }
 
+        [Required(ErrorMessage = "Mật khẩu không được rỗng")]
         [Compare(nameof(Password), ErrorMessage = "Mật khẩu và mật khẩu xác nhận không trùng khớp")]
         public string? ConfirmPassword { get; set; }
 
@@ -25,6 +26,7 @@ namespace NanaFoodWeb.Models.Dto
         [Required(ErrorMessage = "Vui lòng nhập email"), EmailAddress(ErrorMessage = "Email không hợp lệ")]
         public string? Email { get; set; }
 
+        [Required(ErrorMessage = "Vui lòng nhập số điện thoại")]
         [RegularExpression(@"^(01|03|05|07|08|09)\d{8}$", ErrorMessage = "Số điện thoại không hợp lệ.")]
         public string PhoneNumber { get; set; }
 

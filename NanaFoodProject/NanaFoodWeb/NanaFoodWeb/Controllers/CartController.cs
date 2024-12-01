@@ -19,14 +19,18 @@ namespace NanaFoodWeb.Controllers
         private readonly CallApiCenter _callAPICenter;
         private readonly ConvertHelper _convertHelper;
         private readonly ITokenProvider _tokenProvider;
+        private readonly IAuthRepository _authRepository;
 
-        public CartController( ITokenProvider tokenProvider, ICartRepo cartRepo)
+        public CartController( ITokenProvider tokenProvider, ICartRepo cartRepo, IAuthRepository authRepository)
         {
             _callAPICenter = new CallApiCenter();
             _convertHelper = new ConvertHelper();
             _tokenProvider = tokenProvider;
             _cartRepo = cartRepo;
+            _authRepository = authRepository;
         }
+
+        [ServiceFilter(typeof(EmailConfirmed))]
         public async Task<IActionResult> Index()
         {
             var token = _tokenProvider.GetToken();

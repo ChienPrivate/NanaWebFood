@@ -1,6 +1,7 @@
 
 using DotNetEnv;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using NanaFoodWeb.Extensions;
 using NanaFoodWeb.IRepository;
 using NanaFoodWeb.IRepository.Repository;
 using NanaFoodWeb.Utility;
@@ -54,6 +55,7 @@ builder.Services.AddScoped<ICartRepo, CartRepo>();
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 builder.Services.AddScoped<ICouponRepo, CouponRepo>();
 builder.Services.AddScoped<IDashBoardRepository, DashBoardRepository>();
+builder.Services.AddScoped<EmailConfirmed>();
 
 builder.Services.AddCors(options =>
 {
