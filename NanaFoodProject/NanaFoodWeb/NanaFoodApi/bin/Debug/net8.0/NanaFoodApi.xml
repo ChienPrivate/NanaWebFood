@@ -1397,5 +1397,17 @@
         <member name="M:NanaFoodApi.Migrations.AddColumnToOrder.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
+        <member name="T:NanaFoodApi.Migrations.updateCancelUserFullNametonullablecolumn">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.updateCancelUserFullNametonullablecolumn.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.updateCancelUserFullNametonullablecolumn.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.updateCancelUserFullNametonullablecolumn.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
     </members>
 </doc>
