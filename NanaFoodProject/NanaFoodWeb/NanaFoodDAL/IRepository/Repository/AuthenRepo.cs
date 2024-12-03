@@ -33,10 +33,10 @@ namespace NanaFoodDAL.IRepository.Repository
         ResponseDto response = new ResponseDto();
 
         public AuthenRepo(SignInManager<User> signInManager,
-            UserManager<User> userManager, 
-            ITokenService tokenService, 
-            IConfiguration config, 
-            ApplicationDbContext context, 
+            UserManager<User> userManager,
+            ITokenService tokenService,
+            IConfiguration config,
+            ApplicationDbContext context,
             IMapper mapper,
             EmailPoster emailPoster)
         {
@@ -78,7 +78,7 @@ namespace NanaFoodDAL.IRepository.Repository
                 UserName = user.UserName,
                 Email = user.Email,
                 FullName = user.FullName,
-                Token = _tokenService.CreateToken(user, roles,login.keepLogined)
+                Token = _tokenService.CreateToken(user, roles, login.keepLogined)
             };
             response.Message = "Đăng nhập thành công";
             return response;
@@ -120,8 +120,9 @@ namespace NanaFoodDAL.IRepository.Repository
                             Token = _tokenService.CreateToken(user, roles)
                         };
                         response.Message = "Đăng ký tài khoản thành công";
-                        var template = _emailPoster.EmailConfirmTemplate(user.FullName,$"https://localhost:7094/api/Auth/EmailConfirmation/{Uri.EscapeDataString(user.Email)}");
-                        var sendmailResult = _emailPoster.SendMail(user.Email,"Xác thực email",template);
+                        // var template = _emailPoster.EmailConfirmTemplate(user.FullName,$"https://localhost:7094/api/Auth/EmailConfirmation/{Uri.EscapeDataString(user.Email)}");
+                        var template = _emailPoster.EmailConfirmTemplate(user.FullName, $"https://nanafoodapi20241110164928.azurewebsites.net/api/Auth/EmailConfirmation/{Uri.EscapeDataString(user.Email)}");
+                        var sendmailResult = _emailPoster.SendMail(user.Email, "Xác thực email", template);
                         if (sendmailResult != "gửi mail thành công")
                         {
                             response.IsSuccess = false;
@@ -152,15 +153,16 @@ namespace NanaFoodDAL.IRepository.Repository
             {
                 await _signInManager.SignOutAsync();
                 response.Message = "Đăng xuất thành công";
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 response.IsSuccess = false;
-                response.Message = "Lỗi : "+ ex.Message;
+                response.Message = "Lỗi : " + ex.Message;
             }
             return response;
         }
 
-        public async Task<ResponseDto> ChangePassword(User user,ChangePassDto changePass)
+        public async Task<ResponseDto> ChangePassword(User user, ChangePassDto changePass)
         {
             try
             {
@@ -182,7 +184,7 @@ namespace NanaFoodDAL.IRepository.Repository
                 }
 
                 await _signInManager.RefreshSignInAsync(user);
-                response.Message = "Mật khẩu đã được cập nhật";;
+                response.Message = "Mật khẩu đã được cập nhật"; ;
             }
             catch (Exception ex)
             {
@@ -238,7 +240,7 @@ namespace NanaFoodDAL.IRepository.Repository
                 var user = await _userManager.FindByEmailAsync(email);
                 if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
                 {
-                    response.IsSuccess= false;
+                    response.IsSuccess = false;
                     response.Message = "Người dùng không tồn tại hoặc chưa kích hoạt email";
                     return response;
                 }
@@ -260,7 +262,7 @@ namespace NanaFoodDAL.IRepository.Repository
                     return response;
                 }
                 response.IsSuccess = false;
-                response.Message = string.Join(",",result.Errors.Select(error => error.Description));
+                response.Message = string.Join(",", result.Errors.Select(error => error.Description));
                 return response;
             }
             catch (Exception ex)
@@ -269,7 +271,7 @@ namespace NanaFoodDAL.IRepository.Repository
                 response.Message = ex.Message;
                 return response;
             }
-            
+
         }
 
         private string GenerateRandomPassword()
@@ -303,8 +305,8 @@ namespace NanaFoodDAL.IRepository.Repository
         {
             try
             {
-                var user = await  _userManager.FindByEmailAsync(userdto.Email);
-                if(user == null)
+                var user = await _userManager.FindByEmailAsync(userdto.Email);
+                if (user == null)
                 {
                     response.IsSuccess = false;
                     response.Message = "Người dùng không tồn tại";
