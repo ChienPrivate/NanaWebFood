@@ -235,7 +235,7 @@
                                 </div>
                             </div>
                         }
-                        @if (Model.OrderStatus == "Đang chuẩn bị" && Model.PaymentStatus == "Chưa thanh toán" || Model.OrderStatus == "Chờ xác nhận")
+                        @if (Model.OrderStatus == "Đang chuẩn bị" && Model.PaymentStatus == "Chưa thanh toán" || Model.OrderStatus == "Chờ xác nhận" && Model.PaymentStatus == "Chưa thanh toán")
                         {
                             <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                 Hủy đơn
