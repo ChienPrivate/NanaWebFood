@@ -13,5 +13,6 @@ namespace NanaFoodWeb.IRepository
         public Task<ResponseDto> ForgotPassword(string email);
         public Task<ResponseDto> GetInfo();
         public Task<ResponseDto> UpdateInfo(UserDto user);
+        public Task<ResponseDto> GetUserStatus(string userId);
     }
 }

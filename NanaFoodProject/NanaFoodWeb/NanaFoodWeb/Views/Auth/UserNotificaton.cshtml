@@ -1,0 +1,41 @@
+﻿@{
+    var isAdmin = User.IsInRole("admin");
+    var isEmployee = User.IsInRole("employee");
+    string controller = "Home";
+    string action = "Index";
+
+    if (isAdmin || isEmployee)
+    {
+        Layout = "_AdminLayout";
+        controller = "DashBoard";
+    }
+
+    int status = (int)TempData["status"]; // Đảm bảo rằng TempData chứa giá trị kiểu int
+    string stringStatus;
+
+    switch (status)
+    {
+        case 1:
+            stringStatus = "bị ngưng hoạt động";  // Thêm giá trị cho từng trường hợp
+            break;
+        case 2:
+            stringStatus = "bị vô hiệu hóa";
+            break;
+        case 3:
+            stringStatus = "bị đỉnh chỉ";
+            break;
+        default:
+            stringStatus = "Không xác định trạng thái";  // Thêm giá trị mặc định
+            break;
+    }
+}
+
+<div class="d-flex flex-column align-items-center justify-content-center text-primary-foreground" style="min-height: 70vh">
+    <img src="https://img.freepik.com/free-vector/403-error-forbidden-with-police-concept-illustration_114360-1904.jpg?t=st=1730949265~exp=1730952865~hmac=c89576a0f0168d206105f603e8912ef967e5397337e9ef861083f68ea028c8c2&w=740" alt="403 Forbidden" class="mb-4" style="width : 300px; height : 300px;" />
+    <p class="lead text-center mb-4">
+        Tài khoản mà bạn đang sử dụng đang có trạng thái là <strong>@stringStatus</strong> do đã vi phạm chính sách của cửa hàng
+        <br />Nếu bạn cho rằng đây là lỗi, Hãy liên hệ với chúng tôi qua
+        <strong>085xxxxxxx</strong> hoặc <strong>TrinhVanTruonga6a@gmail.com</strong>
+    </p>
+    <a asp-action="Index" asp-controller="@controller" class="btn btn-primary rounded-pill px-4 py-2 fw-bold text-uppercase text-decoration-none transition duration-300 hover-opacity-80">Trở về trang chủ</a>
+</div>

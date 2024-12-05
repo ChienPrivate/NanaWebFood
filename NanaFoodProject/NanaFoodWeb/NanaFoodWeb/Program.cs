@@ -56,6 +56,7 @@ builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 builder.Services.AddScoped<ICouponRepo, CouponRepo>();
 builder.Services.AddScoped<IDashBoardRepository, DashBoardRepository>();
 builder.Services.AddScoped<EmailConfirmed>();
+builder.Services.AddScoped<CheckUserStatus>();
 
 builder.Services.AddCors(options =>
 {
@@ -73,8 +74,8 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 
-/*StaticDetails.APIBase = builder.Configuration["ServiceUrls:APIBase"];*/
-StaticDetails.APIBase = builder.Configuration["ServiceUrls:PublicAPIUrl"];
+StaticDetails.APIBase = builder.Configuration["ServiceUrls:APIBase"];
+/*StaticDetails.APIBase = builder.Configuration["ServiceUrls:PublicAPIUrl"];*/
 /*StaticDetails.GHNApiKey = GetEnvironmentVariable("GHN_API_KEY");*/
 StaticDetails.GHNApiKey = builder.Configuration["Key:GHN_API_KEY"];
 

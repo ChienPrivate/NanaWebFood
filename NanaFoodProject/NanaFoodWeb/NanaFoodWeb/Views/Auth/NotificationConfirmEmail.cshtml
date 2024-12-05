@@ -1,10 +1,6 @@
 ﻿@using Newtonsoft.Json
 @model NanaFoodWeb.Models.Dto.ResponseDto
 
-@{
-    ViewBag.UserModel = JsonConvert.DeserializeObject<UserReturn>(Model.Result.ToString()) as UserReturn;
-}
-
 <div style="font-family: Arial, sans-serif;
 background-color: #f4f4f4;
 padding: 20px;
@@ -12,8 +8,8 @@ max-width: 600px;
 margin: 0 auto;
 border-radius: 8px;
 box-shadow: 0 0 10px rgba(0,0,0,0.1);
-min-height: 75vh;
-margin-top: 10%;
+min-height: 50vh;
+margin-top: 4%;
 clear: both;"
      class="mb-5">
     <div style="background-color: #d92020; padding: 15px; border-radius: 8px 8px 0 0; color: white; text-align: center;">
@@ -29,5 +25,56 @@ clear: both;"
         <p>Cảm ơn bạn đã tin tưởng và sử dụng dịch vụ của chúng tôi!</p>
         <p>Trân trọng,</p>
         <p><strong><a asp-controller="Home" asp-action="Index">Nana Food</a> Team</strong></p>
+        <p>
+            Nếu bạn cho rằng mail cho được gửi đi, vui lòng nhấn 
+        </p>
+
+        <div class="text-center">
+            <form method="post" id="resendEmailForm">
+                <button type="submit" class="btn btn-primary" id="submitBtn">
+                    <span id="loadingSpinner" class="spinner-border spinner-border-sm" style="display: none;"></span>
+                    Gửi lại
+                </button>
+            </form>
+        </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Khi form được submit
+        $('#resendEmailForm').submit(function (event) {
+            event.preventDefault(); // Ngăn không để trang reload
+
+            var $submitButton = $('#submitBtn');
+            var $spinner = $('#loadingSpinner');
+
+            // Disable nút và hiển thị biểu tượng quay vòng
+            $submitButton.prop('disabled', true); // Disable nút
+            $spinner.show(); // Hiển thị biểu tượng quay vòng
+
+            // Gửi ajax
+            $.ajax({
+                url: '/Auth/ResendEmail', // Đảm bảo đường dẫn đúng
+                type: 'POST',
+                success: function (data) {
+                    if (data.success) {
+                        toastr.success(data.message); // Hiển thị thông báo thành công
+                    } else {
+                        toastr.error(data.message); // Hiển thị thông báo lỗi
+                    }
+                },
+                error: function () {
+                    toastr.error("Đã có lỗi xảy ra. Vui lòng thử lại.");
+                },
+                complete: function () {
+                    // Sau khi có kết quả, enable lại nút và ẩn biểu tượng quay vòng
+                    $submitButton.prop('disabled', false); // Enable nút
+                    $spinner.hide(); // Ẩn biểu tượng quay vòng
+                }
+            });
+        });
+    });
+</script>

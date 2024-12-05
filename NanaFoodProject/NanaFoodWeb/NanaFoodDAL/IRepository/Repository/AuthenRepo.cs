@@ -329,6 +329,17 @@ namespace NanaFoodDAL.IRepository.Repository
             return response;
         }
 
+        public async Task<ResponseDto> GetUserStatus(string userId)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+            response.IsSuccess = user != null ? true : false;
+            response.Message = user != null ? $"Lấy trạng thái của người dùng {userId}" : $"người dùng {userId} không tồn tại";
+            response.Result = user != null ? user.Status : -1;
+
+            return response;
+        }
+
         //public async Task<ResponseDto> DeleteUser(string email)
         //{
         //    try

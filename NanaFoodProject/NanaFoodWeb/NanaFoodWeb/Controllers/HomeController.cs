@@ -46,6 +46,7 @@ namespace NanaFoodWeb.Controllers
             return View();
         }
 
+        [ServiceFilter(typeof(CheckUserStatus))]
         public async Task <IActionResult> Index(string searchQuery, int? page = 1, int pageSize = 100)
         {
             if (!User.Identity.IsAuthenticated)
@@ -110,6 +111,7 @@ namespace NanaFoodWeb.Controllers
             return View();
         }
         [ExcludeAdmin]
+        [ServiceFilter(typeof(CheckUserStatus))]
         public async Task<IActionResult> Discount()
         {
             var couponResponse = await _couponRepo.GetAvailableCoupon();
@@ -129,6 +131,7 @@ namespace NanaFoodWeb.Controllers
             return View();
         }
         [ExcludeAdmin]
+        [ServiceFilter(typeof(CheckUserStatus))]
         public IActionResult Sort(string sort, int page, int pageSize = 9)
         {
             if(page == 0)
@@ -155,6 +158,7 @@ namespace NanaFoodWeb.Controllers
             return NotFound();
         }
         [ExcludeAdmin]
+        [ServiceFilter(typeof(CheckUserStatus))]
         public async Task<IActionResult> FilterLoai(int id, int page , int pageSize = 9)
         {
             var response = await _productRepo.GetByCategoryId(id, 1, 9);
@@ -176,6 +180,7 @@ namespace NanaFoodWeb.Controllers
             return NotFound();
         }
         [ExcludeAdmin]
+        [ServiceFilter(typeof(CheckUserStatus))]
         public async Task <IActionResult> Menu(string searchQuery, int? page = 1, int pageSize = 9)
         {
             ViewData["Action"] = "Menu";
@@ -229,6 +234,7 @@ namespace NanaFoodWeb.Controllers
             return View();
         }
         [ExcludeAdmin]
+        [ServiceFilter(typeof(CheckUserStatus))]
         public IActionResult GetTopView(int page, int pageSize)
         {
             ViewData["Action"] = "TopViewed";
@@ -255,6 +261,7 @@ namespace NanaFoodWeb.Controllers
             return NotFound();
         }
         [ExcludeAdmin]
+        [ServiceFilter(typeof(CheckUserStatus))]
         public async Task<IActionResult> Filter(int? value, int page, int pageSize)
         {
             ViewData["Action"] = "Filter";
@@ -312,6 +319,7 @@ namespace NanaFoodWeb.Controllers
             return NotFound();
         }
         [ExcludeAdmin]
+        [ServiceFilter(typeof(CheckUserStatus))]
         public async Task<IActionResult>FilterCategory(int categoryid, int page, int pageSize)
         {
 

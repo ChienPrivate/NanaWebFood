@@ -390,5 +390,13 @@ namespace NanaFoodApi.Controllers
             }
             return BadRequest(response);
         }
+
+        [HttpGet("GetUserStatus/{userId}")]
+        public async Task<IActionResult> GetUserStatus(string userId)
+        {
+            var response = await _auth.GetUserStatus(userId);
+
+            return Ok(response);
+        }
     }
 }
