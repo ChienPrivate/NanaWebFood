@@ -139,6 +139,9 @@ namespace NanaFoodWeb.Controllers
             if (TempData["response"] != null)
             {
                 var res = JsonConvert.DeserializeObject<ResponseDto>(TempData["response"].ToString());
+
+                ViewBag.UserModel = JsonConvert.DeserializeObject<UserReturn>(res.Result.ToString());
+
                 return View(res);
             }
             return View();
@@ -302,6 +305,23 @@ namespace NanaFoodWeb.Controllers
             }
 
             return View(viewmodel);
+        }
+
+        public IActionResult UserNotificaton()
+        {
+            if (TempData["status"] == null || int.Parse(TempData["status"].ToString()) == 0)
+            {
+                return RedirectToAction("Index","Home");
+            }
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResendEmail()
+        {
+            var response = await _helperRepository.SendConfirmEmail();
+
+            return Json(new { success = response.IsSuccess, message = response.Message });
         }
 
         private async Task SignInUser(string token)

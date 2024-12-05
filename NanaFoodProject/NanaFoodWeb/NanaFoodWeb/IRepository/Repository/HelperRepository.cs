@@ -20,5 +20,14 @@ namespace NanaFoodWeb.IRepository.Repository
                 Data = file,
             });
         }
+
+        public async Task<ResponseDto> SendConfirmEmail()
+        {
+            return await _baseService.SendAsync(new RequestDto()
+            {
+                ApiType = StaticDetails.ApiType.POST,
+                Url = StaticDetails.APIBase + $"/api/HelperApi/SendConfirmEmail",
+            });
+        }
     }
 }

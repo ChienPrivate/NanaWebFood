@@ -6,5 +6,6 @@ namespace NanaFoodWeb.IRepository
     public interface IHelperRepository
     {
         public Task<ResponseDto> UploadImageAsync(IFormFile file);
+        public Task<ResponseDto> SendConfirmEmail();
     }
 }

@@ -13,6 +13,8 @@ namespace NanaFoodWeb.Controllers
 {
     [Route("Carts")]
     [Authorize(Roles = "customer")]
+    [ServiceFilter(typeof(CheckUserStatus))]
+    [ServiceFilter(typeof(EmailConfirmed))]
     public class CartController : Controller
     {
         private readonly ICartRepo _cartRepo;
@@ -30,7 +32,7 @@ namespace NanaFoodWeb.Controllers
             _authRepository = authRepository;
         }
 
-        [ServiceFilter(typeof(EmailConfirmed))]
+        
         public async Task<IActionResult> Index()
         {
             var token = _tokenProvider.GetToken();
