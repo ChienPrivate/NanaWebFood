@@ -1,7 +1,56 @@
 ﻿@model Order
 @{
+    var invoiceFilePath = ViewBag.InvoiceFilePath as string;
     int total = ViewBag.total;
+    string isFirstTime = TempData["FirstTime"] as string;
+
+    int orderId = TempData["OrderId"] as int? ?? 0;
 }
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        // Lấy giá trị từ ViewData
+        var isFirstTime = '@isFirstTime';  // Lấy giá trị từ ViewData
+        var orderId  = @orderId;  // Lấy đường dẫn file PDF từ ViewData
+
+        // Kiểm tra điều kiện tải file chỉ khi đây là lần đầu tiên
+        if (isFirstTime === "true") {
+            // Gọi AJAX để tải file PDF
+            $.ajax({
+                url: '@Url.Action("DownloadInvoice", "Order")',
+                type: 'POST', // Sử dụng POST thay vì GET
+                data: { orderId: orderId }, // Truyền orderId
+                success: function (data) {
+                    console.log(data);
+                    console.log(data.fileBytes);
+                    if (data.success) {
+                        var binaryString = atob(data.fileBytes); // Giải mã Base64
+                        var binaryLength = binaryString.length;
+                        var bytes = new Uint8Array(binaryLength);
+
+                        for (var i = 0; i < binaryLength; i++) {
+                            bytes[i] = binaryString.charCodeAt(i);
+                        }
+
+                        var blob = new Blob([bytes], { type: 'application/pdf' });
+                        var link = document.createElement('a');
+                        link.href = URL.createObjectURL(blob);
+                        link.download = data.fileName;
+                        link.click();
+                    } else {
+                        alert(data.Message);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("Có lỗi xảy ra khi tải hóa đơn: ", error);
+                    alert('Có lỗi khi tải hóa đơn.');
+                }
+            });
+        }
+    });
+</script>
+
+
 <div class="container mt-5">
     <div class="card">
         <div class="card-header text-center bg-success text-white">

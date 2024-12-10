@@ -1,10 +1,10 @@
-
 using DotNetEnv;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using NanaFoodWeb.Extensions;
 using NanaFoodWeb.IRepository;
 using NanaFoodWeb.IRepository.Repository;
 using NanaFoodWeb.Utility;
+using QuestPDF.Infrastructure;
 using static System.Environment;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 Env.Load();
 string lisense = builder.Configuration["Key:SyncFunsion"];
 Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(lisense);
+QuestPDF.Settings.License = LicenseType.Community;
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -23,7 +24,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     .AddCookie(options =>
     {
         options.Cookie.HttpOnly = true;
-        options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Sử dụng HTTPS cho cookie
+        options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest; // Sử dụng HTTPS cho cookie
         options.Cookie.SameSite = SameSiteMode.None; // Để cookie có thể được gửi trong yêu cầu cross-origin
         options.LoginPath = "/Auth/Login"; // Đường dẫn khi chưa đăng nhập
         options.LogoutPath = "/Auth/Logout"; // Đường dẫn khi đăng xuất
@@ -42,6 +43,7 @@ builder.Services.AddSession(options =>
 
 
 builder.Services.AddRazorPages();
+
 
 builder.Services.AddScoped<ITokenProvider, TokenProvider>();
 builder.Services.AddScoped<IBaseService, BaseService>();

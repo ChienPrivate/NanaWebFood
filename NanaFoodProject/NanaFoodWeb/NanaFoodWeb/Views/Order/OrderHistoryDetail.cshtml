@@ -235,6 +235,8 @@
                                 </div>
                             </div>
                         }
+
+                        @* nút hủy đơn *@
                         @if (Model.OrderStatus == "Đang chuẩn bị" && Model.PaymentStatus == "Chưa thanh toán" || Model.OrderStatus == "Chờ xác nhận" && Model.PaymentStatus == "Chưa thanh toán")
                         {
                             <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -306,6 +308,8 @@
                             </script>
                         }
 
+                        <a id="dowloadPDF" class="btn btn-outline-warning" data-order-id="@Model.OrderId">Xuất hóa đơn </a>
+
                         <a asp-action="OrderHistory" asp-controller="Order" class="btn btn-outline-secondary">Quay lại</a>
                     </div>
                 </div>
@@ -340,6 +344,41 @@
                 toastr.error("Xảy ra lỗi trong quá trình xử lý yêu cầu.");
             }
         });
+    });
+
+    $('#dowloadPDF').on('click', function(){
+            var orderId = $(this).data('order-id');
+
+            $.ajax({
+                url: '@Url.Action("DownloadInvoice", "Order")',
+                type: 'POST', // Sử dụng POST thay vì GET
+                data: { orderId: orderId }, // Truyền orderId
+                success: function (data) {
+                    console.log(data);
+                    console.log(data.fileBytes);
+                    if (data.success) {
+                        var binaryString = atob(data.fileBytes); // Giải mã Base64
+                        var binaryLength = binaryString.length;
+                        var bytes = new Uint8Array(binaryLength);
+
+                        for (var i = 0; i < binaryLength; i++) {
+                            bytes[i] = binaryString.charCodeAt(i);
+                        }
+
+                        var blob = new Blob([bytes], { type: 'application/pdf' });
+                        var link = document.createElement('a');
+                        link.href = URL.createObjectURL(blob);
+                        link.download = data.fileName;
+                        link.click();
+                    } else {
+                        alert(data.Message);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("Có lỗi xảy ra khi tải hóa đơn: ", error);
+                    alert('Có lỗi khi tải hóa đơn.');
+                }
+            });
     });
 });
 
