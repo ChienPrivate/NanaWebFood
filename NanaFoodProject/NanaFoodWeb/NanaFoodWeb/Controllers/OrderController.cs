@@ -9,6 +9,10 @@ using NanaFoodWeb.Models.Dto;
 using NanaFoodWeb.Models.Dto.GHNDto;
 using NanaFoodWeb.Models.Momo;
 using Newtonsoft.Json;
+using QuestPDF.Companion;
+using QuestPDF.Fluent;
+using QuestPDF.Helpers;
+using QuestPDF.Infrastructure;
 using System.Net.Http.Headers;
 using System.Text;
 
@@ -24,10 +28,10 @@ namespace NanaFoodWeb.Controllers
         private readonly IAuthRepository _authRepo;
         private readonly ICouponRepo _couponRepo;
 
-        public OrderController(IOrderRepository orderService, 
-            ITokenProvider tokenProvider, 
-            ICartRepo cartRepo, 
-            IReviewRepository reviewRepository, 
+        public OrderController(IOrderRepository orderService,
+            ITokenProvider tokenProvider,
+            ICartRepo cartRepo,
+            IReviewRepository reviewRepository,
             IAuthRepository authRepo,
             ICouponRepo couponRepo)
         {
@@ -168,7 +172,6 @@ namespace NanaFoodWeb.Controllers
                     {
                         return Redirect(redirectUrl);
                     }
-
                 }
 
                 return View();
@@ -256,6 +259,8 @@ namespace NanaFoodWeb.Controllers
         {
             var response = await _orderRepository.AddOrderAsync(order);
 
+            int orderId = int.Parse(response.Result.ToString()); 
+
             if (!response.IsSuccess)
             {
                 TempData["error"] = response.Message;
@@ -292,19 +297,30 @@ namespace NanaFoodWeb.Controllers
                 return RedirectToAction("Payment", "Order");
             }
 
-                if (order.CouponCode != null || string.IsNullOrEmpty(order.CouponCode))
-                {
-                    await _orderRepository.ApplyCoupon(int.Parse(response.Result.ToString()), order.CouponCode);
-                }
+            if (order.CouponCode != null || !string.IsNullOrEmpty(order.CouponCode))
+            {
+                await _orderRepository.ApplyCoupon(orderId, order.CouponCode);
+            }
 
-                if (response.IsSuccess)
-                {
-                    TempData["success"] = response.Message;
-                    return RedirectToAction("PaymentSuccess", "Order");
-                }
+            if (response.IsSuccess)
+            {
 
-                TempData["error"] = "Phát sinh lỗi trong quá trình đặt đơn";
-                return RedirectToAction("PaymentError", "Order");
+                /*var fileBytes = System.IO.File.ReadAllBytes(filePath);
+
+                RedirectToAction("PaymentSuccess", "Order");
+
+                return File(fileBytes, "application/pdf", fileName);*/
+
+                TempData["FirstTime"] = "true";
+
+                TempData["OrderId"] = orderId;
+
+                TempData["success"] = response.Message;
+                return RedirectToAction("PaymentSuccess", "Order");
+            }
+
+            TempData["error"] = "Phát sinh lỗi trong quá trình đặt đơn";
+            return RedirectToAction("PaymentError", "Order");
         }
 
         [HttpGet]
@@ -313,6 +329,12 @@ namespace NanaFoodWeb.Controllers
             var order = HttpContext.Session.Get<Order>("order");
             ViewBag.total = HttpContext.Session.Get<int>("total");
 
+            var invoiceFilePath = TempData["InvoiceFilePath"] as string;
+
+            if (!string.IsNullOrEmpty(invoiceFilePath))
+            {
+                ViewBag.InvoiceFilePath = invoiceFilePath;
+            }
 
             return View(order);
         }
@@ -659,6 +681,182 @@ namespace NanaFoodWeb.Controllers
             return DateTime.Now.AddMinutes(additionalMinutes);
         }
 
+        #endregion
+
+        #region PDF Generate
+        public async Task<byte[]> CreateOrderInvoice(int orderId)
+        {
+            var orderRes = await _orderRepository.GetOrderByIdAsync(orderId);
+
+            var itemsRes = await _reviewRepository.GetOrderDetailsFromOrder(orderId);
+
+            double totalOfFood = 0;
+
+            Order order = new Order();
+
+            List<ReviewProductDto> items = new List<ReviewProductDto>();
+
+            if (orderRes.IsSuccess)
+            {
+                order = JsonConvert.DeserializeObject<Order>(orderRes.Result.ToString());
+            }
+
+            if (itemsRes.IsSuccess)
+            {
+                items = JsonConvert.DeserializeObject<List<ReviewProductDto>>(itemsRes.Result.ToString());
+
+                foreach(var item in items as List<ReviewProductDto> ?? new List<ReviewProductDto>())
+                {
+                    totalOfFood += item.Total;
+                }
+            }
+
+            
+
+            var document = Document.Create(container =>
+            {
+                container.Page(page =>
+                {
+                    page.Size(PageSizes.A4);
+                    page.Margin(2, Unit.Centimetre);
+                    page.PageColor(Colors.White);
+                    page.DefaultTextStyle(x => x.FontSize(20));
+
+                    /*page.Header()
+                    .Text("NanaFoodStore")
+                    .SemiBold().FontSize(30).FontColor(Colors.Orange.Medium);*/
+
+
+                    page.Header()
+                    .Row(row =>
+                    {
+
+                        row.RelativeItem().AlignLeft().AlignMiddle().Text("NanaFoodStore").SemiBold().FontSize(30).FontColor(Colors.Orange.Medium);
+                        row.RelativeItem().AlignRight().AlignMiddle().Text(DateTime.Now.ToString("dd/MM/yyyy HH:MM:ss tt")).FontSize(15).FontColor(Colors.Grey.Medium);
+                    });
+
+                    page.Content()
+                    .PaddingVertical(1, Unit.Centimetre)
+                    .Column(x =>
+                    {
+                        x.Spacing(10);
+
+                        x.Item().Text("Thông tin người mua").FontSize(18).Bold().FontColor(Colors.Orange.Medium);
+
+                        // Thông tin khách hàng
+                        x.Item().Text($"Tên người mua: {order.FullName}").FontSize(15);
+                        x.Item().Text($"Địa chỉ giao hàng: {order.Address}").FontSize(15);
+                        x.Item().Text($"Số điện thoại: {order.PhoneNumber}").FontSize(15);
+                        x.Item().Text($"Email: {order.Email}").FontSize(15);
+
+                        // Thông tin đơn hàng dưới dạng bảng
+                        x.Item().Text("Thông tin đơn hàng")
+                        .Bold().FontSize(18).FontColor(Colors.Orange.Medium);
+
+                        x.Item().Table(table =>
+                        {
+                            // Định nghĩa các cột của bảng
+                            table.ColumnsDefinition(columns =>
+                            {
+                                columns.RelativeColumn(); // Cột Tên sản phẩm
+                                columns.RelativeColumn(); // Cột Giá
+                                columns.RelativeColumn(); // Cột Số lượng
+                                columns.RelativeColumn(); // Cột Tổng tiền
+                            });
+
+                            // Header của bảng
+                            table.Header(header =>
+                            {
+                                var color = Colors.Orange.Lighten2;
+
+                                header.Cell().Background(color).Text("Tên sản phẩm").FontSize(15).SemiBold().AlignCenter();
+                                header.Cell().Background(color).Text("Giá").FontSize(15).SemiBold().AlignCenter();
+                                header.Cell().Background(color).Text("Số lượng").FontSize(15).SemiBold().AlignCenter();
+                                header.Cell().Background(color).Text("Tổng tiền").FontSize(15).SemiBold().AlignCenter();
+                            });
+
+                            // Dữ liệu bảng
+
+                            // Thêm dữ liệu vào bảng với kiểu "striped"
+                            for (int i = 0; i < items.Count; i++)
+                            {
+                                var item = items[i];
+
+                                // Tạo hiệu ứng striped
+                                var backgroundColor = i % 2 == 0 ? Colors.BlueGrey.Lighten4 : Colors.White;
+
+                                table.Cell().Background(backgroundColor).Text(item.ProductName).FontSize(15).AlignCenter();
+                                table.Cell().Background(backgroundColor).Text(item.Price.ToString("#,##") + " VNĐ").FontSize(15).AlignCenter();
+                                table.Cell().Background(backgroundColor).Text(item.Quantity.ToString()).FontSize(15).AlignCenter();
+                                table.Cell().Background(backgroundColor).Text(item.Total.ToString("#,##") + " VNĐ").FontSize(15).AlignCenter();
+                            }
+                        });
+
+                        if (!string.IsNullOrEmpty(order.Note))
+                        {
+                            x.Item().Text($"Ghi chú: {order.Note}");
+                        }
+
+                        x.Item().Text("Thông tin thanh toán")
+                        .Bold().FontSize(18).FontColor(Colors.Orange.Medium);
+
+                        x.Item().Text($"Phương thức thanh toán: {order.PaymentType}").FontSize(15);
+                        /*x.Item().Text($"Trạng thái thanh toán: {order.PaymentStatus}").FontSize(15);*/
+
+                        if (!string.IsNullOrEmpty(order.CouponCode))
+                        {
+                            x.Item().Text($"Mã giảm giá: {order.CouponCode}").FontSize(15);
+                            x.Item().Text($"Mã giảm giá: {order.Discount?.ToString("#,##")} VNĐ").FontSize(15);
+                        }
+
+                        x.Item().Text($"Tổng tiền các món: {totalOfFood.ToString("#,##")}").FontSize(15);
+                        x.Item().Text($"Phí vận chuyển: {order.ShipmentFee.ToString("#,##")}").FontSize(15);
+                        // Tổng tiền giả lập
+                        x.Item().Text($"Tổng cộng: {order.Total.ToString("#,##")} VND").FontSize(15);
+
+                    });
+
+                    page.Footer()
+                    .AlignCenter()
+                    .Text(x =>
+                    {
+                        x.Span("Trang ");
+                        x.CurrentPageNumber();
+                    });
+                });
+
+            });
+
+            var pdf = document.GeneratePdf();
+
+            return pdf;
+
+        }
+
+        public async Task<IActionResult> DownloadInvoice(int orderId)
+        {
+            try
+            {
+                var pdf = await CreateOrderInvoice(orderId);
+
+                var fileName = $"OrderInvoice_{orderId}.pdf";
+                var filePath = Path.Combine(Path.GetTempPath(), fileName);
+
+                System.IO.File.WriteAllBytes(filePath, pdf);
+
+                /*var fileBytes = System.IO.File.ReadAllBytes(filePath);*/
+
+                var base64Pdf = System.Convert.ToBase64String(pdf);
+
+                return Json(new { Success = true, FileBytes = base64Pdf, FileName = fileName });
+
+            }
+            catch (Exception ex)
+            {
+                TempData["error"] = "Không thể xuất pdf cho hóa đơn này";
+                return Json(new { Success = false });
+            }
+        }
         #endregion
     }
 }

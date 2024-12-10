@@ -81,7 +81,7 @@
         toastContainer.appendChild(toast);
 
         // Hiển thị toast
-        const bootstrapToast = new bootstrap.Toast(toast, { delay: 4000 });
+        const bootstrapToast = new bootstrap.Toast(toast, { delay: 2000 });
         bootstrapToast.show();
 
         // Tự động xóa toast sau khi ẩn
@@ -254,44 +254,44 @@
         });
     }
 
-    async function changeStatusToCancel(orderId) {
-        const reasonSelect = document.getElementById(`cancelReason-${orderId}`);
-        const warningText = document.getElementById(`warningText-${orderId}`);
-        const reason = reasonSelect ? reasonSelect.value : null;
+    // async function changeStatusToCancel(orderId) {
+    //     const reasonSelect = document.getElementById(`cancelReason-${orderId}`);
+    //     const warningText = document.getElementById(`warningText-${orderId}`);
+    //     const reason = reasonSelect ? reasonSelect.value : null;
 
-        if (!reason) {
-            warningText.textContent = "Vui lòng chọn lý do hủy đơn.";
-            return;
-        } else {
-            warningText.textContent = "";
-        }
+    //     if (!reason) {
+    //         warningText.textContent = "Vui lòng chọn lý do hủy đơn.";
+    //         return;
+    //     } else {
+    //         warningText.textContent = "";
+    //     }
 
 
 
-        await $.ajax({
-            url: `/ManageOrder/CancelOrder/${orderId}/${encodeURIComponent(reason)}`,
-            type: 'GET',
-            success: function () {
-                $(`#cancelModal-${orderId}`).modal('hide');
+    //     await $.ajax({
+    //         url: `/ManageOrder/CancelOrder/${orderId}/${encodeURIComponent(reason)}`,
+    //         type: 'GET',
+    //         success: function () {
+    //             $(`#cancelModal-${orderId}`).modal('hide');
 
-                showToast("Đơn hàng đã được hủy thành công.", "success");
+    //             showToast("Đơn hàng đã được hủy thành công.", "success");
 
-                setTimeout(() => {
+    //             setTimeout(() => {
 
-                    updateGridFromServer("ConfirmedYetGrid", '/ManageOrder/GetConfirmedOrders?_=' + new Date().getTime(), "confirmedYetCommandTemplate");
-                    updateGridFromServer("PreparingGrid", '/ManageOrder/GetPreparingOrders?_=' + new Date().getTime(), "preparingCommandTemplate");
-                    updateGridFromServer("DeliveringGrid", '/ManageOrder/GetDeliveringOrders?_=' + new Date().getTime(), "deliveringCommandTemplate");
-                    updateGridFromServer("CancelGrid", '/ManageOrder/GetCanceledOrders?_=' + new Date().getTime(), "cancelCommandTemplate");
-                }, 500);
-            },
-            error: function () {
-                $(`#cancelModal-${orderId}`).modal('hide');
+    //                 updateGridFromServer("ConfirmedYetGrid", '/ManageOrder/GetConfirmedOrders?_=' + new Date().getTime(), "confirmedYetCommandTemplate");
+    //                 updateGridFromServer("PreparingGrid", '/ManageOrder/GetPreparingOrders?_=' + new Date().getTime(), "preparingCommandTemplate");
+    //                 updateGridFromServer("DeliveringGrid", '/ManageOrder/GetDeliveringOrders?_=' + new Date().getTime(), "deliveringCommandTemplate");
+    //                 updateGridFromServer("CancelGrid", '/ManageOrder/GetCanceledOrders?_=' + new Date().getTime(), "cancelCommandTemplate");
+    //             }, 500);
+    //         },
+    //         error: function () {
+    //             $(`#cancelModal-${orderId}`).modal('hide');
 
-                // Gọi toast lỗi
-                showToast("Có lỗi xảy ra khi hủy đơn hàng.", "error");
-            }
-        });
-    }
+    //             Gọi toast lỗi
+    //             showToast("Có lỗi xảy ra khi hủy đơn hàng.", "error");
+    //         }
+    //     });
+    // }
 
 </script>
 
@@ -496,7 +496,7 @@
        </div>
      </div>
 
-     <button type="button" class="btn btn-outline-danger form-control mb-1 d-block" data-bs-toggle="modal" data-bs-target="#cancelModal-${OrderId}" data-order-id="${OrderId}">
+     @* <button type="button" class="btn btn-outline-danger form-control mb-1 d-block" data-bs-toggle="modal" data-bs-target="#cancelModal-${OrderId}" data-order-id="${OrderId}">
        <i class="fa-regular fa-file-excel"></i> Hủy đơn
     </button>
 
@@ -533,7 +533,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> *@
 </script>
 
 <script id="preparingCommandTemplate" type="text/x-jsrender">
@@ -566,7 +566,7 @@
        </div>
      </div>
 
-    <button type="button" class="btn btn-outline-danger form-control mb-1 d-block" data-bs-toggle="modal" data-bs-target="#cancelModal-${OrderId}" data-order-id="${OrderId}">
+    @* <button type="button" class="btn btn-outline-danger form-control mb-1 d-block" data-bs-toggle="modal" data-bs-target="#cancelModal-${OrderId}" data-order-id="${OrderId}">
        <i class="fa-regular fa-file-excel"></i> Hủy đơn
     </button>
 
@@ -603,7 +603,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> *@
 </script>
 
 <script id="deliveringCommandTemplate" type="text/x-jsrender">
@@ -636,7 +636,7 @@
        </div>
      </div>
 
-     <button type="button" class="btn btn-outline-danger form-control mb-1 d-block" data-bs-toggle="modal" data-bs-target="#cancelModal-${OrderId}" data-order-id="${OrderId}">
+     @* <button type="button" class="btn btn-outline-danger form-control mb-1 d-block" data-bs-toggle="modal" data-bs-target="#cancelModal-${OrderId}" data-order-id="${OrderId}">
        <i class="fa-regular fa-file-excel"></i> Hủy đơn
     </button>
 
@@ -673,7 +673,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> *@
 </script>
 
 <script id="completeCommandTemplate" type="text/x-jsrender">
