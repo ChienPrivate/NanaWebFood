@@ -305,17 +305,27 @@ namespace NanaFoodDAL.IRepository.Repository
         {
             try
             {
-                var user = await _userManager.FindByEmailAsync(userdto.Email);
+                //var user = await _userManager.FindByEmailAsync(userdto.Email);
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName.ToLower() == userdto.UserName.ToLower());
                 if (user == null)
                 {
                     response.IsSuccess = false;
                     response.Message = "Người dùng không tồn tại";
                     return response;
                 }
+
                 user.PhoneNumber = userdto.PhoneNumber;
                 user.Address = userdto.Address;
                 user.AvatarUrl = userdto.AvatarUrl;
                 user.FullName = userdto.FullName;
+
+                if (user.Email != userdto.Email && !string.IsNullOrEmpty(userdto.Email))
+                {
+                    user.Email = userdto.Email;
+                    user.EmailConfirmed = false;
+                    var template = _emailPoster.EmailConfirmTemplate(user.FullName, $"https://nanafoodapi20241110164928.azurewebsites.net/api/Auth/EmailConfirmation/{Uri.EscapeDataString(user.Email)}");
+                    var sendmailResult = _emailPoster.SendMail(user.Email, "Xác thực email", template);
+                }
 
                 await _context.SaveChangesAsync();
                 response.Result = _mapper.Map<UserDto>(user);
