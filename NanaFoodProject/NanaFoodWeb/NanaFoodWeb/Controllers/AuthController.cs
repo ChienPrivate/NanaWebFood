@@ -275,6 +275,7 @@ namespace NanaFoodWeb.Controllers
         public async Task<IActionResult> GetInfo(ChangePassAndUserDto viewmodel, IFormFile? UploadFile)
         {
             string imageUrl = string.Empty;
+
             if (ModelState.IsValid)
             {
                 if (UploadFile != null && UploadFile.Length > 0)

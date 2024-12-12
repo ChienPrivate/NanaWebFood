@@ -63,7 +63,7 @@
                                 <input asp-for=UserDto.UserName id="UserName" value="@Model.UserDto.UserName" hidden />
                                 <div class="row">
                                     <div class="col-sm-3 d-flex align-items-center">
-                                        <p class="mb-0">Full Name</p>
+                                        <p class="mb-0">Họ tên</p>
                                     </div>
                                     <div class="col-sm-9">
                                         <input asp-for=UserDto.FullName type="text" class="form-control" id="FullName" value="@Model.UserDto.FullName" placeholder="Nhập tên tài khoản">
@@ -76,14 +76,14 @@
                                         <p class="mb-0">Email</p>
                                     </div>
                                     <div class="col-sm-9">
-                                        <input asp-for=UserDto.Email type="email" class="form-control" id="Email" value="@Model.UserDto.Email" placeholder="Nhập địa chỉ email">
+                                        <input asp-for=UserDto.Email type="email" class="form-control" id="Email" value="@Model.UserDto.Email" placeholder="Nhập địa chỉ email" disabled>
                                         <span asp-validation-for="UserDto.Email" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <hr>
                                 <div class="row">
                                     <div class="col-sm-3 d-flex align-items-center">
-                                        <p class="mb-0">Phone</p>
+                                        <p class="mb-0">Số điện thoại</p>
                                     </div>
                                     <div class="col-sm-9">
                                         <input asp-for=UserDto.PhoneNumber type="tel" class="form-control" id="PhoneNumber" value="@Model.UserDto.PhoneNumber" placeholder="Nhập số điện thoại">
@@ -93,7 +93,7 @@
                                 <hr>
                                 <div class="row">
                                     <div class="col-sm-3 d-flex align-items-center">
-                                        <p class="mb-0">Address</p>
+                                        <p class="mb-0">Địa chỉ</p>
                                     </div>
                                     <div class="col-sm-9">
                                         <input asp-for=UserDto.Address type="text" class="form-control" id="Address" value="@Model.UserDto.Address" placeholder="Nhập địa chỉ chính xác">

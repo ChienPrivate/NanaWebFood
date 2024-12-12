@@ -5,6 +5,11 @@ namespace NanaFoodWeb.Models.Dto
     public class UserDto
     {
         /// <summary>
+        /// Mã người dùng
+        /// </summary>
+        // public string UserId { get; set; }
+
+        /// <summary>
         /// Tên đầy đủ
         /// </summary>
         public string? FullName { get; set; }

@@ -349,7 +349,7 @@ namespace NanaFoodApi.Controllers
                 });
             }
             return Unauthorized();
-                }
+        }
 
         /// <summary>
         /// Cập nhật thông tin người dùng
