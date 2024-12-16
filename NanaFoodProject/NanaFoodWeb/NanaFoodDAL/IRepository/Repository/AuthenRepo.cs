@@ -166,7 +166,6 @@ namespace NanaFoodDAL.IRepository.Repository
         {
             try
             {
-
                 var changePasswordResult = await _userManager.ChangePasswordAsync(user, changePass.OldPassword, changePass.NewPassword);
                 if (!changePasswordResult.Succeeded)
                 {
@@ -184,7 +183,7 @@ namespace NanaFoodDAL.IRepository.Repository
                 }
 
                 await _signInManager.RefreshSignInAsync(user);
-                response.Message = "Mật khẩu đã được cập nhật"; ;
+                response.Message = "Mật khẩu đã được cập nhật";
             }
             catch (Exception ex)
             {
@@ -198,7 +197,8 @@ namespace NanaFoodDAL.IRepository.Repository
         {
             try
             {
-                var euser = await _userManager.FindByEmailAsync(email);
+                /*var euser = await _userManager.FindByEmailAsync(email);*/
+                var euser = await _context.Users.FirstOrDefaultAsync(u => u.Email.ToLower() == email.ToLower() && u.PasswordHash != null);
                 if (euser != null)
                 {
                     var token = await _userManager.GenerateEmailConfirmationTokenAsync(euser);
@@ -237,7 +237,9 @@ namespace NanaFoodDAL.IRepository.Repository
         {
             try
             {
-                var user = await _userManager.FindByEmailAsync(email);
+                // var user = await _userManager.FindByEmailAsync(email);
+
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email && u.PasswordHash != null);
                 if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
                 {
                     response.IsSuccess = false;
@@ -494,8 +496,6 @@ namespace NanaFoodDAL.IRepository.Repository
         //        response.Message = $"Lỗi : {ex.Message}";
         //    }
         //    return response;
-
-
         //}
 
     }
