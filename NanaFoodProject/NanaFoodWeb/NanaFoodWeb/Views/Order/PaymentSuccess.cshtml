@@ -60,22 +60,64 @@
 
 <style>
     #overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 9999;
+      position: fixed;
+      /* Đảm bảo overlay cố định trên màn hình */
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      /* Màu nền bán trong suốt */
+      display: flex;
+      justify-content: center;
+      /* Căn giữa theo chiều ngang (left-right) */
+      align-items: center;
+      /* Căn giữa theo chiều dọc (top-bottom) */
+      z-index: 9999;
+      /* Đảm bảo overlay ở trên các phần tử khác */
     }
-</style>
+
+    #processText {
+      color: white;
+      text-align: center;
+      /* Căn giữa văn bản trong phần tử */
+    }
+
+
+    .spinner-border {
+      width: 2rem;
+      /* Tăng kích thước spinner */
+      height: 2rem;
+      margin-left: 10px;
+      /* Khoảng cách giữa spinner và chữ */
+    }
+
+    /* Responsive tăng kích thước spinner */
+    @@media (min-width: 768px) {
+
+      /* Với màn hình >= 768px */
+      .spinner-border {
+        width: 3rem;
+        /* Tăng kích thước cho màn hình lớn hơn */
+        height: 3rem;
+      }
+    }
+
+    @@media (min-width: 1200px) {
+
+      /* Với màn hình >= 1200px */
+      .spinner-border {
+        width: 4rem;
+        /* Tăng thêm kích thước cho màn hình rất lớn */
+        height: 4rem;
+      }
+    }
+  </style>
 
 <div id="overlay" style="display: none;">
-    <div id="spinner" class="text-center">
-        <p>Đang xử lý xuất hóa đơn <span id="loadingSpinner" class="spinner-border spinner-border-sm" style="display: none;"></span> </p>
+    <div id="processText" class="text-center">
+        <h1 class="text-white" >Đang xử lý xuất hóa đơn</h1>
+        <span id="loadingSpinner" class="spinner-border spinner-border-sm" style="display: none;"></span>
     </div>
 </div>
 

@@ -38,6 +38,12 @@
     .table-center td, .table-center th {
         vertical-align: middle !important; /* Căn giữa theo chiều dọc */
     }
+
+    .disabled-link {
+        pointer-events: none; /* Ngăn click */
+        opacity: 0.6; /* Làm mờ để giống trạng thái "disabled" */
+        cursor: not-allowed; /* Đổi con trỏ chuột */
+    }
 </style>
 <div class="container">
     <div class="card shadow">
@@ -308,7 +314,7 @@
                             </script>
                         }
 
-                        <a id="dowloadPDF" class="btn btn-outline-warning" data-order-id="@Model.OrderId">Xuất hóa đơn </a>
+                        <a id="dowloadPDF" class="btn btn-outline-warning" data-order-id="@Model.OrderId">Xuất hóa đơn <span id="loadingSpinner" class="spinner-border spinner-border-sm" style="display: none;"></span> </a>
 
                         <a asp-action="OrderHistory" asp-controller="Order" class="btn btn-outline-secondary">Quay lại</a>
                     </div>
@@ -349,6 +355,20 @@
     $('#dowloadPDF').on('click', function(){
             var orderId = $(this).data('order-id');
 
+            var $submitButton = $('#dowloadPDF');
+            var $spinner = $('#loadingSpinner');
+
+
+            if ($submitButton.hasClass('disabled-link')) {
+                e.preventDefault(); // Ngăn chặn hành động mặc định
+                return false;
+            }
+
+            $submitButton.addClass('disabled-link');
+
+            $submitButton.prop('disabled', true); // Disable nút
+            $spinner.show(); // Hiển thị biểu tượng quay vòng
+
             $.ajax({
                 url: '@Url.Action("DownloadInvoice", "Order")',
                 type: 'POST', // Sử dụng POST thay vì GET
@@ -377,6 +397,10 @@
                 error: function (xhr, status, error) {
                     console.error("Có lỗi xảy ra khi tải hóa đơn: ", error);
                     alert('Có lỗi khi tải hóa đơn.');
+                },
+                complete: function() {
+                    $submitButton.removeClass('disabled-link');
+                    $spinner.hide(); // Ẩn biểu tượng quay vòng
                 }
             });
     });
