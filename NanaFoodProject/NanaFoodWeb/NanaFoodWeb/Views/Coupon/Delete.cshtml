@@ -19,9 +19,9 @@
                         <p><strong>Giảm giá:</strong> <span id="description">@Model.Discount</span></p>
                         <p><strong>Số tiền tối thiểu:</strong> <span id="description">@Model.MinAmount</span></p>
                         <div class="mt-2 d-flex gap-1">
-                            <form method="post" asp-action="DeleteConfirm" asp-controller="Coupon" asp-route-id="@Model.CouponCode">
+@*                             <form method="post" asp-action="DeleteConfirm" asp-controller="Coupon" asp-route-id="@Model?.CouponCode">
                                 <button type="submit" class="btn btn-danger"><i class="fa-regular fa-square-check"></i> Xóa</button>
-                            </form>
+                            </form> *@
                             <form method="post">
                                 <button type="submit"
                                         asp-controller="Coupon"

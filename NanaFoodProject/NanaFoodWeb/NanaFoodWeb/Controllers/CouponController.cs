@@ -5,8 +5,6 @@ using Newtonsoft.Json;
 using NanaFoodWeb.IRepository;
 using NanaFoodWeb.Models;
 using NanaFoodWeb.Models.Dto.ViewModels;
-using Microsoft.AspNetCore.Razor.Language.Intermediate;
-using Microsoft.AspNetCore.Mvc.Diagnostics;
 using Microsoft.AspNetCore.Authorization;
 
 namespace NanaFoodWeb.Controllers
@@ -93,7 +91,7 @@ namespace NanaFoodWeb.Controllers
         }
 
         [HttpGet("Details/{code}")]
-        public async Task <IActionResult> Details(string code)
+        public async Task<IActionResult> Details(string code)
         {
             var response = await _couponRepo.GetById(code);
             if (response?.IsSuccess == true && response.Result != null)
@@ -118,13 +116,13 @@ namespace NanaFoodWeb.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpPost("DeleteConfirm")]
+        [HttpPost("DeleteConfirm/{id}")]
         public async Task<IActionResult> DeleteConfirm(string id)
         {
             var response = await _couponRepo.DeleteById(id);
             if (response.IsSuccess)
             {
-                TempData["success"] = "Xóa danh mục thành công";
+                TempData["success"] = "Xóa danh mã giảm giá thành công";
                 return RedirectToAction("Index");
             }
             else
@@ -140,7 +138,7 @@ namespace NanaFoodWeb.Controllers
             var response = await _couponRepo.ModifyStatus(id);
             if (response.IsSuccess)
             {
-                TempData["success"] = "Xoá thành công";
+                TempData["success"] = "Vô hiệu hoá thành công mã giảm giá.";
                 return RedirectToAction("Index");
             }
             else
