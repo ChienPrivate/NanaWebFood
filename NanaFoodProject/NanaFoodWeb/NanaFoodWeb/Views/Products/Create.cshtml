@@ -13,13 +13,13 @@
                 <form id="addProductForm" asp-action="Create" asp-controller="Products" method="post" enctype="multipart/form-data">
                     <div class="form-group">
                         <label asp-for="ProductName">Tên sản phẩm</label>
-                        <input type="text" class="form-control" asp-for="ProductName" placeholder="Nhập tên sản phẩm">
+                        <input type="text" class="form-control" asp-for="ProductName" placeholder="Nhập tên sản phẩm" required>
                         <span asp-validation-for="ProductName" class="text-danger"></span>
                     </div>
 
                     <div class="form-group">
                         <label asp-for="CategoryId">Loại sản phẩm</label>
-                        <select class="form-select" asp-for="CategoryId" asp-items="@ViewBag.ListCategory">
+                        <select class="form-select" asp-for="CategoryId" asp-items="@ViewBag.ListCategory" required>
                             <option value="">Chọn một danh mục</option>
                         </select>
                         <span asp-validation-for="CategoryId" class="text-danger"></span>
@@ -27,18 +27,18 @@
 
                     <div class="form-group">
                         <label asp-for="Price">Giá</label>
-                        <input type="number" class="form-control" asp-for="Price" placeholder="Nhập giá sản phẩm">
+                        <input type="number" class="form-control" asp-for="Price" placeholder="Nhập giá sản phẩm" required>
                         <span asp-validation-for="Price" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="Quantity">Số lượng</label>
-                        <input type="number" class="form-control" asp-for="Quantity" placeholder="Nhập số lượng sản phẩm">
+                        <input type="number" class="form-control" asp-for="Quantity" placeholder="Nhập số lượng sản phẩm" required>
                         <span asp-validation-for="Quantity" class="text-danger"></span>
                     </div>
 
                     <div class="form-group">
                         <label asp-for="Description">Mô tả</label>
-                        <textarea class="form-control" asp-for="Description" placeholder="Nhập Mô tả sản phẩm"></textarea>
+                        <textarea class="form-control" asp-for="Description" placeholder="Nhập Mô tả sản phẩm" required></textarea>
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
                     <div class="form-group mb-2 mt-2">
@@ -83,7 +83,7 @@
                             </div>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-lg px-4 mr-2"><i class="fa-regular fa-square-check"></i>Tạo mới</button>
+                    <button type="submit" class="btn btn-primary px-4 mr-2"><i class="fa-regular fa-square-check"></i>Tạo mới</button>
                     <a href="@Url.Action("Index", "Products")" class="btn btn-secondary">Huỷ</a>
                 </form>
             </div>

@@ -503,7 +503,7 @@
             <remarks>
             API này cho phép xóa một mã giảm giá bằng cách cung cấp mã (code) của nó.
             </remarks>
-            <param name="code">Mã của mã giảm giá cần xóa.</param>
+            <param name="id">Mã của mã giảm giá cần xóa.</param>
             <returns>
             - 200 OK nếu xóa mã giảm giá thành công.
             - 400 BadRequest nếu có lỗi xảy ra.

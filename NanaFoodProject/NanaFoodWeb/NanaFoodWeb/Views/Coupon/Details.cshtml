@@ -26,10 +26,10 @@
                         <div class="button-group">
                             <a href="@Url.Action("Index", "Coupon")" class="btn btn-secondary mr-2">Trở lại</a>
                             <a class="btn btn-warning btn-sm mr-2" asp-action="Edit" asp-controller="Coupon" asp-route-id="@Model.CouponCode"><i class="fa-regular fa-pen-to-square"></i>Chỉnh sửa</a>
-                            <form asp-action="Delete" asp-controller="Coupon" method="post" style="display:inline">
+                           @*  <form asp-action="Delete" asp-controller="Coupon" method="post" style="display:inline">
                                 <input type="hidden" name="id" value="@Model.CouponCode" />
                                 <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i>Xoá</button>
-                            </form>
+                            </form> *@
                         </div>
                     </div>
                 </div>

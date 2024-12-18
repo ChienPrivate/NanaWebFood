@@ -138,7 +138,7 @@ namespace NanaFoodApi.Controllers
         /// <remarks>
         /// API này cho phép xóa một mã giảm giá bằng cách cung cấp mã (code) của nó.
         /// </remarks>
-        /// <param name="code">Mã của mã giảm giá cần xóa.</param>
+        /// <param name="id">Mã của mã giảm giá cần xóa.</param>
         /// <returns>
         /// - 200 OK nếu xóa mã giảm giá thành công.
         /// - 400 BadRequest nếu có lỗi xảy ra.
@@ -146,10 +146,10 @@ namespace NanaFoodApi.Controllers
         /// <response code="200">Mã giảm giá đã được xóa thành công.</response>
         /// <response code="400">Yêu cầu không hợp lệ hoặc xảy ra lỗi khi xóa mã giảm giá.</response>
         /// <response code="404">Mã giảm giá không tồn tại.</response>
-        [HttpDelete("Delete/{code}")]
-        public async Task<IActionResult> DeleteCoupon([FromRoute] string code)
+        [HttpDelete("Delete/{id}")]
+        public async Task<IActionResult> DeleteCoupon([FromRoute] string id)
         {
-            var result = await _couponRepo.DeleteById(code);
+            var result = await _couponRepo.DeleteById(id);
             if (!result.IsSuccess)
             {
                 return BadRequest(result);
