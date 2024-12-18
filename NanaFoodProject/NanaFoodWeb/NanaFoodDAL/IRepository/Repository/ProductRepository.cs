@@ -79,8 +79,6 @@ namespace NanaFoodDAL.IRepository.Repository
             return response;
         }
 
-
-
         public ResponseDto GetAll(int page = 1, int pageSize = 10, bool isSelectAll = true)
         {
             try

@@ -30,9 +30,9 @@
                              col.Field("OrdersCanceled").HeaderText("Số đơn đã hủy").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
 
 
-                             col.Field("commands").HeaderText("Thao tác").Template("#EmployeeCommand").Width("200").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                             col.Field("commands").HeaderText("Thao tác").Template("#EmployeeCommand").Width("200").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).AllowFiltering(false).AllowSorting(false).Add();
 
-                         }).AllowPaging().PageSettings(page => page.PageCount(3).PageSizes(true).PageSize(10)).AllowSorting().AllowFiltering().FilterSettings(filter => { filter.Type(Syncfusion.EJ2.Grids.FilterType.Excel); }).Toolbar(new List<string>() { "Search" }).AllowResizing(false).AutoFit(false).Render()
+                         }).AllowPaging().PageSettings(page => page.PageCount(3).PageSizes(true).PageSize(10)).AllowSorting().AllowFiltering().FilterSettings(filter => { filter.Type(Syncfusion.EJ2.Grids.FilterType.Excel); }).Toolbar(new List<string>() { "Search" }).AllowResizing(false).Locale("vi-VN").AutoFit(false).Render()
             </div>
         </div>
     </div>

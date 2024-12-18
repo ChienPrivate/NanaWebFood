@@ -18,12 +18,12 @@
                 col.Field("CategoryName").HeaderText("Tên danh mục").Format("C2").Width("135").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Left).Add();
                 col.Field("Description").HeaderText("Mô tả").Format("C2").Width("135").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Right).Add();
                 col.Field("IsActive").HeaderText("Trạng thái").Width("160").Template("#isActiveTemplate").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
-                col.Field("CategoryImage").HeaderText("Hình Ảnh").Width("160").Template("#categoriesImgTemplate").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                col.Field("CategoryImage").HeaderText("Hình Ảnh").Width("160").Template("#categoriesImgTemplate").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).AllowFiltering(false).AllowFiltering(false).Add();
 
 
                 col.Field("commands").HeaderText("Thao tác").Template("#commandTemplate").Width("200").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
 
-            }).AllowPaging().PageSettings(page => page.PageCount(3).PageSizes(true).PageSize(10)).AllowSorting().AllowFiltering().FilterSettings(filter => { filter.Type(Syncfusion.EJ2.Grids.FilterType.Excel); }).Toolbar(new List<string>() { "Search" }).AllowResizing(false).AutoFit(false).Render()
+            }).AllowPaging().PageSettings(page => page.PageCount(3).PageSizes(true).PageSize(10)).AllowSorting().AllowFiltering().FilterSettings(filter => { filter.Type(Syncfusion.EJ2.Grids.FilterType.Excel); }).Toolbar(new List<string>() { "Search" }).AllowResizing(false).Locale("vi-VN").AutoFit(false).Render()
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>

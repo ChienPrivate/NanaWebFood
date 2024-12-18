@@ -42,6 +42,12 @@
     .btn-close-white {
         color: #0f5132; /* Màu nút đóng */
     }
+
+    .disabled-link {
+        pointer-events: none; /* Ngăn click */
+        opacity: 0.6; /* Làm mờ để giống trạng thái "disabled" */
+        cursor: not-allowed; /* Đổi con trỏ chuột */
+    }
 </style>
 <script type="text/javascript">
 
@@ -145,17 +151,21 @@
         });
     }
 
-    
-
     async function changeStatusToPreparing(orderId) {
+        var $submitButton = $(`#changeStatusBtn-${orderId}`);
+        const $spinner = $submitButton.find('#loadingSpinner');
+
+
+        // Hiển thị spinner và vô hiệu hóa nút
+        $submitButton.addClass('disabled-link');
+        $submitButton.prop('disabled', true);
+        $spinner.show();
+
         // Gửi yêu cầu Ajax để cập nhật trạng thái đơn hàng
         await $.ajax({
             url: `/ManageOrder/ModifyStatus/${orderId}/Đang chuẩn bị`, // Gọi đến URL của phương thức
             type: 'GET',
             success: function (response) {
-                $(`#myModal-${orderId}`).modal('hide');
-
-                showToast("Trạng thái đơn hàng đã được cập nhật thành Đang giao.", "success");
 
                 setTimeout(() => {
 
@@ -177,19 +187,33 @@
 
                 // Gọi toast lỗi
                 showToast("Có lỗi xảy ra khi cập nhật trạng thái đơn hàng.", "error");
+            },
+            complete: function () {
+                $submitButton.removeClass('disabled-link');
+                $spinner.hide();
+
+                $(`#myModal-${orderId}`).modal('hide');
+
+                showToast("Trạng thái đơn hàng đã được cập nhật thành Đang giao.", "success");
             }
         });
     }
 
     async function changeStatusToDelivering(orderId) {
+
+        var $aSubmitButton = $(`#1changeStatusBtn-${orderId}`);
+        const $aSpinner = $('#loadingSpinner1');
+
+        // Hiển thị spinner và vô hiệu hóa nút
+        $aSubmitButton.addClass('disabled-link');
+        $aSubmitButton.prop('disabled', true);
+        $aSpinner.show();
+
         // Gửi yêu cầu Ajax để cập nhật trạng thái đơn hàng
         await $.ajax({
             url: `/ManageOrder/ModifyStatus/${orderId}/Đang giao`, // Gọi đến URL của phương thức
             type: 'GET',
             success: function (response) {
-                $(`#myModal-${orderId}`).modal('hide');
-
-                showToast("Trạng thái đơn hàng đã được cập nhật thành Đang giao.", "success");
 
                 setTimeout(() => {
 
@@ -213,22 +237,35 @@
 
                 // Gọi toast lỗi
                 showToast("Có lỗi xảy ra khi cập nhật trạng thái đơn hàng.", "error");
+            },
+            complete: function(){
+                $aSubmitButton.removeClass('disabled-link');
+
+                $aSpinner.hide();
+
+                $(`#myModal-${orderId}`).modal('hide');
+
+                showToast("Trạng thái đơn hàng đã được cập nhật thành Đang giao.", "success");
             }
         });
     }
 
     async function changeStatusToComplete(orderId) {
 
+        var $bSubmitButton = $(`#2changeStatusBtn-${orderId}`);
+        const $bSpinner = $bSubmitButton.find('#loadingSpinner2');
+
+        // Hiển thị spinner và vô hiệu hóa nút
+        $bSubmitButton.addClass('disabled-link');
+        $bSubmitButton.prop('disabled', true);
+        $bSpinner.show();
+
         await $.ajax({
             url: `/ManageOrder/ModifyStatus/${orderId}/Đã giao`, // Gọi đến URL của phương thức
             type: 'GET',
             success: function (response) {
-                $(`#myModal-${orderId}`).modal('hide');
-
-                showToast("Trạng thái đơn hàng đã được cập nhật thành Đã giao.", "success");
 
                 setTimeout(() => {
-
                     // Làm mới CompleteGrid
                     updateGridFromServer(
                         "CompleteGrid",
@@ -250,48 +287,70 @@
 
                 // Gọi toast lỗi
                 showToast("Có lỗi xảy ra khi cập nhật trạng thái đơn hàng.", "error");
+            },
+            complete: function(){
+                $bSubmitButton.removeClass('disabled-link');
+
+                $bSpinner.hide();
+
+                $(`#myModal-${orderId}`).modal('hide');
+
+                showToast("Trạng thái đơn hàng đã được cập nhật thành Đã giao.", "success");
             }
         });
     }
 
-    // async function changeStatusToCancel(orderId) {
-    //     const reasonSelect = document.getElementById(`cancelReason-${orderId}`);
-    //     const warningText = document.getElementById(`warningText-${orderId}`);
-    //     const reason = reasonSelect ? reasonSelect.value : null;
+    async function changeStatusToCancel(orderId) {
+        const reasonSelect = document.getElementById(`cancelReason-${orderId}`);
+        const warningText = document.getElementById(`warningText-${orderId}`);
+        const reason = reasonSelect ? reasonSelect.value : null;
 
-    //     if (!reason) {
-    //         warningText.textContent = "Vui lòng chọn lý do hủy đơn.";
-    //         return;
-    //     } else {
-    //         warningText.textContent = "";
-    //     }
+        // Lấy thẻ a và spinner
+        const $cancelButton = $(`#cancelOrderBtn-${orderId}`);
+        const $spinner = $cancelButton.find('#loadingSpinner');
 
+        if (!reason) {
+            warningText.textContent = "Vui lòng chọn lý do hủy đơn.";
+            return;
+        } else {
+            warningText.textContent = "";
+        }
 
+        // Hiển thị spinner và vô hiệu hóa nút
+        $cancelButton.addClass('disabled-link');
+        $cancelButton.prop('disabled', true);
+        $spinner.show();
 
-    //     await $.ajax({
-    //         url: `/ManageOrder/CancelOrder/${orderId}/${encodeURIComponent(reason)}`,
-    //         type: 'GET',
-    //         success: function () {
-    //             $(`#cancelModal-${orderId}`).modal('hide');
+        await $.ajax({
+            url: `/ManageOrder/CancelOrder/${orderId}/${encodeURIComponent(reason)}`,
+            type: 'GET',
+            success: function () {
 
-    //             showToast("Đơn hàng đã được hủy thành công.", "success");
+                setTimeout(() => {
 
-    //             setTimeout(() => {
+                    updateGridFromServer("ConfirmedYetGrid", '/ManageOrder/GetConfirmedOrders?_=' + new Date().getTime(), "confirmedYetCommandTemplate");
+                    updateGridFromServer("PreparingGrid", '/ManageOrder/GetPreparingOrders?_=' + new Date().getTime(), "preparingCommandTemplate");
+                    updateGridFromServer("DeliveringGrid", '/ManageOrder/GetDeliveringOrders?_=' + new Date().getTime(), "deliveringCommandTemplate");
+                    updateGridFromServer("CancelGrid", '/ManageOrder/GetCanceledOrders?_=' + new Date().getTime(), "cancelCommandTemplate");
+                }, 500);
+            },
+            error: function () {
+                $(`#cancelModal-${orderId}`).modal('hide');
 
-    //                 updateGridFromServer("ConfirmedYetGrid", '/ManageOrder/GetConfirmedOrders?_=' + new Date().getTime(), "confirmedYetCommandTemplate");
-    //                 updateGridFromServer("PreparingGrid", '/ManageOrder/GetPreparingOrders?_=' + new Date().getTime(), "preparingCommandTemplate");
-    //                 updateGridFromServer("DeliveringGrid", '/ManageOrder/GetDeliveringOrders?_=' + new Date().getTime(), "deliveringCommandTemplate");
-    //                 updateGridFromServer("CancelGrid", '/ManageOrder/GetCanceledOrders?_=' + new Date().getTime(), "cancelCommandTemplate");
-    //             }, 500);
-    //         },
-    //         error: function () {
-    //             $(`#cancelModal-${orderId}`).modal('hide');
+                showToast("Có lỗi xảy ra khi hủy đơn hàng.", "error");
+            },
+            complete: function () {
 
-    //             Gọi toast lỗi
-    //             showToast("Có lỗi xảy ra khi hủy đơn hàng.", "error");
-    //         }
-    //     });
-    // }
+                $cancelButton.removeClass('disabled-link');
+
+                $spinner.hide();
+
+                $(`#cancelModal-${orderId}`).modal('hide');
+
+                showToast("Đơn hàng đã được hủy thành công.", "success");
+            }
+        });
+    }
 
 </script>
 
@@ -341,11 +400,11 @@
                                      col.Field("Address").HeaderText("Địa chỉ").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
                                      col.Field("PaymentType").HeaderText("Phương thức thanh toán").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
                                      col.Field("PaymentStatus").HeaderText("Trạng thai thanh toán").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
-                                     col.Field("Note").HeaderText("Ghi chú").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                     col.Field("Note").HeaderText("Ghi chú").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).AllowFiltering(false).AllowSorting(false).Add();
                                      col.Field("Total").HeaderText("Tổng tiền").Format("#,##" + " VNĐ").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
-                                     col.Field("commands").HeaderText("Thao tác").Template("#confirmedYetCommandTemplate").Width("200").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                     col.Field("commands").HeaderText("Thao tác").Template("#confirmedYetCommandTemplate").Width("200").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).AllowFiltering(false).AllowSorting(false).Add();
 
-                                 }).AllowPaging().PageSettings(page => page.PageCount(3).PageSizes(true).PageSize(10)).AllowSorting().AllowFiltering().FilterSettings(filter => { filter.Type(Syncfusion.EJ2.Grids.FilterType.Excel); }).Toolbar(new List<string>() { "Search" }).AllowResizing(false).AutoFit(false).Render()
+                                 }).AllowPaging().PageSettings(page => page.PageCount(3).PageSizes(true).PageSize(10)).AllowSorting().AllowFiltering().FilterSettings(filter => { filter.Type(Syncfusion.EJ2.Grids.FilterType.Excel); }).Toolbar(new List<string>() { "Search" }).AllowResizing(false).Locale("vi-VN").AutoFit(false).Render()
                     </div>
                 </div>
             </div>
@@ -368,15 +427,16 @@
                                      col.Field("Address").HeaderText("Địa chỉ").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
                                      col.Field("PaymentType").HeaderText("Phương thức thanh toán").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
                                      col.Field("PaymentStatus").HeaderText("Trạng thai thanh toán").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
-                                     col.Field("Note").HeaderText("Ghi chú").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                     col.Field("Note").HeaderText("Ghi chú").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).AllowFiltering(false).AllowSorting(false).Add();
                                      col.Field("Total").HeaderText("Tổng tiền").Format("#,##" + " VNĐ").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
-                                     col.Field("commands").HeaderText("Thao tác").Template("#preparingCommandTemplate").Width("200").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                     col.Field("commands").HeaderText("Thao tác").Template("#preparingCommandTemplate").Width("200").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).AllowFiltering(false).AllowSorting(false).Add();
 
-                                 }).AllowPaging().PageSettings(page => page.PageCount(3).PageSizes(true).PageSize(10)).AllowSorting().AllowFiltering().FilterSettings(filter => { filter.Type(Syncfusion.EJ2.Grids.FilterType.Excel); }).Toolbar(new List<string>() { "Search" }).AllowResizing(false).AutoFit(false).Render()
+                                 }).AllowPaging().PageSettings(page => page.PageCount(3).PageSizes(true).PageSize(10)).AllowSorting().AllowFiltering().FilterSettings(filter => { filter.Type(Syncfusion.EJ2.Grids.FilterType.Excel); }).Toolbar(new List<string>() { "Search" }).AllowResizing(false).Locale("vi-VN").AutoFit(false).Render()
                     </div>
                 </div>
             </div>
         </div>
+
         <div id="menu2" class="tab-pane fade">
             <br>
             <h3>Đang giao</h3>
@@ -397,15 +457,16 @@
                                      col.Field("Address").HeaderText("Địa chỉ").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
                                      col.Field("PaymentType").HeaderText("Phương thức thanh toán").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
                                      col.Field("PaymentStatus").HeaderText("Trạng thai thanh toán").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
-                                     col.Field("Note").HeaderText("Ghi chú").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                     col.Field("Note").HeaderText("Ghi chú").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).AllowFiltering(false).AllowSorting(false).Add();
                                      col.Field("Total").HeaderText("Tổng tiền").Format("#,##" + " VNĐ").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
-                                     col.Field("commands").HeaderText("Thao tác").Template("#deliveringCommandTemplate").Width("200").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                     col.Field("commands").HeaderText("Thao tác").Template("#deliveringCommandTemplate").Width("200").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).AllowFiltering(false).AllowSorting(false).Add();
 
-                                 }).AllowPaging().PageSettings(page => page.PageCount(3).PageSizes(true).PageSize(10)).AllowSorting().AllowFiltering().FilterSettings(filter => { filter.Type(Syncfusion.EJ2.Grids.FilterType.Excel); }).Toolbar(new List<string>() { "Search" }).AllowResizing(false).AutoFit(false).Render()
+                                 }).AllowPaging().PageSettings(page => page.PageCount(3).PageSizes(true).PageSize(10)).AllowSorting().AllowFiltering().FilterSettings(filter => { filter.Type(Syncfusion.EJ2.Grids.FilterType.Excel); }).Toolbar(new List<string>() { "Search" }).AllowResizing(false).Locale("vi-VN").AutoFit(false).Render()
                     </div>
                 </div>
             </div>
         </div>
+
         <div id="menu3" class="tab-pane fade">
             <br>
             <h3>Đã giao</h3>
@@ -425,11 +486,11 @@
                                      col.Field("Address").HeaderText("Địa chỉ").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
                                      col.Field("PaymentType").HeaderText("Phương thức thanh toán").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
                                      col.Field("PaymentStatus").HeaderText("Trạng thai thanh toán").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
-                                     col.Field("Note").HeaderText("Ghi chú").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                     col.Field("Note").HeaderText("Ghi chú").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).AllowFiltering(false).AllowSorting(false).Add();
                                      col.Field("Total").HeaderText("Tổng tiền").Format("#,##" + " VNĐ").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
-                                     col.Field("commands").HeaderText("Thao tác").Template("#completeCommandTemplate").Width("200").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                                     col.Field("commands").HeaderText("Thao tác").Template("#completeCommandTemplate").Width("200").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).AllowFiltering(false).AllowSorting(false).Add();
 
-                                 }).AllowPaging().PageSettings(page => page.PageCount(3).PageSizes(true).PageSize(10)).AllowSorting().AllowFiltering().FilterSettings(filter => { filter.Type(Syncfusion.EJ2.Grids.FilterType.Excel); }).Toolbar(new List<string>() { "Search" }).AllowResizing(false).AutoFit(false).Render()
+                                 }).AllowPaging().PageSettings(page => page.PageCount(3).PageSizes(true).PageSize(10)).AllowSorting().AllowFiltering().FilterSettings(filter => { filter.Type(Syncfusion.EJ2.Grids.FilterType.Excel); }).Toolbar(new List<string>() { "Search" }).AllowResizing(false).Locale("vi-VN").AutoFit(false).Render()
                     </div>
                 </div>
             </div>
@@ -487,7 +548,7 @@
              <div class="modal-footer">
                 <div class="d-flex">
                     <a href="javascript:void(0);" id="changeStatusBtn-${OrderId}" class="btn btn-success me-2" data-order-id="${OrderId}" onclick="changeStatusToPreparing(${OrderId})">
-                        <i class="fa-solid fa-truck-fast"></i> Chuyển trạng thái: Đang chuẩn bị
+                        <i class="fa-solid fa-truck-fast"></i> Chuyển trạng thái: Đang chuẩn bị <span id="loadingSpinner" class="spinner-border spinner-border-sm" style="display: none;"></span>
                     </a>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
                 </div>
@@ -496,7 +557,7 @@
        </div>
      </div>
 
-     @* <button type="button" class="btn btn-outline-danger form-control mb-1 d-block" data-bs-toggle="modal" data-bs-target="#cancelModal-${OrderId}" data-order-id="${OrderId}">
+    <button type="button" class="btn btn-outline-danger form-control mb-1 d-block" data-bs-toggle="modal" data-bs-target="#cancelModal-${OrderId}" data-order-id="${OrderId}">
        <i class="fa-regular fa-file-excel"></i> Hủy đơn
     </button>
 
@@ -529,18 +590,18 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                    <a href="javascript:void(0);" id="cancelOrderBtn-${OrderId}" class="btn btn-outline-danger" data-order-id="${OrderId}" onclick="changeStatusToCancel(${OrderId})" >Hủy đơn</a>
+                    <a href="javascript:void(0);" id="cancelOrderBtn-${OrderId}" class="btn btn-outline-danger" data-order-id="${OrderId}" onclick="changeStatusToCancel(${OrderId})" >Hủy đơn <span id="loadingSpinner" class="spinner-border spinner-border-sm" style="display: none;"></span></a>
                 </div>
             </div>
         </div>
-    </div> *@
+    </div>
 </script>
 
 <script id="preparingCommandTemplate" type="text/x-jsrender">
     <a href="/ManageOrder/Details/${OrderId}" class="btn btn-outline-info form-control mb-1 d-block"><i class="bi bi-info-circle"></i> Chi tiết</a>
 
     <button type="button" class="btn btn-outline-warning form-control mb-1 d-block" data-bs-toggle="modal" data-bs-target="#myModal-${OrderId}" data-order-id="${OrderId}">
-       <i class="fa-solid fa-truck-fast"></i> Đang giao
+       <i class="fa-solid fa-truck-fast"></i> Đang giao <span id="loadingSpinner1" class="spinner-border spinner-border-sm" style="display: none;"></span>
      </button>
 
      <!-- Modal Đang giao cho mỗi OrderId -->
@@ -556,7 +617,7 @@
            </div>
            <div class="modal-footer">
             <div class="d-flex">
-                <a href="javascript:void(0);" id="changeStatusBtn-${OrderId}" class="btn btn-success me-2" data-order-id="${OrderId}" onclick="changeStatusToDelivering(${OrderId})">
+                <a href="javascript:void(0);" id="1changeStatusBtn-${OrderId}" class="btn btn-success me-2" data-order-id="${OrderId}" onclick="changeStatusToDelivering(${OrderId})">
                     <i class="fa-solid fa-truck-fast"></i> Chuyển trạng thái: Đang giao
                 </a>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
@@ -610,7 +671,7 @@
     <a href="/ManageOrder/Details/${OrderId}" class="btn btn-outline-info form-control mb-1 d-block"><i class="bi bi-info-circle"></i> Chi tiết</a>
 
     <button type="button" class="btn btn-outline-success form-control mb-1 d-block" data-bs-toggle="modal" data-bs-target="#myModal-${OrderId}" data-order-id="${OrderId}">
-       <i class="bi bi-check-circle-fill"></i> Đã giao
+       <i class="bi bi-check-circle-fill"></i> Đã giao <span id="loadingSpinner2" class="spinner-border spinner-border-sm" style="display: none;"></span>
      </button>
 
      <!-- Modal Đang giao cho mỗi OrderId -->
@@ -626,7 +687,7 @@
            </div>
              <div class="modal-footer">
                 <div class="d-flex">
-                    <a href="javascript:void(0);" id="changeStatusBtn-${OrderId}" class="btn btn-success me-2" data-order-id="${OrderId}" onclick="changeStatusToComplete(${OrderId})">
+                    <a href="javascript:void(0);" id="2changeStatusBtn-${OrderId}" class="btn btn-success me-2" data-order-id="${OrderId}" onclick="changeStatusToComplete(${OrderId})">
                         <i class="fa-solid fa-truck-fast"></i> Chuyển trạng thái: Đã giao
                     </a>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>

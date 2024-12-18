@@ -175,6 +175,8 @@ namespace NanaFoodWeb.Controllers
         {
             var response = await _categoryRepository.GetCategoryById(id);
 
+
+
             if (response.IsSuccess)
             {
                 var category = JsonConvert.DeserializeObject<CategoryDto>(response.Result.ToString());
@@ -237,13 +239,16 @@ namespace NanaFoodWeb.Controllers
         public async Task<ActionResult> Deactivate(int id,string searchQuery,int? page)
         {
             var response = await _categoryRepository.DeactivateAsync(id);
-            if (response.IsSuccess)
+
+            var category = JsonConvert.DeserializeObject<CategoryDto>(response.Result.ToString());
+
+            if (response.IsSuccess && category != null)
             {
-                TempData["success"] = response.Result?.ToString();
+                TempData["success"] = $"Vô hiệu hóa thành công {category.CategoryName}" /*response.Message.ToString()*/;
             }
             else
             {
-                TempData["error"] = response.Result?.ToString();
+                TempData["error"] = $"không thể vô hiệu hóa {category.CategoryName}" /*response.Message.ToString()*/;
             }
 
             return RedirectToAction("Index", new { searchQuery = searchQuery, page = page });
