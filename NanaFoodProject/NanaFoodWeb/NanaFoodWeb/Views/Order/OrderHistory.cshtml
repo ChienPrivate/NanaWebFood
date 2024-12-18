@@ -21,9 +21,9 @@
                              col.Field("OrderStatus").HeaderText("Trạng thái giao hàng").Width("160").Template("#orderStatusTemplate").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
                              col.Field("ShipmentFee").HeaderText("Phí ship").Format("#,##" + " VNĐ").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
                              col.Field("Total").HeaderText("Tổng tiền").Format("#,##" + " VNĐ").Width("160").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
-                             col.Field("orderCommands").HeaderText("Thao tác").Template("#orderCommandTemplate").Width("200").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                             col.Field("orderCommands").HeaderText("Thao tác").Template("#orderCommandTemplate").Width("200").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).AllowFiltering(false).AllowSorting(false).Add();
 
-                         }).AllowPaging().PageSettings(page => page.PageCount(3).PageSizes(true).PageSize(10)).AllowSorting().AllowFiltering().FilterSettings(filter => { filter.Type(Syncfusion.EJ2.Grids.FilterType.Excel); }).Toolbar(new List<string>() { "Search" }).AllowResizing(false).AutoFit(false).Render()
+                         }).AllowPaging().PageSettings(page => page.PageCount(3).PageSizes(true).PageSize(10)).AllowSorting().AllowFiltering().FilterSettings(filter => { filter.Type(Syncfusion.EJ2.Grids.FilterType.Excel); }).Toolbar(new List<string>() { "Search" }).AllowResizing(false).Locale("vi-VN").AutoFit(false).Render()
             </div>
             <div class="text-right mt-2 g-2">
                 <a class="btn btn-outline-warning" asp-action="Menu" asp-controller="Home">Tiếp tục mua <i class="bi bi-basket-fill"></i></a>

@@ -196,11 +196,14 @@ namespace NanaFoodWeb.Controllers
                             var listItem = new List<SelectListItem>();
                             foreach (var category in categories)
                             {
-                                listItem.Add(new SelectListItem
+                                if (category.IsActive) 
                                 {
-                                    Text = category.CategoryName,
-                                    Value = category.CategoryId.ToString()
-                                });
+                                    listItem.Add(new SelectListItem
+                                    {
+                                        Text = category.CategoryName,
+                                        Value = category.CategoryId.ToString()
+                                    });
+                                }
                             }
                             ViewBag.ListCategory = listItem;
                         }

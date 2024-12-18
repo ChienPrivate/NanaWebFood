@@ -118,6 +118,7 @@ namespace NanaFoodWeb.Controllers
 
             if (response != null && response.IsSuccess)
             {
+                TempData["success"] = "Tạo sản phẩm thành công";
                 return RedirectToAction("Index");
             }
             ModelState.AddModelError("", response?.Message ?? "Có lỗi xảy ra khi tạo sản phẩm");
@@ -202,6 +203,7 @@ namespace NanaFoodWeb.Controllers
             var response = _productRepo.Update(productDto);
             if (response != null && response.IsSuccess)
             {
+                TempData["success"] = "Cập nhật sản phẩm thành công";
                 return RedirectToAction("Index");
             }
 
@@ -220,6 +222,7 @@ namespace NanaFoodWeb.Controllers
             }
 
             TempData["ErrorMessage"] = "Không tìm thấy sản phẩm.";
+            TempData["error"] = "Không tìm thấy sản phẩm.";
             return RedirectToAction("Index");
         }
 
@@ -238,13 +241,14 @@ namespace NanaFoodWeb.Controllers
             TempData["ErrorMessage"] = "Không tìm thấy sản phẩm.";
             return RedirectToAction("Index");
         }
+
         [HttpPost("DeleteConfirm")]
         public IActionResult DeleteConfirm(int id)
         {
             var response = _productRepo.Delete(id);
             if (response.IsSuccess)
             {
-                TempData["success"] = "Xóa danh mục thành công";
+                TempData["success"] = "Xóa sản phẩm thành công";
                 return RedirectToAction("Index");
             }
             else
@@ -295,12 +299,14 @@ namespace NanaFoodWeb.Controllers
             var response = _productRepo.UnActiveCategory(id);
             if (response == null)
             {
-                TempData["ErrorMessage"] = "Xoá thất bại vui lòng kiểm tra lại thông tin.";
+                TempData["ErrorMessage"] = "Vô hiệu hóa thất bại vui lòng kiểm tra lại thông tin.";
+                TempData["error"] = "Vô hiệu hóa không thành công";
                 return RedirectToAction("Index");
             }
             if (response.IsSuccess)
             {
-                TempData["SuccessMessage"] = "Xoá thành công.";
+                TempData["SuccessMessage"] = "Vô hiệu hóa thành công.";
+                TempData["success"] = "Vô hiệu hóa thành công";
 
             }
             else
