@@ -10,7 +10,6 @@ NanaWebFood là một ứng dụng web quản lý nhà hàng, cho phép người
 - [Cài đặt](#cài-đặt)
 - [Sử dụng](#sử-dụng)
 - [Cấu trúc thư mục](#cấu-trúc-thư-mục)
-- [Đóng góp](#đóng-góp)
 - [Giấy phép](#giấy-phép)
 
 ## Giới thiệu
