@@ -184,7 +184,8 @@ namespace NanaFoodWeb.Controllers
                 return RedirectToAction(nameof(Notification));
             }
 
-            TempData["error"] = message;
+            ModelState.AddModelError("FailRegis", message);
+            //TempData["error"] = message;
             return View();
         }
 

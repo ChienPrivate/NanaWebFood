@@ -40,6 +40,7 @@
                                     <input asp-for=ConfirmPassword type="password" class="form-control" id="confirm-password" placeholder="Nhập lại mật khẩu">
                                     <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                                 </div>
+                            <span class="text-danger text-center mb-3">@Html.ValidationMessage("FailRegis")</span>
                                 <button type="submit" class="btn btn-success w-100 mb-3">Đăng Ký</button>
                                 @* <div class="text-center mb-3">Hoặc tiếp tục với</div>
                                 <button type="button" class="btn btn-facebook w-100 mb-2">
