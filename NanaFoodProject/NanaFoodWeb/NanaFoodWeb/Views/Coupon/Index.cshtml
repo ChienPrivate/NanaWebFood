@@ -1,5 +1,6 @@
 ﻿@{
     Layout = "_AdminLayout";
+    ViewData["Title"] = "Mã giảm giá";
 }
 @model NanaFoodWeb.Models.Dto.ViewModels.CouponVM
 @using Syncfusion.EJ2
@@ -13,10 +14,6 @@
         .btn {
             transition: background-color 0.3s ease;
         }
-
-            .btn:hover {
-                background-color: #69cfb7;
-            }
     </style>
     <div id="wrapper">
 
@@ -26,7 +23,7 @@
             <div class="container-fluid">
                 <h1 class="h3 mb-4 text-gray-800">Danh sách mã giảm giá</h1>
                 <p>
-                    <a asp-action="Create" class="btn btn-primary mb-3" asp-controller="Coupon">Thêm mới</a>
+                    <a asp-action="Create" class="btn btn-outline-primary mb-3" asp-controller="Coupon"><i class="bi bi-plus-circle"></i> Thêm mã giảm giá</a>
                 </p>
                 @Html.EJS().Grid("Grid").DataSource((IEnumerable<object>)ViewBag.lazyLoadData).Columns(col =>
                     {

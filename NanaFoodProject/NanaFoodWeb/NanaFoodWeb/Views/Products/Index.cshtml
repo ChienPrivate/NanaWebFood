@@ -25,7 +25,7 @@
     <div class="container-fluid">
         <h1 class="h3 mb-4 text-gray-800">Danh sách sản phẩm</h1>
         <p>
-        <a asp-action="Create" class="btn btn-outline-primary mb-3" asp-controller="Products">Thêm sản phẩm</a>
+        <a asp-action="Create" class="btn btn-outline-primary mb-3" asp-controller="Products"><i class="bi bi-plus-circle"></i>sThêm sản phẩm</a>
         </p>
         @Html.EJS().Grid("Grid").DataSource((IEnumerable<object>)ViewBag.lazyLoadData).Columns(col =>
             {
