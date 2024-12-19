@@ -2,6 +2,7 @@
 @using System.Security.Claims
 @{
     Layout = "_AdminLayout";
+    ViewData["Title"] = "Người dùng";
     var role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value ?? "Guess";
 }
 
@@ -40,7 +41,7 @@
 else
 {
     <div class="container-fluid mt-3">
-        <h2>Danh sách người dùng</h2>
+        <h1 class="h3 mb-4 text-gray-800">Danh sách người dùng</h1>
         <div class="mt-2 mb-2">
             <a asp-controller="Users" asp-action="Create" class="btn btn-outline-primary"><i class="bi bi-plus-circle"></i> Tạo người dùng mới</a>
         </div>
@@ -62,7 +63,6 @@ else
         <div class="tab-content">
             <div id="home" class="tab-pane active">
                 <br>
-                <h3>Quản trị viên</h3>
                 <div class="col-lg-12 control-section">
                     <div>
                         <h1 class="h3 mb-4 text-gray-800"></h1>
@@ -89,7 +89,6 @@ else
             </div>
             <div id="menu1" class="tab-pane fade">
                 <br>
-                <h3>Nhân viên</h3>
                 <div class="col-lg-12 control-section">
                     <div>
                         <h1 class="h3 mb-4 text-gray-800"></h1>
@@ -117,7 +116,6 @@ else
             </div>
             <div id="menu2" class="tab-pane fade">
                 <br>
-                <h3>Khách hàng</h3>
                 <div class="col-lg-12 control-section">
                     <div>
                         <h1 class="h3 mb-4 text-gray-800"></h1>

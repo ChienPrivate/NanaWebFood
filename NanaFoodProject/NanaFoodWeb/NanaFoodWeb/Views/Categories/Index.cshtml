@@ -2,13 +2,13 @@
 @model IEnumerable<NanaFoodWeb.Models.CategoryDto>
 @{
     Layout = "_AdminLayout";
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Danh mục";
 }
 <div class="container-fluid">
     <h1 class="h3 mb-4 text-gray-800">Danh sách danh mục</h1>
     @* <a href="add-product.html" class="btn btn-primary mb-3">Add Product</a> *@
     <p>
-        <a asp-action="Create" class="btn btn-outline-primary mb-3" asp-controller="Categories"> Thêm danh mục</a>
+        <a asp-action="Create" class="btn btn-outline-primary mb-3" asp-controller="Categories"><i class="bi bi-plus-circle"></i> Thêm danh mục</a>
     </p>
 
     @Html.EJS().Grid("Grid").DataSource((IEnumerable<object>)ViewBag.lazyLoadData).Columns(col =>

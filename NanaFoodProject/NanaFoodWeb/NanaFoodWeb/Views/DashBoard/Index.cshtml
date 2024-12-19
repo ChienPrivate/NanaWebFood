@@ -3,6 +3,7 @@
 @using Syncfusion.EJ2.Charts
 @{
     Layout = "_AdminLayout";
+    ViewData["Title"] = "Bảng điều khiển";
     var chartData = ViewBag.LineChartData as IEnumerable<LineChartDto>;
     var yAxisMaximum = ViewBag.YAxisMaximum;
     var yAxisInterval = ViewBag.YAxisInterval;
