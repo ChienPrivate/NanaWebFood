@@ -34,7 +34,7 @@
                 @foreach (var item in Model)
                 {
                     <!-- Product -->
-                    <div class="card mb-3 p-3 shadow-sm">
+                    <div class="card mb-3 p-3 shadow-sm" id="cartItem_@item.ProductId" style="transition: all 0.3s ease-in-out;">
                         <div class="row g-0 align-items-center">
                             <div class="col-md-2">
                                 <img src="@item.Image" class="img-fluid rounded-start" alt="@item.ProductName">
@@ -42,7 +42,7 @@
                             <div class="col-md-5">
                                 <div class="card-body">
                                     <h5 class="card-title">@item.ProductName</h5>
-                                    <a id="removeProduct" data-product-id="@item.ProductId" class="text-danger fw-bold btn-delete">Xóa</a>
+                                    <a id="removeProduct" data-product-id="@item.ProductId" style="cursor:pointer" class="text-danger fw-bold btn-delete" onclick="fadeOutAndRemove('@item.ProductId')">Xóa</a>
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -57,6 +57,22 @@
                             </div>
                         </div>
                     </div>
+                    <script>
+                        function fadeOutAndRemove(productId) {
+                            const cartItem = document.getElementById(`cartItem_${productId}`);
+                            cartItem.style.opacity = '0';
+                            cartItem.style.transform = 'translateX(20px)';
+                            
+                            setTimeout(() => {
+                                cartItem.style.height = '0';
+                                cartItem.style.margin = '0';
+                                cartItem.style.padding = '0';
+                                cartItem.style.overflow = 'hidden';
+                            }, 300);
+                            
+                            // Actual removal logic should be handled by your existing delete functionality
+                        }
+                    </script>
                 }
             </div>
             <!-- Cart Summary -->
