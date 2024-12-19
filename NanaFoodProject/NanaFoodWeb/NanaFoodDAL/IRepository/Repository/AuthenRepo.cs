@@ -88,8 +88,10 @@ namespace NanaFoodDAL.IRepository.Repository
         {
             try
             {
-                var userEmail = await _userManager.FindByEmailAsync(regis.Email);
+                //var userEmail = await _userManager.FindByEmailAsync(regis.Email);
 
+                var userEmail = await _context.Users.FirstOrDefaultAsync(x => x.Email == regis.Email);
+                
                 if (userEmail != null)
                 {
                     response.IsSuccess = false;
@@ -243,7 +245,7 @@ namespace NanaFoodDAL.IRepository.Repository
                 if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
                 {
                     response.IsSuccess = false;
-                    response.Message = "Người dùng không tồn tại hoặc chưa kích hoạt email";
+                    response.Message = "Người dùng không tồn tại";
                     return response;
                 }
                 var newPassword = GenerateRandomPassword();
