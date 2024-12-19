@@ -65,6 +65,11 @@ namespace NanaFoodDAL.Context
 
             builder.Entity<Order>().HasKey(e => e.OrderId);
 
+            builder.Entity<Order>()
+                .HasOne(o => o.Coupon)
+                .WithMany(c => c.OrderCoupons)
+                .HasForeignKey(o => o.CouponCode)
+                .OnDelete(DeleteBehavior.NoAction);
 
             // Cấu hình khóa chính và khóa ngoại cho WishList
             builder.Entity<WishList>().HasKey(e => new { e.ProductId, e.UserId });

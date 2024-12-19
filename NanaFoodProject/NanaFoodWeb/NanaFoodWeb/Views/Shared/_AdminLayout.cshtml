@@ -73,7 +73,7 @@
             @if (role == "admin")
             {
                 <!-- Nav Item - Dashboard -->
-                <li class="nav-item @(ViewContext.RouteData.Values["Controller"].ToString() == "DashBoard" ? "active" : "")">
+                <li class="nav-item @(ViewContext.RouteData.Values["Controller"].ToString() == "DashBoard" && ViewContext.RouteData.Values["Action"].ToString() == "Index" ? "active" : "")">
                     <a class="nav-link" asp-action="Index" asp-controller="DashBoard">
                         <i class="fas fa-fw fa-tachometer-alt"></i>
                         <span>Bảng điều khiển</span>
@@ -128,10 +128,27 @@
                     <span>Đánh giá sản phẩm</span>
                 </a>
             </li>
-
             
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
+
+
+            <li class="nav-item @(ViewContext.RouteData.Values["Controller"].ToString() == "DashBoard" && ViewContext.RouteData.Values["Action"].ToString() == "AdministratorInformation" ? "active" : "")">
+                <a class="nav-link" asp-action="AdministratorInformation" asp-controller="DashBoard">
+                    @* <i class="fa-solid fa-message"></i> *@
+                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                    <span>Thông tin cá nhân</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="Auth" asp-action="Logout">
+                    @* <i class="fa-solid fa-message"></i> *@
+                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                    <span>Đăng xuất</span>
+                </a>
+            </li>
+
 
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
