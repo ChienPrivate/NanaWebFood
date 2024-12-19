@@ -1409,5 +1409,17 @@
         <member name="M:NanaFoodApi.Migrations.updateCancelUserFullNametonullablecolumn.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
+        <member name="T:NanaFoodApi.Migrations.updatedeletebehaviourbetweenorderandcoupon">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.updatedeletebehaviourbetweenorderandcoupon.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.updatedeletebehaviourbetweenorderandcoupon.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NanaFoodApi.Migrations.updatedeletebehaviourbetweenorderandcoupon.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
     </members>
 </doc>

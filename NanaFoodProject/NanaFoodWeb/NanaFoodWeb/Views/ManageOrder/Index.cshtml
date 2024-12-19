@@ -527,6 +527,62 @@
     </div>
 </div>
 
+<script type="text/javascript">
+    function renderCancelOrderButton(e) {
+        // Kiểm tra trạng thái thanh toán
+        if (e.PaymentStatus !== 'Đã thanh toán') {
+            return `
+                <button type="button" class="btn btn-outline-danger form-control mb-1 d-block"
+                    data-bs-toggle="modal" data-bs-target="#cancelModal-${e.OrderId}" data-order-id="${e.OrderId}">
+                    <i class="fa-regular fa-file-excel"></i> Hủy đơn
+                </button>
+
+                <!-- Modal Hủy Đơn cho mỗi OrderId -->
+                <div class="modal fade" id="cancelModal-${e.OrderId}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Xác nhận hủy đơn</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="text-left">
+                                    <strong>Bạn có chắc muốn hủy đơn này?</strong>
+                                </div>
+                                <div class="text-left">
+                                    <label for="cancelReason-${e.OrderId}">Lý do hủy đơn <span class="text-danger">*</span></label>
+                                    <select id="cancelReason-${e.OrderId}" name="message" class="form-select">
+                                        <option value="">Chọn lý do hủy đơn</option>
+                                        <option value="Đã thay đổi ý định">Khách đã thay đổi ý định</option>
+                                        <option value="Tìm thấy giá tốt hơn ở nơi khác">Khách tìm thấy giá tốt hơn ở nơi khác</option>
+                                        <option value="Đặt nhầm đơn hàng">Khách đặt nhầm đơn hàng</option>
+                                        <option value="Không còn cần sản phẩm">Khách không còn cần sản phẩm</option>
+                                        <option value="Gặp vấn đề với thanh toán">Khách gặp vấn đề với thanh toán</option>
+                                        <option value="Không hài lòng với dịch vụ khách hàng">Khách không hài lòng với dịch vụ khách hàng</option>
+                                        <option value="Không nghe máy">Khách yêu cầu hủy vì lý do khác</option>
+                                        <option value="Yêu cầu hủy vì lý do khác">Khách yêu cầu hủy vì lý do khác</option>
+                                    </select>
+                                    <span class="text-danger" id="warningText-${e.OrderId}"></span>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                <a href="javascript:void(0);" id="cancelOrderBtn-${e.OrderId}"
+                                    class="btn btn-outline-danger" data-order-id="${e.OrderId}"
+                                    onclick="changeStatusToCancel(${e.OrderId})">
+                                    Hủy đơn <span id="loadingSpinner" class="spinner-border spinner-border-sm" style="display: none;"></span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        // Nếu đã thanh toán, không trả về gì
+        return '';
+    }
+</script>
+
 <script id="confirmedYetCommandTemplate" type="text/x-jsrender">
     <a href="/ManageOrder/Details/${OrderId}" class="btn btn-outline-info form-control mb-1 d-block"><i class="bi bi-info-circle"></i> Chi tiết</a>
 
@@ -557,44 +613,7 @@
        </div>
      </div>
 
-    <button type="button" class="btn btn-outline-danger form-control mb-1 d-block" data-bs-toggle="modal" data-bs-target="#cancelModal-${OrderId}" data-order-id="${OrderId}">
-       <i class="fa-regular fa-file-excel"></i> Hủy đơn
-    </button>
-
-    <!-- Modal Hủy Đơn cho mỗi OrderId -->
-    <div class="modal fade" id="cancelModal-${OrderId}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Xác nhận hủy đơn</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="text-left">
-                        <strong>Bạn có chắc muốn hủy đơn này?</strong>
-                    </div>
-                    <div class="text-left">
-                            <label for="cancelReason-${OrderId}">Lý do hủy đơn <span class="text-danger">*</span></label>
-                            <select id="cancelReason-${OrderId}" name="message" class="form-select">
-                                <option value="">Chọn lý do hủy đơn</option>
-                                <option value="Khách đã thay đổi ý định">Khách đã thay đổi ý định</option>
-                                <option value="Khách tìm thấy giá tốt hơn ở nơi khác">Khách tìm thấy giá tốt hơn ở nơi khác</option>
-                                <option value="Khách đặt nhầm đơn hàng">Khách đặt nhầm đơn hàng</option>
-                                <option value="Khách không còn cần sản phẩm">Khách không còn cần sản phẩm</option>
-                                <option value="Khách gặp vấn đề với thanh toán">Khách gặp vấn đề với thanh toán</option>
-                                <option value="Khách không hài lòng với dịch vụ khách hàng">Khách không hài lòng với dịch vụ khách hàng</option>
-                                <option value="Khách yêu cầu hủy vì lý do khác">Khách yêu cầu hủy vì lý do khác</option>
-                            </select>
-                        <span class="text-danger" id="warningText-${OrderId}"></span>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                    <a href="javascript:void(0);" id="cancelOrderBtn-${OrderId}" class="btn btn-outline-danger" data-order-id="${OrderId}" onclick="changeStatusToCancel(${OrderId})" >Hủy đơn <span id="loadingSpinner" class="spinner-border spinner-border-sm" style="display: none;"></span></a>
-                </div>
-            </div>
-        </div>
-    </div>
+     ${renderCancelOrderButton(data)}
 </script>
 
 <script id="preparingCommandTemplate" type="text/x-jsrender">
